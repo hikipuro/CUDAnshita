@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 
 namespace CUDAnshita {
-	public class MarshalUtil {
+	internal class MarshalUtil {
 		public static void Copy<T>(IntPtr source, T[] destination, int startIndex, int length) {
 			Type type = typeof(T);
 

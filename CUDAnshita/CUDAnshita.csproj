@@ -40,10 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="API\cudaError.cs" />
+    <Compile Include="API\CudaRT.cs" />
+    <Compile Include="API\CudaRT_Data.cs" />
     <Compile Include="API\NvCuda.cs" />
+    <Compile Include="API\NvCuda_Data.cs" />
     <Compile Include="API\NVRTC.cs" />
-    <Compile Include="API\nvrtcResult.cs" />
+    <Compile Include="API\NVRTC_Data.cs" />
     <Compile Include="Context.cs" />
     <Compile Include="Device.cs" />
     <Compile Include="DeviceMemory.cs" />

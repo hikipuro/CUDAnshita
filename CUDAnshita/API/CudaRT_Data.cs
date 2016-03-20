@@ -1,4 +1,13 @@
-﻿namespace CUDAnshita.API {
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace CUDAnshita.API {
+	public enum cudaOutputMode {
+		cudaKeyValuePair = 0x00,
+		cudaCSV = 0x01
+	}
+
 	public enum cudaError {
 		cudaSuccess = 0,
 		cudaErrorMissingConfiguration = 1,

@@ -1,4 +1,8 @@
-﻿namespace CUDAnshita.API {
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace CUDAnshita.API {
 	public enum nvrtcResult {
 		NVRTC_SUCCESS = 0,
 		NVRTC_ERROR_OUT_OF_MEMORY = 1,
