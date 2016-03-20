@@ -6,6 +6,7 @@ C#から簡単にCUDAを呼び出すためのライブラリ
 * CUDA Toolkit 7.5
  * nvcuda.dll (ドライバに付属している？)
  * nvrtc64_75.dll (CUDA Toolkit 7.5に含まれている)
+* .NET Framework 2.0 以降
 
 ## コードサンプル
 ### cu形式のプログラムの準備
