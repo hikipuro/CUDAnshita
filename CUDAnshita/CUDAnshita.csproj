@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="API\CudaRT.cs" />
     <Compile Include="API\CudaRT_Data.cs" />
+    <Compile Include="API\cuRAND.cs" />
     <Compile Include="API\NvCuda.cs" />
     <Compile Include="API\NvCuda_Data.cs" />
     <Compile Include="API\NVRTC.cs" />
