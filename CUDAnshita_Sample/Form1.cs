@@ -99,6 +99,12 @@ extern ""C"" __global__ void addKernel(int *c, const int *a, const int *b) {
 			device.Dispose();
 		}
 
+		private void TestCudaRT() {
+			int count = 0;
+			CudaRT.cudaGetDeviceCount(ref count);
+			Console.WriteLine("CudaRT: {0}", count);
+		}
+
 		private void TestCuRAND() {
 			var gen = cuRAND.CreateGeneratorHost(curandRngType.CURAND_RNG_PSEUDO_DEFAULT);
 			cuRAND.SetPseudoRandomGeneratorSeed(gen, 1234);
