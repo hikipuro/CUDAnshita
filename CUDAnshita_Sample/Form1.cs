@@ -22,20 +22,36 @@ extern ""C"" __global__ void addKernel(int *c, const int *a, const int *b) {
 		}
 
 		private void buttonTest_Click(object sender, EventArgs e) {
+			TestCompile();
+			//TestCudaRT();
+			//TestCuRAND();
+		}
+
+		private void TestCompile() {
 			// プログラムのコンパイル (cu から PTX へ)
 			NVRTC.Program program = new NVRTC.Program();
 			program.Create(addKernelString, "addKernel.cu", null, null);
-			program.Compile(
-				NVRTC.Program.OPTION_TARGET_20, 
-				NVRTC.Program.OPTION_FMAD_FALSE,
-				NVRTC.Program.OPTION_LINE_INFO
-			);
+
+			try {
+				program.Compile(
+					NVRTC.Program.OPTION_TARGET_20,
+					NVRTC.Program.OPTION_FMAD_FALSE,
+					NVRTC.Program.OPTION_LINE_INFO,
+					NVRTC.Program.OPTION_DEVICE_AS_DEFAULT_EXECUTION_SPACE
+				//NVRTC.Program.OPTION_INCLUDE_PATH_ + @"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\"
+				);
+			} catch (Exception e) {
+				Console.WriteLine("Compile Error: {0}", e);
+				Console.WriteLine();
+				Console.WriteLine(program.GetLog());
+				return;
+			}
 
 			// コンパイル時のログを出力画面に表示
 			Console.WriteLine("----- <Compile Log>");
 			Console.WriteLine(program.GetLog());
 			Console.WriteLine("----- </Compile Log>");
-			
+
 			// コンパイル済みプログラムを取得 (PTX 形式)
 			string ptx = program.GetPTX();
 
@@ -108,8 +124,8 @@ extern ""C"" __global__ void addKernel(int *c, const int *a, const int *b) {
 		private void TestCuRAND() {
 			cuRAND rand = new cuRAND();
 			rand.Seed = 1234;
-			var test = rand.Generate(10);
-			foreach (var i in test) {
+			int[] test = rand.Generate(10);
+			foreach (int i in test) {
 				Console.WriteLine("cuRAND: {0}", i);
 			}
 		}

@@ -48,7 +48,10 @@ namespace CUDAnshita.API {
 		/// <summary>
 		/// nvrtcCompileProgram compiles the given program.
 		/// </summary>
-		/// <param name="prog"></param>
+		/// <remarks>
+		/// It supports compile options listed in Supported Compile Options.
+		/// </remarks>
+		/// <param name="prog">CUDA Runtime Compilation program.</param>
 		/// <param name="numOptions"></param>
 		/// <param name="options"></param>
 		/// <returns></returns>
