@@ -1,4 +1,4 @@
-﻿namespace CUDAnshita.API {
+﻿namespace CUDAnshita {
 	public enum nvrtcResult {
 		NVRTC_SUCCESS = 0,
 		NVRTC_ERROR_OUT_OF_MEMORY = 1,

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CUDAnshita.API {
+namespace CUDAnshita {
 	using size_t = Int64;
 
 	class Defines {

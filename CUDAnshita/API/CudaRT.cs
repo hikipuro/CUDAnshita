@@ -1,9 +1,12 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace CUDAnshita.API {
+namespace CUDAnshita {
 	/// <summary>
-	/// http://docs.nvidia.com/cuda/cuda-runtime-api/
+	/// NVIDIA CUDA Runtime API
 	/// </summary>
+	/// <remarks>
+	/// <a href="http://docs.nvidia.com/cuda/cuda-runtime-api/">http://docs.nvidia.com/cuda/cuda-runtime-api/</a>
+	/// </remarks>
 	public class CudaRT {
 		const string DLL_PATH = "cudart64_80.dll";
 		const CallingConvention CALLING_CONVENTION = CallingConvention.Cdecl;

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CUDAnshita.API {
+﻿namespace CUDAnshita {
 	public enum CUaddress_mode {
 		CU_TR_ADDRESS_MODE_WRAP = 0,
 		CU_TR_ADDRESS_MODE_CLAMP = 1,

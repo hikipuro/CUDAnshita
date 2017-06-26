@@ -1,5 +1,4 @@
-﻿using CUDAnshita.API;
-using System;
+﻿using System;
 
 namespace CUDAnshita.Errors {
 	public class CudaException : Exception {

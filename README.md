@@ -2,7 +2,7 @@
 C#から簡単にCUDAを呼び出すためのライブラリ
 
 ## 実行に必要なもの
-* nVidiaのGPUと新しめのドライバ
+* NVIDIA の GPU と新しめのドライバ
 * CUDA Toolkit 8.0
  * nvcuda.dll (ドライバに付属している？)
  * nvrtc64_80.dll (CUDA Toolkit 8.0に含まれている)
@@ -23,31 +23,30 @@ extern ""C"" __global__ void addKernel(int *c, const int *a, const int *b) {
 ### usingの設定
 ```
 using CUDAnshita;
-using CUDAnshita.API;
 ```
 
 ### cuのコンパイル
 ```
 // プログラムのコンパイル (cu から PTX へ)
-NVRTC.Program program = new NVRTC.Program();
-program.Create(addKernelString, "addKernel.cu", null, null);
-program.Compile(
-	NVRTC.Program.OPTION_TARGET_20, 
-	NVRTC.Program.OPTION_FMAD_FALSE,
-	NVRTC.Program.OPTION_LINE_INFO
+NVRTC compiler = new NVRTC();
+compiler.Create(addKernelString, "addKernel.cu", null, null);
+compiler.Compile(
+	NVRTC.OPTION_TARGET_20, 
+	NVRTC.OPTION_FMAD_FALSE,
+	NVRTC.OPTION_LINE_INFO
 );
 
 // コンパイル時のログを出力画面に表示
-Console.WriteLine(program.GetLog());
+Console.WriteLine(compiler.GetLog());
 
 // コンパイル済みプログラムを取得 (PTX 形式)
-string ptx = program.GetPTX();
+string ptx = compiler.GetPTX();
 
 // コンパイル済みプログラムを出力画面に表示
 Console.WriteLine(ptx);
 
 // コンパイラの後処理
-program.Dispose();
+compiler.Dispose();
 ```
 
 ### PTXの実行
@@ -103,7 +102,8 @@ device.Dispose();
 ```
 
 ### トラブルシューティング
-* サンプルの実行時にエラーが発生する場合は、64bitビルドで実行してみてください (使用する DLL が 64bit 環境用のものなので、 32bit Exe から呼び出すとエラーが発生します)。
+* サンプルの実行時にエラーが発生する場合は、64bitビルドで実行してみてください (使用する DLL が 64bit 環境用のものなので、 32bit exe から呼び出すとエラーが発生します)。
+* DLLが見つからないエラーが発生する場合は、 "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\bin" から、 Visual Studio が exe を出力する bin フォルダにコピーすると解決するかもしれません。
 
 ## 開発環境
 * Visual Studio 2015

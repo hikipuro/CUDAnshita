@@ -1,5 +1,4 @@
-﻿using CUDAnshita.API;
-using CUDAnshita.Errors;
+﻿using CUDAnshita.Errors;
 using System;
 
 namespace CUDAnshita {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace CUDAnshita.API {
+namespace CUDAnshita {
 	using CUcontext = IntPtr;
 	using CUdevice = Int32;
 	using CUdeviceptr = IntPtr;
@@ -12,8 +12,11 @@ namespace CUDAnshita.API {
 	using size_t = Int64;
 
 	/// <summary>
-	/// http://docs.nvidia.com/cuda/cuda-driver-api/
+	/// NVIDIA CUDA Driver API
 	/// </summary>
+	/// <remarks>
+	/// <a href="http://docs.nvidia.com/cuda/cuda-driver-api/">http://docs.nvidia.com/cuda/cuda-driver-api/</a>
+	/// </remarks>
 	public class NvCuda {
 		const string DLL_PATH = "nvcuda.dll";
 		const CallingConvention CALLING_CONVENTION = CallingConvention.Cdecl;

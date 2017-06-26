@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace CUDAnshita.API {
+namespace CUDAnshita {
 	using size_t = Int64;
 
 	/// <summary>
-	/// http://docs.nvidia.com/cuda/curand/
+	/// The cuRAND library provides facilities that focus on the simple and efficient generation of high-quality pseudorandom and quasirandom numbers.
 	/// </summary>
+	/// <remarks>
+	/// <a href="http://docs.nvidia.com/cuda/curand/">http://docs.nvidia.com/cuda/curand/</a>
+	/// </remarks>
 	public class cuRAND : IDisposable {
 		public class API {
 			const string DLL_PATH = "curand64_80.dll";
