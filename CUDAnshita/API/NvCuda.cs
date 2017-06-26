@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace CUDAnshita.API {
-	using size_t = Int64;
-	using CUdevice = Int32;
 	using CUcontext = IntPtr;
-	using CUmodule = IntPtr;
-	using CUfunction = IntPtr;
+	using CUdevice = Int32;
 	using CUdeviceptr = IntPtr;
-	using CUstream = IntPtr;
+	using CUfunction = IntPtr;
+	using CUmodule = IntPtr;
 	using CUresult = cudaError;
+	using CUstream = IntPtr;
+	using size_t = Int64;
 
 	/// <summary>
 	/// http://docs.nvidia.com/cuda/cuda-driver-api/

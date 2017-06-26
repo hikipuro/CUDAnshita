@@ -3,9 +3,9 @@ C#から簡単にCUDAを呼び出すためのライブラリ
 
 ## 実行に必要なもの
 * nVidiaのGPUと新しめのドライバ
-* CUDA Toolkit 7.5
+* CUDA Toolkit 8.0
  * nvcuda.dll (ドライバに付属している？)
- * nvrtc64_75.dll (CUDA Toolkit 7.5に含まれている)
+ * nvrtc64_80.dll (CUDA Toolkit 8.0に含まれている)
 * .NET Framework 2.0 以降
 
 ## コードサンプル
@@ -102,9 +102,12 @@ context.Dispose();
 device.Dispose();
 ```
 
+### トラブルシューティング
+* サンプルの実行時にエラーが発生する場合は、64bitビルドで実行してみてください (使用する DLL が 64bit 環境用のものなので、 32bit Exe から呼び出すとエラーが発生します)。
+
 ## 開発環境
-* Visual Studio 2013
-* CUDA Toolkit 7.5
+* Visual Studio 2015
+* CUDA Toolkit 8.0
 
 ## ライセンス
 * MIT License

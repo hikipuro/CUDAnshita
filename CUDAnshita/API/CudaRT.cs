@@ -5,7 +5,7 @@ namespace CUDAnshita.API {
 	/// http://docs.nvidia.com/cuda/cuda-runtime-api/
 	/// </summary>
 	public class CudaRT {
-		const string DLL_PATH = "cudart64_75.dll";
+		const string DLL_PATH = "cudart64_80.dll";
 		const CallingConvention CALLING_CONVENTION = CallingConvention.Cdecl;
 		const CharSet CHAR_SET = CharSet.Ansi;
 

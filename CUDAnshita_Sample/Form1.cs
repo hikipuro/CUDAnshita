@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace CUDAnshita_Sample {
+	/// <summary>
+	/// https://developer.nvidia.com/cuda-gpus
+	/// </summary>
 	public partial class Form1 : Form {
 		// CUDA のプログラム (cu 形式)
 		string addKernelString = @"
