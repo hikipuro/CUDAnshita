@@ -106,10 +106,9 @@ extern ""C"" __global__ void addKernel(int *c, const int *a, const int *b) {
 		}
 
 		private void TestCuRAND() {
-			var gen = cuRAND.CreateGeneratorHost(curandRngType.CURAND_RNG_PSEUDO_DEFAULT);
-			cuRAND.SetPseudoRandomGeneratorSeed(gen, 1234);
-			var test = cuRAND.GenerateUniformDouble(gen, 10);
-			cuRAND.DestroyGenerator(gen);
+			cuRAND rand = new cuRAND();
+			rand.Seed = 1234;
+			var test = rand.Generate(10);
 			foreach (var i in test) {
 				Console.WriteLine("cuRAND: {0}", i);
 			}
