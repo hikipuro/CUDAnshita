@@ -29,38 +29,33 @@ extern ""C"" __global__ void addKernel(int *c, const int *a, const int *b) {
 		private void TestCompile() {
 			// プログラムのコンパイル (cu から PTX へ)
 			NVRTC compiler = new NVRTC();
-			compiler.Create(addKernelString, "addKernel.cu", null, null);
+			//compiler.AddHeader("curand_kernel.h", @"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\curand_kernel.h");
+			compiler.AddOptions(
+				NVRTC.OPTION_TARGET_20,
+				NVRTC.OPTION_FMAD_FALSE,
+				NVRTC.OPTION_LINE_INFO,
+				NVRTC.OPTION_DEVICE_AS_DEFAULT_EXECUTION_SPACE
+				//NVRTC.OPTION_INCLUDE_PATH_ + @"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\"
+			);
 
-			try {
-				compiler.Compile(
-					NVRTC.OPTION_TARGET_20,
-					NVRTC.OPTION_FMAD_FALSE,
-					NVRTC.OPTION_LINE_INFO,
-					NVRTC.OPTION_DEVICE_AS_DEFAULT_EXECUTION_SPACE
-					//NVRTC.OPTION_INCLUDE_PATH_ + @"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\"
-				);
-			} catch (Exception e) {
-				Console.WriteLine("Compile Error: {0}", e);
+			string ptx = compiler.Compile("addKernel.cu", addKernelString);
+
+			if (ptx == null) {
+				Console.WriteLine("Compile Error:");
 				Console.WriteLine();
-				Console.WriteLine(compiler.GetLog());
+				Console.WriteLine(compiler.Log);
 				return;
 			}
 
 			// コンパイル時のログを出力画面に表示
 			Console.WriteLine("----- <Compile Log>");
-			Console.WriteLine(compiler.GetLog());
+			Console.WriteLine(compiler.Log);
 			Console.WriteLine("----- </Compile Log>");
-
-			// コンパイル済みプログラムを取得 (PTX 形式)
-			string ptx = compiler.GetPTX();
 
 			// コンパイル済みプログラムを出力画面に表示
 			Console.WriteLine("----- <PTX>");
 			Console.WriteLine(ptx);
 			Console.WriteLine("----- </PTX>");
-
-			// コンパイラの後処理
-			compiler.Dispose();
 
 			// プログラムの実行準備
 			Device device = new Device(0);

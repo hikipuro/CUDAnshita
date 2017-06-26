@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -9,7 +11,7 @@ namespace CUDAnshita {
 	/// <remarks>
 	/// <a href="http://docs.nvidia.com/cuda/nvrtc/">http://docs.nvidia.com/cuda/nvrtc/</a>
 	/// </remarks>
-	public class NVRTC : IDisposable {
+	public class NVRTC {
 		public class API {
 			const string DLL_PATH = "nvrtc64_80.dll";
 			const CallingConvention CALLING_CONVENTION = CallingConvention.Cdecl;
@@ -218,57 +220,59 @@ namespace CUDAnshita {
 		public const string OPTION_RESTRICT = "--restrict";
 		public const string OPTION_DEVICE_AS_DEFAULT_EXECUTION_SPACE = "--device-as-default-execution-space";
 
-		IntPtr program = IntPtr.Zero;
+		Dictionary<string, string> headerList;
+		List<string> optionList;
+		string log = string.Empty;
 
-		public void Create(string src, string name, string[] headers, string[] includeNames) {
-			int numHeaders = 0;
-			if (headers != null) {
-				numHeaders = headers.Length;
-			}
-			CheckResult(API.nvrtcCreateProgram(ref program, src, name, numHeaders, headers, includeNames));
+		public string Log {
+			get { return log; }
 		}
 
-		public void Dispose() {
-			if (program == null || program == IntPtr.Zero) {
-				return;
+		public NVRTC() {
+			headerList = new Dictionary<string, string>();
+			optionList = new List<string>();
+		}
+
+		~NVRTC() {
+		}
+
+		public void AddHeader(string name, string path) {
+			headerList.Add(name, path);
+		}
+
+		public void AddOption(string option) {
+			optionList.Add(option);
+		}
+
+		public void AddOptions(params string[] options) {
+			optionList.AddRange(options);
+		}
+
+		public string Compile(string name, string src) {
+			IntPtr program = CreateProgram(src, name);
+
+			int numOptions = optionList.Count;
+			nvrtcResult result = API.nvrtcCompileProgram(program, numOptions, optionList.ToArray());
+			if (result != nvrtcResult.NVRTC_SUCCESS) {
+				log = GetLog(program);
+				return null;
 			}
+			log = GetLog(program);
+
+			string ptx = GetPTX(program);
 			CheckResult(API.nvrtcDestroyProgram(ref program));
-			program = IntPtr.Zero;
+
+			return ptx;
 		}
 
-		public void Compile(params string[] options) {
-			if (program == null || program == IntPtr.Zero) {
-				return;
+		public string Compile(string path) {
+			if (File.Exists(path) == false) {
+				log = string.Format("src file not found. ({0})", path);
+				return null;
 			}
-			int numOptions = 0;
-			if (options != null) {
-				numOptions = options.Length;
-			}
-			CheckResult(API.nvrtcCompileProgram(program, numOptions, options));
-		}
-
-		public string GetLog() {
-			if (program == null || program == IntPtr.Zero) {
-				return string.Empty;
-			}
-			long logSize = 0;
-			CheckResult(API.nvrtcGetProgramLogSize(program, ref logSize));
-
-			StringBuilder log = new StringBuilder((int)logSize);
-			CheckResult(API.nvrtcGetProgramLog(program, log));
-			return log.ToString();
-		}
-
-		public string GetPTX() {
-			if (program == null || program == IntPtr.Zero) {
-				return string.Empty;
-			}
-			long ptxSize = 0;
-			CheckResult(API.nvrtcGetPTXSize(program, ref ptxSize));
-
-			StringBuilder ptx = new StringBuilder((int)ptxSize);
-			CheckResult(API.nvrtcGetPTX(program, ptx));
-			return ptx.ToString();
+			string name = Path.GetFileName(path);
+			string src = File.ReadAllText(path);
+			return Compile(name, src);
 		}
 
 		/// <summary>
@@ -291,6 +295,45 @@ namespace CUDAnshita {
 		public static string GetErrorString(nvrtcResult result) {
 			IntPtr ptr = API.nvrtcGetErrorString(result);
 			return Marshal.PtrToStringAnsi(ptr);
+		}
+
+		IntPtr CreateProgram(string src, string name) {
+			IntPtr program = IntPtr.Zero;
+			int numHeaders = headerList.Count;
+			if (numHeaders == 0) {
+				CheckResult(API.nvrtcCreateProgram(ref program, src, name, numHeaders, null, null));
+				return program;
+			}
+			string[] headers = new string[numHeaders];
+			string[] includeNames = new string[numHeaders];
+			headerList.Values.CopyTo(headers, 0);
+			headerList.Keys.CopyTo(includeNames, 0);
+			CheckResult(API.nvrtcCreateProgram(ref program, src, name, numHeaders, headers, includeNames));
+			return program;
+		}
+
+		string GetLog(IntPtr program) {
+			if (program == null || program == IntPtr.Zero) {
+				return string.Empty;
+			}
+			long logSize = 0;
+			CheckResult(API.nvrtcGetProgramLogSize(program, ref logSize));
+
+			StringBuilder log = new StringBuilder((int)logSize);
+			CheckResult(API.nvrtcGetProgramLog(program, log));
+			return log.ToString();
+		}
+
+		string GetPTX(IntPtr program) {
+			if (program == null || program == IntPtr.Zero) {
+				return string.Empty;
+			}
+			long ptxSize = 0;
+			CheckResult(API.nvrtcGetPTXSize(program, ref ptxSize));
+
+			StringBuilder ptx = new StringBuilder((int)ptxSize);
+			CheckResult(API.nvrtcGetPTX(program, ptx));
+			return ptx.ToString();
 		}
 
 		static void CheckResult(nvrtcResult result) {

@@ -26,31 +26,35 @@ using CUDAnshita;
 ```
 
 ### cuのコンパイル
-```
+```cs
 // プログラムのコンパイル (cu から PTX へ)
 NVRTC compiler = new NVRTC();
-compiler.Create(addKernelString, "addKernel.cu", null, null);
-compiler.Compile(
-	NVRTC.OPTION_TARGET_20, 
+compiler.AddOptions(
+	NVRTC.OPTION_TARGET_20,
 	NVRTC.OPTION_FMAD_FALSE,
 	NVRTC.OPTION_LINE_INFO
 );
+string ptx = compiler.Compile(
+	"addKernel.cu",
+	addKernelString
+);
+
+if (ptx == null) {
+	Console.WriteLine("Compile Error:");
+	Console.WriteLine();
+	Console.WriteLine(compiler.Log);
+	return;
+}
 
 // コンパイル時のログを出力画面に表示
-Console.WriteLine(compiler.GetLog());
-
-// コンパイル済みプログラムを取得 (PTX 形式)
-string ptx = compiler.GetPTX();
+Console.WriteLine(compiler.Log);
 
 // コンパイル済みプログラムを出力画面に表示
 Console.WriteLine(ptx);
-
-// コンパイラの後処理
-compiler.Dispose();
 ```
 
 ### PTXの実行
-```
+```cs
 // プログラムの実行準備
 Device device = new Device(0);
 Context context = device.CreateContext();
