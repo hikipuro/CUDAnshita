@@ -1,0 +1,241 @@
+Microsoft (R) COFF/PE Dumper Version 14.00.24215.1
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+
+Dump of file C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\bin\nppitc64_80.dll
+
+File Type: DLL
+
+  Section contains the following exports for nppitc64_80.dll
+
+    00000000 characteristics
+    58750269 time date stamp Wed Jan 11 00:48:57 2017
+        0.00 version
+           1 ordinal base
+         209 number of functions
+         209 number of names
+
+    ordinal hint RVA      name
+
+          1    0 000A0048 NvOptimusEnablementCuda
+          2    1 0005DEE0 nppiCompareC_16s_AC4R
+          3    2 0005DC40 nppiCompareC_16s_C1R
+          4    3 0005DD70 nppiCompareC_16s_C3R
+          5    4 0005F440 nppiCompareC_16s_C4R
+          6    5 0005DA50 nppiCompareC_16u_AC4R
+          7    6 0005D7B0 nppiCompareC_16u_C1R
+          8    7 0005D8E0 nppiCompareC_16u_C3R
+          9    8 0005F1C0 nppiCompareC_16u_C4R
+         10    9 0005E5A0 nppiCompareC_32f_AC4R
+         11    A 0005E0D0 nppiCompareC_32f_C1R
+         12    B 0005E230 nppiCompareC_32f_C3R
+         13    C 0005E400 nppiCompareC_32f_C4R
+         14    D 0005D570 nppiCompareC_8u_AC4R
+         15    E 0005ED30 nppiCompareC_8u_C1R
+         16    F 0005D3D0 nppiCompareC_8u_C3R
+         17   10 0005EF50 nppiCompareC_8u_C4R
+         18   11 0005EB60 nppiCompareEqualEpsC_32f_AC4R
+         19   12 0005E9B0 nppiCompareEqualEpsC_32f_C1R
+         20   13 0005EA20 nppiCompareEqualEpsC_32f_C3R
+         21   14 0005EAC0 nppiCompareEqualEpsC_32f_C4R
+         22   15 0005E930 nppiCompareEqualEps_32f_AC4R
+         23   16 0005E7B0 nppiCompareEqualEps_32f_C1R
+         24   17 0005E830 nppiCompareEqualEps_32f_C3R
+         25   18 0005E8B0 nppiCompareEqualEps_32f_C4R
+         26   19 0005CC50 nppiCompare_16s_AC4R
+         27   1A 0005C7D0 nppiCompare_16s_C1R
+         28   1B 0005C950 nppiCompare_16s_C3R
+         29   1C 0005CAD0 nppiCompare_16s_C4R
+         30   1D 0005C650 nppiCompare_16u_AC4R
+         31   1E 0005C1D0 nppiCompare_16u_C1R
+         32   1F 0005C350 nppiCompare_16u_C3R
+         33   20 0005C4D0 nppiCompare_16u_C4R
+         34   21 0005D250 nppiCompare_32f_AC4R
+         35   22 0005CDD0 nppiCompare_32f_C1R
+         36   23 0005CF50 nppiCompare_32f_C3R
+         37   24 0005D0D0 nppiCompare_32f_C4R
+         38   25 0005C050 nppiCompare_8u_AC4R
+         39   26 0005EBF0 nppiCompare_8u_C1R
+         40   27 0005BD50 nppiCompare_8u_C3R
+         41   28 0005BED0 nppiCompare_8u_C4R
+         42   29 00018230 nppiThreshold_16s_AC4IR
+         43   2A 00018060 nppiThreshold_16s_AC4R
+         44   2B 00018030 nppiThreshold_16s_C1IR
+         45   2C 00017F20 nppiThreshold_16s_C1R
+         46   2D 0001CFD0 nppiThreshold_16s_C3IR
+         47   2E 0001CE80 nppiThreshold_16s_C3R
+         48   2F 00017EF0 nppiThreshold_16u_AC4IR
+         49   30 00017D20 nppiThreshold_16u_AC4R
+         50   31 00017CF0 nppiThreshold_16u_C1IR
+         51   32 00017BE0 nppiThreshold_16u_C1R
+         52   33 0001CE50 nppiThreshold_16u_C3IR
+         53   34 0001CD00 nppiThreshold_16u_C3R
+         54   35 00018580 nppiThreshold_32f_AC4IR
+         55   36 000183C0 nppiThreshold_32f_AC4R
+         56   37 00018390 nppiThreshold_32f_C1IR
+         57   38 00018260 nppiThreshold_32f_C1R
+         58   39 0001D1C0 nppiThreshold_32f_C3IR
+         59   3A 0001D000 nppiThreshold_32f_C3R
+         60   3B 00017BB0 nppiThreshold_8u_AC4IR
+         61   3C 00017A60 nppiThreshold_8u_AC4R
+         62   3D 000178B0 nppiThreshold_8u_C1IR
+         63   3E 000177A0 nppiThreshold_8u_C1R
+         64   3F 00017A30 nppiThreshold_8u_C3IR
+         65   40 000178E0 nppiThreshold_8u_C3R
+         66   41 0001AED0 nppiThreshold_GTVal_16s_AC4IR
+         67   42 0001AD90 nppiThreshold_GTVal_16s_AC4R
+         68   43 0001AD50 nppiThreshold_GTVal_16s_C1IR
+         69   44 0001ACB0 nppiThreshold_GTVal_16s_C1R
+         70   45 0001E020 nppiThreshold_GTVal_16s_C3IR
+         71   46 0001DF00 nppiThreshold_GTVal_16s_C3R
+         72   47 0001AC70 nppiThreshold_GTVal_16u_AC4IR
+         73   48 0001AB30 nppiThreshold_GTVal_16u_AC4R
+         74   49 0001AAF0 nppiThreshold_GTVal_16u_C1IR
+         75   4A 0001AA50 nppiThreshold_GTVal_16u_C1R
+         76   4B 0001DEC0 nppiThreshold_GTVal_16u_C3IR
+         77   4C 0001DDA0 nppiThreshold_GTVal_16u_C3R
+         78   4D 0001B140 nppiThreshold_GTVal_32f_AC4IR
+         79   4E 0001B010 nppiThreshold_GTVal_32f_AC4R
+         80   4F 0001AFD0 nppiThreshold_GTVal_32f_C1IR
+         81   50 0001AF10 nppiThreshold_GTVal_32f_C1R
+         82   51 0001E1C0 nppiThreshold_GTVal_32f_C3IR
+         83   52 0001E060 nppiThreshold_GTVal_32f_C3R
+         84   53 0001AA10 nppiThreshold_GTVal_8u_AC4IR
+         85   54 0001A920 nppiThreshold_GTVal_8u_AC4R
+         86   55 0001A7D0 nppiThreshold_GTVal_8u_C1IR
+         87   56 0001A730 nppiThreshold_GTVal_8u_C1R
+         88   57 0001A8E0 nppiThreshold_GTVal_8u_C3IR
+         89   58 0001A800 nppiThreshold_GTVal_8u_C3R
+         90   59 00018BF0 nppiThreshold_GT_16s_AC4IR
+         91   5A 00018AF0 nppiThreshold_GT_16s_AC4R
+         92   5B 00018AC0 nppiThreshold_GT_16s_C1IR
+         93   5C 00018A30 nppiThreshold_GT_16s_C1R
+         94   5D 0001D3A0 nppiThreshold_GT_16s_C3IR
+         95   5E 0001D2E0 nppiThreshold_GT_16s_C3R
+         96   5F 00018A00 nppiThreshold_GT_16u_AC4IR
+         97   60 00018900 nppiThreshold_GT_16u_AC4R
+         98   61 000188D0 nppiThreshold_GT_16u_C1IR
+         99   62 00018840 nppiThreshold_GT_16u_C1R
+        100   63 0001D2B0 nppiThreshold_GT_16u_C3IR
+        101   64 0001D1F0 nppiThreshold_GT_16u_C3R
+        102   65 00018DE0 nppiThreshold_GT_32f_AC4IR
+        103   66 00018CF0 nppiThreshold_GT_32f_AC4R
+        104   67 00018CC0 nppiThreshold_GT_32f_C1IR
+        105   68 00018C20 nppiThreshold_GT_32f_C1R
+        106   69 0001D4C0 nppiThreshold_GT_32f_C3IR
+        107   6A 0001D3D0 nppiThreshold_GT_32f_C3R
+        108   6B 00018810 nppiThreshold_GT_8u_AC4IR
+        109   6C 00018760 nppiThreshold_GT_8u_AC4R
+        110   6D 00018640 nppiThreshold_GT_8u_C1IR
+        111   6E 000185B0 nppiThreshold_GT_8u_C1R
+        112   6F 00018730 nppiThreshold_GT_8u_C3IR
+        113   70 00018670 nppiThreshold_GT_8u_C3R
+        114   71 0001C930 nppiThreshold_LTValGTVal_16s_AC4IR
+        115   72 0001C5F0 nppiThreshold_LTValGTVal_16s_AC4R
+        116   73 0001C5A0 nppiThreshold_LTValGTVal_16s_C1IR
+        117   74 0001C4E0 nppiThreshold_LTValGTVal_16s_C1R
+        118   75 0001EA10 nppiThreshold_LTValGTVal_16s_C3IR
+        119   76 0001E860 nppiThreshold_LTValGTVal_16s_C3R
+        120   77 0001C490 nppiThreshold_LTValGTVal_16u_AC4IR
+        121   78 0001C150 nppiThreshold_LTValGTVal_16u_AC4R
+        122   79 0001C100 nppiThreshold_LTValGTVal_16u_C1IR
+        123   7A 0001C040 nppiThreshold_LTValGTVal_16u_C1R
+        124   7B 0001E810 nppiThreshold_LTValGTVal_16u_C3IR
+        125   7C 0001E660 nppiThreshold_LTValGTVal_16u_C3R
+        126   7D 0001CCB0 nppiThreshold_LTValGTVal_32f_AC4IR
+        127   7E 0001CAD0 nppiThreshold_LTValGTVal_32f_AC4R
+        128   7F 0001CA70 nppiThreshold_LTValGTVal_32f_C1IR
+        129   80 0001C980 nppiThreshold_LTValGTVal_32f_C1R
+        130   81 0001EC70 nppiThreshold_LTValGTVal_32f_C3IR
+        131   82 0001EA60 nppiThreshold_LTValGTVal_32f_C3R
+        132   83 0001BFF0 nppiThreshold_LTValGTVal_8u_AC4IR
+        133   84 0001BE80 nppiThreshold_LTValGTVal_8u_AC4R
+        134   85 0001BC80 nppiThreshold_LTValGTVal_8u_C1IR
+        135   86 0001BBD0 nppiThreshold_LTValGTVal_8u_C1R
+        136   87 0001BE30 nppiThreshold_LTValGTVal_8u_C3IR
+        137   88 0001BCD0 nppiThreshold_LTValGTVal_8u_C3R
+        138   89 0001B920 nppiThreshold_LTVal_16s_AC4IR
+        139   8A 0001B7E0 nppiThreshold_LTVal_16s_AC4R
+        140   8B 0001B7A0 nppiThreshold_LTVal_16s_C1IR
+        141   8C 0001B700 nppiThreshold_LTVal_16s_C1R
+        142   8D 0001E480 nppiThreshold_LTVal_16s_C3IR
+        143   8E 0001E360 nppiThreshold_LTVal_16s_C3R
+        144   8F 0001B6C0 nppiThreshold_LTVal_16u_AC4IR
+        145   90 0001B580 nppiThreshold_LTVal_16u_AC4R
+        146   91 0001B540 nppiThreshold_LTVal_16u_C1IR
+        147   92 0001B4A0 nppiThreshold_LTVal_16u_C1R
+        148   93 0001E320 nppiThreshold_LTVal_16u_C3IR
+        149   94 0001E200 nppiThreshold_LTVal_16u_C3R
+        150   95 0001BB90 nppiThreshold_LTVal_32f_AC4IR
+        151   96 0001BA60 nppiThreshold_LTVal_32f_AC4R
+        152   97 0001BA20 nppiThreshold_LTVal_32f_C1IR
+        153   98 0001B960 nppiThreshold_LTVal_32f_C1R
+        154   99 0001E620 nppiThreshold_LTVal_32f_C3IR
+        155   9A 0001E4C0 nppiThreshold_LTVal_32f_C3R
+        156   9B 0001B460 nppiThreshold_LTVal_8u_AC4IR
+        157   9C 0001B370 nppiThreshold_LTVal_8u_AC4R
+        158   9D 0001B220 nppiThreshold_LTVal_8u_C1IR
+        159   9E 0001B180 nppiThreshold_LTVal_8u_C1R
+        160   9F 0001B330 nppiThreshold_LTVal_8u_C3IR
+        161   A0 0001B250 nppiThreshold_LTVal_8u_C3R
+        162   A1 00019450 nppiThreshold_LT_16s_AC4IR
+        163   A2 00019350 nppiThreshold_LT_16s_AC4R
+        164   A3 00019320 nppiThreshold_LT_16s_C1IR
+        165   A4 00019290 nppiThreshold_LT_16s_C1R
+        166   A5 0001D6A0 nppiThreshold_LT_16s_C3IR
+        167   A6 0001D5E0 nppiThreshold_LT_16s_C3R
+        168   A7 00019260 nppiThreshold_LT_16u_AC4IR
+        169   A8 00019160 nppiThreshold_LT_16u_AC4R
+        170   A9 00019130 nppiThreshold_LT_16u_C1IR
+        171   AA 000190A0 nppiThreshold_LT_16u_C1R
+        172   AB 0001D5B0 nppiThreshold_LT_16u_C3IR
+        173   AC 0001D4F0 nppiThreshold_LT_16u_C3R
+        174   AD 00019640 nppiThreshold_LT_32f_AC4IR
+        175   AE 00019550 nppiThreshold_LT_32f_AC4R
+        176   AF 00019520 nppiThreshold_LT_32f_C1IR
+        177   B0 00019480 nppiThreshold_LT_32f_C1R
+        178   B1 0001D7C0 nppiThreshold_LT_32f_C3IR
+        179   B2 0001D6D0 nppiThreshold_LT_32f_C3R
+        180   B3 00019070 nppiThreshold_LT_8u_AC4IR
+        181   B4 00018FC0 nppiThreshold_LT_8u_AC4R
+        182   B5 00018EA0 nppiThreshold_LT_8u_C1IR
+        183   B6 00018E10 nppiThreshold_LT_8u_C1R
+        184   B7 00018F90 nppiThreshold_LT_8u_C3IR
+        185   B8 00018ED0 nppiThreshold_LT_8u_C3R
+        186   B9 0001A2E0 nppiThreshold_Val_16s_AC4IR
+        187   BA 0001A0C0 nppiThreshold_Val_16s_AC4R
+        188   BB 0001A080 nppiThreshold_Val_16s_C1IR
+        189   BC 00019F50 nppiThreshold_Val_16s_C1R
+        190   BD 0001DBD0 nppiThreshold_Val_16s_C3IR
+        191   BE 0001DA00 nppiThreshold_Val_16s_C3R
+        192   BF 00019F10 nppiThreshold_Val_16u_AC4IR
+        193   C0 00019CF0 nppiThreshold_Val_16u_AC4R
+        194   C1 00019CB0 nppiThreshold_Val_16u_C1IR
+        195   C2 00019B80 nppiThreshold_Val_16u_C1R
+        196   C3 0001D9C0 nppiThreshold_Val_16u_C3IR
+        197   C4 0001D7F0 nppiThreshold_Val_16u_C3R
+        198   C5 0001A6F0 nppiThreshold_Val_32f_AC4IR
+        199   C6 0001A4D0 nppiThreshold_Val_32f_AC4R
+        200   C7 0001A490 nppiThreshold_Val_32f_C1IR
+        201   C8 0001A320 nppiThreshold_Val_32f_C1R
+        202   C9 0001DD60 nppiThreshold_Val_32f_C3IR
+        203   CA 0001DC10 nppiThreshold_Val_32f_C3R
+        204   CB 00019B40 nppiThreshold_Val_8u_AC4IR
+        205   CC 000199B0 nppiThreshold_Val_8u_AC4R
+        206   CD 000197A0 nppiThreshold_Val_8u_C1IR
+        207   CE 00019670 nppiThreshold_Val_8u_C1R
+        208   CF 00019970 nppiThreshold_Val_8u_C3IR
+        209   D0 000197E0 nppiThreshold_Val_8u_C3R
+
+  Summary
+
+        5000 .data
+        1000 .nvFatBi
+      1BB000 .nv_fatb
+        8000 .pdata
+       27000 .rdata
+        2000 .reloc
+        7000 .rsrc
+       78000 .text
+        2000 data
+        2000 text

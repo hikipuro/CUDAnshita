@@ -1,0 +1,58 @@
+Microsoft (R) COFF/PE Dumper Version 14.00.24215.1
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+
+Dump of file C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\bin\nppicom64_80.dll
+
+File Type: DLL
+
+  Section contains the following exports for nppicom64_80.dll
+
+    00000000 characteristics
+    5874EB93 time date stamp Tue Jan 10 23:11:31 2017
+        0.00 version
+           1 ordinal base
+          26 number of functions
+          26 number of names
+
+    ordinal hint RVA      name
+
+          1    0 00032020 NvOptimusEnablementCuda
+          2    1 00004450 nppiDCTFree
+          3    2 000044D0 nppiDCTInitAlloc
+          4    3 000040C0 nppiDCTQuantFwd8x8LS_JPEG_8u16s_C1R
+          5    4 00004E00 nppiDCTQuantFwd8x8LS_JPEG_8u16s_C1R_NEW
+          6    5 00004290 nppiDCTQuantInv8x8LS_JPEG_16s8u_C1R
+          7    6 00004DC0 nppiDCTQuantInv8x8LS_JPEG_16s8u_C1R_NEW
+          8    7 00001E10 nppiDecodeHuffmanScanHost_JPEG_8u16s_P1R
+          9    8 00002500 nppiDecodeHuffmanScanHost_JPEG_8u16s_P3R
+         10    9 00001270 nppiDecodeHuffmanSpecFreeHost_JPEG
+         11    A 00001160 nppiDecodeHuffmanSpecGetBufSize_JPEG
+         12    B 000011D0 nppiDecodeHuffmanSpecInitAllocHost_JPEG
+         13    C 00001180 nppiDecodeHuffmanSpecInitHost_JPEG
+         14    D 00005250 nppiEncodeHuffmanGetSize
+         15    E 0000A2C0 nppiEncodeHuffmanScan_JPEG_8u16s_P1R
+         16    F 0000A880 nppiEncodeHuffmanScan_JPEG_8u16s_P3R
+         17   10 00005230 nppiEncodeHuffmanSpecFree_JPEG
+         18   11 00005110 nppiEncodeHuffmanSpecGetBufSize_JPEG
+         19   12 000057D0 nppiEncodeHuffmanSpecInitAlloc_JPEG
+         20   13 00005130 nppiEncodeHuffmanSpecInit_JPEG
+         21   14 000053A0 nppiEncodeOptimizeHuffmanGetSize
+         22   15 0000BA00 nppiEncodeOptimizeHuffmanScan_JPEG_8u16s_P1R
+         23   16 0000C1A0 nppiEncodeOptimizeHuffmanScan_JPEG_8u16s_P3R
+         24   17 00003690 nppiQuantFwdRawTableInit_JPEG_8u
+         25   18 00003A00 nppiQuantFwdTableInit_JPEG_8u16u
+         26   19 00003730 nppiQuantInvTableInit_JPEG_8u16u
+
+  Summary
+
+        4000 .data
+        1000 .nvFatBi
+       75000 .nv_fatb
+        2000 .pdata
+        E000 .rdata
+        1000 .reloc
+        7000 .rsrc
+       23000 .text
+        2000 data
+        2000 text

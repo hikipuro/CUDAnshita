@@ -1,0 +1,45 @@
+Microsoft (R) COFF/PE Dumper Version 14.00.24215.1
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+
+Dump of file C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\bin\nppc64_80.dll
+
+File Type: DLL
+
+  Section contains the following exports for nppc64_80.dll
+
+    00000000 characteristics
+    5874E842 time date stamp Tue Jan 10 22:57:22 2017
+        0.00 version
+           1 ordinal base
+          15 number of functions
+          15 number of names
+
+    ordinal hint RVA      name
+
+          1    0 00002690 Event
+          2    1 000240A8 NvOptimusEnablementCuda
+          3    2 00002490 Stream
+          4    3 00001530 nppGetGpuComputeCapability
+          5    4 000013C0 nppGetGpuDeviceProperties
+          6    5 00001470 nppGetGpuName
+          7    6 000012B0 nppGetGpuNumSMs
+          8    7 00001750 nppGetLibVersion
+          9    8 000012F0 nppGetMaxThreadsPerBlock
+         10    9 00001380 nppGetMaxThreadsPerSM
+         11    A 000016F0 nppGetPointerMemoryType
+         12    B 00001030 nppGetStream
+         13    C 00001130 nppGetStreamMaxThreadsPerSM
+         14    D 00001060 nppGetStreamNumSMs
+         15    E 00001200 nppSetStream
+
+  Summary
+
+        4000 .data
+        1000 .nvFatBi
+        1000 .nv_fatb
+        2000 .pdata
+        C000 .rdata
+        1000 .reloc
+        7000 .rsrc
+       17000 .text

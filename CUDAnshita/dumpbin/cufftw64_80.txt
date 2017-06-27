@@ -1,0 +1,93 @@
+Microsoft (R) COFF/PE Dumper Version 14.00.24215.1
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+
+Dump of file C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\bin\cufftw64_80.dll
+
+File Type: DLL
+
+  Section contains the following exports for cufftw64_80.dll
+
+    00000000 characteristics
+    5874A4E3 time date stamp Tue Jan 10 18:09:55 2017
+        0.00 version
+           1 ordinal base
+          65 number of functions
+          65 number of names
+
+    ordinal hint RVA      name
+
+          1    0 0002B020 NvOptimusEnablementCuda
+          2    1 00003530 fftw_cleanup
+          3    2 00003540 fftw_cost
+          4    3 000030B0 fftw_destroy_plan
+          5    4 00003080 fftw_execute
+          6    5 00003020 fftw_execute_dft
+          7    6 00003060 fftw_execute_dft_c2r
+          8    7 00003040 fftw_execute_dft_r2c
+          9    8 00003180 fftw_export_wisdom_to_file
+         10    9 00003550 fftw_flops
+         11    A 00003510 fftw_free
+         12    B 00003250 fftw_import_wisdom_from_file
+         13    C 000034F0 fftw_malloc
+         14    D 00002200 fftw_plan_dft
+         15    E 000017B0 fftw_plan_dft_1d
+         16    F 00001A50 fftw_plan_dft_2d
+         17   10 00001E90 fftw_plan_dft_3d
+         18   11 00002280 fftw_plan_dft_c2r
+         19   12 00001890 fftw_plan_dft_c2r_1d
+         20   13 00001B50 fftw_plan_dft_c2r_2d
+         21   14 00001F10 fftw_plan_dft_c2r_3d
+         22   15 00002240 fftw_plan_dft_r2c
+         23   16 00001810 fftw_plan_dft_r2c_1d
+         24   17 00001AC0 fftw_plan_dft_r2c_2d
+         25   18 00001ED0 fftw_plan_dft_r2c_3d
+         26   19 00002890 fftw_plan_guru_dft
+         27   1A 00002A70 fftw_plan_guru_dft_c2r
+         28   1B 00002980 fftw_plan_guru_dft_r2c
+         29   1C 00003ED0 fftw_plan_many_dft
+         30   1D 00004010 fftw_plan_many_dft_c2r
+         31   1E 00003F70 fftw_plan_many_dft_r2c
+         32   1F 00003440 fftw_print_plan
+         33   20 00003530 fftw_set_timelimit
+         34   21 00003530 fftwf_cleanup
+         35   22 00003540 fftwf_cost
+         36   23 00003160 fftwf_destroy_plan
+         37   24 00003080 fftwf_execute
+         38   25 00003020 fftwf_execute_dft
+         39   26 00003060 fftwf_execute_dft_c2r
+         40   27 00003040 fftwf_execute_dft_r2c
+         41   28 00003230 fftwf_export_wisdom_to_file
+         42   29 00003550 fftwf_flops
+         43   2A 00003510 fftwf_free
+         44   2B 00003420 fftwf_import_wisdom_from_file
+         45   2C 000034F0 fftwf_malloc
+         46   2D 00002380 fftwf_plan_dft
+         47   2E 00001900 fftwf_plan_dft_1d
+         48   2F 00001BE0 fftwf_plan_dft_2d
+         49   30 00002070 fftwf_plan_dft_3d
+         50   31 00002400 fftwf_plan_dft_c2r
+         51   32 000019E0 fftwf_plan_dft_c2r_1d
+         52   33 00001CE0 fftwf_plan_dft_c2r_2d
+         53   34 000020F0 fftwf_plan_dft_c2r_3d
+         54   35 000023C0 fftwf_plan_dft_r2c
+         55   36 00001960 fftwf_plan_dft_r2c_1d
+         56   37 00001C50 fftwf_plan_dft_r2c_2d
+         57   38 000020B0 fftwf_plan_dft_r2c_3d
+         58   39 00002B60 fftwf_plan_guru_dft
+         59   3A 00002D30 fftwf_plan_guru_dft_c2r
+         60   3B 00002C50 fftwf_plan_guru_dft_r2c
+         61   3C 000040B0 fftwf_plan_many_dft
+         62   3D 000041F0 fftwf_plan_many_dft_c2r
+         63   3E 00004150 fftwf_plan_many_dft_r2c
+         64   3F 000034D0 fftwf_print_plan
+         65   40 00003530 fftwf_set_timelimit
+
+  Summary
+
+        5000 .data
+        2000 .pdata
+        C000 .rdata
+        1000 .reloc
+        1000 .rsrc
+       1E000 .text

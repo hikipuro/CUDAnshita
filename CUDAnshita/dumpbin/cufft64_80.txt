@@ -1,0 +1,108 @@
+Microsoft (R) COFF/PE Dumper Version 14.00.24215.1
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+
+Dump of file C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\bin\cufft64_80.dll
+
+File Type: DLL
+
+  Section contains the following exports for cufft64_80.dll
+
+    00000000 characteristics
+    5874A4DE time date stamp Tue Jan 10 18:09:50 2017
+        0.00 version
+           1 ordinal base
+          74 number of functions
+          74 number of names
+
+    ordinal hint RVA      name
+
+          1    0 004070F0 NvOptimusEnablementCuda
+          2    1 00006E40 cufftCreate
+          3    2 00002190 cufftCreateHandle
+          4    3 00089900 cufftDebug
+          5    4 00007BC0 cufftDestroy
+          6    5 00003810 cufftDestroyHandle
+          7    6 00006B50 cufftEnterCS
+          8    7 00008030 cufftEstimate1d
+          9    8 000080D0 cufftEstimate2d
+         10    9 00008170 cufftEstimate3d
+         11    A 00008220 cufftEstimateMany
+         12    B 00007780 cufftExecC2C
+         13    C 000078A0 cufftExecC2R
+         14    D 000079D0 cufftExecD2Z
+         15    E 00007820 cufftExecR2C
+         16    F 00007A50 cufftExecZ2D
+         17   10 00007930 cufftExecZ2Z
+         18   11 000034B0 cufftExecute
+         19   12 000030C0 cufftExecuteDescriptor
+         20   13 00007B90 cufftGetProperty
+         21   14 00007660 cufftGetSize
+         22   15 00008330 cufftGetSize1d
+         23   16 00008430 cufftGetSize2d
+         24   17 00008530 cufftGetSize3d
+         25   18 00008630 cufftGetSizeMany
+         26   19 00009E30 cufftGetSizeMany64
+         27   1A 00007B80 cufftGetVersion
+         28   1B 00006B80 cufftLeaveCS
+         29   1C 00003480 cufftLockPlan
+         30   1D 00006F40 cufftMakePlan1d
+         31   1E 000070B0 cufftMakePlan2d
+         32   1F 00007220 cufftMakePlan3d
+         33   20 000073A0 cufftMakePlanMany
+         34   21 00009B70 cufftMakePlanMany64
+         35   22 00007D00 cufftPlan1d
+         36   23 00007DB0 cufftPlan2d
+         37   24 00007E60 cufftPlan3d
+         38   25 00007F20 cufftPlanMany
+         39   26 00006EF0 cufftSetAutoAllocation
+         40   27 00002370 cufftSetBatch
+         41   28 00007B50 cufftSetCompatibilityMode
+         42   29 000022F0 cufftSetDefaultStrides
+         43   2A 000023F0 cufftSetDirection
+         44   2B 000021F0 cufftSetKind
+         45   2C 00002BE0 cufftSetMGPUs
+         46   2D 000022B0 cufftSetPlacement
+         47   2E 00002230 cufftSetPrecision
+         48   2F 00007AE0 cufftSetStream
+         49   30 00002430 cufftSetStream_collision
+         50   31 000023B0 cufftSetTransform
+         51   32 00007700 cufftSetWorkArea
+         52   33 00006E30 cufftXtClearCallback
+         53   34 00009670 cufftXtExec
+         54   35 000097A0 cufftXtExecDescriptor
+         55   36 00008AC0 cufftXtExecDescriptorC2C
+         56   37 00008C40 cufftXtExecDescriptorC2R
+         57   38 00008DB0 cufftXtExecDescriptorD2Z
+         58   39 00008B90 cufftXtExecDescriptorR2C
+         59   3A 00008E60 cufftXtExecDescriptorZ2D
+         60   3B 00008CF0 cufftXtExecDescriptorZ2Z
+         61   3C 00008F10 cufftXtFree
+         62   3D 000094F0 cufftXtGetSizeMany
+         63   3E 00009220 cufftXtMakePlanMany
+         64   3F 000099B0 cufftXtMalloc
+         65   40 00008FC0 cufftXtMemcpy
+         66   41 000090A0 cufftXtQueryPlan
+         67   42 00006E30 cufftXtSetCallback
+         68   43 00006E30 cufftXtSetCallbackSharedSize
+         69   44 000087A0 cufftXtSetGPUs
+         70   45 000089B0 cufftXtSetWorkArea
+         71   46 00002510 cufft_forget_wisdom
+         72   47 000024C0 cufft_load_wisdom
+         73   48 000031F0 cufft_print_plan
+         74   49 00002470 cufft_save_wisdom
+
+  Summary
+
+       5E000 .data
+        1000 .nvFatBi
+     4B56000 .nv_fatb
+       12000 .pdata
+      2DB000 .rdata
+        7000 .reloc
+        1000 .rsrc
+      12A000 .text
+        2000 __nv_mod
+     3B83000 __nv_rel
+        5000 data
+        3000 text

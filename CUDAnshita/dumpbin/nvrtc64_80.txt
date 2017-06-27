@@ -1,0 +1,38 @@
+Microsoft (R) COFF/PE Dumper Version 14.00.24215.1
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+
+Dump of file C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\bin\nvrtc64_80.dll
+
+File Type: DLL
+
+  Section contains the following exports for nvrtc64_80.dll
+
+    00000000 characteristics
+    582B9231 time date stamp Wed Nov 16 07:54:41 2016
+        0.00 version
+           1 ordinal base
+          11 number of functions
+          11 number of names
+
+    ordinal hint RVA      name
+
+          1    0 0001FA60 nvrtcAddNameExpression
+          2    1 0001FC80 nvrtcCompileProgram
+          3    2 00020E80 nvrtcCreateProgram
+          4    3 00021300 nvrtcDestroyProgram
+          5    4 00021430 nvrtcGetErrorString
+          6    5 000214E0 nvrtcGetLoweredName
+          7    6 00021660 nvrtcGetPTX
+          8    7 00021730 nvrtcGetPTXSize
+          9    8 000217D0 nvrtcGetProgramLog
+         10    9 000218A0 nvrtcGetProgramLogSize
+         11    A 00021940 nvrtcVersion
+
+  Summary
+
+       91000 .data
+       6A000 .pdata
+      2A2000 .rdata
+       12000 .reloc
+      AE5000 .text
