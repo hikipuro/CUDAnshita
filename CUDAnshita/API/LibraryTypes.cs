@@ -31,8 +31,11 @@
 	}
 
 	public enum libraryPropertyType {
+		///<summary>enumerant to query the major version</summary>
 		MAJOR_VERSION,
+		///<summary>enumerant to query the minor version</summary>
 		MINOR_VERSION,
+		///<summary>number to identify the patch level</summary>
 		PATCH_LEVEL
 	}
 }

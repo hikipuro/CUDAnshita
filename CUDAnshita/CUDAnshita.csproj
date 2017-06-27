@@ -36,6 +36,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\cuBLAS.cs" />
     <Compile Include="API\CudaRT.cs" />
     <Compile Include="API\CudaRT_Data.cs" />
     <Compile Include="API\cuRAND.cs" />

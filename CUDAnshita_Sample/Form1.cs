@@ -21,10 +21,11 @@ extern ""C"" __global__ void addKernel(int *c, const int *a, const int *b) {
 		}
 
 		private void buttonTest_Click(object sender, EventArgs e) {
-			//TestCompile();
+			TestCompile();
 			//TestCudaRT();
 			//TestCuRAND();
-			TestMatrix();
+			//TestCuBLAS();
+			//TestMatrix();
 		}
 
 		private void TestCompile() {
@@ -123,6 +124,10 @@ extern ""C"" __global__ void addKernel(int *c, const int *a, const int *b) {
 			foreach (int i in test) {
 				Console.WriteLine("cuRAND: {0}", i);
 			}
+		}
+
+		private void TestCuBLAS() {
+			Console.WriteLine("cuBLAS: {0}", cuBLAS.GetVersion());
 		}
 
 		MatrixTest matrixTest;
