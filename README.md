@@ -10,7 +10,7 @@ C#から簡単にCUDAを呼び出すためのライブラリ
 
 ## コードサンプル
 ### cu形式のプログラムの準備
-```
+```cs
 // C#の文字列
 string addKernelString = @"
 extern ""C"" __global__ void addKernel(int *c, const int *a, const int *b) {
@@ -21,7 +21,7 @@ extern ""C"" __global__ void addKernel(int *c, const int *a, const int *b) {
 ```
 
 ### usingの設定
-```
+```cs
 using CUDAnshita;
 ```
 

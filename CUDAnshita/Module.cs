@@ -19,6 +19,7 @@ namespace CUDAnshita {
 		public void Dispose() {
 			if (module != IntPtr.Zero) {
 				NvCuda.cuModuleUnload(module);
+				module = IntPtr.Zero;
 			}
 		}
 
@@ -35,7 +36,7 @@ namespace CUDAnshita {
 		}
 
 		public void LoadData(string image) {
-			Dispose();
+			//Dispose();
 			cudaError result;
 			IntPtr ptxImage = Marshal.StringToHGlobalAnsi(image);
 			result = NvCuda.cuModuleLoadData(ref module, ptxImage);
@@ -71,13 +72,14 @@ namespace CUDAnshita {
 
 			result = NvCuda.cuLaunchKernel(
 				kernel,
-				gridX, gridY, gridZ,			// grid dim
-				blockX, blockY, blockZ,	// block dim
+				gridX, gridY, gridZ,		// grid dim
+				blockX, blockY, blockZ,		// block dim
 				0, IntPtr.Zero,				// shared mem and stream
 				ptrArgs, IntPtr.Zero		// arguments
 			);
 
-			CudaException.Check(result, "関数の実行が失敗しました。");
+			Marshal.FreeHGlobal(ptrArgs);
+			CudaException.Check(result, "関数の実行に失敗しました。");
 
 			foreach (GCHandle handle in handles) {
 				handle.Free();

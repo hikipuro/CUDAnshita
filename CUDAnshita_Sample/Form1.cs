@@ -21,9 +21,10 @@ extern ""C"" __global__ void addKernel(int *c, const int *a, const int *b) {
 		}
 
 		private void buttonTest_Click(object sender, EventArgs e) {
-			TestCompile();
+			//TestCompile();
 			//TestCudaRT();
 			//TestCuRAND();
+			TestMatrix();
 		}
 
 		private void TestCompile() {
@@ -70,7 +71,7 @@ extern ""C"" __global__ void addKernel(int *c, const int *a, const int *b) {
 			List<int> a = new List<int>();
 			List<int> b = new List<int>();
 
-			for (var i = 0; i < arraySize; i++) {
+			for (int i = 0; i < arraySize; i++) {
 				a.Add(i + 1);
 				b.Add((i + 1) * 10);
 			}
@@ -122,6 +123,14 @@ extern ""C"" __global__ void addKernel(int *c, const int *a, const int *b) {
 			foreach (int i in test) {
 				Console.WriteLine("cuRAND: {0}", i);
 			}
+		}
+
+		MatrixTest matrixTest;
+		private void TestMatrix() {
+			if (matrixTest == null) {
+				matrixTest = new MatrixTest();
+			}
+			matrixTest.Test();
 		}
 	}
 }
