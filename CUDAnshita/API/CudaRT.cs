@@ -1,6 +1,9 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 
 namespace CUDAnshita {
+	using size_t = Int64;
+
 	/// <summary>
 	/// NVIDIA CUDA Runtime API
 	/// </summary>
@@ -128,6 +131,13 @@ namespace CUDAnshita {
 		*/
 
 		// ----- Memory Management
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError cudaMalloc(ref IntPtr devPtr, size_t size);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError cudaFree(IntPtr devPtr);
+
 		// ----- Unified Addressing
 		// ----- Peer Device Memory Access
 		// ----- OpenGL Interoperability

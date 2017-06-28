@@ -2,10 +2,13 @@
 using System.Runtime.InteropServices;
 
 namespace CUDAnshita {
+	using curandGenerator_t = IntPtr;
+	using curandRngType_t = curandRngType;
 	using size_t = Int64;
 
 	/// <summary>
-	/// The cuRAND library provides facilities that focus on the simple and efficient generation of high-quality pseudorandom and quasirandom numbers.
+	/// The cuRAND library provides facilities that focus on the simple and
+	/// efficient generation of high-quality pseudorandom and quasirandom numbers.
 	/// </summary>
 	/// <remarks>
 	/// <a href="http://docs.nvidia.com/cuda/curand/">http://docs.nvidia.com/cuda/curand/</a>
@@ -28,14 +31,19 @@ namespace CUDAnshita {
 			/// <param name="generator">Pointer to generator</param>
 			/// <param name="rng_type">Type of generator to create</param>
 			/// <returns>
-			/// CURAND_STATUS_ALLOCATION_FAILED, if memory could not be allocated
-			/// CURAND_STATUS_INITIALIZATION_FAILED if there was a problem setting up the GPU
-			/// CURAND_STATUS_VERSION_MISMATCH if the header file version does not match the dynamically linked library version
-			/// CURAND_STATUS_TYPE_ERROR if the value for rng_type is invalid
-			/// CURAND_STATUS_SUCCESS if generator was created successfully
+			/// <ul>
+			/// <li>CURAND_STATUS_ALLOCATION_FAILED, if memory could not be allocated</li>
+			/// <li>CURAND_STATUS_INITIALIZATION_FAILED if there was a problem setting up the GPU</li>
+			/// <li>CURAND_STATUS_VERSION_MISMATCH if the header file version does not match the dynamically linked library version</li>
+			/// <li>CURAND_STATUS_TYPE_ERROR if the value for rng_type is invalid</li>
+			/// <li>CURAND_STATUS_SUCCESS if generator was created successfully</li>
+			/// </ul>
 			/// </returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern curandStatus curandCreateGenerator(ref IntPtr generator, curandRngType rng_type);
+			public static extern curandStatus curandCreateGenerator(
+				ref curandGenerator_t generator,
+				curandRngType_t rng_type
+			);
 
 			/// <summary>
 			/// Create new host CPU random number generator.
@@ -46,21 +54,31 @@ namespace CUDAnshita {
 			/// <param name="generator">Pointer to generator</param>
 			/// <param name="rng_type">Type of generator to create</param>
 			/// <returns>
-			/// CURAND_STATUS_ALLOCATION_FAILED if memory could not be allocated
-			/// CURAND_STATUS_INITIALIZATION_FAILED if there was a problem setting up the GPU
-			/// CURAND_STATUS_VERSION_MISMATCH if the header file version does not match the dynamically linked library version
-			/// CURAND_STATUS_TYPE_ERROR if the value for rng_type is invalid
-			/// CURAND_STATUS_SUCCESS if generator was created successfully
+			/// <ul>
+			/// <li>CURAND_STATUS_ALLOCATION_FAILED if memory could not be allocated</li>
+			/// <li>CURAND_STATUS_INITIALIZATION_FAILED if there was a problem setting up the GPU</li>
+			/// <li>CURAND_STATUS_VERSION_MISMATCH if the header file version does not match the dynamically linked library version</li>
+			/// <li>CURAND_STATUS_TYPE_ERROR if the value for rng_type is invalid</li>
+			/// <li>CURAND_STATUS_SUCCESS if generator was created successfully</li>
+			/// </ul>
 			/// </returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern curandStatus curandCreateGeneratorHost(ref IntPtr generator, curandRngType rng_type);
+			public static extern curandStatus curandCreateGeneratorHost(
+				ref curandGenerator_t generator,
+				curandRngType_t rng_type
+			);
 
 			/*
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern curandStatus curandCreatePoissonDistribution(double lambda, curandDiscreteDistribution_t* discrete_distribution);
+			public static extern curandStatus curandCreatePoissonDistribution(
+				double lambda,
+				curandDiscreteDistribution_t* discrete_distribution
+			);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern curandStatus curandDestroyDistribution(curandDiscreteDistribution_t discrete_distribution);
+			public static extern curandStatus curandDestroyDistribution(
+				curandDiscreteDistribution_t discrete_distribution
+			);
 			*/
 
 			/// <summary>
@@ -71,11 +89,15 @@ namespace CUDAnshita {
 			/// </remarks>
 			/// <param name="generator">Generator to destroy</param>
 			/// <returns>
-			/// CURAND_STATUS_NOT_INITIALIZED if the generator was never created
-			/// CURAND_STATUS_SUCCESS if generator was destroyed successfully
+			/// <ul>
+			/// <li>CURAND_STATUS_NOT_INITIALIZED if the generator was never created</li>
+			/// <li>CURAND_STATUS_SUCCESS if generator was destroyed successfully</li>
+			/// </ul>
 			/// </returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern curandStatus curandDestroyGenerator(IntPtr generator);
+			public static extern curandStatus curandDestroyGenerator(
+				curandGenerator_t generator
+			);
 
 			/// <summary>
 			/// Generate 32-bit pseudo or quasirandom numbers.
@@ -90,15 +112,21 @@ namespace CUDAnshita {
 			/// <param name="outputPtr">Pointer to device memory to store CUDA-generated results, or Pointer to host memory to store CPU-generated results</param>
 			/// <param name="num">Number of random 32-bit values to generate</param>
 			/// <returns>
-			/// CURAND_STATUS_NOT_INITIALIZED if the generator was never created
-			/// CURAND_STATUS_PREEXISTING_FAILURE if there was an existing error from a previous kernel launch
-			/// CURAND_STATUS_LENGTH_NOT_MULTIPLE if the number of output samples is not a multiple of the quasirandom dimension
-			/// CURAND_STATUS_LAUNCH_FAILURE if the kernel launch failed for any reason
-			/// CURAND_STATUS_TYPE_ERROR if the generator is a 64 bit quasirandom generator. (use curandGenerateLongLong() with 64 bit quasirandom generators)
-			/// CURAND_STATUS_SUCCESS if the results were generated successfully
+			/// <ul>
+			/// <li>CURAND_STATUS_NOT_INITIALIZED if the generator was never created</li>
+			/// <li>CURAND_STATUS_PREEXISTING_FAILURE if there was an existing error from a previous kernel launch</li>
+			/// <li>CURAND_STATUS_LENGTH_NOT_MULTIPLE if the number of output samples is not a multiple of the quasirandom dimension</li>
+			/// <li>CURAND_STATUS_LAUNCH_FAILURE if the kernel launch failed for any reason</li>
+			/// <li>CURAND_STATUS_TYPE_ERROR if the generator is a 64 bit quasirandom generator. (use curandGenerateLongLong() with 64 bit quasirandom generators)</li>
+			/// <li>CURAND_STATUS_SUCCESS if the results were generated successfully</li>
+			/// </ul>
 			/// </returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern curandStatus curandGenerate(IntPtr generator, IntPtr outputPtr, size_t num);
+			public static extern curandStatus curandGenerate(
+				curandGenerator_t generator,
+				uint[] outputPtr,
+				size_t num
+			);
 
 			/// <summary>
 			/// Generate log-normally distributed floats.
@@ -124,29 +152,191 @@ namespace CUDAnshita {
 			/// <param name="mean">Mean of associated normal distribution</param>
 			/// <param name="stddev">Standard deviation of associated normal distribution</param>
 			/// <returns>
-			/// CURAND_STATUS_NOT_INITIALIZED if the generator was never created
-			/// CURAND_STATUS_PREEXISTING_FAILURE if there was an existing error from a previous kernel launch
-			/// CURAND_STATUS_LAUNCH_FAILURE if the kernel launch failed for any reason
-			/// CURAND_STATUS_LENGTH_NOT_MULTIPLE if the number of output samples is not a multiple of the quasirandom dimension, or is not a multiple of two for pseudorandom generators
-			/// CURAND_STATUS_SUCCESS if the results were generated successfully
+			/// <ul>
+			/// <li>CURAND_STATUS_NOT_INITIALIZED if the generator was never created</li>
+			/// <li>CURAND_STATUS_PREEXISTING_FAILURE if there was an existing error from a previous kernel launch</li>
+			/// <li>CURAND_STATUS_LAUNCH_FAILURE if the kernel launch failed for any reason</li>
+			/// <li>CURAND_STATUS_LENGTH_NOT_MULTIPLE if the number of output samples is not a multiple of the quasirandom dimension, or is not a multiple of two for pseudorandom generators</li>
+			/// <li>CURAND_STATUS_SUCCESS if the results were generated successfully</li>
+			/// </ul>
 			/// </returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern curandStatus curandGenerateLogNormal(IntPtr generator, IntPtr outputPtr, size_t n, float mean, float stddev);
+			public static extern curandStatus curandGenerateLogNormal(
+				curandGenerator_t generator,
+				float[] outputPtr,
+				size_t n,
+				float mean,
+				float stddev
+			);
 
+			/// <summary>
+			/// Generate log-normally distributed doubles.
+			/// </summary>
+			/// <remarks>
+			/// Use generator to generate n double results into the device memory at outputPtr.
+			/// The device memory must have been previously allocated and be large enough to hold all the results.
+			/// Launches are done with the stream set using curandSetStream(), or the null stream if no stream has been set.
+			/// Results are 64-bit floating point values with log-normal distribution
+			/// based on an associated normal distribution with mean mean and standard deviation stddev.
+			/// Normally distributed results are generated from pseudorandom generators with a Box-Muller transform,
+			/// and so require n to be even.Quasirandom generators use an inverse cumulative distribution function
+			/// to preserve dimensionality. The normally distributed results are transformed into log-normal distribution.
+			/// There may be slight numerical differences between results generated on the GPU with generators
+			/// created with curandCreateGenerator() and results calculated on the CPU with generators
+			/// created with curandCreateGeneratorHost().
+			/// These differences arise because of differences in results for transcendental functions.
+			/// In addition, future versions of CURAND may use newer versions of the CUDA math library,
+			/// so different versions of CURAND may give slightly different numerical values.
+			/// </remarks>
+			/// <param name="generator">Generator to use</param>
+			/// <param name="outputPtr">Pointer to device memory to store CUDA-generated results, or Pointer to host memory to store CPU-generated results</param>
+			/// <param name="n">Number of doubles to generate</param>
+			/// <param name="mean">Mean of normal distribution</param>
+			/// <param name="stddev">Standard deviation of normal distribution</param>
+			/// <returns>
+			/// <ul>
+			/// <li>CURAND_STATUS_NOT_INITIALIZED if the generator was never created</li>
+			/// <li>CURAND_STATUS_PREEXISTING_FAILURE if there was an existing error from a previous kernel launch</li>
+			/// <li>CURAND_STATUS_LAUNCH_FAILURE if the kernel launch failed for any reason</li>
+			/// <li>CURAND_STATUS_LENGTH_NOT_MULTIPLE if the number of output samples is not a multiple of the quasirandom dimension, or is not a multiple of two for pseudorandom generators</li>
+			/// <li>CURAND_STATUS_DOUBLE_PRECISION_REQUIRED if the GPU does not support double precision</li>
+			/// <li>CURAND_STATUS_SUCCESS if the results were generated successfully</li>
+			/// </ul>
+			/// </returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern curandStatus curandGenerateLogNormalDouble(IntPtr generator, IntPtr outputPtr, size_t n, double mean, double stddev);
+			public static extern curandStatus curandGenerateLogNormalDouble(
+				curandGenerator_t generator,
+				double[] outputPtr,
+				size_t n,
+				double mean,
+				double stddev
+			);
 
+			/// <summary>
+			/// Generate 64-bit quasirandom numbers.
+			/// </summary>
+			/// <remarks>
+			/// Use generator to generate num 64-bit results into the device memory at outputPtr.
+			/// The device memory must have been previously allocated and be large enough to hold all the results.
+			/// Launches are done with the stream set using curandSetStream(), or the null stream if no stream has been set.
+			/// Results are 64-bit values with every bit random.
+			/// </remarks>
+			/// <param name="generator">Generator to use</param>
+			/// <param name="outputPtr">Pointer to device memory to store CUDA-generated results, or Pointer to host memory to store CPU-generated results</param>
+			/// <param name="num">Number of random 64-bit values to generate</param>
+			/// <returns>
+			/// <ul>
+			/// <li>CURAND_STATUS_NOT_INITIALIZED if the generator was never created</li>
+			/// <li>CURAND_STATUS_PREEXISTING_FAILURE if there was an existing error from a previous kernel launch</li>
+			/// <li>CURAND_STATUS_LENGTH_NOT_MULTIPLE if the number of output samples is not a multiple of the quasirandom dimension</li>
+			/// <li>CURAND_STATUS_LAUNCH_FAILURE if the kernel launch failed for any reason</li>
+			/// <li>CURAND_STATUS_TYPE_ERROR if the generator is not a 64 bit quasirandom generator</li>
+			/// <li>CURAND_STATUS_SUCCESS if the results were generated successfully</li>
+			/// </ul>
+			/// </returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern curandStatus curandGenerateLongLong(IntPtr generator, IntPtr outputPtr, size_t num);
+			public static extern curandStatus curandGenerateLongLong(
+				curandGenerator_t generator,
+				ulong[] outputPtr,
+				size_t num
+			);
 
+			/// <summary>
+			/// Generate normally distributed floats.
+			/// </summary>
+			/// <remarks>
+			/// Use generator to generate n float results into the device memory at outputPtr.
+			/// The device memory must have been previously allocated and be large enough to hold all the results.
+			/// Launches are done with the stream set using curandSetStream(), or the null stream if no stream has been set.
+			/// Results are 32-bit floating point values with mean mean and standard deviation stddev.
+			/// Normally distributed results are generated from pseudorandom generators with a Box-Muller transform,
+			/// and so require n to be even.Quasirandom generators use an inverse cumulative distribution function to preserve dimensionality.
+			/// There may be slight numerical differences between results generated on the GPU with generators
+			/// created with curandCreateGenerator() and results calculated on the CPU with generators
+			/// created with curandCreateGeneratorHost().
+			/// These differences arise because of differences in results for transcendental functions.In addition,
+			/// future versions of CURAND may use newer versions of the CUDA math library,
+			/// so different versions of CURAND may give slightly different numerical values.
+			/// </remarks>
+			/// <param name="generator">Generator to use</param>
+			/// <param name="outputPtr">Pointer to device memory to store CUDA-generated results, or Pointer to host memory to store CPU-generated results</param>
+			/// <param name="n">Number of floats to generate</param>
+			/// <param name="mean">Mean of normal distribution</param>
+			/// <param name="stddev">Standard deviation of normal distribution</param>
+			/// <returns>
+			/// <ul>
+			/// <li>CURAND_STATUS_NOT_INITIALIZED if the generator was never created</li>
+			/// <li>CURAND_STATUS_PREEXISTING_FAILURE if there was an existing error from a previous kernel launch</li>
+			/// <li>CURAND_STATUS_LAUNCH_FAILURE if the kernel launch failed for any reason</li>
+			/// <li>CURAND_STATUS_LENGTH_NOT_MULTIPLE if the number of output samples is not a multiple of the quasirandom dimension, or is not a multiple of two for pseudorandom generators</li>
+			/// <li>CURAND_STATUS_SUCCESS if the results were generated successfully</li>
+			/// </ul>
+			/// </returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern curandStatus curandGenerateNormal(IntPtr generator, IntPtr outputPtr, size_t n, float mean, float stddev);
+			public static extern curandStatus curandGenerateNormal(
+				curandGenerator_t generator,
+				float[] outputPtr,
+				size_t n,
+				float mean,
+				float stddev
+			);
 
+			/// <summary>
+			/// Generate normally distributed doubles.
+			/// </summary>
+			/// <remarks>
+			/// </remarks>
+			/// <param name="generator">Generator to use</param>
+			/// <param name="outputPtr">Pointer to device memory to store CUDA-generated results, or Pointer to host memory to store CPU-generated results</param>
+			/// <param name="n">Number of doubles to generate</param>
+			/// <param name="mean">Mean of normal distribution</param>
+			/// <param name="stddev">Standard deviation of normal distribution</param>
+			/// <returns>
+			/// <ul>
+			/// <li>CURAND_STATUS_NOT_INITIALIZED if the generator was never created</li>
+			/// <li>CURAND_STATUS_PREEXISTING_FAILURE if there was an existing error from a previous kernel launch</li>
+			/// <li>CURAND_STATUS_LAUNCH_FAILURE if the kernel launch failed for any reason</li>
+			/// <li>CURAND_STATUS_LENGTH_NOT_MULTIPLE if the number of output samples is not a multiple of the quasirandom dimension, or is not a multiple of two for pseudorandom generators</li>
+			/// <li>CURAND_STATUS_DOUBLE_PRECISION_REQUIRED if the GPU does not support double precision</li>
+			/// <li>CURAND_STATUS_SUCCESS if the results were generated successfully</li>
+			/// </ul>
+			/// </returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern curandStatus curandGenerateNormalDouble(IntPtr generator, IntPtr outputPtr, size_t n, double mean, double stddev);
+			public static extern curandStatus curandGenerateNormalDouble(
+				curandGenerator_t generator,
+				double[] outputPtr,
+				size_t n,
+				double mean,
+				double stddev
+			);
 
+			/// <summary>
+			/// Generate Poisson-distributed unsigned ints.
+			/// </summary>
+			/// <remarks>
+			/// </remarks>
+			/// <param name="generator">Generator to use</param>
+			/// <param name="outputPtr">Pointer to device memory to store CUDA-generated results, or Pointer to host memory to store CPU-generated results</param>
+			/// <param name="n">Number of unsigned ints to generate</param>
+			/// <param name="lambda">lambda for the Poisson distribution</param>
+			/// <returns>
+			/// <ul>
+			/// <li>CURAND_STATUS_NOT_INITIALIZED if the generator was never created</li>
+			/// <li>CURAND_STATUS_PREEXISTING_FAILURE if there was an existing error from a previous kernel launch</li>
+			/// <li>CURAND_STATUS_LAUNCH_FAILURE if the kernel launch failed for any reason</li>
+			/// <li>CURAND_STATUS_LENGTH_NOT_MULTIPLE if the number of output samples is not a multiple of the quasirandom dimension</li>
+			/// <li>CURAND_STATUS_DOUBLE_PRECISION_REQUIRED if the GPU or sm does not support double precision</li>
+			/// <li>CURAND_STATUS_OUT_OF_RANGE if lambda is non-positive or greater than 400,000</li>
+			/// <li>CURAND_STATUS_SUCCESS if the results were generated successfully</li>
+			/// </ul>
+			/// </returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern curandStatus curandGeneratePoisson(IntPtr generator, IntPtr outputPtr, size_t n, double lambda);
+			public static extern curandStatus curandGeneratePoisson(
+				curandGenerator_t generator,
+				uint[] outputPtr,
+				size_t n,
+				double lambda
+			);
 
 			/// <summary>
 			/// Setup starting states.
@@ -159,57 +349,223 @@ namespace CUDAnshita {
 			/// </remarks>
 			/// <param name="generator">Generator to update</param>
 			/// <returns>
-			/// CURAND_STATUS_NOT_INITIALIZED if the generator was never created
-			/// CURAND_STATUS_PREEXISTING_FAILURE if there was an existing error from a previous kernel launch
-			/// CURAND_STATUS_LAUNCH_FAILURE if the kernel launch failed for any reason
-			/// CURAND_STATUS_SUCCESS if the seeds were generated successfully
+			/// <ul>
+			/// <li>CURAND_STATUS_NOT_INITIALIZED if the generator was never created</li>
+			/// <li>CURAND_STATUS_PREEXISTING_FAILURE if there was an existing error from a previous kernel launch</li>
+			/// <li>CURAND_STATUS_LAUNCH_FAILURE if the kernel launch failed for any reason</li>
+			/// <li>CURAND_STATUS_SUCCESS if the seeds were generated successfully</li>
+			/// </ul>
 			/// </returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern curandStatus curandGenerateSeeds(IntPtr generator);
+			public static extern curandStatus curandGenerateSeeds(
+				curandGenerator_t generator
+			);
 
+			/// <summary>
+			/// Generate uniformly distributed floats.
+			/// </summary>
+			/// <remarks>
+			/// </remarks>
+			/// <param name="generator">Generator to use</param>
+			/// <param name="outputPtr">Pointer to device memory to store CUDA-generated results, or Pointer to host memory to store CPU-generated results</param>
+			/// <param name="num">Number of floats to generate</param>
+			/// <returns>
+			/// <ul>
+			/// <li>CURAND_STATUS_NOT_INITIALIZED if the generator was never created</li>
+			/// <li>CURAND_STATUS_PREEXISTING_FAILURE if there was an existing error from a previous kernel launch</li>
+			/// <li>CURAND_STATUS_LAUNCH_FAILURE if the kernel launch failed for any reason</li>
+			/// <li>CURAND_STATUS_LENGTH_NOT_MULTIPLE if the number of output samples is not a multiple of the quasirandom dimension</li>
+			/// <li>CURAND_STATUS_SUCCESS if the results were generated successfully</li>
+			/// </ul>
+			/// </returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern curandStatus curandGenerateUniform(IntPtr generator, IntPtr outputPtr, size_t num);
+			public static extern curandStatus curandGenerateUniform(
+				curandGenerator_t generator,
+				float[] outputPtr,
+				size_t num
+			);
 
+			/// <summary>
+			/// Generate uniformly distributed doubles.
+			/// </summary>
+			/// <remarks>
+			/// </remarks>
+			/// <param name="generator">Generator to use</param>
+			/// <param name="outputPtr">Pointer to device memory to store CUDA-generated results, or Pointer to host memory to store CPU-generated results</param>
+			/// <param name="num">Number of doubles to generate</param>
+			/// <returns>
+			/// <ul>
+			/// <li>CURAND_STATUS_NOT_INITIALIZED if the generator was never created</li>
+			/// <li>CURAND_STATUS_PREEXISTING_FAILURE if there was an existing error from a previous kernel launch</li>
+			/// <li>CURAND_STATUS_LAUNCH_FAILURE if the kernel launch failed for any reason</li>
+			/// <li>CURAND_STATUS_LENGTH_NOT_MULTIPLE if the number of output samples is not a multiple of the quasirandom dimension</li>
+			/// <li>CURAND_STATUS_DOUBLE_PRECISION_REQUIRED if the GPU does not support double precision</li>
+			/// <li>CURAND_STATUS_SUCCESS if the results were generated successfully</li>
+			/// </ul>
+			/// </returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern curandStatus curandGenerateUniformDouble(IntPtr generator, IntPtr outputPtr, size_t num);
+			public static extern curandStatus curandGenerateUniformDouble(
+				curandGenerator_t generator,
+				double[] outputPtr,
+				size_t num
+			);
 
 			/*
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			static extern curandStatus curandGetDirectionVectors32(curandDirectionVectors32_t* vectors, curandDirectionVectorSet_t set);
+			static extern curandStatus curandGetDirectionVectors32(
+				curandDirectionVectors32_t* vectors,
+				curandDirectionVectorSet_t set
+			);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			static extern curandStatus curandGetDirectionVectors64(curandDirectionVectors64_t* vectors, curandDirectionVectorSet_t set);
+			static extern curandStatus curandGetDirectionVectors64(
+				curandDirectionVectors64_t* vectors,
+				curandDirectionVectorSet_t set
+			);
 			*/
 
+			/// <summary>
+			/// Return the value of the curand property.
+			/// </summary>
+			/// <remarks>
+			/// Return in *value the number for the property described by type of the dynamically linked CURAND library.
+			/// </remarks>
+			/// <param name="type">CUDA library property</param>
+			/// <param name="value">integer value for the requested property</param>
+			/// <returns>
+			/// <ul>
+			/// <li>CURAND_STATUS_SUCCESS if the property value was successfully returned</li>
+			/// <li>CURAND_STATUS_OUT_OF_RANGE if the property type is not recognized</li>
+			/// </ul>
+			/// </returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern curandStatus curandGetProperty(libraryPropertyType type, ref int value);
+			public static extern curandStatus curandGetProperty(
+				libraryPropertyType type,
+				ref int value
+			);
 
 			/*
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern curandStatus curandGetScrambleConstants32(unsigned int** constants);
+			public static extern curandStatus curandGetScrambleConstants32(
+				unsigned int** constants
+			);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern curandStatus curandGetScrambleConstants64(unsigned long long** constants);
+			public static extern curandStatus curandGetScrambleConstants64(
+				unsigned long long** constants
+			);
 			*/
 
+			/// <summary>
+			/// Return the version number of the library.
+			/// </summary>
+			/// <remarks>
+			/// Return in *version the version number of the dynamically linked CURAND library.
+			/// The format is the same as CUDART_VERSION from the CUDA Runtime.
+			/// The only supported configuration is CURAND version equal to CUDA Runtime version.
+			/// </remarks>
+			/// <param name="version">CURAND library version</param>
+			/// <returns>
+			/// <ul>
+			/// <li>CURAND_STATUS_SUCCESS if the version number was successfully returned</li>
+			/// </ul>
+			/// </returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern curandStatus curandGetVersion(ref int version);
+			public static extern curandStatus curandGetVersion(
+				ref int version
+			);
 
+			/// <summary>
+			/// Set the absolute offset of the pseudo or quasirandom number generator.
+			/// </summary>
+			/// <remarks>
+			/// Set the absolute offset of the pseudo or quasirandom number generator.
+			/// All values of offset are valid. The offset position is absolute,
+			/// not relative to the current position in the sequence.
+			/// </remarks>
+			/// <param name="generator">Generator to modify</param>
+			/// <param name="offset">Absolute offset position</param>
+			/// <returns>
+			/// <ul>
+			/// <li>CURAND_STATUS_NOT_INITIALIZED if the generator was never created</li>
+			/// <li>CURAND_STATUS_SUCCESS if generator offset was set successfully</li>
+			/// </ul>
+			/// </returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern curandStatus curandSetGeneratorOffset(IntPtr generator, ulong offset);
+			public static extern curandStatus curandSetGeneratorOffset(
+				curandGenerator_t generator,
+				ulong offset
+			);
 
+			/// <summary>
+			/// Set the ordering of results of the pseudo or quasirandom number generator.
+			/// </summary>
+			/// <remarks>
+			/// </remarks>
+			/// <param name="generator">Generator to modify</param>
+			/// <param name="order">Ordering of results</param>
+			/// <returns>
+			/// <ul>
+			/// <li>CURAND_STATUS_NOT_INITIALIZED if the generator was never created</li>
+			/// <li>CURAND_STATUS_OUT_OF_RANGE if the ordering is not valid</li>
+			/// <li>CURAND_STATUS_SUCCESS if generator ordering was set successfully</li>
+			/// </ul>
+			/// </returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern curandStatus curandSetGeneratorOrdering(IntPtr generator, curandOrdering order);
+			public static extern curandStatus curandSetGeneratorOrdering(
+				curandGenerator_t generator,
+				curandOrdering order
+			);
 
+			/// <summary>
+			/// Set the seed value of the pseudo-random number generator.
+			/// </summary>
+			/// <remarks>
+			/// </remarks>
+			/// <param name="generator">Generator to modify</param>
+			/// <param name="seed">Seed value</param>
+			/// <returns>
+			/// <ul>
+			/// <li>CURAND_STATUS_NOT_INITIALIZED if the generator was never created</li>
+			/// <li>CURAND_STATUS_TYPE_ERROR if the generator is not a pseudorandom number generator</li>
+			/// <li>CURAND_STATUS_SUCCESS if generator seed was set successfully</li>
+			/// </ul>
+			/// </returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern curandStatus curandSetPseudoRandomGeneratorSeed(IntPtr generator, ulong seed);
+			public static extern curandStatus curandSetPseudoRandomGeneratorSeed(
+				curandGenerator_t generator,
+				ulong seed
+			);
 
+			/// <summary>
+			/// Set the number of dimensions.
+			/// </summary>
+			/// <remarks>
+			/// Set the number of dimensions to be generated by the quasirandom number generator.
+			/// Legal values for num_dimensions are 1 to 20000.
+			/// </remarks>
+			/// <param name="generator">Generator to modify</param>
+			/// <param name="num_dimensions">Number of dimensions</param>
+			/// <returns>
+			/// <ul>
+			/// <li>CURAND_STATUS_NOT_INITIALIZED if the generator was never created</li>
+			/// <li>CURAND_STATUS_OUT_OF_RANGE if num_dimensions is not valid</li>
+			/// <li>CURAND_STATUS_TYPE_ERROR if the generator is not a quasirandom number generator</li>
+			/// <li>CURAND_STATUS_SUCCESS if generator ordering was set successfully</li>
+			/// </ul>
+			/// </returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern curandStatus curandSetQuasiRandomGeneratorDimensions(IntPtr generator, uint num_dimensions);
+			public static extern curandStatus curandSetQuasiRandomGeneratorDimensions(
+				curandGenerator_t generator,
+				uint num_dimensions
+			);
 
 			/*
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern curandStatus curandSetStream(IntPtr generator, cudaStream_t stream);
+			public static extern curandStatus curandSetStream(
+				curandGenerator_t generator,
+				cudaStream_t stream
+			);
 			*/
 
 		}
@@ -245,111 +601,57 @@ namespace CUDAnshita {
 			}
 		}
 
-		public int[] Generate(int num) {
-			int[] result = new int[num];
-			int size = sizeof(int) * num;
-			IntPtr memory = Marshal.AllocHGlobal(size);
-
-			CheckStatus(API.curandGenerate(generator, memory, num));
-
-			Marshal.Copy(memory, result, 0, num);
-			Marshal.FreeHGlobal(memory);
+		public uint[] Generate(int num) {
+			uint[] result = new uint[num];
+			CheckStatus(API.curandGenerate(generator, result, num));
 			return result;
 		}
 
 		public float[] GenerateLogNormal(int num, float mean, float stddev) {
 			float[] result = new float[num];
-			int size = sizeof(float) * num;
-			IntPtr memory = Marshal.AllocHGlobal(size);
-
-			CheckStatus(API.curandGenerateLogNormal(generator, memory, num, mean, stddev));
-
-			Marshal.Copy(memory, result, 0, num);
-			Marshal.FreeHGlobal(memory);
+			CheckStatus(API.curandGenerateLogNormal(generator, result, num, mean, stddev));
 			return result;
 		}
 
 		public double[] GenerateLogNormalDouble(int num, double mean, double stddev) {
 			double[] result = new double[num];
-			int size = sizeof(double) * num;
-			IntPtr memory = Marshal.AllocHGlobal(size);
-
-			CheckStatus(API.curandGenerateLogNormalDouble(generator, memory, num, mean, stddev));
-
-			Marshal.Copy(memory, result, 0, num);
-			Marshal.FreeHGlobal(memory);
+			CheckStatus(API.curandGenerateLogNormalDouble(generator, result, num, mean, stddev));
 			return result;
 		}
 
-		public long[] GenerateLong(int num) {
-			long[] result = new long[num];
-			int size = sizeof(long) * num;
-			IntPtr memory = Marshal.AllocHGlobal(size);
-
-			CheckStatus(API.curandGenerateLongLong(generator, memory, num));
-
-			Marshal.Copy(memory, result, 0, num);
-			Marshal.FreeHGlobal(memory);
+		public ulong[] GenerateLong(int num) {
+			ulong[] result = new ulong[num];
+			CheckStatus(API.curandGenerateLongLong(generator, result, num));
 			return result;
 		}
 
 		public float[] GenerateNormal(int num, float mean, float stddev) {
 			float[] result = new float[num];
-			int size = sizeof(float) * num;
-			IntPtr memory = Marshal.AllocHGlobal(size);
-
-			CheckStatus(API.curandGenerateNormal(generator, memory, num, mean, stddev));
-
-			Marshal.Copy(memory, result, 0, num);
-			Marshal.FreeHGlobal(memory);
+			CheckStatus(API.curandGenerateNormal(generator, result, num, mean, stddev));
 			return result;
 		}
 
 		public double[] GenerateNormalDouble(int num, double mean, double stddev) {
 			double[] result = new double[num];
-			int size = sizeof(double) * num;
-			IntPtr memory = Marshal.AllocHGlobal(size);
-
-			CheckStatus(API.curandGenerateNormalDouble(generator, memory, num, mean, stddev));
-
-			Marshal.Copy(memory, result, 0, num);
-			Marshal.FreeHGlobal(memory);
+			CheckStatus(API.curandGenerateNormalDouble(generator, result, num, mean, stddev));
 			return result;
 		}
 
-		public int[] GeneratePoisson(int num, double lambda) {
-			int[] result = new int[num];
-			int size = sizeof(int) * num;
-			IntPtr memory = Marshal.AllocHGlobal(size);
-
-			CheckStatus(API.curandGeneratePoisson(generator, memory, num, lambda));
-
-			Marshal.Copy(memory, result, 0, num);
-			Marshal.FreeHGlobal(memory);
+		public uint[] GeneratePoisson(int num, double lambda) {
+			uint[] result = new uint[num];
+			CheckStatus(API.curandGeneratePoisson(generator, result, num, lambda));
 			return result;
 		}
 
 		public float[] GenerateUniform(int num) {
 			float[] result = new float[num];
-			int size = sizeof(float) * num;
-			IntPtr memory = Marshal.AllocHGlobal(size);
-
-			CheckStatus(API.curandGenerateUniform(generator, memory, num));
-
-			Marshal.Copy(memory, result, 0, num);
-			Marshal.FreeHGlobal(memory);
+			CheckStatus(API.curandGenerateUniform(generator, result, num));
 			return result;
 		}
 
 		public double[] GenerateUniformDouble(int num) {
 			double[] result = new double[num];
-			int size = sizeof(double) * num;
-			IntPtr memory = Marshal.AllocHGlobal(size);
-
-			CheckStatus(API.curandGenerateUniformDouble(generator, memory, num));
-
-			Marshal.Copy(memory, result, 0, num);
-			Marshal.FreeHGlobal(memory);
+			CheckStatus(API.curandGenerateUniformDouble(generator, result, num));
 			return result;
 		}
 

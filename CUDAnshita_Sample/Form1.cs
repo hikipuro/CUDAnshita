@@ -119,15 +119,22 @@ extern ""C"" __global__ void addKernel(int *c, const int *a, const int *b) {
 
 		private void TestCuRAND() {
 			cuRAND rand = new cuRAND();
-			rand.Seed = 1234;
-			int[] test = rand.Generate(10);
-			foreach (int i in test) {
+			rand.Seed = (ulong)DateTime.Now.Ticks;
+			//uint[] test = rand.Generate(10);
+			//float[] test = rand.GenerateUniform(10);
+			double[] test = rand.GenerateUniformDouble(10);
+			foreach (var i in test) {
 				Console.WriteLine("cuRAND: {0}", i);
 			}
 		}
 
+		cuBLASTest cuBLASTest;
 		private void TestCuBLAS() {
 			Console.WriteLine("cuBLAS: {0}", cuBLAS.GetVersion());
+			if (cuBLASTest == null) {
+				cuBLASTest = new cuBLASTest();
+			}
+			cuBLASTest.Test();
 		}
 
 		MatrixTest matrixTest;
