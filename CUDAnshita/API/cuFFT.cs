@@ -11,7 +11,7 @@ namespace CUDAnshita {
 	using size_t = Int64;
 
 	/// <summary>
-	/// Fast Fourier Transform (FFT) library.
+	/// NVIDIA CUDA FFT library (CUFFT)
 	/// </summary>
 	/// <remarks>
 	/// <a href="http://docs.nvidia.com/cuda/cufft/">http://docs.nvidia.com/cuda/cufft/</a>

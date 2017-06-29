@@ -109,6 +109,8 @@ device.Dispose();
 * サンプルの実行時にエラーが発生する場合は、64bitビルドで実行してみてください (使用する DLL が 64bit 環境用のものなので、 32bit exe から呼び出すとエラーが発生します)。
 * DLLが見つからないエラーが発生する場合は、 "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\bin" から、 Visual Studio が exe を出力する bin フォルダにコピーすると解決するかもしれません。
 
+### 注意事項
+
 ## 開発環境
 * Visual Studio 2015
 * CUDA Toolkit 8.0
