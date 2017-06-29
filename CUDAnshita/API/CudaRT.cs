@@ -2,6 +2,18 @@
 using System.Runtime.InteropServices;
 
 namespace CUDAnshita {
+	using cudaError_t = cudaError;
+	using cudaEvent_t = IntPtr;
+	using cudaIpcEventHandle_t = cudaIpcEventHandle;
+	using cudaIpcMemHandle_t = cudaIpcMemHandle;
+	using cudaStream_t = IntPtr;
+	using cudaStreamCallback_t = IntPtr;
+	using cudaArray_t = IntPtr;
+	using cudaArray_const_t = IntPtr;
+	using cudaMipmappedArray_t = IntPtr;
+	using cudaMipmappedArray_const_t = IntPtr;
+	using cudaTextureObject_t = IntPtr;
+	using cudaSurfaceObject_t = IntPtr;
 	using size_t = Int64;
 
 	/// <summary>
@@ -17,162 +29,718 @@ namespace CUDAnshita {
 
 		// ----- Device Management
 
-		/*
-		static extern cudaError cudaChooseDevice(ref int device, const cudaDeviceProp* prop );
-		static extern cudaError cudaDeviceGetAttribute(int* value, cudaDeviceAttr attr, int device);
-		cudaError_t cudaDeviceGetByPCIBusId(int* device, const char* pciBusId );
-		cudaError_t cudaDeviceGetCacheConfig(cudaFuncCache** pCacheConfig);
-		cudaError_t cudaDeviceGetLimit(size_t* pValue, cudaLimit limit);
-		cudaError_t cudaDeviceGetP2PAttribute(int* value, cudaDeviceP2PAttr attr, int srcDevice, int dstDevice);
-		cudaError_t cudaDeviceGetPCIBusId(char* pciBusId, int len, int device);
-		​cudaError_t cudaDeviceGetSharedMemConfig(cudaSharedMemConfig** pConfig);
-		cudaError_t cudaDeviceGetStreamPriorityRange(int* leastPriority, int* greatestPriority);
-		cudaError_t cudaDeviceReset(void );
-		​cudaError_t cudaDeviceSetCacheConfig(cudaFuncCache cacheConfig);
-		cudaError_t cudaDeviceSetLimit(cudaLimit limit, size_t value);
-		​cudaError_t cudaDeviceSetSharedMemConfig(cudaSharedMemConfig config);
-		cudaError_t cudaDeviceSynchronize(void );
-		cudaError_t cudaGetDevice(int* device);
-		*/
-
-		/// <summary>
-		/// Returns the number of compute-capable devices.
-		/// </summary>
-		/// <param name="count">Returns the number of devices with compute capability greater or equal to 2.0</param>
-		/// <returns></returns>
 		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-		public static extern cudaError cudaGetDeviceCount(ref int count);
+		public static extern cudaError_t cudaChooseDevice(ref int device, ref cudaDeviceProp prop);
 
-		/*
-		cudaError_t cudaGetDeviceFlags(unsigned int* flags);
-		cudaError_t cudaGetDeviceProperties(cudaDeviceProp* prop, int device);
-		cudaError_t cudaIpcCloseMemHandle(void* devPtr);
-		cudaError_t cudaIpcGetEventHandle(cudaIpcEventHandle_t* handle, cudaEvent_t event );
-		cudaError_t cudaIpcGetMemHandle ( cudaIpcMemHandle_t* handle, void* devPtr );
-		​cudaError_t cudaIpcOpenEventHandle(cudaEvent_t* event, cudaIpcEventHandle_t handle );
-		cudaError_t cudaIpcOpenMemHandle ( void** devPtr, cudaIpcMemHandle_t handle, unsigned int flags );
-		​cudaError_t cudaSetDevice(int device);
-		cudaError_t cudaSetDeviceFlags(unsigned int flags);
-		cudaError_t cudaSetValidDevices(int* device_arr, int len);
-		*/
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaDeviceGetAttribute(ref int value, cudaDeviceAttr attr, int device);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaDeviceGetByPCIBusId(ref int device, string pciBusId);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaDeviceGetCacheConfig(ref cudaFuncCache pCacheConfig);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaDeviceGetLimit(ref size_t pValue, cudaLimit limit);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaDeviceGetP2PAttribute(ref int value, cudaDeviceP2PAttr attr, int srcDevice, int dstDevice);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaDeviceGetPCIBusId(string pciBusId, int len, int device);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaDeviceGetSharedMemConfig(ref cudaSharedMemConfig pConfig);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaDeviceGetStreamPriorityRange(ref int leastPriority, ref int greatestPriority);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaDeviceReset();
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaDeviceSetCacheConfig(cudaFuncCache cacheConfig);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaDeviceSetLimit(cudaLimit limit, size_t value);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaDeviceSetSharedMemConfig(cudaSharedMemConfig config);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaDeviceSynchronize();
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaGetDevice(ref int device);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaGetDeviceCount(ref int count);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaGetDeviceFlags(ref uint flags);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaGetDeviceProperties(ref cudaDeviceProp prop, int device);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaIpcCloseMemHandle(IntPtr devPtr);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaIpcGetEventHandle(ref cudaIpcEventHandle_t handle, cudaEvent_t cudaEvent);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaIpcGetMemHandle(ref cudaIpcMemHandle_t handle, IntPtr devPtr);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaIpcOpenEventHandle(ref cudaEvent_t cudaEvent, cudaIpcEventHandle_t handle);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaIpcOpenMemHandle(IntPtr devPtr, cudaIpcMemHandle_t handle, uint flags);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaSetDevice(int device);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaSetDeviceFlags(uint flags);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaSetValidDevices(ref int device_arr, int len);
 
 		// ----- Thread Management [DEPRECATED]
 
-		/*
-		cudaError_t cudaThreadExit(void );
-		cudaError_t cudaThreadGetCacheConfig(cudaFuncCache** pCacheConfig);
-		cudaError_t cudaThreadGetLimit(size_t* pValue, cudaLimit limit);
-		cudaError_t cudaThreadSetCacheConfig(cudaFuncCache cacheConfig);
-		cudaError_t cudaThreadSetLimit(cudaLimit limit, size_t value);
-		cudaError_t cudaThreadSynchronize(void );
-		*/
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaThreadExit();
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaThreadGetCacheConfig(ref cudaFuncCache pCacheConfig);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaThreadGetLimit(ref size_t pValue, cudaLimit limit);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaThreadSetCacheConfig(cudaFuncCache cacheConfig);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaThreadSetLimit(cudaLimit limit, size_t value);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaThreadSynchronize();
 
 		// ----- Error Handling
 
-		/*
-		const char* cudaGetErrorName (cudaError_t error );
-		const char* cudaGetErrorString (cudaError_t error );
-		​cudaError_t cudaGetLastError(void );
-		cudaError_t cudaPeekAtLastError(void );
-		*/
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern string cudaGetErrorName(cudaError_t error);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern string cudaGetErrorString(cudaError_t error);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaGetLastError();
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaPeekAtLastError();
 
 		// ----- Stream Management
 
-		/*
-		cudaError_t cudaStreamAddCallback(cudaStream_t stream, cudaStreamCallback_t callback, void* userData, unsigned int flags);
-		cudaError_t cudaStreamAttachMemAsync(cudaStream_t stream, void* devPtr, size_t length = 0, unsigned int flags = cudaMemAttachSingle);
-		cudaError_t cudaStreamCreate(cudaStream_t* pStream);
-		cudaError_t cudaStreamCreateWithFlags(cudaStream_t* pStream, unsigned int flags);
-		cudaError_t cudaStreamCreateWithPriority(cudaStream_t* pStream, unsigned int flags, int priority);
-		cudaError_t cudaStreamDestroy(cudaStream_t stream);
-		cudaError_t cudaStreamGetFlags(cudaStream_t hStream, unsigned int* flags);
-		cudaError_t cudaStreamGetPriority(cudaStream_t hStream, int* priority);
-		cudaError_t cudaStreamQuery(cudaStream_t stream);
-		cudaError_t cudaStreamSynchronize(cudaStream_t stream);
-		cudaError_t cudaStreamWaitEvent(cudaStream_t stream, cudaEvent_t event, unsigned int flags );
-		*/
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaStreamAddCallback(cudaStream_t stream, cudaStreamCallback_t callback, IntPtr userData, uint flags);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaStreamAttachMemAsync(cudaStream_t stream, IntPtr devPtr, size_t length = 0, uint flags = Defines.cudaMemAttachSingle);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaStreamCreate(ref cudaStream_t pStream);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaStreamCreateWithFlags(ref cudaStream_t pStream, uint flags);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaStreamCreateWithPriority(ref cudaStream_t pStream, uint flags, int priority);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaStreamDestroy(cudaStream_t stream);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaStreamGetFlags(cudaStream_t hStream, ref uint flags);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaStreamGetPriority(cudaStream_t hStream, ref int priority);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaStreamQuery(cudaStream_t stream);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaStreamSynchronize(cudaStream_t stream);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaStreamWaitEvent(cudaStream_t stream, cudaEvent_t cudaEvent, uint flags);
 
 		// ----- Event Management
 
-		/*
-		​cudaError_t cudaEventCreate(cudaEvent_t* event );
-		​cudaError_t cudaEventCreateWithFlags ( cudaEvent_t* event, unsigned int flags );
-		cudaError_t cudaEventDestroy(cudaEvent_t event );
-		cudaError_t cudaEventElapsedTime ( float* ms, cudaEvent_t start, cudaEvent_t end );
-		cudaError_t cudaEventQuery(cudaEvent_t event );
-		cudaError_t cudaEventRecord ( cudaEvent_t event, cudaStream_t stream = 0 );
-		cudaError_t cudaEventSynchronize ( cudaEvent_t event );
-		*/
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaEventCreate(ref cudaEvent_t cudaEvent);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaEventCreateWithFlags(ref cudaEvent_t cudaEvent, uint flags);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaEventDestroy(cudaEvent_t cudaEvent);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaEventElapsedTime(ref float ms, cudaEvent_t start, cudaEvent_t end);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaEventQuery(cudaEvent_t cudaEvent);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaEventRecord(cudaEvent_t cudaEvent, cudaStream_t stream);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaEventSynchronize(cudaEvent_t cudaEvent);
 
 		// ----- Execution Control
 
-		/*
-		cudaError_t cudaFuncGetAttributes(cudaFuncAttributes* attr, const void* func );
-		cudaError_t cudaFuncSetCacheConfig( const void* func, cudaFuncCache cacheConfig );
-		cudaError_t cudaFuncSetSharedMemConfig( const void* func, cudaSharedMemConfig config );
-		​cudaError_t cudaLaunchKernel( const void* func, dim3 gridDim, dim3 blockDim, void** args, size_t sharedMem, cudaStream_t stream );
-		cudaError_t cudaSetDoubleForDevice(double* d);
-		cudaError_t cudaSetDoubleForHost(double* d);
-		*/
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaFuncGetAttributes(ref cudaFuncAttributes attr, IntPtr func);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaFuncSetCacheConfig(IntPtr func, cudaFuncCache cacheConfig);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaFuncSetSharedMemConfig(IntPtr func, cudaSharedMemConfig config);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaLaunchKernel(IntPtr func, dim3 gridDim, dim3 blockDim, ref IntPtr args, size_t sharedMem, cudaStream_t stream);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaSetDoubleForDevice(ref double d);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaSetDoubleForHost(ref double d);
 
 		// ----- Occupancy
 
-		/*
-		cudaError_t cudaOccupancyMaxActiveBlocksPerMultiprocessor(int* numBlocks, const void* func, int blockSize, size_t dynamicSMemSize );
-		cudaError_t cudaOccupancyMaxActiveBlocksPerMultiprocessorWithFlags(int* numBlocks, const void* func, int blockSize, size_t dynamicSMemSize, unsigned int flags );
-		*/
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaOccupancyMaxActiveBlocksPerMultiprocessor(ref int numBlocks, IntPtr func, int blockSize, size_t dynamicSMemSize);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaOccupancyMaxActiveBlocksPerMultiprocessorWithFlags(ref int numBlocks, IntPtr func, int blockSize, size_t dynamicSMemSize, uint flags);
 
 		// ----- Execution Control [DEPRECATED]
 
-		/*
-		cudaError_t cudaConfigureCall(dim3 gridDim, dim3 blockDim, size_t sharedMem = 0, cudaStream_t stream = 0);
-		cudaError_t cudaLaunch( const void* func );
-		cudaError_t cudaSetupArgument( const void* arg, size_t size, size_t offset );
-		*/
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaConfigureCall(dim3 gridDim, dim3 blockDim, size_t sharedMem, cudaStream_t stream);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaLaunch(IntPtr func);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaSetupArgument(IntPtr arg, size_t size, size_t offset);
 
 		// ----- Memory Management
 
 		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-		public static extern cudaError cudaMalloc(ref IntPtr devPtr, size_t size);
+		public static extern cudaError_t cudaArrayGetInfo(ref cudaChannelFormatDesc desc, ref cudaExtent extent, ref uint flags, cudaArray_t array);
 
 		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-		public static extern cudaError cudaFree(IntPtr devPtr);
+		public static extern cudaError_t cudaFree(IntPtr devPtr);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaFreeArray(cudaArray_t array);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaFreeHost(IntPtr ptr);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaFreeMipmappedArray(cudaMipmappedArray_t mipmappedArray);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaGetMipmappedArrayLevel(ref cudaArray_t levelArray, cudaMipmappedArray_const_t mipmappedArray, uint level);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaGetSymbolAddress(ref IntPtr devPtr, IntPtr symbol);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaGetSymbolSize(ref size_t size, IntPtr symbol);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaHostAlloc(ref IntPtr pHost, size_t size, uint flags);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaHostGetDevicePointer(ref IntPtr pDevice, IntPtr pHost, uint flags);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaHostGetFlags(ref uint pFlags, IntPtr pHost);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaHostRegister(IntPtr ptr, size_t size, uint flags);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaHostUnregister(IntPtr ptr);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMalloc(ref IntPtr devPtr, size_t size);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMalloc3D(ref cudaPitchedPtr pitchedDevPtr, cudaExtent extent);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMalloc3DArray(ref cudaArray_t array, ref cudaChannelFormatDesc desc, cudaExtent extent, uint flags = 0);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMallocArray(ref cudaArray_t array, ref cudaChannelFormatDesc desc, size_t width, size_t height = 0, uint flags = 0);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMallocHost(ref IntPtr ptr, size_t size);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMallocManaged(ref IntPtr devPtr, size_t size, uint flags = Defines.cudaMemAttachGlobal);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMallocMipmappedArray(ref cudaMipmappedArray_t mipmappedArray, ref cudaChannelFormatDesc desc, cudaExtent extent, uint numLevels, uint flags = 0);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMallocPitch(ref IntPtr devPtr, ref size_t pitch, size_t width, size_t height);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMemAdvise(IntPtr devPtr, size_t count, cudaMemoryAdvise advice, int device);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMemGetInfo(ref size_t free, ref size_t total);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMemPrefetchAsync(IntPtr devPtr, size_t count, int dstDevice, cudaStream_t stream);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMemRangeGetAttribute(IntPtr data, size_t dataSize, cudaMemRangeAttribute attribute, IntPtr devPtr, size_t count);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMemRangeGetAttributes(ref IntPtr data, ref size_t dataSizes, ref cudaMemRangeAttribute[] attributes, size_t numAttributes, IntPtr devPtr, size_t count);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMemcpy(IntPtr dst, IntPtr src, size_t count, cudaMemcpyKind kind);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMemcpy2D(IntPtr dst, size_t dpitch, IntPtr src, size_t spitch, size_t width, size_t height, cudaMemcpyKind kind);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMemcpy2DArrayToArray(cudaArray_t dst, size_t wOffsetDst, size_t hOffsetDst, cudaArray_const_t src, size_t wOffsetSrc, size_t hOffsetSrc, size_t width, size_t height, cudaMemcpyKind kind = cudaMemcpyKind.cudaMemcpyDeviceToDevice);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMemcpy2DAsync(IntPtr dst, size_t dpitch, IntPtr src, size_t spitch, size_t width, size_t height, cudaMemcpyKind kind, cudaStream_t stream);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMemcpy2DFromArray(IntPtr dst, size_t dpitch, cudaArray_const_t src, size_t wOffset, size_t hOffset, size_t width, size_t height, cudaMemcpyKind kind);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMemcpy2DFromArrayAsync(IntPtr dst, size_t dpitch, cudaArray_const_t src, size_t wOffset, size_t hOffset, size_t width, size_t height, cudaMemcpyKind kind, cudaStream_t stream);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMemcpy2DToArray(cudaArray_t dst, size_t wOffset, size_t hOffset, IntPtr src, size_t spitch, size_t width, size_t height, cudaMemcpyKind kind);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMemcpy2DToArrayAsync(cudaArray_t dst, size_t wOffset, size_t hOffset, IntPtr src, size_t spitch, size_t width, size_t height, cudaMemcpyKind kind, cudaStream_t stream);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMemcpy3D(ref cudaMemcpy3DParms p);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMemcpy3DAsync(ref cudaMemcpy3DParms p, cudaStream_t stream);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMemcpy3DPeer(ref cudaMemcpy3DPeerParms p);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMemcpy3DPeerAsync(ref cudaMemcpy3DPeerParms p, cudaStream_t stream);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMemcpyArrayToArray(cudaArray_t dst, size_t wOffsetDst, size_t hOffsetDst, cudaArray_const_t src, size_t wOffsetSrc, size_t hOffsetSrc, size_t count, cudaMemcpyKind kind = cudaMemcpyKind.cudaMemcpyDeviceToDevice);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMemcpyAsync(IntPtr dst, IntPtr src, size_t count, cudaMemcpyKind kind, cudaStream_t stream);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMemcpyFromArray(IntPtr dst, cudaArray_const_t src, size_t wOffset, size_t hOffset, size_t count, cudaMemcpyKind kind);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMemcpyFromArrayAsync(IntPtr dst, cudaArray_const_t src, size_t wOffset, size_t hOffset, size_t count, cudaMemcpyKind kind, cudaStream_t stream);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMemcpyFromSymbol(IntPtr dst, IntPtr symbol, size_t count, size_t offset = 0, cudaMemcpyKind kind = cudaMemcpyKind.cudaMemcpyDeviceToHost);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMemcpyFromSymbolAsync(IntPtr dst, IntPtr symbol, size_t count, size_t offset, cudaMemcpyKind kind, cudaStream_t stream);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMemcpyPeer(IntPtr dst, int dstDevice, IntPtr src, int srcDevice, size_t count);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMemcpyPeerAsync(IntPtr dst, int dstDevice, IntPtr src, int srcDevice, size_t count, cudaStream_t stream);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMemcpyToArray(cudaArray_t dst, size_t wOffset, size_t hOffset, IntPtr src, size_t count, cudaMemcpyKind kind);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMemcpyToArrayAsync(cudaArray_t dst, size_t wOffset, size_t hOffset, IntPtr src, size_t count, cudaMemcpyKind kind, cudaStream_t stream);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMemcpyToSymbol(IntPtr symbol, IntPtr src, size_t count, size_t offset = 0, cudaMemcpyKind kind = cudaMemcpyKind.cudaMemcpyHostToDevice);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMemcpyToSymbolAsync(IntPtr symbol, IntPtr src, size_t count, size_t offset, cudaMemcpyKind kind, cudaStream_t stream);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMemset(IntPtr devPtr, int value, size_t count);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMemset2D(IntPtr devPtr, size_t pitch, int value, size_t width, size_t height);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMemset2DAsync(IntPtr devPtr, size_t pitch, int value, size_t width, size_t height, cudaStream_t stream);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMemset3D(cudaPitchedPtr pitchedDevPtr, int value, cudaExtent extent);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMemset3DAsync(cudaPitchedPtr pitchedDevPtr, int value, cudaExtent extent, cudaStream_t stream);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaMemsetAsync(IntPtr devPtr, int value, size_t count, cudaStream_t stream);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaExtent make_cudaExtent(size_t w, size_t h, size_t d);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaPitchedPtr make_cudaPitchedPtr(IntPtr d, size_t p, size_t xsz, size_t ysz);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaPos make_cudaPos(size_t x, size_t y, size_t z);
 
 		// ----- Unified Addressing
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaPointerGetAttributes(ref cudaPointerAttributes attributes, IntPtr ptr);
+
 		// ----- Peer Device Memory Access
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaDeviceCanAccessPeer(ref int canAccessPeer, int device, int peerDevice);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaDeviceDisablePeerAccess(int peerDevice);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaDeviceEnablePeerAccess(int peerDevice, uint flags);
+
 		// ----- OpenGL Interoperability
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaGLGetDevices(ref uint pCudaDeviceCount, ref int pCudaDevices, uint cudaDeviceCount, cudaGLDeviceList deviceList);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaGraphicsGLRegisterBuffer(ref cudaGraphicsResource[] resource, GLuint buffer, uint flags);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaGraphicsGLRegisterImage(ref cudaGraphicsResource[] resource, GLuint image, GLenum target, uint flags);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaWGLGetDevice(ref int device, HGPUNV hGpu);
+
 		// ----- OpenGL Interoperability [DEPRECATED]
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaGLMapBufferObject(ref IntPtr devPtr, GLuint bufObj);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaGLMapBufferObjectAsync(ref IntPtr devPtr, GLuint bufObj, cudaStream_t stream);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaGLRegisterBufferObject(GLuint bufObj);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaGLSetBufferObjectMapFlags(GLuint bufObj, uint flags);
+
+		//​[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaGLSetGLDevice(int device);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaGLUnmapBufferObject(GLuint bufObj);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaGLUnmapBufferObjectAsync(GLuint bufObj, cudaStream_t stream);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaGLUnregisterBufferObject(GLuint bufObj);
+
 		// ----- Direct3D 9 Interoperability
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaD3D9GetDevice(ref int device, string pszAdapterName);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaD3D9GetDevices(ref uint pCudaDeviceCount, ref int pCudaDevices, uint cudaDeviceCount, IDirect3DDevice9* pD3D9Device, cudaD3D9DeviceList deviceList);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaD3D9GetDirect3DDevice(ref IDirect3DDevice9[] ppD3D9Device);
+
+		//​[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaD3D9SetDirect3DDevice(ref IDirect3DDevice9 pD3D9Device, int device = -1);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaGraphicsD3D9RegisterResource(ref cudaGraphicsResource[] resource, ref IDirect3DResource9 pD3DResource, uint flags);
+
 		// ----- Direct3D 9 Interoperability [DEPRECATED]
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaD3D9MapResources(int count, ref IDirect3DResource9[] ppResources);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaD3D9RegisterResource(ref IDirect3DResource9 pResource, uint flags);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaD3D9ResourceGetMappedArray(ref cudaArray[] ppArray, ref IDirect3DResource9 pResource, uint face, uint level);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaD3D9ResourceGetMappedPitch(ref size_t pPitch, ref size_t pPitchSlice, ref IDirect3DResource9 pResource, uint face, uint level);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaD3D9ResourceGetMappedPointer(ref IntPtr pPointer, ref IDirect3DResource9 pResource, uint face, uint level);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaD3D9ResourceGetMappedSize(ref size_t pSize, ref IDirect3DResource9 pResource, uint face, uint level);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaD3D9ResourceGetSurfaceDimensions(ref size_t pWidth, ref size_t pHeight, ref size_t pDepth, ref IDirect3DResource9 pResource, uint face, uint level);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaD3D9ResourceSetMapFlags(ref IDirect3DResource9 pResource, uint flags);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaD3D9UnmapResources(int count, ref IDirect3DResource9[] ppResources);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaD3D9UnregisterResource(ref IDirect3DResource9 pResource);
+
 		// ----- Direct3D 10 Interoperability
+
+		//​[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaD3D10GetDevice(ref int device, ref IDXGIAdapter pAdapter);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaD3D10GetDevices(ref uint pCudaDeviceCount, ref int pCudaDevices, uint cudaDeviceCount, ref ID3D10Device pD3D10Device, cudaD3D10DeviceList deviceList);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaGraphicsD3D10RegisterResource(ref cudaGraphicsResource[] resource, ref ID3D10Resource pD3DResource, uint flags);
+
 		// ----- Direct3D 10 Interoperability [DEPRECATED]
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaD3D10GetDirect3DDevice(ref ID3D10Device[] ppD3D10Device);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaD3D10MapResources(int count, ref ID3D10Resource[] ppResources);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaD3D10RegisterResource(ref ID3D10Resource pResource, uint flags);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaD3D10ResourceGetMappedArray(ref cudaArray[] ppArray, ref ID3D10Resource pResource, uint subResource);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaD3D10ResourceGetMappedPitch(ref size_t pPitch, ref size_t pPitchSlice, ref ID3D10Resource pResource, uint subResource);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaD3D10ResourceGetMappedPointer(ref IntPtr pPointer, ref ID3D10Resource pResource, uint subResource);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaD3D10ResourceGetMappedSize(ref size_t pSize, ref ID3D10Resource pResource, uint subResource);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaD3D10ResourceGetSurfaceDimensions(ref size_t pWidth, ref size_t pHeight, ref size_t pDepth, ref ID3D10Resource pResource, uint subResource);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaD3D10ResourceSetMapFlags(ref ID3D10Resource pResource, uint flags);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaD3D10SetDirect3DDevice(ref ID3D10Device pD3D10Device, int device = -1);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaD3D10UnmapResources(int count, ref ID3D10Resource[] ppResources);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaD3D10UnregisterResource(ref ID3D10Resource pResource);
+
 		// ----- Direct3D 11 Interoperability
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaD3D11GetDevice(ref int device, ref IDXGIAdapter pAdapter);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaD3D11GetDevices(ref uint pCudaDeviceCount, ref int pCudaDevices, uint cudaDeviceCount, ref ID3D11Device pD3D11Device, cudaD3D11DeviceList deviceList);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaGraphicsD3D11RegisterResource(ref cudaGraphicsResource[] resource, ref ID3D11Resource pD3DResource, uint flags);
+
 		// ----- Direct3D 11 Interoperability [DEPRECATED]
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaD3D11GetDirect3DDevice(ref ID3D11Device[] ppD3D11Device);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaD3D11SetDirect3DDevice(ref ID3D11Device pD3D11Device, int device = -1);
+
 		// ----- VDPAU Interoperability
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaGraphicsVDPAURegisterOutputSurface(ref cudaGraphicsResource[] resource, VdpOutputSurface vdpSurface, uint flags);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaGraphicsVDPAURegisterVideoSurface(ref cudaGraphicsResource[] resource, VdpVideoSurface vdpSurface, uint flags);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaVDPAUGetDevice(ref int device, VdpDevice vdpDevice, ref VdpGetProcAddress vdpGetProcAddress);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaVDPAUSetVDPAUDevice(int device, VdpDevice vdpDevice, ref VdpGetProcAddress vdpGetProcAddress);
+
 		// ----- EGL Interoperability
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaEGLStreamConsumerAcquireFrame(ref cudaEglStreamConnection conn, ref cudaGraphicsResource_t pCudaResource, ref cudaStream_t pStream, uint timeout);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaEGLStreamConsumerConnect(ref cudaEglStreamConnection conn, EGLStreamKHR eglStream);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaEGLStreamConsumerConnectWithFlags(ref cudaEglStreamConnection conn, EGLStreamKHR eglStream, uint flags);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaEGLStreamConsumerReleaseFrame(ref cudaEglStreamConnection conn, cudaGraphicsResource_t pCudaResource, ref cudaStream_t pStream);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaEGLStreamProducerConnect(ref cudaEglStreamConnection conn, EGLStreamKHR eglStream, EGLint width, EGLint height);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaEGLStreamProducerDisconnect(ref cudaEglStreamConnection conn);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaEGLStreamProducerPresentFrame(ref cudaEglStreamConnection conn, cudaEglFrame eglframe, ref cudaStream_t pStream);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaEGLStreamProducerReturnFrame(ref cudaEglStreamConnection conn, ref cudaEglFrame eglframe, ref cudaStream_t pStream);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaGraphicsEGLRegisterImage(ref cudaGraphicsResource[] pCudaResource, EGLImageKHR image, uint flags);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaGraphicsResourceGetMappedEglFrame(ref cudaEglFrame eglFrame, cudaGraphicsResource_t resource, uint index, uint mipLevel);
+
 		// ----- Graphics Interoperability
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaGraphicsMapResources(int count, ref cudaGraphicsResource_t resources, cudaStream_t stream);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaGraphicsResourceGetMappedMipmappedArray(ref cudaMipmappedArray_t mipmappedArray, cudaGraphicsResource_t resource);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaGraphicsResourceGetMappedPointer(ref IntPtr devPtr, ref size_t size, cudaGraphicsResource_t resource);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaGraphicsResourceSetMapFlags(cudaGraphicsResource_t resource, uint flags);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaGraphicsSubResourceGetMappedArray(ref cudaArray_t array, cudaGraphicsResource_t resource, uint arrayIndex, uint mipLevel);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaGraphicsUnmapResources(int count, ref cudaGraphicsResource_t resources, cudaStream_t stream);
+
+		//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		//public static extern cudaError_t cudaGraphicsUnregisterResource(cudaGraphicsResource_t resource);
+
 		// ----- Texture Reference Management
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaBindTexture(ref size_t offset, ref textureReference texref, IntPtr devPtr, ref cudaChannelFormatDesc desc, size_t size);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaBindTexture2D(ref size_t offset, ref textureReference texref, IntPtr devPtr, ref cudaChannelFormatDesc desc, size_t width, size_t height, size_t pitch);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaBindTextureToArray(ref textureReference texref, cudaArray_const_t array, ref cudaChannelFormatDesc desc);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaBindTextureToMipmappedArray(ref textureReference texref, cudaMipmappedArray_const_t mipmappedArray, ref cudaChannelFormatDesc desc);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaChannelFormatDesc cudaCreateChannelDesc(int x, int y, int z, int w, cudaChannelFormatKind f);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaGetChannelDesc(ref cudaChannelFormatDesc desc, cudaArray_const_t array);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaGetTextureAlignmentOffset(ref size_t offset, ref textureReference texref);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaGetTextureReference(ref textureReference[] texref, IntPtr symbol);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaUnbindTexture(ref textureReference texref);
+
 		// ----- Surface Reference Management
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaBindSurfaceToArray(ref surfaceReference surfref, cudaArray_const_t array, ref cudaChannelFormatDesc desc);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaGetSurfaceReference(ref surfaceReference[] surfref, IntPtr symbol);
+
 		// ----- Texture Object Management
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaCreateTextureObject(ref cudaTextureObject_t pTexObject, ref cudaResourceDesc pResDesc, ref cudaTextureDesc pTexDesc, ref cudaResourceViewDesc pResViewDesc);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaDestroyTextureObject(cudaTextureObject_t texObject);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaGetTextureObjectResourceDesc(ref cudaResourceDesc pResDesc, cudaTextureObject_t texObject);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaGetTextureObjectResourceViewDesc(ref cudaResourceViewDesc pResViewDesc, cudaTextureObject_t texObject);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaGetTextureObjectTextureDesc(ref cudaTextureDesc pTexDesc, cudaTextureObject_t texObject);
+
 		// ----- Surface Object Management
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaCreateSurfaceObject(ref cudaSurfaceObject_t pSurfObject, ref cudaResourceDesc pResDesc);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaDestroySurfaceObject(cudaSurfaceObject_t surfObject);
+
+		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+		public static extern cudaError_t cudaGetSurfaceObjectResourceDesc(ref cudaResourceDesc pResDesc, cudaSurfaceObject_t surfObject);
 
 		// ----- Version Management
 
 		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-		public static extern cudaError cudaDriverGetVersion(ref int driverVersion);
+		public static extern cudaError_t cudaDriverGetVersion(ref int driverVersion);
 
 		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-		public static extern cudaError cudaRuntimeGetVersion(ref int runtimeVersion);
+		public static extern cudaError_t cudaRuntimeGetVersion(ref int runtimeVersion);
 
 		// ----- Profiler Control
 
 		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-		public static extern cudaError cudaProfilerInitialize(string configFile, string outputFile, cudaOutputMode outputMode);
+		public static extern cudaError_t cudaProfilerInitialize(string configFile, string outputFile, cudaOutputMode outputMode);
 
 		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-		public static extern cudaError cudaProfilerStart();
+		public static extern cudaError_t cudaProfilerStart();
 
 		[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-		public static extern cudaError cudaProfilerStop();
+		public static extern cudaError_t cudaProfilerStop();
 	}
 }
