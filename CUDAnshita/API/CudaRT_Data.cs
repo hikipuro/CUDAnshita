@@ -1188,9 +1188,4 @@ namespace CUDAnshita {
 		// Read texture as normalized float
 		cudaReadModeNormalizedFloat = 1
 	}
-
-	[StructLayout(LayoutKind.Sequential)]
-	public struct dim3 {
-		public uint x, y, z;
-	}
 }

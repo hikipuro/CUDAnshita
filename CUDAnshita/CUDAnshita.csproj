@@ -39,6 +39,7 @@
     <Compile Include="API\cuBLAS.cs" />
     <Compile Include="API\CudaRT.cs" />
     <Compile Include="API\CudaRT_Data.cs" />
+    <Compile Include="API\cuFFT.cs" />
     <Compile Include="API\cuRAND.cs" />
     <Compile Include="API\LibraryTypes.cs" />
     <Compile Include="API\MathConstants.cs" />
@@ -46,6 +47,7 @@
     <Compile Include="API\NvCuda_Data.cs" />
     <Compile Include="API\NVRTC.cs" />
     <Compile Include="API\NVRTC_Data.cs" />
+    <Compile Include="API\VectorTypes.cs" />
     <Compile Include="Driver\Context.cs" />
     <Compile Include="Driver\Device.cs" />
     <Compile Include="Driver\DeviceMemory.cs" />
