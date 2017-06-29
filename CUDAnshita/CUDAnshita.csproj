@@ -45,12 +45,12 @@
     <Compile Include="API\NvCuda_Data.cs" />
     <Compile Include="API\NVRTC.cs" />
     <Compile Include="API\NVRTC_Data.cs" />
-    <Compile Include="Context.cs" />
-    <Compile Include="Device.cs" />
-    <Compile Include="DeviceMemory.cs" />
+    <Compile Include="Driver\Context.cs" />
+    <Compile Include="Driver\Device.cs" />
+    <Compile Include="Driver\DeviceMemory.cs" />
     <Compile Include="Errors\CudaException.cs" />
-    <Compile Include="MarshalUtil.cs" />
-    <Compile Include="Module.cs" />
+    <Compile Include="Driver\MarshalUtil.cs" />
+    <Compile Include="Driver\Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

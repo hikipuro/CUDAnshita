@@ -17,5 +17,14 @@ namespace CUDAnshita.Errors {
 				throw exception;
 			}
 		}
+
+		public static void Check(CUresult error, string message) {
+			if (error != CUresult.CUDA_SUCCESS) {
+				message = string.Format("{0}: {1}", error.ToString(), message);
+				Exception exception = new CudaException(message);
+				exception.Data.Add("CUresult", error);
+				throw exception;
+			}
+		}
 	}
 }

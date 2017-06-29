@@ -99,18 +99,18 @@ namespace CUDAnshita_Sample {
 			Console.WriteLine("cuBLAS Test destB: {0}", destB);
 			Console.WriteLine("cuBLAS Test destC: {0}", destC);
 
-			IntPtr da = cuBLAS.SetMatrix(2, 2, a.ToArray(), 2, destA, 2);
-			IntPtr db = cuBLAS.SetMatrix(2, 2, b.ToArray(), 2, destB, 2);
-			IntPtr dc = cuBLAS.SetMatrix(size, size, c.ToArray(), size, destC, size);
+			cuBLAS.SetMatrix(2, 2, a.ToArray(), 2, destA, 2);
+			cuBLAS.SetMatrix(2, 2, b.ToArray(), 2, destB, 2);
+			cuBLAS.SetMatrix(size, size, c.ToArray(), size, destC, size);
 			//float test = cuBLAS.Sdot(2, da, 1, db, 1);
 			
 			cuBLAS.Dgemm(
 				cublasOperation.CUBLAS_OP_N,
 				cublasOperation.CUBLAS_OP_N,
 				2, 2, 2,
-				1, da, 2,
-				db, 2,
-				0, dc, 2
+				1, destA, 2,
+				destB, 2,
+				0, destC, 2
 			);
 			/*
 			cuBLAS.Dsymm(
@@ -134,12 +134,12 @@ namespace CUDAnshita_Sample {
 			);
 			*/
 
-			double[] rb = cuBLAS.GetMatrix<double>(2, 2, db, 2, 2);
+			double[] rb = cuBLAS.GetMatrixD(2, 2, destB, 2, 2);
 			foreach (double cc in rb) {
 				Console.WriteLine("cuBLAS Test rb: {0}", cc);
 			}
 
-			double[] rc = cuBLAS.GetMatrix<double>(size, size, dc, size, size);
+			double[] rc = cuBLAS.GetMatrixD(size, size, destC, size, size);
 			foreach (double cc in rc) {
 				Console.WriteLine("cuBLAS Test: {0}", cc);
 			}

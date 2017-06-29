@@ -20,44 +20,151 @@ namespace CUDAnshita {
 			// ----- Helper Function
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern cublasStatus cublasCreate_v2(ref cublasHandle_t handle);
+			public static extern cublasStatus cublasCreate_v2(
+				ref cublasHandle_t handle
+			);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern cublasStatus cublasDestroy_v2(cublasHandle_t handle);
+			public static extern cublasStatus cublasDestroy_v2(
+				cublasHandle_t handle
+			);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern cublasStatus cublasGetVersion_v2(cublasHandle_t handle, ref int version);
+			public static extern cublasStatus cublasGetVersion_v2(
+				cublasHandle_t handle,
+				ref int version
+			);
 
 			/*
-			cublasStatus cublasSetStream(IntPtr handle, cudaStream_t streamId);
-			cublasStatus cublasGetStream(IntPtr handle, cudaStream_t* streamId);
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cublasStatus cublasSetStream(
+				cublasHandle_t handle,
+				cudaStream_t streamId
+			);
+			
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cublasStatus cublasGetStream(
+				cublasHandle_t handle,
+				cudaStream_t* streamId
+			);
 			*/
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern cublasStatus cublasGetPointerMode(cublasHandle_t handle, ref cublasPointerMode mode);
+			public static extern cublasStatus cublasGetPointerMode(
+				cublasHandle_t handle,
+				ref cublasPointerMode mode
+			);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern cublasStatus cublasSetPointerMode(cublasHandle_t handle, cublasPointerMode mode);
+			public static extern cublasStatus cublasSetPointerMode(
+				cublasHandle_t handle,
+				cublasPointerMode mode
+			);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern cublasStatus cublasSetVector(int n, int elemSize, IntPtr x, int incx, IntPtr y, int incy);
+			public static extern cublasStatus cublasSetVector(
+				int n,
+				int elemSize,
+				IntPtr x,
+				int incx,
+				IntPtr y,
+				int incy
+			);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern cublasStatus cublasGetVector(int n, int elemSize, IntPtr x, int incx, IntPtr y, int incy);
+			public static extern cublasStatus cublasGetVector(
+				int n,
+				int elemSize,
+				IntPtr x,
+				int incx,
+				IntPtr y,
+				int incy
+			);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern cublasStatus cublasSetMatrix(int rows, int cols, int elemSize, IntPtr A, int lda, IntPtr B, int ldb);
+			public static extern cublasStatus cublasSetMatrix(
+				int rows,
+				int cols,
+				int elemSize,
+				IntPtr A,
+				int lda,
+				IntPtr B,
+				int ldb
+			);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern cublasStatus cublasGetMatrix(int rows, int cols, int elemSize, IntPtr A, int lda, IntPtr B, int ldb);
+			public static extern cublasStatus cublasSetMatrix(
+				int rows,
+				int cols,
+				int elemSize,
+				double[] A,
+				int lda,
+				IntPtr B,
+				int ldb
+			);
+
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cublasStatus cublasSetMatrix(
+				int rows,
+				int cols,
+				int elemSize,
+				float[] A,
+				int lda,
+				IntPtr B,
+				int ldb
+			);
+
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cublasStatus cublasGetMatrix(
+				int rows,
+				int cols,
+				int elemSize,
+				IntPtr A,
+				int lda,
+				IntPtr B,
+				int ldb
+			);
+
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cublasStatus cublasGetMatrix(
+				int rows,
+				int cols,
+				int elemSize,
+				IntPtr A,
+				int lda,
+				double[] B,
+				int ldb
+			);
+
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cublasStatus cublasGetMatrix(
+				int rows,
+				int cols,
+				int elemSize,
+				IntPtr A,
+				int lda,
+				float[] B,
+				int ldb
+			);
 
 			/*
-			cublasStatus cublasSetVectorAsync(int n, int elemSize, const void* hostPtr, int incx, void* devicePtr, int incy, cudaStream_t stream);
-			cublasStatus cublasGetVectorAsync(int n, int elemSize, const void* devicePtr, int incx, void* hostPtr, int incy, cudaStream_t stream);
-			cublasStatus cublasSetMatrixAsync(int rows, int cols, int elemSize, const void* A, int lda, void* B, int ldb, cudaStream_t stream);
-			cublasStatus cublasGetMatrixAsync(int rows, int cols, int elemSize, const void* A, int lda, void* B, int ldb, cudaStream_t stream);
-			cublasStatus cublasSetAtomicsMode(cublasHandlet handle, cublasAtomicsModet mode);
-			cublasStatus cublasGetAtomicsMode(cublasHandlet handle, cublasAtomicsModet* mode);
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cublasStatus cublasSetVectorAsync(int n, int elemSize, const void* hostPtr, int incx, void* devicePtr, int incy, cudaStream_t stream);
+			
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cublasStatus cublasGetVectorAsync(int n, int elemSize, const void* devicePtr, int incx, void* hostPtr, int incy, cudaStream_t stream);
+			
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cublasStatus cublasSetMatrixAsync(int rows, int cols, int elemSize, const void* A, int lda, void* B, int ldb, cudaStream_t stream);
+			
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cublasStatus cublasGetMatrixAsync(int rows, int cols, int elemSize, const void* A, int lda, void* B, int ldb, cudaStream_t stream);
+			
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cublasStatus cublasSetAtomicsMode(cublasHandlet handle, cublasAtomicsModet mode);
+			
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cublasStatus cublasGetAtomicsMode(cublasHandlet handle, cublasAtomicsModet* mode);
 			*/
 
 			// ----- Level-1 Function
@@ -77,7 +184,15 @@ namespace CUDAnshita {
 			*/
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern cublasStatus cublasSdot_v2(cublasHandle_t handle, int n, IntPtr x, int incx, IntPtr y, int incy, ref float result);
+			public static extern cublasStatus cublasSdot_v2(
+				cublasHandle_t handle,
+				int n,
+				IntPtr x,
+				int incx,
+				IntPtr y,
+				int incy,
+				ref float result
+			);
 			
 
 			// ----- Level-2 Function
@@ -87,39 +202,73 @@ namespace CUDAnshita {
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus cublasSgemm(
 				cublasHandle_t handle,
-				cublasOperation transa, cublasOperation transb,
-				int m, int n, int k,
-				ref float alpha, IntPtr A, int lda,
-				IntPtr B, int ldb,
-				ref float beta, IntPtr C, int ldc);
+				cublasOperation transa,
+				cublasOperation transb,
+				int m,
+				int n,
+				int k,
+				ref float alpha,
+				IntPtr A,
+				int lda,
+				IntPtr B,
+				int ldb,
+				ref float beta,
+				IntPtr C,
+				int ldc
+			);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus cublasDgemm_v2(
 				cublasHandle_t handle,
-				cublasOperation transa, cublasOperation transb,
-				int m, int n, int k,
-				ref double alpha, IntPtr A, int lda,
-				IntPtr B, int ldb,
-				ref double beta, IntPtr C, int ldc);
+				cublasOperation transa,
+				cublasOperation transb,
+				int m,
+				int n,
+				int k,
+				ref double alpha,
+				IntPtr A,
+				int lda,
+				IntPtr B,
+				int ldb,
+				ref double beta,
+				IntPtr C,
+				int ldc
+			);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus cublasDsymm_v2(
 				cublasHandle_t handle,
-				cublasSideMode side, cublasFillMode uplo,
-				int m, int n,
-				ref double alpha, IntPtr A, int lda,
-				IntPtr B, int ldb,
-				ref double beta, IntPtr C, int ldc);
+				cublasSideMode side,
+				cublasFillMode uplo,
+				int m,
+				int n,
+				ref double alpha,
+				IntPtr A,
+				int lda,
+				IntPtr B,
+				int ldb,
+				ref double beta,
+				IntPtr C,
+				int ldc
+			);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus cublasDtrmm_v2(
 				cublasHandle_t handle,
-				cublasSideMode side, cublasFillMode uplo,
-				cublasOperation trans, cublasDiagType diag,
-				int m, int n,
-				ref double alpha, IntPtr A, int lda,
-				IntPtr B, int ldb,
-				IntPtr C, int ldc);
+				cublasSideMode side,
+				cublasFillMode uplo,
+				cublasOperation trans,
+				cublasDiagType diag,
+				int m,
+				int n,
+				ref double alpha,
+				IntPtr A,
+				int lda,
+				IntPtr B,
+				int ldb,
+				IntPtr C,
+				int ldc
+			);
 			
 
 			// ----- BLAS-extension
@@ -136,7 +285,9 @@ namespace CUDAnshita {
 			public static extern cublasStatus cublasGetError();
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern cublasStatus cublasGetVersion(ref int version);
+			public static extern cublasStatus cublasGetVersion(
+				ref int version
+			);
 
 			/*
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
@@ -165,22 +316,19 @@ namespace CUDAnshita {
 			}
 		}
 
-		public IntPtr SetVector<T>(T[] x, int incx, IntPtr y, int incy) {
+		public void SetVector<T>(T[] x, int incx, IntPtr y, int incy) {
 			int n = x.Length;
 			int elemSize = Marshal.SizeOf(typeof(T));
-
-			int byteSize = elemSize * x.Length;
+			int byteSize = elemSize * n;
 			IntPtr ptr = Marshal.AllocHGlobal(byteSize);
 			MarshalUtil.Copy<T>(x, 0, ptr, x.Length);
 
 			CheckStatus(API.cublasSetVector(n, elemSize, ptr, incx, y, incy));
 			Marshal.FreeHGlobal(ptr);
-			return y;
 		}
 
 		public T[] GetVector<T>(int n, IntPtr x, int incx, int incy) {
 			int elemSize = Marshal.SizeOf(typeof(T));
-
 			int byteSize = elemSize * n;
 			IntPtr ptr = Marshal.AllocHGlobal(byteSize);
 
@@ -192,21 +340,28 @@ namespace CUDAnshita {
 			return result;
 		}
 
-		public IntPtr SetMatrix<T>(int rows, int cols, T[] A, int lda, IntPtr B, int ldb) {
+		public void SetMatrix<T>(int rows, int cols, T[] A, int lda, IntPtr B, int ldb) {
 			int elemSize = Marshal.SizeOf(typeof(T));
-
 			int byteSize = elemSize * rows * cols;
 			IntPtr ptr = Marshal.AllocHGlobal(byteSize);
 			MarshalUtil.Copy<T>(A, 0, ptr, A.Length);
 
 			CheckStatus(API.cublasSetMatrix(rows, cols, elemSize, ptr, lda, B, ldb));
 			Marshal.FreeHGlobal(ptr);
-			return B;
+		}
+
+		public void SetMatrix(int rows, int cols, double[] A, int lda, IntPtr B, int ldb) {
+			int elemSize = Marshal.SizeOf(typeof(double));
+			CheckStatus(API.cublasSetMatrix(rows, cols, elemSize, A, lda, B, ldb));
+		}
+
+		public void SetMatrix(int rows, int cols, float[] A, int lda, IntPtr B, int ldb) {
+			int elemSize = Marshal.SizeOf(typeof(float));
+			CheckStatus(API.cublasSetMatrix(rows, cols, elemSize, A, lda, B, ldb));
 		}
 
 		public T[] GetMatrix<T>(int rows, int cols, IntPtr A, int lda, int ldb) {
 			int elemSize = Marshal.SizeOf(typeof(T));
-
 			int byteSize = elemSize * rows * cols;
 			IntPtr ptr = Marshal.AllocHGlobal(byteSize);
 
@@ -215,6 +370,20 @@ namespace CUDAnshita {
 			T[] result = new T[rows * cols];
 			MarshalUtil.Copy<T>(ptr, result, 0, rows * cols);
 			Marshal.FreeHGlobal(ptr);
+			return result;
+		}
+
+		public double[] GetMatrixD(int rows, int cols, IntPtr A, int lda, int ldb) {
+			double[] result = new double[rows * cols];
+			int elemSize = Marshal.SizeOf(typeof(double));
+			CheckStatus(API.cublasGetMatrix(rows, cols, elemSize, A, lda, result, ldb));
+			return result;
+		}
+
+		public float[] GetMatrixF(int rows, int cols, IntPtr A, int lda, int ldb) {
+			float[] result = new float[rows * cols];
+			int elemSize = Marshal.SizeOf(typeof(double));
+			CheckStatus(API.cublasGetMatrix(rows, cols, elemSize, A, lda, result, ldb));
 			return result;
 		}
 

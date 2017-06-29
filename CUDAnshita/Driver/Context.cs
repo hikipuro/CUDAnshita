@@ -6,7 +6,7 @@ namespace CUDAnshita {
 		IntPtr context = IntPtr.Zero;
 
 		internal Context(int deviceHandle) {
-			cudaError result;
+			CUresult result;
 			result = NvCuda.cuCtxCreate(ref context, 0, deviceHandle);
 			CudaException.Check(result, "コンテキストの作成に失敗しました。");
 		}
@@ -18,7 +18,7 @@ namespace CUDAnshita {
 		}
 
 		public void Synchronize() {
-			cudaError result;
+			CUresult result;
 			result = NvCuda.cuCtxSynchronize();
 			CudaException.Check(result, "スレッドの同期に失敗しました。");
 		}

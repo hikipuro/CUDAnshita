@@ -3,7 +3,7 @@
 namespace CUDAnshita {
 	using size_t = Int64;
 
-	class Defines {
+	public partial class Defines {
 		public const int CUDA_EGL_MAX_PLANES = 3;
 		public const int CUDA_IPC_HANDLE_SIZE = 64;
 		public const int cudaArrayCubemap = 0x04;

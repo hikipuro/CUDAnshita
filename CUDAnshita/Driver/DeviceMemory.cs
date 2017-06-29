@@ -70,7 +70,7 @@ namespace CUDAnshita {
 
 		private IntPtr _Alloc(int byteSize) {
 			IntPtr ptr = IntPtr.Zero;
-			cudaError result = NvCuda.cuMemAlloc(ref ptr, byteSize);
+			CUresult result = NvCuda.cuMemAlloc(ref ptr, byteSize);
 			CudaException.Check(result, "デバイスメモリの割り当てに失敗しました。");
 			return ptr;
 		}
@@ -80,7 +80,7 @@ namespace CUDAnshita {
 			IntPtr ptr = Marshal.AllocHGlobal(byteSize);
 			MarshalUtil.Copy<T>(data, 0, ptr, data.Length);
 
-			cudaError result = NvCuda.cuMemcpyHtoD(dest, ptr, byteSize);
+			CUresult result = NvCuda.cuMemcpyHtoD(dest, ptr, byteSize);
 			CudaException.Check(result, "メインメモリからデバイスメモリへのコピーに失敗しました。");
 			Marshal.FreeHGlobal(ptr);
 		}
@@ -88,7 +88,7 @@ namespace CUDAnshita {
 		private T[] _CopyDtoH<T>(IntPtr src, int count) {
 			int byteSize = Marshal.SizeOf(typeof(T)) * count;
 			IntPtr ptr = Marshal.AllocHGlobal(byteSize);
-			cudaError result = NvCuda.cuMemcpyDtoH(ptr, src, byteSize);
+			CUresult result = NvCuda.cuMemcpyDtoH(ptr, src, byteSize);
 			CudaException.Check(result, "デバイスメモリからメインメモリへのコピーに失敗しました。");
 
 			T[] dest = new T[count];

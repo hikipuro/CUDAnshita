@@ -9,13 +9,13 @@ namespace CUDAnshita {
 
 		public static int GetCount() {
 			int count = 0;
-			cudaError result = NvCuda.cuDeviceGetCount(ref count);
+			CUresult result = NvCuda.cuDeviceGetCount(ref count);
 			CudaException.Check(result, "デバイス数の取得に失敗しました。");
 			return count;
 		}
 
 		public Device(int deviceNumber) {
-			cudaError result;
+			CUresult result;
 
 			if (initialized == false) {
 				initialized = true;

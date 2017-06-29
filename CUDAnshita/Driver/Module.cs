@@ -37,7 +37,7 @@ namespace CUDAnshita {
 
 		public void LoadData(string image) {
 			//Dispose();
-			cudaError result;
+			CUresult result;
 			IntPtr ptxImage = Marshal.StringToHGlobalAnsi(image);
 			result = NvCuda.cuModuleLoadData(ref module, ptxImage);
 			CudaException.Check(result, "モジュールデータのロードに失敗しました。");
@@ -45,7 +45,7 @@ namespace CUDAnshita {
 
 		public void LoadDataEx(string image, uint numOptions, CUjit_option options, IntPtr optionValues) {
 			Dispose();
-			cudaError result;
+			CUresult result;
 			IntPtr ptxImage = Marshal.StringToHGlobalAnsi(image);
 			result = NvCuda.cuModuleLoadDataEx(
 				ref module, ptxImage, numOptions, options, optionValues
@@ -54,7 +54,7 @@ namespace CUDAnshita {
 		}
 
 		public void Excecute(string funcName, params object[] args) {
-			cudaError result;
+			CUresult result;
 
 			IntPtr kernel = IntPtr.Zero;
 			result = NvCuda.cuModuleGetFunction(ref kernel, module, funcName);
