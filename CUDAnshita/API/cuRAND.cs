@@ -4,6 +4,11 @@ using System.Runtime.InteropServices;
 namespace CUDAnshita {
 	using curandGenerator_t = IntPtr;
 	using curandRngType_t = curandRngType;
+	using curandDiscreteDistribution_t = IntPtr;
+	using curandDirectionVectors32_t = curandDirectionVectors32;
+	using curandDirectionVectors64_t = curandDirectionVectors64;
+	using curandDirectionVectorSet_t = curandDirectionVectorSet;
+	using cudaStream_t = IntPtr;
 	using size_t = Int64;
 
 	/// <summary>
@@ -68,18 +73,16 @@ namespace CUDAnshita {
 				curandRngType_t rng_type
 			);
 
-			/*
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern curandStatus curandCreatePoissonDistribution(
 				double lambda,
-				curandDiscreteDistribution_t* discrete_distribution
+				ref curandDiscreteDistribution_t discrete_distribution
 			);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern curandStatus curandDestroyDistribution(
 				curandDiscreteDistribution_t discrete_distribution
 			);
-			*/
 
 			/// <summary>
 			/// Destroy an existing generator.
@@ -410,19 +413,17 @@ namespace CUDAnshita {
 				size_t num
 			);
 
-			/*
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			static extern curandStatus curandGetDirectionVectors32(
-				curandDirectionVectors32_t* vectors,
+			public static extern curandStatus curandGetDirectionVectors32(
+				ref IntPtr vectors,
 				curandDirectionVectorSet_t set
 			);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			static extern curandStatus curandGetDirectionVectors64(
-				curandDirectionVectors64_t* vectors,
+			public static extern curandStatus curandGetDirectionVectors64(
+				ref IntPtr vectors,
 				curandDirectionVectorSet_t set
 			);
-			*/
 
 			/// <summary>
 			/// Return the value of the curand property.
@@ -444,17 +445,15 @@ namespace CUDAnshita {
 				ref int value
 			);
 
-			/*
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern curandStatus curandGetScrambleConstants32(
-				unsigned int** constants
+				ref IntPtr constants
 			);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern curandStatus curandGetScrambleConstants64(
-				unsigned long long** constants
+				ref IntPtr constants
 			);
-			*/
 
 			/// <summary>
 			/// Return the version number of the library.
@@ -560,14 +559,11 @@ namespace CUDAnshita {
 				uint num_dimensions
 			);
 
-			/*
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern curandStatus curandSetStream(
 				curandGenerator_t generator,
 				cudaStream_t stream
 			);
-			*/
-
 		}
 		// ----- C# Interface
 
@@ -599,6 +595,14 @@ namespace CUDAnshita {
 				DestroyGenerator(generator);
 				generator = IntPtr.Zero;
 			}
+		}
+
+		public void CreatePoissonDistribution(double lambda, IntPtr discreteDistribution) {
+			CheckStatus(API.curandCreatePoissonDistribution(lambda, ref discreteDistribution));
+		}
+
+		public void DestroyDistribution(IntPtr discreteDistribution) {
+			CheckStatus(API.curandDestroyDistribution(discreteDistribution));
 		}
 
 		public uint[] Generate(int num) {
@@ -655,9 +659,45 @@ namespace CUDAnshita {
 			return result;
 		}
 
+		public int[] GetDirectionVectors32(curandDirectionVectorSet set = curandDirectionVectorSet.CURAND_DIRECTION_VECTORS_32_JOEKUO6) {
+			IntPtr vectors = IntPtr.Zero;
+			CheckStatus(API.curandGetDirectionVectors32(ref vectors, set));
+
+			int[] result = new int[20000];
+			Marshal.Copy(vectors, result, 0, result.Length);
+			return result;
+		}
+
+		public long[] GetDirectionVectors64(curandDirectionVectorSet set = curandDirectionVectorSet.CURAND_DIRECTION_VECTORS_64_JOEKUO6) {
+			IntPtr vectors = IntPtr.Zero;
+			CheckStatus(API.curandGetDirectionVectors64(ref vectors, set));
+
+			long[] result = new long[20000];
+			Marshal.Copy(vectors, result, 0, result.Length);
+			return result;
+		}
+
 		public int GetProperty(libraryPropertyType type) {
 			int result = 0;
 			CheckStatus(API.curandGetProperty(type, ref result));
+			return result;
+		}
+
+		public int[] GetScrambleConstants32() {
+			IntPtr constants = IntPtr.Zero;
+			CheckStatus(API.curandGetScrambleConstants32(ref constants));
+
+			int[] result = new int[20000];
+			Marshal.Copy(constants, result, 0, result.Length);
+			return result;
+		}
+
+		public long[] GetScrambleConstants64() {
+			IntPtr constants = IntPtr.Zero;
+			CheckStatus(API.curandGetScrambleConstants64(ref constants));
+
+			long[] result = new long[20000];
+			Marshal.Copy(constants, result, 0, result.Length);
 			return result;
 		}
 
@@ -671,6 +711,10 @@ namespace CUDAnshita {
 
 		public void SetQuasiRandomGeneratorDimensions(uint num_dimensions) {
 			CheckStatus(API.curandSetQuasiRandomGeneratorDimensions(generator, num_dimensions));
+		}
+
+		public void SetStream(cudaStream_t stream) {
+			CheckStatus(API.curandSetStream(generator, stream));
 		}
 
 		IntPtr CreateGenerator(curandRngType type) {
@@ -708,6 +752,18 @@ namespace CUDAnshita {
 				throw new Exception(status.ToString());
 			}
 		}
+	}
+
+	[StructLayout(LayoutKind.Sequential, Size = 32 * 4)]
+	public struct curandDirectionVectors32 {
+		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
+		public uint[] data;
+	}
+
+	[StructLayout(LayoutKind.Sequential, Size = 64 * 8)]
+	public struct curandDirectionVectors64 {
+		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)]
+		public ulong[] data;
 	}
 
 	/// <summary>
