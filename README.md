@@ -110,6 +110,7 @@ device.Dispose();
 * DLLが見つからないエラーが発生する場合は、 "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\bin" から、 Visual Studio が exe を出力する bin フォルダにコピーすると解決するかもしれません。
 
 ### 注意事項
+* cuBLAS, cuFFT, cuFFTW, cuRAND の機能は全くテストできていませんので、CUDAnshita のコードを底の方から修正する気力のあるかたのみ、ご使用ください。
 
 ## 開発環境
 * Visual Studio 2015

@@ -104,6 +104,7 @@ namespace CUDAnshita_Sample {
 			cuBLAS.SetMatrix(size, size, c.ToArray(), size, destC, size);
 			//float test = cuBLAS.Sdot(2, da, 1, db, 1);
 			
+			/*
 			cuBLAS.Dgemm(
 				cublasOperation.CUBLAS_OP_N,
 				cublasOperation.CUBLAS_OP_N,
@@ -112,6 +113,7 @@ namespace CUDAnshita_Sample {
 				destB, 2,
 				0, destC, 2
 			);
+			*/
 			/*
 			cuBLAS.Dsymm(
 				cublasSideMode.CUBLAS_SIDE_RIGHT,
@@ -134,6 +136,7 @@ namespace CUDAnshita_Sample {
 			);
 			*/
 
+			/*
 			double[] rb = cuBLAS.GetMatrixD(2, 2, destB, 2, 2);
 			foreach (double cc in rb) {
 				Console.WriteLine("cuBLAS Test rb: {0}", cc);
@@ -143,6 +146,7 @@ namespace CUDAnshita_Sample {
 			foreach (double cc in rc) {
 				Console.WriteLine("cuBLAS Test: {0}", cc);
 			}
+			*/
 
 			CudaRT.cudaFree(destA);
 			CudaRT.cudaFree(destB);

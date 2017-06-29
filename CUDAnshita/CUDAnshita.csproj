@@ -42,6 +42,7 @@
     <Compile Include="API\cuFFT.cs" />
     <Compile Include="API\cuFFTW.cs" />
     <Compile Include="API\cuRAND.cs" />
+    <Compile Include="API\FP16.cs" />
     <Compile Include="API\LibraryTypes.cs" />
     <Compile Include="API\MathConstants.cs" />
     <Compile Include="API\NvCuda.cs" />
