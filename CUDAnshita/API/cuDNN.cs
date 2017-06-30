@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace CUDAnshita.API {
+namespace CUDAnshita {
 	using cudnnHandle_t = IntPtr;
 	using cudnnStatus_t = cudnnStatus;
 	using cudaStream_t = IntPtr;
@@ -47,6 +47,7 @@ namespace CUDAnshita.API {
 	using cudnnRNNMode_t = cudnnRNNMode;
 	using cudnnRNNAlgo_t = cudnnRNNAlgo;
 	using size_t = Int64;
+	using System.Text;
 
 	/// <summary>
 	/// Neural Networks Library
@@ -54,7 +55,7 @@ namespace CUDAnshita.API {
 	/// <remarks>
 	/// <a href="https://developer.nvidia.com/cudnn">https://developer.nvidia.com/cudnn</a>
 	/// </remarks>
-	public class cuDNN6 {
+	public class cuDNN6 : IDisposable {
 		public class API {
 			const string DLL_PATH = "cudnn64_6.dll";
 			const CallingConvention CALLING_CONVENTION = CallingConvention.Cdecl;
@@ -67,7 +68,7 @@ namespace CUDAnshita.API {
 			public static extern size_t cudnnGetCudartVersion();
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern string cudnnGetErrorString(cudnnStatus_t status);
+			public static extern IntPtr cudnnGetErrorString(cudnnStatus_t status);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnGetProperty(libraryPropertyType type, ref int value);
@@ -1613,12 +1614,573 @@ namespace CUDAnshita.API {
 		/// </summary>
 		public const int CUDNN_DIM_MAX = 8;
 
-		public const int CUDNN_LRN_MIN_N = 1;  // minimum allowed lrnN
-		public const int CUDNN_LRN_MAX_N = 16; // maximum allowed lrnN
-		public const double CUDNN_LRN_MIN_K = 1e-5;    // minimum allowed lrnK
-		public const double CUDNN_LRN_MIN_BETA = 0.01; // minimum allowed lrnBeta
+		/// <summary>
+		/// minimum allowed lrnN
+		/// </summary>
+		public const int CUDNN_LRN_MIN_N = 1;
 
-		public const double CUDNN_BN_MIN_EPSILON = 1e-5; // Minimum epsilon allowed to be used in the Batch Normalization formula
+		/// <summary>
+		/// maximum allowed lrnN
+		/// </summary>
+		public const int CUDNN_LRN_MAX_N = 16;
+
+		/// <summary>
+		/// minimum allowed lrnK
+		/// </summary>
+		public const double CUDNN_LRN_MIN_K = 1e-5;
+
+		/// <summary>
+		/// minimum allowed lrnBeta
+		/// </summary>
+		public const double CUDNN_LRN_MIN_BETA = 0.01;
+
+		/// <summary>
+		/// Minimum epsilon allowed to be used in the Batch Normalization formula
+		/// </summary>
+		public const double CUDNN_BN_MIN_EPSILON = 1e-5;
+
+		// ----- C# Interface
+
+		cudnnHandle_t handle = IntPtr.Zero;
+
+		public cuDNN6() {
+			CheckStatus(API.cudnnCreate(ref handle));
+		}
+
+		~cuDNN6() {
+			Dispose();
+		}
+
+		public void Dispose() {
+			if (handle != IntPtr.Zero) {
+				CheckStatus(API.cudnnDestroy(handle));
+				handle = IntPtr.Zero;
+			}
+		}
+
+		public void SetStream(cudaStream_t stream) {
+			CheckStatus(API.cudnnSetStream(handle, stream));
+		}
+
+		public cudaStream_t GetStream() {
+			cudaStream_t stream = IntPtr.Zero;
+			CheckStatus(API.cudnnGetStream(handle, ref stream));
+			return stream;
+		}
+
+		public cudnnTensorDescriptor_t CreateTensorDescriptor() {
+			cudnnTensorDescriptor_t tensorDesc = IntPtr.Zero;
+			CheckStatus(API.cudnnCreateTensorDescriptor(ref tensorDesc));
+			return tensorDesc;
+		}
+
+		public void SetTensor4dDescriptor(cudnnTensorDescriptor_t tensorDesc, cudnnTensorFormat_t format, cudnnDataType_t dataType, int n, int c, int h, int w) {
+			CheckStatus(API.cudnnSetTensor4dDescriptor(tensorDesc, format, dataType, n, c, h, w));
+		}
+
+		public void SetTensor4dDescriptorEx(cudnnTensorDescriptor_t tensorDesc, cudnnDataType_t dataType, int n, int c, int h, int w, int nStride, int cStride, int hStride, int wStride) {
+			CheckStatus(API.cudnnSetTensor4dDescriptorEx(tensorDesc, dataType, n, c, h, w, nStride, cStride, hStride, wStride));
+		}
+
+		public void GetTensor4dDescriptor() {
+			NotImplemented("GetTensor4dDescriptor");
+		}
+
+		public void SetTensorNdDescriptor() {
+			NotImplemented("SetTensorNdDescriptor");
+		}
+
+		public void SetTensorNdDescriptorEx() {
+			NotImplemented("SetTensorNdDescriptorEx");
+		}
+
+		public void GetTensorNdDescriptor() {
+			NotImplemented("GetTensorNdDescriptor");
+		}
+
+		public size_t GetTensorSizeInBytes(cudnnTensorDescriptor_t tensorDesc) {
+			size_t size = 0;
+			CheckStatus(API.cudnnGetTensorSizeInBytes(tensorDesc, ref size));
+			return size;
+		}
+
+		public void DestroyTensorDescriptor(cudnnTensorDescriptor_t tensorDesc) {
+			CheckStatus(API.cudnnDestroyTensorDescriptor(tensorDesc));
+		}
+
+		public void TransformTensor() {
+			NotImplemented("TransformTensor");
+		}
+
+		public void AddTensor() {
+			NotImplemented("AddTensor");
+		}
+
+		public void CreateOpTensorDescriptor() {
+			NotImplemented("CreateOpTensorDescriptor");
+		}
+
+		public void SetOpTensorDescriptor() {
+			NotImplemented("SetOpTensorDescriptor");
+		}
+
+		public void GetOpTensorDescriptor() {
+			NotImplemented("GetOpTensorDescriptor");
+		}
+
+		public void DestroyOpTensorDescriptor() {
+			NotImplemented("DestroyOpTensorDescriptor");
+		}
+
+		public void OpTensor() {
+			NotImplemented("OpTensor");
+		}
+
+		public void CreateReduceTensorDescriptor() {
+			NotImplemented("CreateReduceTensorDescriptor");
+		}
+
+		public void SetReduceTensorDescriptor() {
+			NotImplemented("SetReduceTensorDescriptor");
+		}
+
+		public void GetReduceTensorDescriptor() {
+			NotImplemented("GetReduceTensorDescriptor");
+		}
+
+		public void DestroyReduceTensorDescriptor() {
+			NotImplemented("DestroyReduceTensorDescriptor");
+		}
+
+		public void GetReductionIndicesSize() {
+			NotImplemented("GetReductionIndicesSize");
+		}
+
+		public void GetReductionWorkspaceSize() {
+			NotImplemented("GetReductionWorkspaceSize");
+		}
+
+		public void ReduceTensor() {
+			NotImplemented("ReduceTensor");
+		}
+
+		public void SetTensor() {
+			NotImplemented("SetTensor");
+		}
+
+		public void ScaleTensor() {
+			NotImplemented("ScaleTensor");
+		}
+
+		public void CreateFilterDescriptor() {
+			NotImplemented("CreateFilterDescriptor");
+		}
+
+		public void SetFilter4dDescriptor() {
+			NotImplemented("SetFilter4dDescriptor");
+		}
+
+		public void GetFilter4dDescriptor() {
+			NotImplemented("GetFilter4dDescriptor");
+		}
+
+		public void SetFilterNdDescriptor() {
+			NotImplemented("SetFilterNdDescriptor");
+		}
+
+		public void GetFilterNdDescriptor() {
+			NotImplemented("GetFilterNdDescriptor");
+		}
+
+		public void DestroyFilterDescriptor() {
+			NotImplemented("DestroyFilterDescriptor");
+		}
+
+		public void CreateConvolutionDescriptor() {
+			NotImplemented("CreateConvolutionDescriptor");
+		}
+
+		public void SetConvolution2dDescriptor() {
+			NotImplemented("SetConvolution2dDescriptor");
+		}
+
+		public void GetConvolution2dDescriptor() {
+			NotImplemented("GetConvolution2dDescriptor");
+		}
+
+		public void GetConvolution2dForwardOutputDim() {
+			NotImplemented("GetConvolution2dForwardOutputDim");
+		}
+
+		public void SetConvolutionNdDescriptor() {
+			NotImplemented("SetConvolutionNdDescriptor");
+		}
+
+		public void GetConvolutionNdDescriptor() {
+			NotImplemented("GetConvolutionNdDescriptor");
+		}
+
+		public void GetConvolutionNdForwardOutputDim() {
+			NotImplemented("GetConvolutionNdForwardOutputDim");
+		}
+
+		public void DestroyConvolutionDescriptor() {
+			NotImplemented("DestroyConvolutionDescriptor");
+		}
+
+		public void FindConvolutionForwardAlgorithm() {
+			NotImplemented("FindConvolutionForwardAlgorithm");
+		}
+
+		public void FindConvolutionForwardAlgorithmEx() {
+			NotImplemented("FindConvolutionForwardAlgorithmEx");
+		}
+
+		public void GetConvolutionForwardAlgorithm() {
+			NotImplemented("GetConvolutionForwardAlgorithm");
+		}
+
+		public void GetConvolutionForwardWorkspaceSize() {
+			NotImplemented("GetConvolutionForwardWorkspaceSize");
+		}
+
+		public void ConvolutionForward() {
+			NotImplemented("ConvolutionForward");
+		}
+
+		public void ConvolutionBiasActivationForward() {
+			NotImplemented("ConvolutionBiasActivationForward");
+		}
+
+		public void ConvolutionBackwardBias() {
+			NotImplemented("ConvolutionBackwardBias");
+		}
+
+		public void FindConvolutionBackwardFilterAlgorithm() {
+			NotImplemented("FindConvolutionBackwardFilterAlgorithm");
+		}
+
+		public void FindConvolutionBackwardFilterAlgorithmEx() {
+			NotImplemented("FindConvolutionBackwardFilterAlgorithmEx");
+		}
+
+		public void GetConvolutionBackwardFilterAlgorithm() {
+			NotImplemented("GetConvolutionBackwardFilterAlgorithm");
+		}
+
+		public void GetConvolutionBackwardFilterWorkspaceSize() {
+			NotImplemented("GetConvolutionBackwardFilterWorkspaceSize");
+		}
+
+		public void ConvolutionBackwardFilter() {
+			NotImplemented("ConvolutionBackwardFilter");
+		}
+
+		public void FindConvolutionBackwardDataAlgorithm() {
+			NotImplemented("FindConvolutionBackwardDataAlgorithm");
+		}
+
+		public void FindConvolutionBackwardDataAlgorithmEx() {
+			NotImplemented("FindConvolutionBackwardDataAlgorithmEx");
+		}
+
+		public void GetConvolutionBackwardDataAlgorithm() {
+			NotImplemented("GetConvolutionBackwardDataAlgorithm");
+		}
+
+		public void GetConvolutionBackwardDataWorkspaceSize() {
+			NotImplemented("GetConvolutionBackwardDataWorkspaceSize");
+		}
+
+		public void ConvolutionBackwardData() {
+			NotImplemented("ConvolutionBackwardData");
+		}
+
+		public void Im2Col() {
+			NotImplemented("Im2Col");
+		}
+
+		public void SoftmaxForward() {
+			NotImplemented("SoftmaxForward");
+		}
+
+		public void SoftmaxBackward() {
+			NotImplemented("SoftmaxBackward");
+		}
+
+		public void CreatePoolingDescriptor() {
+			NotImplemented("CreatePoolingDescriptor");
+		}
+
+		public void SetPooling2dDescriptor() {
+			NotImplemented("SetPooling2dDescriptor");
+		}
+
+		public void GetPooling2dDescriptor() {
+			NotImplemented("GetPooling2dDescriptor");
+		}
+
+		public void SetPoolingNdDescriptor() {
+			NotImplemented("SetPoolingNdDescriptor");
+		}
+
+		public void GetPoolingNdDescriptor() {
+			NotImplemented("GetPoolingNdDescriptor");
+		}
+
+		public void GetPoolingNdForwardOutputDim() {
+			NotImplemented("GetPoolingNdForwardOutputDim");
+		}
+
+		public void GetPooling2dForwardOutputDim() {
+			NotImplemented("GetPooling2dForwardOutputDim");
+		}
+
+		public void DestroyPoolingDescriptor() {
+			NotImplemented("DestroyPoolingDescriptor");
+		}
+
+		public void PoolingForward() {
+			NotImplemented("PoolingForward");
+		}
+
+		public void PoolingBackward() {
+			NotImplemented("PoolingBackward");
+		}
+
+		public void CreateActivationDescriptor() {
+			NotImplemented("CreateActivationDescriptor");
+		}
+
+		public void SetActivationDescriptor() {
+			NotImplemented("SetActivationDescriptor");
+		}
+
+		public void GetActivationDescriptor() {
+			NotImplemented("GetActivationDescriptor");
+		}
+
+		public void DestroyActivationDescriptor() {
+			NotImplemented("DestroyActivationDescriptor");
+		}
+
+		public void ActivationForward() {
+			NotImplemented("ActivationForward");
+		}
+
+		public void ActivationBackward() {
+			NotImplemented("ActivationBackward");
+		}
+
+		public void CreateLRNDescriptor() {
+			NotImplemented("CreateLRNDescriptor");
+		}
+
+		public void SetLRNDescriptor() {
+			NotImplemented("SetLRNDescriptor");
+		}
+
+		public void GetLRNDescriptor() {
+			NotImplemented("GetLRNDescriptor");
+		}
+
+		public void DestroyLRNDescriptor() {
+			NotImplemented("DestroyLRNDescriptor");
+		}
+
+		public void LRNCrossChannelForward() {
+			NotImplemented("LRNCrossChannelForward");
+		}
+
+		public void LRNCrossChannelBackward() {
+			NotImplemented("LRNCrossChannelBackward");
+		}
+
+		public void DivisiveNormalizationForward() {
+			NotImplemented("DivisiveNormalizationForward");
+		}
+
+		public void DivisiveNormalizationBackward() {
+			NotImplemented("DivisiveNormalizationBackward");
+		}
+
+		public void DeriveBNTensorDescriptor() {
+			NotImplemented("DeriveBNTensorDescriptor");
+		}
+
+		public void BatchNormalizationForwardTraining() {
+			NotImplemented("BatchNormalizationForwardTraining");
+		}
+
+		public void BatchNormalizationForwardInference() {
+			NotImplemented("BatchNormalizationForwardInference");
+		}
+
+		public void BatchNormalizationBackward() {
+			NotImplemented("BatchNormalizationBackward");
+		}
+
+		public void CreateSpatialTransformerDescriptor() {
+			NotImplemented("CreateSpatialTransformerDescriptor");
+		}
+
+		public void SetSpatialTransformerNdDescriptor() {
+			NotImplemented("SetSpatialTransformerNdDescriptor");
+		}
+
+		public void DestroySpatialTransformerDescriptor() {
+			NotImplemented("DestroySpatialTransformerDescriptor");
+		}
+
+		public void SpatialTfGridGeneratorForward() {
+			NotImplemented("SpatialTfGridGeneratorForward");
+		}
+
+		public void SpatialTfGridGeneratorBackward() {
+			NotImplemented("SpatialTfGridGeneratorBackward");
+		}
+
+		public void SpatialTfSamplerForward() {
+			NotImplemented("SpatialTfSamplerForward");
+		}
+
+		public void SpatialTfSamplerBackward() {
+			NotImplemented("SpatialTfSamplerBackward");
+		}
+
+		public void CreateDropoutDescriptor() {
+			NotImplemented("CreateDropoutDescriptor");
+		}
+
+		public void DestroyDropoutDescriptor() {
+			NotImplemented("DestroyDropoutDescriptor");
+		}
+
+		public void DropoutGetStatesSize() {
+			NotImplemented("DropoutGetStatesSize");
+		}
+
+		public void DropoutGetReserveSpaceSize() {
+			NotImplemented("DropoutGetReserveSpaceSize");
+		}
+
+		public void SetDropoutDescriptor() {
+			NotImplemented("SetDropoutDescriptor");
+		}
+
+		public void DropoutForward() {
+			NotImplemented("DropoutForward");
+		}
+
+		public void DropoutBackward() {
+			NotImplemented("DropoutBackward");
+		}
+
+		public void CreateRNNDescriptor() {
+			NotImplemented("CreateRNNDescriptor");
+		}
+
+		public void CreatePersistentRNNPlan() {
+			NotImplemented("CreatePersistentRNNPlan");
+		}
+
+		public void SetPersistentRNNPlan() {
+			NotImplemented("SetPersistentRNNPlan");
+		}
+
+		public void DestroyPersistentRNNPlan() {
+			NotImplemented("DestroyPersistentRNNPlan");
+		}
+
+		public void SetRNNDescriptor_v6() {
+			NotImplemented("SetRNNDescriptor_v6");
+		}
+
+		public void SetRNNDescriptor() {
+			NotImplemented("SetRNNDescriptor");
+		}
+
+		public void GetRNNWorkspaceSize() {
+			NotImplemented("GetRNNWorkspaceSize");
+		}
+
+		public void GetRNNTrainingReserveSize() {
+			NotImplemented("GetRNNTrainingReserveSize");
+		}
+
+		public void GetRNNParamsSize() {
+			NotImplemented("GetRNNParamsSize");
+		}
+
+		public void GetRNNLinLayerMatrixParams() {
+			NotImplemented("GetRNNLinLayerMatrixParams");
+		}
+
+		public void GetRNNLinLayerBiasParams() {
+			NotImplemented("GetRNNLinLayerBiasParams");
+		}
+
+		public void RNNForwardInference() {
+			NotImplemented("RNNForwardInference");
+		}
+
+		public void RNNForwardTraining() {
+			NotImplemented("RNNForwardTraining");
+		}
+
+		public void RNNBackwardData() {
+			NotImplemented("RNNBackwardData");
+		}
+
+		public void RNNBackwardWeights() {
+			NotImplemented("RNNBackwardWeights");
+		}
+
+		public void SetConvolution2dDescriptor_v4() {
+			NotImplemented("SetConvolution2dDescriptor_v4");
+		}
+
+		public void SetConvolution2dDescriptor_v5() {
+			NotImplemented("SetConvolution2dDescriptor_v5");
+		}
+
+		public void GetConvolution2dDescriptor_v4() {
+			NotImplemented("GetConvolution2dDescriptor_v4");
+		}
+
+		public void GetConvolution2dDescriptor_v5() {
+			NotImplemented("GetConvolution2dDescriptor_v5");
+		}
+
+
+		public static string GetErrorString(cudnnStatus status) {
+			IntPtr ptr = API.cudnnGetErrorString(status);
+			return Marshal.PtrToStringAnsi(ptr);
+		}
+
+		public static int GetProperty(libraryPropertyType type) {
+			int value = 0;
+			CheckStatus(API.cudnnGetProperty(type, ref value));
+			return value;
+		}
+
+		public static long GetVersion() {
+			return API.cudnnGetVersion();
+		}
+
+		public static long GetCudartVersion() {
+			return API.cudnnGetCudartVersion();
+		}
+
+		static void CheckStatus(cudnnStatus status) {
+			if (status != cudnnStatus.CUDNN_STATUS_SUCCESS) {
+				throw new Exception(status.ToString());
+			}
+		}
+
+		void NotImplemented(string message) {
+			throw new NotImplementedException(message);
+		}
 	}
 
 	/// <summary>

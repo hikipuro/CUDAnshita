@@ -565,6 +565,7 @@ namespace CUDAnshita {
 				cudaStream_t stream
 			);
 		}
+
 		// ----- C# Interface
 
 		IntPtr generator = IntPtr.Zero;

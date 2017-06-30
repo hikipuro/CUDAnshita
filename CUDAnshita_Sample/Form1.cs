@@ -26,6 +26,7 @@ extern ""C"" __global__ void addKernel(int *c, const int *a, const int *b) {
 			//TestCuRAND();
 			//TestCuBLAS();
 			//TestMatrix();
+			//TestCuDNN();
 		}
 
 		private void TestCompile() {
@@ -143,6 +144,13 @@ extern ""C"" __global__ void addKernel(int *c, const int *a, const int *b) {
 				matrixTest = new MatrixTest();
 			}
 			matrixTest.Test();
+		}
+
+		private void TestCuDNN() {
+			cuDNN6 cudnn = new cuDNN6();
+			Console.WriteLine("cudnnGetVersion: {0}", cuDNN6.GetVersion());
+			Console.WriteLine("cudnnGetCudartVersion: {0}", cuDNN6.GetCudartVersion());
+			Console.WriteLine("cudnnGetErrorString: {0}", cuDNN6.GetErrorString(cudnnStatus.CUDNN_STATUS_SUCCESS));
 		}
 	}
 }
