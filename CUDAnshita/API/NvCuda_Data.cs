@@ -93,7 +93,7 @@ namespace CUDAnshita {
 		/// <summary>
 		/// Deprecated, use CUDA_ARRAY3D_LAYERED
 		/// </summary>
-		[Obsolete]
+		[Obsolete("use CUDA_ARRAY3D_LAYERED")]
 		public const int CUDA_ARRAY3D_2DARRAY = 0x01;
 
 		/// <summary>
@@ -268,6 +268,7 @@ namespace CUDAnshita {
 		/// \deprecated This flag was deprecated as of CUDA 4.0
 		/// and was replaced with ::CU_CTX_SCHED_BLOCKING_SYNC.
 		/// </summary>
+		[Obsolete("This flag was deprecated as of CUDA 4.0")]
 		CU_CTX_BLOCKING_SYNC = 0x04,
 
 		CU_CTX_SCHED_MASK = 0x07,
@@ -514,6 +515,7 @@ namespace CUDAnshita {
 		/// <summary>
 		/// Deprecated, use CU_DEVICE_ATTRIBUTE_MAX_SHARED_MEMORY_PER_BLOCK
 		/// </summary>
+		[Obsolete("use CU_DEVICE_ATTRIBUTE_MAX_SHARED_MEMORY_PER_BLOCK")]
 		CU_DEVICE_ATTRIBUTE_SHARED_MEMORY_PER_BLOCK = 8,            
 		/// <summary>
 		/// Memory available on device for __constant__ variables in a CUDA C kernel in bytes
@@ -534,6 +536,7 @@ namespace CUDAnshita {
 		/// <summary>
 		/// Deprecated, use CU_DEVICE_ATTRIBUTE_MAX_REGISTERS_PER_BLOCK
 		/// </summary>
+		[Obsolete("use CU_DEVICE_ATTRIBUTE_MAX_REGISTERS_PER_BLOCK")]
 		CU_DEVICE_ATTRIBUTE_REGISTERS_PER_BLOCK = 12,               
 		/// <summary>
 		/// Typical clock frequency in kilohertz
@@ -546,6 +549,7 @@ namespace CUDAnshita {
 		/// <summary>
 		/// Device can possibly copy memory and execute a kernel concurrently. Deprecated. Use instead CU_DEVICE_ATTRIBUTE_ASYNC_ENGINE_COUNT.
 		/// </summary>
+		[Obsolete("Use instead CU_DEVICE_ATTRIBUTE_ASYNC_ENGINE_COUNT")]
 		CU_DEVICE_ATTRIBUTE_GPU_OVERLAP = 15,                       
 		/// <summary>
 		/// Number of multiprocessors on device
@@ -606,14 +610,17 @@ namespace CUDAnshita {
 		/// <summary>
 		/// Deprecated, use CU_DEVICE_ATTRIBUTE_MAXIMUM_TEXTURE2D_LAYERED_WIDTH
 		/// </summary>
+		[Obsolete("use CU_DEVICE_ATTRIBUTE_MAXIMUM_TEXTURE2D_LAYERED_WIDTH")]
 		CU_DEVICE_ATTRIBUTE_MAXIMUM_TEXTURE2D_ARRAY_WIDTH = 27,     
 		/// <summary>
 		/// Deprecated, use CU_DEVICE_ATTRIBUTE_MAXIMUM_TEXTURE2D_LAYERED_HEIGHT
 		/// </summary>
+		[Obsolete("use CU_DEVICE_ATTRIBUTE_MAXIMUM_TEXTURE2D_LAYERED_HEIGHT")]
 		CU_DEVICE_ATTRIBUTE_MAXIMUM_TEXTURE2D_ARRAY_HEIGHT = 28,    
 		/// <summary>
 		/// Deprecated, use CU_DEVICE_ATTRIBUTE_MAXIMUM_TEXTURE2D_LAYERED_LAYERS
 		/// </summary>
+		[Obsolete("use CU_DEVICE_ATTRIBUTE_MAXIMUM_TEXTURE2D_LAYERED_LAYERS")]
 		CU_DEVICE_ATTRIBUTE_MAXIMUM_TEXTURE2D_ARRAY_NUMSLICES = 29, 
 		/// <summary>
 		/// Alignment requirement for surfaces
@@ -674,6 +681,7 @@ namespace CUDAnshita {
 		/// <summary>
 		/// Deprecated, do not use.
 		/// </summary>
+		[Obsolete("Deprecated, do not use")]
 		CU_DEVICE_ATTRIBUTE_CAN_TEX2D_GATHER = 44,                  
 		/// <summary>
 		/// Maximum 2D texture width if CUDA_ARRAY3D_TEXTURE_GATHER is set
@@ -1575,6 +1583,7 @@ namespace CUDAnshita {
 		/// to attempt to enable/disable the profiling via ::cuProfilerStart or
 		/// ::cuProfilerStop without initialization.
 		/// </summary>
+		[Obsolete("This error return is deprecated as of CUDA 5.0")]
 		CUDA_ERROR_PROFILER_NOT_INITIALIZED = 6,
 
 		/// <summary>
@@ -1582,6 +1591,7 @@ namespace CUDAnshita {
 		/// This error return is deprecated as of CUDA 5.0. It is no longer an error
 		/// to call cuProfilerStart() when profiling is already enabled.
 		/// </summary>
+		[Obsolete("This error return is deprecated as of CUDA 5.0")]
 		CUDA_ERROR_PROFILER_ALREADY_STARTED = 7,
 
 		/// <summary>
@@ -1589,6 +1599,7 @@ namespace CUDAnshita {
 		/// This error return is deprecated as of CUDA 5.0. It is no longer an error
 		/// to call cuProfilerStop() when profiling is already disabled.
 		/// </summary>
+		[Obsolete("This error return is deprecated as of CUDA 5.0")]
 		CUDA_ERROR_PROFILER_ALREADY_STOPPED = 8,
 
 		/// <summary>
@@ -1627,6 +1638,7 @@ namespace CUDAnshita {
 		/// This error return is deprecated as of CUDA 3.2. It is no longer an
 		/// error to attempt to push the active context via ::cuCtxPushCurrent().
 		/// </summary>
+		[Obsolete("This error return is deprecated as of CUDA 3.2")]
 		CUDA_ERROR_CONTEXT_ALREADY_CURRENT = 202,
 
 		/// <summary>

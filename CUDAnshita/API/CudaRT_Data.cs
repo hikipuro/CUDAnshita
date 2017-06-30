@@ -2,54 +2,235 @@
 using System.Runtime.InteropServices;
 
 namespace CUDAnshita {
-	using System.Text;
 	using cudaArray_t = IntPtr;
+	using cudaStream_t = IntPtr;
 	using cudaMipmappedArray_t = IntPtr;
 	using size_t = Int64;
 
 	public partial class Defines {
 		public const int CUDA_EGL_MAX_PLANES = 3;
 		public const int CUDA_IPC_HANDLE_SIZE = 64;
-		public const int cudaArrayCubemap = 0x04;
-		public const int cudaArrayDefault = 0x00;
-		public const int cudaArrayLayered = 0x01;
-		public const int cudaArraySurfaceLoadStore = 0x02;
-		public const int cudaArrayTextureGather = 0x08;
-		public const int cudaCpuDeviceId = ((int)-1);
-		public const int cudaDeviceBlockingSync = 0x04;
-		public const int cudaDeviceLmemResizeToMax = 0x10;
-		public const int cudaDeviceMapHost = 0x08;
-		public const int cudaDeviceMask = 0x1f;
+
 		//public const int cudaDevicePropDontCare;
-		public const int cudaDeviceScheduleAuto = 0x00;
-		public const int cudaDeviceScheduleBlockingSync = 0x04;
-		public const int cudaDeviceScheduleMask = 0x07;
-		public const int cudaDeviceScheduleSpin = 0x01;
-		public const int cudaDeviceScheduleYield = 0x02;
-		public const int cudaEventBlockingSync = 0x01;
-		public const int cudaEventDefault = 0x00;
-		public const int cudaEventDisableTiming = 0x02;
-		public const int cudaEventInterprocess = 0x04;
+
+		/// <summary>
+		/// Default page-locked allocation flag
+		/// </summary>
 		public const int cudaHostAllocDefault = 0x00;
-		public const int cudaHostAllocMapped = 0x02;
+
+		/// <summary>
+		/// Pinned memory accessible by all CUDA contexts
+		/// </summary>
 		public const int cudaHostAllocPortable = 0x01;
+
+		/// <summary>
+		/// Map allocation into device space
+		/// </summary>
+		public const int cudaHostAllocMapped = 0x02;
+
+		/// <summary>
+		/// Write-combined memory
+		/// </summary>
 		public const int cudaHostAllocWriteCombined = 0x04;
+
+
+		/// <summary>
+		/// Default host memory registration flag
+		/// </summary>
 		public const int cudaHostRegisterDefault = 0x00;
-		public const int cudaHostRegisterIoMemory = 0x04;
-		public const int cudaHostRegisterMapped = 0x02;
+
+		/// <summary>
+		/// Pinned memory accessible by all CUDA contexts
+		/// </summary>
 		public const int cudaHostRegisterPortable = 0x01;
-		public const int cudaInvalidDeviceId = ((int)-2);
-		public const int cudaIpcMemLazyEnablePeerAccess = 0x01;
-		public const int cudaMemAttachGlobal = 0x01;
-		public const int cudaMemAttachHost = 0x02;
-		public const int cudaMemAttachSingle = 0x04;
-		public const int cudaOccupancyDefault = 0x00;
-		public const int cudaOccupancyDisableCachingOverride = 0x01;
+
+		/// <summary>
+		/// Map registered memory into device space
+		/// </summary>
+		public const int cudaHostRegisterMapped = 0x02;
+
+		/// <summary>
+		/// Memory-mapped I/O space
+		/// </summary>
+		public const int cudaHostRegisterIoMemory = 0x04;
+
+
+		/// <summary>
+		/// Default peer addressing enable flag
+		/// </summary>
 		public const int cudaPeerAccessDefault = 0x00;
+
+		/// <summary>
+		/// Default stream flag
+		/// </summary>
 		public const int cudaStreamDefault = 0x00;
-		//public const int cudaStreamLegacy = ((cudaStream_t)0x1);
+
+		/// <summary>
+		/// Stream does not synchronize with stream 0 (the NULL stream)
+		/// </summary>
 		public const int cudaStreamNonBlocking = 0x01;
-		//public const int cudaStreamPerThread = ((cudaStream_t)0x2);
+
+		/// <summary>
+		/// Legacy stream handle
+		/// </summary>
+		/// <remarks>
+		/// Stream handle that can be passed as a cudaStream_t to use an implicit stream
+		/// with legacy synchronization behavior.
+		///
+		/// See details of the \link_sync_behavior
+		/// </remarks>
+		public readonly cudaStream_t cudaStreamLegacy = new IntPtr(0x1);
+
+		/// <summary>
+		/// Per-thread stream handle
+		/// </summary>
+		/// <remarks>
+		/// Stream handle that can be passed as a cudaStream_t to use an implicit stream
+		/// with per-thread synchronization behavior.
+		///
+		/// See details of the \link_sync_behavior
+		/// </remarks>
+		public readonly cudaStream_t cudaStreamPerThread = new IntPtr(0x2);
+
+
+		/// <summary>
+		/// Default event flag
+		/// </summary>
+		public const int cudaEventDefault = 0x00;
+
+		/// <summary>
+		/// Event uses blocking synchronization
+		/// </summary>
+		public const int cudaEventBlockingSync = 0x01;
+
+		/// <summary>
+		/// Event will not record timing data
+		/// </summary>
+		public const int cudaEventDisableTiming = 0x02;
+
+		/// <summary>
+		/// Event is suitable for interprocess use. cudaEventDisableTiming must be set
+		/// </summary>
+		public const int cudaEventInterprocess = 0x04;
+
+
+		/// <summary>
+		/// Device flag - Automatic scheduling
+		/// </summary>
+		public const int cudaDeviceScheduleAuto = 0x00;
+
+		/// <summary>
+		/// Device flag - Spin default scheduling
+		/// </summary>
+		public const int cudaDeviceScheduleSpin = 0x01;
+
+		/// <summary>
+		/// Device flag - Yield default scheduling
+		/// </summary>
+		public const int cudaDeviceScheduleYield = 0x02;
+
+		/// <summary>
+		/// Device flag - Use blocking synchronization
+		/// </summary>
+		public const int cudaDeviceScheduleBlockingSync = 0x04;
+
+		/// <summary>
+		/// Device flag - Use blocking synchronization
+		/// \deprecated This flag was deprecated as of CUDA 4.0 and
+		/// replaced with ::cudaDeviceScheduleBlockingSync.
+		/// </summary>
+		[Obsolete("This flag was deprecated as of CUDA 4.0")]
+		public const int cudaDeviceBlockingSync = 0x04;
+
+		/// <summary>
+		/// Device schedule flags mask
+		/// </summary>
+		public const int cudaDeviceScheduleMask = 0x07;
+
+		/// <summary>
+		/// Device flag - Support mapped pinned allocations
+		/// </summary>
+		public const int cudaDeviceMapHost = 0x08;
+
+		/// <summary>
+		/// Device flag - Keep local memory allocation after launch
+		/// </summary>
+		public const int cudaDeviceLmemResizeToMax = 0x10;
+
+		/// <summary>
+		/// Device flags mask
+		/// </summary>
+		public const int cudaDeviceMask = 0x1f;
+
+
+		/// <summary>
+		/// Default CUDA array allocation flag
+		/// </summary>
+		public const int cudaArrayDefault = 0x00;
+
+		/// <summary>
+		/// Must be set in cudaMalloc3DArray to create a layered CUDA array
+		/// </summary>
+		public const int cudaArrayLayered = 0x01;
+
+		/// <summary>
+		/// Must be set in cudaMallocArray or cudaMalloc3DArray in order to bind surfaces to the CUDA array
+		/// </summary>
+		public const int cudaArraySurfaceLoadStore = 0x02;
+
+		/// <summary>
+		/// Must be set in cudaMalloc3DArray to create a cubemap CUDA array
+		/// </summary>
+		public const int cudaArrayCubemap = 0x04;
+
+		/// <summary>
+		/// Must be set in cudaMallocArray or cudaMalloc3DArray in order to perform texture gather operations on the CUDA array
+		/// </summary>
+		public const int cudaArrayTextureGather = 0x08;
+
+
+		/// <summary>
+		/// Automatically enable peer access between remote devices as needed
+		/// </summary>
+		public const int cudaIpcMemLazyEnablePeerAccess = 0x01;
+
+
+		/// <summary>
+		/// Memory can be accessed by any stream on any device
+		/// </summary>
+		public const int cudaMemAttachGlobal = 0x01;
+
+		/// <summary>
+		/// Memory cannot be accessed by any stream on any device
+		/// </summary>
+		public const int cudaMemAttachHost = 0x02;
+
+		/// <summary>
+		/// Memory can only be accessed by a single stream on the associated device
+		/// </summary>
+		public const int cudaMemAttachSingle = 0x04;
+
+
+		/// <summary>
+		/// Default behavior
+		/// </summary>
+		public const int cudaOccupancyDefault = 0x00;
+
+		/// <summary>
+		/// Assume global caching is enabled and cannot be automatically turned off
+		/// </summary>
+		public const int cudaOccupancyDisableCachingOverride = 0x01;
+
+
+		/// <summary>
+		/// Device id that represents the CPU
+		/// </summary>
+		public const int cudaCpuDeviceId = ((int)-1);
+
+		/// <summary>
+		/// Device id that represents an invalid device
+		/// </summary>
+		public const int cudaInvalidDeviceId = ((int)-2);
 	}
 
 	/// <summary>

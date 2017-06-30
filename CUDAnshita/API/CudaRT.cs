@@ -237,15 +237,15 @@ namespace CUDAnshita {
 
 			// ----- Execution Control [DEPRECATED]
 
-			[Obsolete]
+			[Obsolete("This function is deprecated as of CUDA 7.0")]
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaConfigureCall(dim3 gridDim, dim3 blockDim, size_t sharedMem, cudaStream_t stream);
 
-			[Obsolete]
+			[Obsolete("This function is deprecated as of CUDA 7.0")]
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaLaunch(IntPtr func);
 
-			[Obsolete]
+			[Obsolete("This function is deprecated as of CUDA 7.0")]
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaSetupArgument(IntPtr arg, size_t size, size_t offset);
 
@@ -1070,6 +1070,160 @@ namespace CUDAnshita {
 			cudaFuncAttributes attr = new cudaFuncAttributes();
 			CheckStatus(API.cudaFuncGetAttributes(ref attr, func));
 			return attr;
+		}
+
+		public static void FuncSetCacheConfig(IntPtr func, cudaFuncCache cacheConfig) {
+			CheckStatus(API.cudaFuncSetCacheConfig(func, cacheConfig));
+		}
+
+		public static void FuncSetSharedMemConfig(IntPtr func, cudaSharedMemConfig config) {
+			CheckStatus(API.cudaFuncSetSharedMemConfig(func, config));
+		}
+
+		public static void LaunchKernel(IntPtr func, dim3 gridDim, dim3 blockDim, IntPtr args, size_t sharedMem, cudaStream_t stream) {
+			CheckStatus(API.cudaLaunchKernel(func, gridDim, blockDim, ref args, sharedMem, stream));
+		}
+
+		[Obsolete("This function is deprecated as of CUDA 7.5")]
+		public static void SetDoubleForDevice(double d) {
+			CheckStatus(API.cudaSetDoubleForDevice(ref d));
+		}
+
+		[Obsolete("This function is deprecated as of CUDA 7.5")]
+		public static void SetDoubleForHost(double d) {
+			CheckStatus(API.cudaSetDoubleForHost(ref d));
+		}
+
+		public static int OccupancyMaxActiveBlocksPerMultiprocessor(IntPtr func, int blockSize, size_t dynamicSMemSize) {
+			int numBlocks = 0;
+			CheckStatus(API.cudaOccupancyMaxActiveBlocksPerMultiprocessor(ref numBlocks, func, blockSize, dynamicSMemSize));
+			return numBlocks;
+		}
+
+		public static int OccupancyMaxActiveBlocksPerMultiprocessorWithFlags(IntPtr func, int blockSize, size_t dynamicSMemSize, uint flags) {
+			int numBlocks = 0;
+			CheckStatus(API.cudaOccupancyMaxActiveBlocksPerMultiprocessorWithFlags(ref numBlocks, func, blockSize, dynamicSMemSize, flags));
+			return numBlocks;
+		}
+
+		[Obsolete("This function is deprecated as of CUDA 7.0")]
+		public static void ConfigureCall(dim3 gridDim, dim3 blockDim, size_t sharedMem, cudaStream_t stream) {
+			CheckStatus(API.cudaConfigureCall(gridDim, blockDim, sharedMem, stream));
+		}
+
+		[Obsolete("This function is deprecated as of CUDA 7.0")]
+		public static void Launch(IntPtr func) {
+			CheckStatus(API.cudaLaunch(func));
+		}
+
+		[Obsolete("This function is deprecated as of CUDA 7.0")]
+		public static void SetupArgument(IntPtr arg, size_t size, size_t offset) {
+			CheckStatus(API.cudaSetupArgument(arg, size, offset));
+		}
+
+		public static void ArrayGetInfo(cudaArray_t array) {
+			cudaChannelFormatDesc desc = new cudaChannelFormatDesc();
+			cudaExtent extent = new cudaExtent();
+			uint flags = 0;
+			CheckStatus(API.cudaArrayGetInfo(ref desc, ref extent, ref flags, array));
+		}
+
+		public static void Free(IntPtr devPtr) {
+			CheckStatus(API.cudaFree(devPtr));
+		}
+
+		public static void FreeArray(cudaArray_t array) {
+			CheckStatus(API.cudaFreeArray(array));
+		}
+
+		public static void FreeHost(IntPtr ptr) {
+			CheckStatus(API.cudaFreeHost(ptr));
+		}
+
+		public static void FreeMipmappedArray(cudaMipmappedArray_t mipmappedArray) {
+			CheckStatus(API.cudaFreeMipmappedArray(mipmappedArray));
+		}
+
+		public static cudaArray_t GetMipmappedArrayLevel(cudaMipmappedArray_const_t mipmappedArray, uint level) {
+			cudaArray_t levelArray = IntPtr.Zero;
+			CheckStatus(API.cudaGetMipmappedArrayLevel(ref levelArray, mipmappedArray, level));
+			return levelArray;
+		}
+
+		public static IntPtr GetSymbolAddress(IntPtr symbol) {
+			IntPtr devPtr = IntPtr.Zero;
+			CheckStatus(API.cudaGetSymbolAddress(ref devPtr, symbol));
+			return devPtr;
+		}
+
+		public static size_t GetSymbolSize(IntPtr symbol) {
+			size_t size = 0;
+			CheckStatus(API.cudaGetSymbolSize(ref size, symbol));
+			return size;
+		}
+
+		public static IntPtr HostAlloc(size_t size, uint flags) {
+			IntPtr pHost = IntPtr.Zero;
+			CheckStatus(API.cudaHostAlloc(ref pHost, size, flags));
+			return pHost;
+		}
+
+		public static IntPtr HostGetDevicePointer(IntPtr pHost, uint flags) {
+			IntPtr pDevice = IntPtr.Zero;
+			CheckStatus(API.cudaHostGetDevicePointer(ref pDevice, pHost, flags));
+			return pHost;
+		}
+
+		public static uint HostGetFlags(IntPtr pHost) {
+			uint pFlags = 0;
+			CheckStatus(API.cudaHostGetFlags(ref pFlags, pHost));
+			return pFlags;
+		}
+
+		public static void HostRegister(IntPtr ptr, size_t size, uint flags) {
+			CheckStatus(API.cudaHostRegister(ptr, size, flags));
+		}
+
+		public static void HostUnregister(IntPtr ptr) {
+			CheckStatus(API.cudaHostUnregister(ptr));
+		}
+
+		public static IntPtr Malloc(size_t size) {
+			IntPtr devPtr = IntPtr.Zero;
+			CheckStatus(API.cudaMalloc(ref devPtr, size));
+			return devPtr;
+		}
+
+		public static cudaPitchedPtr Malloc3D(cudaExtent extent) {
+			cudaPitchedPtr pitchedDevPtr = new cudaPitchedPtr();
+			CheckStatus(API.cudaMalloc3D(ref pitchedDevPtr, extent));
+			return pitchedDevPtr;
+		}
+
+		public static cudaArray_t Malloc3DArray(cudaExtent extent, uint flags = 0) {
+			cudaArray_t array = IntPtr.Zero;
+			cudaChannelFormatDesc desc = new cudaChannelFormatDesc();
+			CheckStatus(API.cudaMalloc3DArray(ref array, ref desc, extent, flags));
+			return array;
+		}
+
+		public static cudaArray_t MallocArray(size_t width, size_t height = 0, uint flags = 0) {
+			cudaArray_t array = IntPtr.Zero;
+			cudaChannelFormatDesc desc = new cudaChannelFormatDesc();
+			CheckStatus(API.cudaMallocArray(ref array, ref desc, width, height, flags));
+			return array;
+		}
+
+		public static IntPtr MallocHost(size_t size) {
+			IntPtr ptr = IntPtr.Zero;
+			CheckStatus(API.cudaMallocHost(ref ptr, size));
+			return ptr;
+		}
+
+		public static IntPtr MallocManaged(size_t size, uint flags = Defines.cudaMemAttachGlobal) {
+			IntPtr devPtr = IntPtr.Zero;
+			CheckStatus(API.cudaMallocManaged(ref devPtr, size, flags));
+			return devPtr;
 		}
 
 		public static int DriverGetVersion() {
