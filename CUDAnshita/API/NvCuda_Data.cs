@@ -2594,4 +2594,19 @@ namespace CUDAnshita {
 		/// </summary>
 		CU_RES_VIEW_FORMAT_UNSIGNED_BC7 = 0x22  
 	}
+
+	/// <summary>
+	/// Profiler Output Modes
+	/// </summary>
+	public enum CUoutput_mode {
+		/// <summary>
+		/// Output mode Key-Value pair format.
+		/// </summary>
+		CU_OUT_KEY_VALUE_PAIR = 0x00,
+
+		/// <summary>
+		/// Output mode Comma separated values format.
+		/// </summary>
+		CU_OUT_CSV = 0x01
+	}
 }

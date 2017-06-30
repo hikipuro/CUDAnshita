@@ -725,8 +725,8 @@ namespace CUDAnshita {
 
 			// ----- Profiler Control
 
-			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			//public static extern CUresult cuProfilerInitialize(string configFile, string outputFile, CUoutput_mode outputMode);
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern CUresult cuProfilerInitialize(string configFile, string outputFile, CUoutput_mode outputMode);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern CUresult cuProfilerStart();
@@ -1843,6 +1843,158 @@ namespace CUDAnshita {
 			CUmipmappedArray phMipmappedArray = IntPtr.Zero;
 			CheckStatus(API.cuTexRefGetMipmappedArray(ref phMipmappedArray, hTexRef));
 			return phMipmappedArray;
+		}
+
+		public static size_t TexRefSetAddress(CUtexref hTexRef, CUdeviceptr dptr, size_t bytes) {
+			size_t ByteOffset = 0;
+			CheckStatus(API.cuTexRefSetAddress(ref ByteOffset, hTexRef, dptr, bytes));
+			return ByteOffset;
+		}
+
+		public static void TexRefSetAddress2D(CUtexref hTexRef, CUDA_ARRAY_DESCRIPTOR desc, CUdeviceptr dptr, size_t bytes) {
+			CheckStatus(API.cuTexRefSetAddress2D(hTexRef, ref desc, dptr, bytes));
+		}
+
+		public static void TexRefSetAddressMode(CUtexref hTexRef, int dim, CUaddress_mode am) {
+			CheckStatus(API.cuTexRefSetAddressMode(hTexRef, dim, am));
+		}
+
+		public static void TexRefSetArray(CUtexref hTexRef, CUarray hArray, uint Flags) {
+			CheckStatus(API.cuTexRefSetArray(hTexRef, hArray, Flags));
+		}
+
+		public static void TexRefSetBorderColor(CUtexref hTexRef, float pBorderColor) {
+			CheckStatus(API.cuTexRefSetBorderColor(hTexRef, ref pBorderColor));
+		}
+
+		public static void TexRefSetFilterMode(CUtexref hTexRef, CUfilter_mode fm) {
+			CheckStatus(API.cuTexRefSetFilterMode(hTexRef, fm));
+		}
+
+		public static void TexRefSetFlags(CUtexref hTexRef, uint Flags) {
+			CheckStatus(API.cuTexRefSetFlags(hTexRef, Flags));
+		}
+
+		public static void TexRefSetFormat(CUtexref hTexRef, CUarray_format fmt, int NumPackedComponents) {
+			CheckStatus(API.cuTexRefSetFormat(hTexRef, fmt, NumPackedComponents));
+		}
+
+		public static void TexRefSetMaxAnisotropy(CUtexref hTexRef, uint maxAniso) {
+			CheckStatus(API.cuTexRefSetMaxAnisotropy(hTexRef, maxAniso));
+		}
+
+		public static void TexRefSetMipmapFilterMode(CUtexref hTexRef, CUfilter_mode fm) {
+			CheckStatus(API.cuTexRefSetMipmapFilterMode(hTexRef, fm));
+		}
+
+		public static void TexRefSetMipmapLevelBias(CUtexref hTexRef, float bias) {
+			CheckStatus(API.cuTexRefSetMipmapLevelBias(hTexRef, bias));
+		}
+
+		public static void TexRefSetMipmapLevelClamp(CUtexref hTexRef, float minMipmapLevelClamp, float maxMipmapLevelClamp) {
+			CheckStatus(API.cuTexRefSetMipmapLevelClamp(hTexRef, minMipmapLevelClamp, maxMipmapLevelClamp));
+		}
+
+		public static void TexRefSetMipmappedArray(CUtexref hTexRef, CUmipmappedArray hMipmappedArray, uint Flags) {
+			CheckStatus(API.cuTexRefSetMipmappedArray(hTexRef, hMipmappedArray, Flags));
+		}
+
+		[Obsolete]
+		public static CUtexref TexRefCreate() {
+			CUtexref pTexRef = IntPtr.Zero;
+			CheckStatus(API.cuTexRefCreate(ref pTexRef));
+			return pTexRef;
+		}
+
+		[Obsolete]
+		public static void TexRefDestroy(CUtexref hTexRef) {
+			CheckStatus(API.cuTexRefDestroy(hTexRef));
+		}
+
+		public static CUarray SurfRefGetArray(CUsurfref hSurfRef) {
+			CUarray phArray = IntPtr.Zero;
+			CheckStatus(API.cuSurfRefGetArray(ref phArray, hSurfRef));
+			return phArray;
+		}
+
+		public static void SurfRefSetArray(CUsurfref hSurfRef, CUarray hArray, uint Flags) {
+			CheckStatus(API.cuSurfRefSetArray(hSurfRef, hArray, Flags));
+		}
+
+		//
+
+		public static void SurfObjectDestroy(CUsurfObject surfObject) {
+			CheckStatus(API.cuSurfObjectDestroy(surfObject));
+		}
+
+		//
+
+
+		public static void CtxDisablePeerAccess(CUcontext peerContext) {
+			CheckStatus(API.cuCtxDisablePeerAccess(peerContext));
+		}
+
+		public static void CtxEnablePeerAccess(CUcontext peerContext, uint Flags) {
+			CheckStatus(API.cuCtxEnablePeerAccess(peerContext, Flags));
+		}
+
+		public static int DeviceCanAccessPeer(CUdevice dev, CUdevice peerDev) {
+			int canAccessPeer = 0;
+			CheckStatus(API.cuDeviceCanAccessPeer(ref canAccessPeer, dev, peerDev));
+			return canAccessPeer;
+		}
+
+		public static int DeviceGetP2PAttribute(CUdevice_P2PAttribute attrib, CUdevice srcDevice, CUdevice dstDevice) {
+			int value = 0;
+			CheckStatus(API.cuDeviceGetP2PAttribute(ref value, attrib, srcDevice, dstDevice));
+			return value;
+		}
+
+		public static void GraphicsMapResources(uint count, CUgraphicsResource resources, CUstream hStream) {
+			CheckStatus(API.cuGraphicsMapResources(count, ref resources, hStream));
+		}
+
+		public static CUmipmappedArray GraphicsResourceGetMappedMipmappedArray(CUgraphicsResource resource) {
+			CUmipmappedArray pMipmappedArray = IntPtr.Zero;
+			CheckStatus(API.cuGraphicsResourceGetMappedMipmappedArray(ref pMipmappedArray, resource));
+			return pMipmappedArray;
+		}
+
+		public static CUdeviceptr GraphicsResourceGetMappedPointer(CUgraphicsResource resource) {
+			CUdeviceptr pDevPtr = IntPtr.Zero;
+			size_t pSize = 0;
+			CheckStatus(API.cuGraphicsResourceGetMappedPointer(ref pDevPtr, ref pSize, resource));
+			return pDevPtr;
+		}
+
+		public static void GraphicsResourceSetMapFlags(CUgraphicsResource resource, uint flags) {
+			CheckStatus(API.cuGraphicsResourceSetMapFlags(resource, flags));
+		}
+
+		public static CUarray GraphicsSubResourceGetMappedArray(CUgraphicsResource resource, uint arrayIndex, uint mipLevel) {
+			CUarray pArray = IntPtr.Zero;
+			CheckStatus(API.cuGraphicsSubResourceGetMappedArray(ref pArray, resource, arrayIndex, mipLevel));
+			return pArray;
+		}
+
+		public static void GraphicsUnmapResources(uint count, CUgraphicsResource resources, CUstream hStream) {
+			CheckStatus(API.cuGraphicsUnmapResources(count, ref resources, hStream));
+		}
+
+		public static void GraphicsUnregisterResource(CUgraphicsResource resource) {
+			CheckStatus(API.cuGraphicsUnregisterResource(resource));
+		}
+
+		public static void ProfilerInitialize(string configFile, string outputFile, CUoutput_mode outputMode) {
+			CheckStatus(API.cuProfilerInitialize(configFile, outputFile, outputMode));
+		}
+
+		public static void ProfilerStart() {
+			CheckStatus(API.cuProfilerStart());
+		}
+
+		public static void ProfilerStop() {
+			CheckStatus(API.cuProfilerStop());
 		}
 
 		static void CheckStatus(CUresult status) {
