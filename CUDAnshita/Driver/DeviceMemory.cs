@@ -36,7 +36,7 @@ namespace CUDAnshita {
 
 		public void Remove(string name) {
 			IntPtr ptr = list[name];
-			NvCuda.API.cuMemFree(ptr);
+			NvCuda.MemFree(ptr);
 			list.Remove(name);
 		}
 
@@ -69,10 +69,7 @@ namespace CUDAnshita {
 		}
 
 		private IntPtr _Alloc(int byteSize) {
-			IntPtr ptr = IntPtr.Zero;
-			CUresult result = NvCuda.API.cuMemAlloc(ref ptr, byteSize);
-			CudaException.Check(result, "デバイスメモリの割り当てに失敗しました。");
-			return ptr;
+			return NvCuda.MemAlloc(byteSize);
 		}
 
 		private void _CopyHtoD<T>(IntPtr dest, T[] data) {
@@ -80,16 +77,14 @@ namespace CUDAnshita {
 			IntPtr ptr = Marshal.AllocHGlobal(byteSize);
 			MarshalUtil.Copy<T>(data, 0, ptr, data.Length);
 
-			CUresult result = NvCuda.API.cuMemcpyHtoD(dest, ptr, byteSize);
-			CudaException.Check(result, "メインメモリからデバイスメモリへのコピーに失敗しました。");
+			NvCuda.MemcpyHtoD(dest, ptr, byteSize);
 			Marshal.FreeHGlobal(ptr);
 		}
 
 		private T[] _CopyDtoH<T>(IntPtr src, int count) {
 			int byteSize = Marshal.SizeOf(typeof(T)) * count;
 			IntPtr ptr = Marshal.AllocHGlobal(byteSize);
-			CUresult result = NvCuda.API.cuMemcpyDtoH(ptr, src, byteSize);
-			CudaException.Check(result, "デバイスメモリからメインメモリへのコピーに失敗しました。");
+			NvCuda.MemcpyDtoH(ptr, src, byteSize);
 
 			T[] dest = new T[count];
 			MarshalUtil.Copy<T>(ptr, dest, 0, count);

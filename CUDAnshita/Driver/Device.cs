@@ -1,5 +1,4 @@
-﻿using CUDAnshita.Errors;
-using System;
+﻿using System;
 
 namespace CUDAnshita {
 	public class Device : IDisposable {
@@ -7,32 +6,44 @@ namespace CUDAnshita {
 
 		int device = 0;
 
-		public static int GetCount() {
-			int count = 0;
-			CUresult result = NvCuda.API.cuDeviceGetCount(ref count);
-			CudaException.Check(result, "デバイス数の取得に失敗しました。");
-			return count;
+		public static int Count {
+			get { return NvCuda.DeviceGetCount(); }
+		}
+
+		public long TotalMem {
+			get { return NvCuda.DeviceTotalMem(device); }
+		}
+
+		public string Name {
+			get { return NvCuda.DeviceGetName(device); }
+		}
+
+		public string PCIBusId {
+			get { return NvCuda.DeviceGetPCIBusId(device); }
 		}
 
 		public Device(int deviceNumber) {
-			CUresult result;
-
 			if (initialized == false) {
 				initialized = true;
-				result = NvCuda.API.cuInit(0);
-				CudaException.Check(result, "デバイスの初期化に失敗しました。");
+				NvCuda.Init(0);
 			}
-
-			result = NvCuda.API.cuDeviceGet(ref device, deviceNumber);
-			CudaException.Check(result, "デバイスの取得に失敗しました。");
+			device = NvCuda.DeviceGet(deviceNumber);
 		}
 
 		public void Dispose() {
+			
 		}
 
 		public Context CreateContext() {
 			return new Context(device);
 		}
 
+		public int GetAttribute(CUdevice_attribute attrib) {
+			return NvCuda.DeviceGetAttribute(attrib, device);
+		}
+
+		public cudaDeviceProp GetProperties() {
+			return CudaRT.GetDeviceProperties(device);
+		}
 	}
 }

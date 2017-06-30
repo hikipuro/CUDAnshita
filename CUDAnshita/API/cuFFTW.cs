@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using CUDAnshita.Errors;
 
 namespace CUDAnshita {
 	using fftw_plan = IntPtr;

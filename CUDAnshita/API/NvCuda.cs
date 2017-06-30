@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Text;
+using CUDAnshita.Errors;
 
 namespace CUDAnshita {
 	using CUdevice = Int32;
@@ -1999,7 +2000,7 @@ namespace CUDAnshita {
 
 		static void CheckStatus(CUresult status) {
 			if (status != CUresult.CUDA_SUCCESS) {
-				throw new Exception(status.ToString());
+				throw new CudaException(status.ToString());
 			}
 		}
 	}

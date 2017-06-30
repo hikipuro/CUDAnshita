@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using CUDAnshita.Errors;
 
 namespace CUDAnshita {
 	/// <summary>
@@ -338,7 +339,7 @@ namespace CUDAnshita {
 
 		static void CheckResult(nvrtcResult result) {
 			if (result != nvrtcResult.NVRTC_SUCCESS) {
-				throw new Exception(result.ToString());
+				throw new CudaException(result.ToString());
 			}
 		}
 	}

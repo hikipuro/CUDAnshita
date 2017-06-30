@@ -199,7 +199,7 @@ namespace CUDAnshita {
 	[StructLayout(LayoutKind.Sequential)]
 	public struct CUipcEventHandle {
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = Defines.CU_IPC_HANDLE_SIZE)]
-		byte[] reserved;
+		public byte[] reserved;
 	}
 
 	/// <summary>
@@ -208,7 +208,7 @@ namespace CUDAnshita {
 	[StructLayout(LayoutKind.Sequential)]
 	public struct CUipcMemHandle {
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = Defines.CU_IPC_HANDLE_SIZE)]
-		byte[] reserved;
+		public byte[] reserved;
 	}
 
 	/// <summary>
@@ -948,46 +948,54 @@ namespace CUDAnshita {
 		/// <summary>
 		/// Maximum number of threads per block
 		/// </summary>
-		int maxThreadsPerBlock;     
+		public int maxThreadsPerBlock;
+
 		/// <summary>
 		/// Maximum size of each dimension of a block
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-		int[] maxThreadsDim;       
+		public int[] maxThreadsDim;
+
 		/// <summary>
 		/// Maximum size of each dimension of a grid
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-		int[] maxGridSize;         
+		public int[] maxGridSize;
+
 		/// <summary>
 		/// Shared memory available per block in bytes
 		/// </summary>
-		int sharedMemPerBlock;      
+		public int sharedMemPerBlock;
+
 		/// <summary>
 		/// Constant memory available on device in bytes
 		/// </summary>
-		int totalConstantMemory;    
+		public int totalConstantMemory;
+
 		/// <summary>
 		/// Warp size in threads
 		/// </summary>
-		int SIMDWidth;              
+		public int SIMDWidth;
+
 		/// <summary>
 		/// Maximum pitch in bytes allowed by memory copies
 		/// </summary>
-		int memPitch;               
+		public int memPitch;
+
 		/// <summary>
 		/// 32-bit registers available per block
 		/// </summary>
-		int regsPerBlock;           
+		public int regsPerBlock;
+
 		/// <summary>
 		/// Clock frequency in kilohertz
 		/// </summary>
-		int clockRate;              
+		public int clockRate;
+
 		/// <summary>
 		/// Alignment requirement for textures
 		/// </summary>
-		
-		int textureAlign;           
+		public int textureAlign;           
 	}
 
 	/// <summary>
@@ -1118,11 +1126,13 @@ namespace CUDAnshita {
 		/// <summary>
 		/// set default shared memory bank size
 		/// </summary>
-		CU_SHARED_MEM_CONFIG_DEFAULT_BANK_SIZE = 0x00, 
+		CU_SHARED_MEM_CONFIG_DEFAULT_BANK_SIZE = 0x00,
+
 		/// <summary>
 		/// set shared memory bank width to four bytes
 		/// </summary>
-		CU_SHARED_MEM_CONFIG_FOUR_BYTE_BANK_SIZE = 0x01, 
+		CU_SHARED_MEM_CONFIG_FOUR_BYTE_BANK_SIZE = 0x01,
+
 		/// <summary>
 		/// set shared memory bank width to eight bytes
 		/// </summary>
@@ -2047,82 +2057,82 @@ namespace CUDAnshita {
 		/// <summary>
 		/// Source X in bytes
 		/// </summary>
-		size_t srcXInBytes;
+		public size_t srcXInBytes;
 
 		/// <summary>
 		/// Source Y
 		/// </summary>
-		size_t srcY;
+		public size_t srcY;
 
 		/// <summary>
 		/// Source memory type (host, device, array)
 		/// </summary>
-		CUmemorytype srcMemoryType;
+		public CUmemorytype srcMemoryType;
 
 		/// <summary>
 		/// Source host pointer
 		/// </summary>
-		IntPtr srcHost;
+		public IntPtr srcHost;
 
 		/// <summary>
 		/// Source device pointer
 		/// </summary>
-		CUdeviceptr srcDevice;
+		public CUdeviceptr srcDevice;
 
 		/// <summary>
 		/// Source array reference
 		/// </summary>
-		CUarray srcArray;
-		  
+		public CUarray srcArray;
+
 		/// <summary>
 		/// Source pitch (ignored when src is array)
 		/// </summary>
-		size_t srcPitch;    
+		public size_t srcPitch;
 
 		/// <summary>
 		/// Destination X in bytes
 		/// </summary>
-		size_t dstXInBytes;
+		public size_t dstXInBytes;
 
 		/// <summary>
 		/// Destination Y
 		/// </summary>
-		size_t dstY;
+		public size_t dstY;
 
 		/// <summary>
 		/// Destination memory type (host, device, array)
 		/// </summary>
-		CUmemorytype dstMemoryType;
+		public CUmemorytype dstMemoryType;
 
 		/// <summary>
 		/// Destination host pointer
 		/// </summary>
-		IntPtr dstHost;
+		public IntPtr dstHost;
 
 		/// <summary>
 		/// Destination device pointer
 		/// </summary>
-		CUdeviceptr dstDevice;
+		public CUdeviceptr dstDevice;
 
 		/// <summary>
 		/// Destination array reference
 		/// </summary>
-		CUarray dstArray;
+		public CUarray dstArray;
 
 		/// <summary>
 		/// Destination pitch (ignored when dst is array)
 		/// </summary>
-		size_t dstPitch;
+		public size_t dstPitch;
 
 		/// <summary>
 		/// Width of 2D memory copy in bytes
 		/// </summary>
-		size_t WidthInBytes;
+		public size_t WidthInBytes;
 
 		/// <summary>
 		/// Height of 2D memory copy
 		/// </summary>
-		size_t Height;
+		public size_t Height;
 	}
 
 	/// <summary>
@@ -2133,127 +2143,127 @@ namespace CUDAnshita {
 		/// <summary>
 		/// Source X in bytes
 		/// </summary>
-		size_t srcXInBytes;
+		public size_t srcXInBytes;
 
 		/// <summary>
 		/// Source Y
 		/// </summary>
-		size_t srcY;
+		public size_t srcY;
 
 		/// <summary>
 		/// Source Z
 		/// </summary>
-		size_t srcZ;
+		public size_t srcZ;
 
 		/// <summary>
 		/// Source LOD
 		/// </summary>
-		size_t srcLOD;
+		public size_t srcLOD;
 
 		/// <summary>
 		/// Source memory type (host, device, array)
 		/// </summary>
-		CUmemorytype srcMemoryType;
+		public CUmemorytype srcMemoryType;
 
 		/// <summary>
 		/// Source host pointer
 		/// </summary>
-		IntPtr srcHost;
+		public IntPtr srcHost;
 
 		/// <summary>
 		/// Source device pointer
 		/// </summary>
-		CUdeviceptr srcDevice;
+		public CUdeviceptr srcDevice;
 
 		/// <summary>
 		/// Source array reference
 		/// </summary>
-		CUarray srcArray;
+		public CUarray srcArray;
 
 		/// <summary>
 		/// Must be NULL
 		/// </summary>
-		IntPtr reserved0;
+		public IntPtr reserved0;
 
 		/// <summary>
 		/// Source pitch (ignored when src is array)
 		/// </summary>
-		size_t srcPitch;
+		public size_t srcPitch;
 
 		/// <summary>
 		/// Source height (ignored when src is array; may be 0 if Depth==1)
 		/// </summary>
-		size_t srcHeight;
+		public size_t srcHeight;
 
 		/// <summary>
 		/// Destination X in bytes
 		/// </summary>
-		size_t dstXInBytes;
+		public size_t dstXInBytes;
 
 		/// <summary>
 		/// Destination Y
 		/// </summary>
-		size_t dstY;
+		public size_t dstY;
 
 		/// <summary>
 		/// Destination Z
 		/// </summary>
-		size_t dstZ;
+		public size_t dstZ;
 
 		/// <summary>
 		/// Destination LOD
 		/// </summary>
-		size_t dstLOD;
+		public size_t dstLOD;
 
 		/// <summary>
 		/// Destination memory type (host, device, array)
 		/// </summary>
-		CUmemorytype dstMemoryType;
+		public CUmemorytype dstMemoryType;
 
 		/// <summary>
 		/// Destination host pointer
 		/// </summary>
-		IntPtr dstHost;
+		public IntPtr dstHost;
 
 		/// <summary>
 		/// Destination device pointer
 		/// </summary>
-		CUdeviceptr dstDevice;
+		public CUdeviceptr dstDevice;
 
 		/// <summary>
 		/// Destination array reference
 		/// </summary>
-		CUarray dstArray;
+		public CUarray dstArray;
 
 		/// <summary>
 		/// Must be NULL
 		/// </summary>
-		IntPtr reserved1;
+		public IntPtr reserved1;
 
 		/// <summary>
 		/// Destination pitch (ignored when dst is array)
 		/// </summary>
-		size_t dstPitch;
+		public size_t dstPitch;
 
 		/// <summary>
 		/// Destination height (ignored when dst is array; may be 0 if Depth==1)
 		/// </summary>
-		size_t dstHeight;
+		public size_t dstHeight;
 
 		/// <summary>
 		/// Width of 3D memory copy in bytes
 		/// </summary>
-		size_t WidthInBytes;
+		public size_t WidthInBytes;
 
 		/// <summary>
 		/// Height of 3D memory copy
 		/// </summary>
-		size_t Height;
+		public size_t Height;
 
 		/// <summary>
 		/// Depth of 3D memory copy
 		/// </summary>
-		size_t Depth;
+		public size_t Depth;
 	}
 
 	/// <summary>
@@ -2264,127 +2274,127 @@ namespace CUDAnshita {
 		/// <summary>
 		/// Source X in bytes
 		/// </summary>
-		size_t srcXInBytes;
+		public size_t srcXInBytes;
 
 		/// <summary>
 		/// Source Y
 		/// </summary>
-		size_t srcY;
+		public size_t srcY;
 
 		/// <summary>
 		/// Source Z
 		/// </summary>
-		size_t srcZ;
+		public size_t srcZ;
 
 		/// <summary>
 		/// Source LOD
 		/// </summary>
-		size_t srcLOD;
+		public size_t srcLOD;
 
 		/// <summary>
 		/// Source memory type (host, device, array)
 		/// </summary>
-		CUmemorytype srcMemoryType;
+		public CUmemorytype srcMemoryType;
 
 		/// <summary>
 		/// Source host pointer
 		/// </summary>
-		IntPtr srcHost;
+		public IntPtr srcHost;
 
 		/// <summary>
 		/// Source device pointer
 		/// </summary>
-		CUdeviceptr srcDevice;
+		public CUdeviceptr srcDevice;
 
 		/// <summary>
 		/// Source array reference
 		/// </summary>
-		CUarray srcArray;
+		public CUarray srcArray;
 
 		/// <summary>
 		/// Source context (ignored with srcMemoryType is ::CU_MEMORYTYPE_ARRAY)
 		/// </summary>
-		CUcontext srcContext;
+		public CUcontext srcContext;
 
 		/// <summary>
 		/// Source pitch (ignored when src is array)
 		/// </summary>
-		size_t srcPitch;
+		public size_t srcPitch;
 
 		/// <summary>
 		/// Source height (ignored when src is array; may be 0 if Depth==1)
 		/// </summary>
-		size_t srcHeight;
+		public size_t srcHeight;
 
 		/// <summary>
 		/// Destination X in bytes
 		/// </summary>
-		size_t dstXInBytes;
+		public size_t dstXInBytes;
 
 		/// <summary>
 		/// Destination Y
 		/// </summary>
-		size_t dstY;
+		public size_t dstY;
 
 		/// <summary>
 		/// Destination Z
 		/// </summary>
-		size_t dstZ;
+		public size_t dstZ;
 
 		/// <summary>
 		/// Destination LOD
 		/// </summary>
-		size_t dstLOD;
+		public size_t dstLOD;
 
 		/// <summary>
 		/// Destination memory type (host, device, array)
 		/// </summary>
-		CUmemorytype dstMemoryType;
+		public CUmemorytype dstMemoryType;
 
 		/// <summary>
 		/// Destination host pointer
 		/// </summary>
-		IntPtr dstHost;
+		public IntPtr dstHost;
 
 		/// <summary>
 		/// Destination device pointer
 		/// </summary>
-		CUdeviceptr dstDevice;
+		public CUdeviceptr dstDevice;
 
 		/// <summary>
 		/// Destination array reference
 		/// </summary>
-		CUarray dstArray;
+		public CUarray dstArray;
 
 		/// <summary>
 		/// Destination context (ignored with dstMemoryType is ::CU_MEMORYTYPE_ARRAY)
 		/// </summary>
-		CUcontext dstContext;
+		public CUcontext dstContext;
 
 		/// <summary>
 		/// Destination pitch (ignored when dst is array)
 		/// </summary>
-		size_t dstPitch;
+		public size_t dstPitch;
 
 		/// <summary>
 		/// Destination height (ignored when dst is array; may be 0 if Depth==1)
 		/// </summary>
-		size_t dstHeight;
+		public size_t dstHeight;
 
 		/// <summary>
 		/// Width of 3D memory copy in bytes
 		/// </summary>
-		size_t WidthInBytes;
+		public size_t WidthInBytes;
 
 		/// <summary>
 		/// Height of 3D memory copy
 		/// </summary>
-		size_t Height;
+		public size_t Height;
 
 		/// <summary>
 		/// Depth of 3D memory copy
 		/// </summary>
-		size_t Depth;
+		public size_t Depth;
 	}
 
 	/// <summary>
@@ -2395,22 +2405,22 @@ namespace CUDAnshita {
 		/// <summary>
 		/// Width of array
 		/// </summary>
-		size_t Width;
+		public size_t Width;
 
 		/// <summary>
 		/// Height of array
 		/// </summary>
-		size_t Height;
+		public size_t Height;
 
 		/// <summary>
 		/// Array format
 		/// </summary>
-		CUarray_format Format;
+		public CUarray_format Format;
 
 		/// <summary>
 		/// Channels per array element
 		/// </summary>
-		uint NumChannels;
+		public uint NumChannels;
 	}
 
 	/// <summary>
@@ -2421,32 +2431,32 @@ namespace CUDAnshita {
 		/// <summary>
 		/// Width of 3D array
 		/// </summary>
-		size_t Width;
-		 
+		public size_t Width;
+
 		/// <summary>
 		/// Height of 3D array
 		/// </summary>
-		size_t Height;
+		public size_t Height;
 
 		/// <summary>
 		/// Depth of 3D array
 		/// </summary>
-		size_t Depth;
+		public size_t Depth;
 
 		/// <summary>
 		/// Array format
 		/// </summary>
-		CUarray_format Format;
+		public CUarray_format Format;
 
 		/// <summary>
 		/// Channels per array element
 		/// </summary>
-		uint NumChannels;
+		public uint NumChannels;
 
 		/// <summary>
 		/// Flags
 		/// </summary>
-		uint Flags;
+		public uint Flags;
 	}
 
 	/// <summary>

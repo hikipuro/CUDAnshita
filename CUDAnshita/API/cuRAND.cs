@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using CUDAnshita.Errors;
 
 namespace CUDAnshita {
 	using curandGenerator_t = IntPtr;
@@ -750,7 +751,7 @@ namespace CUDAnshita {
 
 		static void CheckStatus(curandStatus status) {
 			if (status != curandStatus.CURAND_STATUS_SUCCESS) {
-				throw new Exception(status.ToString());
+				throw new CudaException(status.ToString());
 			}
 		}
 	}

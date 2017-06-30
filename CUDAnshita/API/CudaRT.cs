@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Text;
+using CUDAnshita.Errors;
 
 namespace CUDAnshita {
 	using cudaError_t = cudaError;
@@ -1537,7 +1538,7 @@ namespace CUDAnshita {
 
 		static void CheckStatus(cudaError status) {
 			if (status != cudaError.cudaSuccess) {
-				throw new Exception(status.ToString());
+				throw new CudaException(status.ToString());
 			}
 		}
 	}

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using CUDAnshita.Errors;
 
 namespace CUDAnshita {
 	using cublasStatus_t = cublasStatus;
@@ -4030,7 +4031,7 @@ namespace CUDAnshita {
 
 		static void CheckStatus(cublasStatus status) {
 			if (status != cublasStatus.CUBLAS_STATUS_SUCCESS) {
-				throw new Exception(status.ToString());
+				throw new CudaException(status.ToString());
 			}
 		}
 	}
