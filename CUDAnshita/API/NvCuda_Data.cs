@@ -7,6 +7,8 @@ namespace CUDAnshita {
 	using CUcontext = IntPtr;
 	using CUarray = IntPtr;
 	using CUstream = IntPtr;
+	using cuuint32_t = UInt32;
+	using cuuint64_t = UInt64;
 	using size_t = Int64;
 
 	public partial class Defines {
@@ -216,7 +218,7 @@ namespace CUDAnshita {
 		/// <summary>
 		/// Automatically enable peer access between remote devices as needed
 		/// </summary>
-		CU_IPC_MEM_LAZY_ENABLE_PEER_ACCESS = 0x1 
+		CU_IPC_MEM_LAZY_ENABLE_PEER_ACCESS = 0x1
 	}
 
 	/// <summary>
@@ -246,17 +248,17 @@ namespace CUDAnshita {
 		/// <summary>
 		/// Automatic scheduling
 		/// </summary>
-		CU_CTX_SCHED_AUTO = 0x00, 
+		CU_CTX_SCHED_AUTO = 0x00,
 
 		/// <summary>
 		/// Set spin as default scheduling
 		/// </summary>
-		CU_CTX_SCHED_SPIN = 0x01, 
+		CU_CTX_SCHED_SPIN = 0x01,
 
 		/// <summary>
 		/// Set yield as default scheduling
 		/// </summary>
-		CU_CTX_SCHED_YIELD = 0x02, 
+		CU_CTX_SCHED_YIELD = 0x02,
 
 		/// <summary>
 		/// Set blocking synchronization as default scheduling
@@ -276,12 +278,12 @@ namespace CUDAnshita {
 		/// <summary>
 		/// Support mapped pinned allocations
 		/// </summary>
-		CU_CTX_MAP_HOST = 0x08, 
+		CU_CTX_MAP_HOST = 0x08,
 
 		/// <summary>
 		/// Keep local memory allocation after launch
 		/// </summary>
-		CU_CTX_LMEM_RESIZE_TO_MAX = 0x10, 
+		CU_CTX_LMEM_RESIZE_TO_MAX = 0x10,
 
 		CU_CTX_FLAGS_MASK = 0x1f
 	}
@@ -293,11 +295,12 @@ namespace CUDAnshita {
 		/// <summary>
 		/// Default stream flag
 		/// </summary>
-		CU_STREAM_DEFAULT = 0x0, 
+		CU_STREAM_DEFAULT = 0x0,
+
 		/// <summary>
 		/// Stream does not synchronize with stream 0 (the NULL stream)
 		/// </summary>
-		CU_STREAM_NON_BLOCKING = 0x1  
+		CU_STREAM_NON_BLOCKING = 0x1
 	}
 
 	/// <summary>
@@ -307,19 +310,22 @@ namespace CUDAnshita {
 		/// <summary>
 		/// Default event flag
 		/// </summary>
-		CU_EVENT_DEFAULT = 0x0, 
+		CU_EVENT_DEFAULT = 0x0,
+
 		/// <summary>
 		/// Event uses blocking synchronization
 		/// </summary>
-		CU_EVENT_BLOCKING_SYNC = 0x1, 
+		CU_EVENT_BLOCKING_SYNC = 0x1,
+
 		/// <summary>
 		/// Event will not record timing data
 		/// </summary>
-		CU_EVENT_DISABLE_TIMING = 0x2, 
+		CU_EVENT_DISABLE_TIMING = 0x2,
+
 		/// <summary>
 		/// Event is suitable for interprocess use. CU_EVENT_DISABLE_TIMING must be set
 		/// </summary>
-		CU_EVENT_INTERPROCESS = 0x4  
+		CU_EVENT_INTERPROCESS = 0x4
 	}
 
 	/// <summary>
@@ -331,14 +337,17 @@ namespace CUDAnshita {
 		/// cyclic comparison which ignores wraparound. (Default behavior.)
 		/// </summary>
 		CU_STREAM_WAIT_VALUE_GEQ = 0x0,
+
 		/// <summary>
 		/// Wait until *addr == value.
 		/// </summary>
 		CU_STREAM_WAIT_VALUE_EQ = 0x1,
+
 		/// <summary>
 		/// Wait until (*addr & value) != 0.
 		/// </summary>
 		CU_STREAM_WAIT_VALUE_AND = 0x2,
+
 		/// <summary>
 		/// Follow the wait operation with a flush of outstanding remote writes. This
 		/// means that, if a remote write operation is guaranteed to have reached the
@@ -359,6 +368,7 @@ namespace CUDAnshita {
 		/// Default behavior
 		/// </summary>
 		CU_STREAM_WRITE_VALUE_DEFAULT = 0x0,
+
 		/// <summary>
 		/// Permits the write to be reordered with writes which were issued
 		/// before it, as a performance optimization. Normally,
@@ -377,15 +387,63 @@ namespace CUDAnshita {
 		/// <summary>
 		/// Represents a ::cuStreamWaitValue32 operation
 		/// </summary>
-		CU_STREAM_MEM_OP_WAIT_VALUE_32 = 1,     
+		CU_STREAM_MEM_OP_WAIT_VALUE_32 = 1,
+
 		/// <summary>
 		/// Represents a ::cuStreamWriteValue32 operation
 		/// </summary>
-		CU_STREAM_MEM_OP_WRITE_VALUE_32 = 2,     
+		CU_STREAM_MEM_OP_WRITE_VALUE_32 = 2,
+
 		/// <summary>
 		/// This has the same effect as ::CU_STREAM_WAIT_VALUE_FLUSH, but as a standalone operation.
 		/// </summary>
-		CU_STREAM_MEM_OP_FLUSH_REMOTE_WRITES = 3 
+		CU_STREAM_MEM_OP_FLUSH_REMOTE_WRITES = 3
+	}
+
+	[StructLayout(LayoutKind.Sequential)]
+	public struct CUstreamMemOpWaitValueParams_st {
+		public CUstreamBatchMemOpType operation;
+		public CUdeviceptr address;
+		public cuuint64_t pad;
+		public uint flags;
+		public CUdeviceptr alias;
+	}
+
+	[StructLayout(LayoutKind.Sequential)]
+	public struct CUstreamMemOpWriteValueParams_st {
+		public CUstreamBatchMemOpType operation;
+		public CUdeviceptr address;
+		public cuuint64_t pad;
+		public uint flags;
+		public CUdeviceptr alias;
+	}
+
+	[StructLayout(LayoutKind.Sequential)]
+	public struct CUstreamMemOpFlushRemoteWritesParams_st {
+		public CUstreamBatchMemOpType operation;
+		public uint flags;
+	}
+
+	/// <summary>
+	/// Per-operation parameters for ::cuStreamBatchMemOp
+	/// </summary>
+	[StructLayout(LayoutKind.Explicit)]
+	public struct CUstreamBatchMemOpParams {
+		[FieldOffset(0)]
+		public CUstreamBatchMemOpType operation;
+
+		[FieldOffset(0)]
+		public CUstreamMemOpWaitValueParams_st waitValue;
+
+		[FieldOffset(0)]
+		public CUstreamMemOpWriteValueParams_st writeValue;
+
+		[FieldOffset(0)]
+		public CUstreamMemOpFlushRemoteWritesParams_st flushRemoteWrites;
+
+		//[FieldOffset(0)]
+		//[MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)]
+		//public cuuint64_t[] pad;
 	}
 
 	/// <summary>
@@ -395,11 +453,12 @@ namespace CUDAnshita {
 		/// <summary>
 		/// Default behavior
 		/// </summary>
-		CU_OCCUPANCY_DEFAULT = 0x0, 
+		CU_OCCUPANCY_DEFAULT = 0x0,
+
 		/// <summary>
 		/// Assume global caching is enabled and cannot be automatically turned off
 		/// </summary>
-		CU_OCCUPANCY_DISABLE_CACHING_OVERRIDE = 0x1  
+		CU_OCCUPANCY_DISABLE_CACHING_OVERRIDE = 0x1
 	}
 
 	/// <summary>
@@ -409,35 +468,42 @@ namespace CUDAnshita {
 		/// <summary>
 		/// Unsigned 8-bit integers
 		/// </summary>
-		CU_AD_FORMAT_UNSIGNED_INT8 = 0x01, 
+		CU_AD_FORMAT_UNSIGNED_INT8 = 0x01,
+
 		/// <summary>
 		/// Unsigned 16-bit integers
 		/// </summary>
-		CU_AD_FORMAT_UNSIGNED_INT16 = 0x02, 
+		CU_AD_FORMAT_UNSIGNED_INT16 = 0x02,
+
 		/// <summary>
 		/// Unsigned 32-bit integers
 		/// </summary>
-		CU_AD_FORMAT_UNSIGNED_INT32 = 0x03, 
+		CU_AD_FORMAT_UNSIGNED_INT32 = 0x03,
+
 		/// <summary>
 		/// Signed 8-bit integers
 		/// </summary>
-		CU_AD_FORMAT_SIGNED_INT8 = 0x08, 
+		CU_AD_FORMAT_SIGNED_INT8 = 0x08,
+
 		/// <summary>
 		/// Signed 16-bit integers
 		/// </summary>
-		CU_AD_FORMAT_SIGNED_INT16 = 0x09, 
+		CU_AD_FORMAT_SIGNED_INT16 = 0x09,
+
 		/// <summary>
 		/// Signed 32-bit integers
 		/// </summary>
-		CU_AD_FORMAT_SIGNED_INT32 = 0x0a, 
+		CU_AD_FORMAT_SIGNED_INT32 = 0x0a,
+
 		/// <summary>
 		/// 16-bit floating point
 		/// </summary>
-		CU_AD_FORMAT_HALF = 0x10, 
+		CU_AD_FORMAT_HALF = 0x10,
+
 		/// <summary>
 		/// 32-bit floating point
 		/// </summary>
-		CU_AD_FORMAT_FLOAT = 0x20  
+		CU_AD_FORMAT_FLOAT = 0x20
 	}
 
 	/// <summary>
@@ -1464,27 +1530,32 @@ namespace CUDAnshita {
 		/// <summary>
 		/// Positive X face of cubemap
 		/// </summary>
-		CU_CUBEMAP_FACE_POSITIVE_X = 0x00, 
+		CU_CUBEMAP_FACE_POSITIVE_X = 0x00,
+
 		/// <summary>
 		/// Negative X face of cubemap
 		/// </summary>
-		CU_CUBEMAP_FACE_NEGATIVE_X = 0x01, 
+		CU_CUBEMAP_FACE_NEGATIVE_X = 0x01,
+
 		/// <summary>
 		/// Positive Y face of cubemap
 		/// </summary>
-		CU_CUBEMAP_FACE_POSITIVE_Y = 0x02, 
+		CU_CUBEMAP_FACE_POSITIVE_Y = 0x02,
+
 		/// <summary>
 		/// Negative Y face of cubemap
 		/// </summary>
-		CU_CUBEMAP_FACE_NEGATIVE_Y = 0x03, 
+		CU_CUBEMAP_FACE_NEGATIVE_Y = 0x03,
+
 		/// <summary>
 		/// Positive Z face of cubemap
 		/// </summary>
-		CU_CUBEMAP_FACE_POSITIVE_Z = 0x04, 
+		CU_CUBEMAP_FACE_POSITIVE_Z = 0x04,
+
 		/// <summary>
 		/// Negative Z face of cubemap
 		/// </summary>
-		CU_CUBEMAP_FACE_NEGATIVE_Z = 0x05  
+		CU_CUBEMAP_FACE_NEGATIVE_Z = 0x05
 	}
 
 	/// <summary>
@@ -1494,23 +1565,28 @@ namespace CUDAnshita {
 		/// <summary>
 		/// GPU thread stack size
 		/// </summary>
-		CU_LIMIT_STACK_SIZE = 0x00, 
+		CU_LIMIT_STACK_SIZE = 0x00,
+
 		/// <summary>
 		/// GPU printf FIFO size
 		/// </summary>
-		CU_LIMIT_PRINTF_FIFO_SIZE = 0x01, 
+		CU_LIMIT_PRINTF_FIFO_SIZE = 0x01,
+
 		/// <summary>
 		/// GPU malloc heap size
 		/// </summary>
-		CU_LIMIT_MALLOC_HEAP_SIZE = 0x02, 
+		CU_LIMIT_MALLOC_HEAP_SIZE = 0x02,
+
 		/// <summary>
 		/// GPU device runtime launch synchronize depth
 		/// </summary>
-		CU_LIMIT_DEV_RUNTIME_SYNC_DEPTH = 0x03, 
+		CU_LIMIT_DEV_RUNTIME_SYNC_DEPTH = 0x03,
+
 		/// <summary>
 		/// GPU device runtime pending launch count
 		/// </summary>
-		CU_LIMIT_DEV_RUNTIME_PENDING_LAUNCH_COUNT = 0x04, 
+		CU_LIMIT_DEV_RUNTIME_PENDING_LAUNCH_COUNT = 0x04,
+
 		CU_LIMIT_MAX
 	}
 
@@ -1521,19 +1597,22 @@ namespace CUDAnshita {
 		/// <summary>
 		/// Array resoure
 		/// </summary>
-		CU_RESOURCE_TYPE_ARRAY = 0x00, 
+		CU_RESOURCE_TYPE_ARRAY = 0x00,
+
 		/// <summary>
 		/// Mipmapped array resource
 		/// </summary>
-		CU_RESOURCE_TYPE_MIPMAPPED_ARRAY = 0x01, 
+		CU_RESOURCE_TYPE_MIPMAPPED_ARRAY = 0x01,
+
 		/// <summary>
 		/// Linear resource
 		/// </summary>
-		CU_RESOURCE_TYPE_LINEAR = 0x02, 
+		CU_RESOURCE_TYPE_LINEAR = 0x02,
+
 		/// <summary>
 		/// Pitch 2D resource
 		/// </summary>
-		CU_RESOURCE_TYPE_PITCH2D = 0x03  
+		CU_RESOURCE_TYPE_PITCH2D = 0x03
 	}
 
 	/// <summary>
@@ -1947,15 +2026,17 @@ namespace CUDAnshita {
 		/// <summary>
 		/// A relative value indicating the performance of the link between two devices
 		/// </summary>
-		CU_DEVICE_P2P_ATTRIBUTE_PERFORMANCE_RANK = 0x01, 
+		CU_DEVICE_P2P_ATTRIBUTE_PERFORMANCE_RANK = 0x01,
+
 		/// <summary>
 		/// P2P Access is enable
 		/// </summary>
-		CU_DEVICE_P2P_ATTRIBUTE_ACCESS_SUPPORTED = 0x02, 
+		CU_DEVICE_P2P_ATTRIBUTE_ACCESS_SUPPORTED = 0x02,
+
 		/// <summary>
 		/// Atomic operation over the link supported
 		/// </summary>
-		CU_DEVICE_P2P_ATTRIBUTE_NATIVE_ATOMIC_SUPPORTED = 0x03  
+		CU_DEVICE_P2P_ATTRIBUTE_NATIVE_ATOMIC_SUPPORTED = 0x03
 	}
 
 	/// <summary>
@@ -1966,71 +2047,82 @@ namespace CUDAnshita {
 		/// <summary>
 		/// Source X in bytes
 		/// </summary>
-		size_t srcXInBytes;         
+		size_t srcXInBytes;
+
 		/// <summary>
 		/// Source Y
 		/// </summary>
-		size_t srcY;                
+		size_t srcY;
 
 		/// <summary>
 		/// Source memory type (host, device, array)
 		/// </summary>
-		CUmemorytype srcMemoryType; 
+		CUmemorytype srcMemoryType;
+
 		/// <summary>
 		/// Source host pointer
 		/// </summary>
-		IntPtr srcHost;             
+		IntPtr srcHost;
+
 		/// <summary>
 		/// Source device pointer
 		/// </summary>
-		CUdeviceptr srcDevice;      
+		CUdeviceptr srcDevice;
+
 		/// <summary>
 		/// Source array reference
 		/// </summary>
-		CUarray srcArray;           
+		CUarray srcArray;
+		  
 		/// <summary>
 		/// Source pitch (ignored when src is array)
 		/// </summary>
-		size_t srcPitch;            
+		size_t srcPitch;    
 
 		/// <summary>
 		/// Destination X in bytes
 		/// </summary>
-		size_t dstXInBytes;         
+		size_t dstXInBytes;
+
 		/// <summary>
 		/// Destination Y
 		/// </summary>
-		size_t dstY;                
+		size_t dstY;
 
 		/// <summary>
 		/// Destination memory type (host, device, array)
 		/// </summary>
-		CUmemorytype dstMemoryType; 
+		CUmemorytype dstMemoryType;
+
 		/// <summary>
 		/// Destination host pointer
 		/// </summary>
-		IntPtr dstHost;             
+		IntPtr dstHost;
+
 		/// <summary>
 		/// Destination device pointer
 		/// </summary>
-		CUdeviceptr dstDevice;      
+		CUdeviceptr dstDevice;
+
 		/// <summary>
 		/// Destination array reference
 		/// </summary>
-		CUarray dstArray;           
+		CUarray dstArray;
+
 		/// <summary>
 		/// Destination pitch (ignored when dst is array)
 		/// </summary>
-		size_t dstPitch;            
+		size_t dstPitch;
 
 		/// <summary>
 		/// Width of 2D memory copy in bytes
 		/// </summary>
-		size_t WidthInBytes;        
+		size_t WidthInBytes;
+
 		/// <summary>
 		/// Height of 2D memory copy
 		/// </summary>
-		size_t Height;              
+		size_t Height;
 	}
 
 	/// <summary>
@@ -2041,105 +2133,127 @@ namespace CUDAnshita {
 		/// <summary>
 		/// Source X in bytes
 		/// </summary>
-		size_t srcXInBytes;         
+		size_t srcXInBytes;
+
 		/// <summary>
 		/// Source Y
 		/// </summary>
-		size_t srcY;                
+		size_t srcY;
+
 		/// <summary>
 		/// Source Z
 		/// </summary>
-		size_t srcZ;                
+		size_t srcZ;
+
 		/// <summary>
 		/// Source LOD
 		/// </summary>
-		size_t srcLOD;              
+		size_t srcLOD;
+
 		/// <summary>
 		/// Source memory type (host, device, array)
 		/// </summary>
-		CUmemorytype srcMemoryType; 
+		CUmemorytype srcMemoryType;
+
 		/// <summary>
 		/// Source host pointer
 		/// </summary>
-		IntPtr srcHost;             
+		IntPtr srcHost;
+
 		/// <summary>
 		/// Source device pointer
 		/// </summary>
-		CUdeviceptr srcDevice;      
+		CUdeviceptr srcDevice;
+
 		/// <summary>
 		/// Source array reference
 		/// </summary>
-		CUarray srcArray;           
+		CUarray srcArray;
+
 		/// <summary>
 		/// Must be NULL
 		/// </summary>
-		IntPtr reserved0;           
+		IntPtr reserved0;
+
 		/// <summary>
 		/// Source pitch (ignored when src is array)
 		/// </summary>
-		size_t srcPitch;            
+		size_t srcPitch;
+
 		/// <summary>
 		/// Source height (ignored when src is array; may be 0 if Depth==1)
 		/// </summary>
-		size_t srcHeight;           
+		size_t srcHeight;
 
 		/// <summary>
 		/// Destination X in bytes
 		/// </summary>
-		size_t dstXInBytes;         
+		size_t dstXInBytes;
+
 		/// <summary>
 		/// Destination Y
 		/// </summary>
-		size_t dstY;                
+		size_t dstY;
+
 		/// <summary>
 		/// Destination Z
 		/// </summary>
-		size_t dstZ;                
+		size_t dstZ;
+
 		/// <summary>
 		/// Destination LOD
 		/// </summary>
-		size_t dstLOD;              
+		size_t dstLOD;
+
 		/// <summary>
 		/// Destination memory type (host, device, array)
 		/// </summary>
-		CUmemorytype dstMemoryType; 
+		CUmemorytype dstMemoryType;
+
 		/// <summary>
 		/// Destination host pointer
 		/// </summary>
-		IntPtr dstHost;             
+		IntPtr dstHost;
+
 		/// <summary>
 		/// Destination device pointer
 		/// </summary>
-		CUdeviceptr dstDevice;      
+		CUdeviceptr dstDevice;
+
 		/// <summary>
 		/// Destination array reference
 		/// </summary>
-		CUarray dstArray;           
+		CUarray dstArray;
+
 		/// <summary>
 		/// Must be NULL
 		/// </summary>
-		IntPtr reserved1;           
+		IntPtr reserved1;
+
 		/// <summary>
 		/// Destination pitch (ignored when dst is array)
 		/// </summary>
-		size_t dstPitch;            
+		size_t dstPitch;
+
 		/// <summary>
 		/// Destination height (ignored when dst is array; may be 0 if Depth==1)
 		/// </summary>
-		size_t dstHeight;           
+		size_t dstHeight;
 
 		/// <summary>
 		/// Width of 3D memory copy in bytes
 		/// </summary>
-		size_t WidthInBytes;        
+		size_t WidthInBytes;
+
 		/// <summary>
 		/// Height of 3D memory copy
 		/// </summary>
-		size_t Height;              
+		size_t Height;
+
 		/// <summary>
 		/// Depth of 3D memory copy
 		/// </summary>
-		size_t Depth;               
+		size_t Depth;
 	}
 
 	/// <summary>
@@ -2150,105 +2264,127 @@ namespace CUDAnshita {
 		/// <summary>
 		/// Source X in bytes
 		/// </summary>
-		size_t srcXInBytes;         
+		size_t srcXInBytes;
+
 		/// <summary>
 		/// Source Y
 		/// </summary>
-		size_t srcY;                
+		size_t srcY;
+
 		/// <summary>
 		/// Source Z
 		/// </summary>
-		size_t srcZ;                
+		size_t srcZ;
+
 		/// <summary>
 		/// Source LOD
 		/// </summary>
-		size_t srcLOD;              
+		size_t srcLOD;
+
 		/// <summary>
 		/// Source memory type (host, device, array)
 		/// </summary>
-		CUmemorytype srcMemoryType; 
+		CUmemorytype srcMemoryType;
+
 		/// <summary>
 		/// Source host pointer
 		/// </summary>
-		IntPtr srcHost;             
+		IntPtr srcHost;
+
 		/// <summary>
 		/// Source device pointer
 		/// </summary>
-		CUdeviceptr srcDevice;      
+		CUdeviceptr srcDevice;
+
 		/// <summary>
 		/// Source array reference
 		/// </summary>
-		CUarray srcArray;           
+		CUarray srcArray;
+
 		/// <summary>
 		/// Source context (ignored with srcMemoryType is ::CU_MEMORYTYPE_ARRAY)
 		/// </summary>
-		CUcontext srcContext;       
+		CUcontext srcContext;
+
 		/// <summary>
 		/// Source pitch (ignored when src is array)
 		/// </summary>
-		size_t srcPitch;            
+		size_t srcPitch;
+
 		/// <summary>
 		/// Source height (ignored when src is array; may be 0 if Depth==1)
 		/// </summary>
-		size_t srcHeight;           
+		size_t srcHeight;
 
 		/// <summary>
 		/// Destination X in bytes
 		/// </summary>
-		size_t dstXInBytes;         
+		size_t dstXInBytes;
+
 		/// <summary>
 		/// Destination Y
 		/// </summary>
-		size_t dstY;                
+		size_t dstY;
+
 		/// <summary>
 		/// Destination Z
 		/// </summary>
-		size_t dstZ;                
+		size_t dstZ;
+
 		/// <summary>
 		/// Destination LOD
 		/// </summary>
-		size_t dstLOD;              
+		size_t dstLOD;
+
 		/// <summary>
 		/// Destination memory type (host, device, array)
 		/// </summary>
-		CUmemorytype dstMemoryType; 
+		CUmemorytype dstMemoryType;
+
 		/// <summary>
 		/// Destination host pointer
 		/// </summary>
-		IntPtr dstHost;             
+		IntPtr dstHost;
+
 		/// <summary>
 		/// Destination device pointer
 		/// </summary>
-		CUdeviceptr dstDevice;      
+		CUdeviceptr dstDevice;
+
 		/// <summary>
 		/// Destination array reference
 		/// </summary>
-		CUarray dstArray;           
+		CUarray dstArray;
+
 		/// <summary>
 		/// Destination context (ignored with dstMemoryType is ::CU_MEMORYTYPE_ARRAY)
 		/// </summary>
-		CUcontext dstContext;       
+		CUcontext dstContext;
+
 		/// <summary>
 		/// Destination pitch (ignored when dst is array)
 		/// </summary>
-		size_t dstPitch;            
+		size_t dstPitch;
+
 		/// <summary>
 		/// Destination height (ignored when dst is array; may be 0 if Depth==1)
 		/// </summary>
-		size_t dstHeight;           
+		size_t dstHeight;
 
 		/// <summary>
 		/// Width of 3D memory copy in bytes
 		/// </summary>
-		size_t WidthInBytes;        
+		size_t WidthInBytes;
+
 		/// <summary>
 		/// Height of 3D memory copy
 		/// </summary>
-		size_t Height;              
+		size_t Height;
+
 		/// <summary>
 		/// Depth of 3D memory copy
 		/// </summary>
-		size_t Depth;               
+		size_t Depth;
 	}
 
 	/// <summary>
@@ -2259,20 +2395,22 @@ namespace CUDAnshita {
 		/// <summary>
 		/// Width of array
 		/// </summary>
-		size_t Width;             
+		size_t Width;
+
 		/// <summary>
 		/// Height of array
 		/// </summary>
-		size_t Height;            
+		size_t Height;
 
 		/// <summary>
 		/// Array format
 		/// </summary>
-		CUarray_format Format;    
+		CUarray_format Format;
+
 		/// <summary>
 		/// Channels per array element
 		/// </summary>
-		uint NumChannels; 
+		uint NumChannels;
 	}
 
 	/// <summary>
@@ -2283,28 +2421,32 @@ namespace CUDAnshita {
 		/// <summary>
 		/// Width of 3D array
 		/// </summary>
-		size_t Width;             
+		size_t Width;
+		 
 		/// <summary>
 		/// Height of 3D array
 		/// </summary>
-		size_t Height;            
+		size_t Height;
+
 		/// <summary>
 		/// Depth of 3D array
 		/// </summary>
-		size_t Depth;             
+		size_t Depth;
 
 		/// <summary>
 		/// Array format
 		/// </summary>
-		CUarray_format Format;    
+		CUarray_format Format;
+
 		/// <summary>
 		/// Channels per array element
 		/// </summary>
-		uint NumChannels; 
+		uint NumChannels;
+
 		/// <summary>
 		/// Flags
 		/// </summary>
-		uint Flags;       
+		uint Flags;
 	}
 
 	/// <summary>

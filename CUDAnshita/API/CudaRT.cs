@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace CUDAnshita {
 	using cudaError_t = cudaError;
@@ -15,7 +16,6 @@ namespace CUDAnshita {
 	using cudaTextureObject_t = IntPtr;
 	using cudaSurfaceObject_t = IntPtr;
 	using size_t = Int64;
-	using System.Text;
 
 	/// <summary>
 	/// NVIDIA CUDA Runtime API
