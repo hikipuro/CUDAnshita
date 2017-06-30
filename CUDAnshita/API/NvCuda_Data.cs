@@ -1161,31 +1161,31 @@ namespace CUDAnshita {
 	/// </summary>
 	public enum CUjit_option {
 		/// <summary>
-		/// Max number of registers that a thread may use.\n
-		/// Option type: unsigned int\n
+		/// Max number of registers that a thread may use.
+		/// Option type: unsigned int
 		/// Applies to: compiler only
 		/// </summary>
 		CU_JIT_MAX_REGISTERS = 0,
 
 		/// <summary>
 		/// IN: Specifies minimum number of threads per block to target compilation
-		/// for\n
+		/// for
 		/// OUT: Returns the number of threads the compiler actually targeted.
 		/// This restricts the resource utilization fo the compiler (e.g. max
 		/// registers) such that a block with the given number of threads should be
 		/// able to launch based on register limitations. Note, this option does not
 		/// currently take into account any other resource limitations, such as
-		/// shared memory utilization.\n
-		/// Cannot be combined with ::CU_JIT_TARGET.\n
-		/// Option type: unsigned int\n
+		/// shared memory utilization.
+		/// Cannot be combined with ::CU_JIT_TARGET.
+		/// Option type: unsigned int
 		/// Applies to: compiler only
 		/// </summary>
 		CU_JIT_THREADS_PER_BLOCK,
 
 		/// <summary>
 		/// Overwrites the option value with the total wall clock time, in
-		/// milliseconds, spent in the compiler and linker\n
-		/// Option type: float\n
+		/// milliseconds, spent in the compiler and linker
+		/// Option type: float
 		/// Applies to: compiler and linker
 		/// </summary>
 		CU_JIT_WALL_TIME,
@@ -1193,17 +1193,17 @@ namespace CUDAnshita {
 		/// <summary>
 		/// Pointer to a buffer in which to print any log messages
 		/// that are informational in nature (the buffer size is specified via
-		/// option ::CU_JIT_INFO_LOG_BUFFER_SIZE_BYTES)\n
-		/// Option type: char *\n
+		/// option ::CU_JIT_INFO_LOG_BUFFER_SIZE_BYTES)
+		/// Option type: char *
 		/// Applies to: compiler and linker
 		/// </summary>
 		CU_JIT_INFO_LOG_BUFFER,
 
 		/// <summary>
 		/// IN: Log buffer size in bytes.  Log messages will be capped at this size
-		/// (including null terminator)\n
-		/// OUT: Amount of log buffer filled with messages\n
-		/// Option type: unsigned int\n
+		/// (including null terminator)
+		/// OUT: Amount of log buffer filled with messages
+		/// Option type: unsigned int
 		/// Applies to: compiler and linker
 		/// </summary>
 		CU_JIT_INFO_LOG_BUFFER_SIZE_BYTES,
@@ -1211,41 +1211,41 @@ namespace CUDAnshita {
 		/// <summary>
 		/// Pointer to a buffer in which to print any log messages that
 		/// reflect errors (the buffer size is specified via option
-		/// ::CU_JIT_ERROR_LOG_BUFFER_SIZE_BYTES)\n
-		/// Option type: char *\n
+		/// ::CU_JIT_ERROR_LOG_BUFFER_SIZE_BYTES)
+		/// Option type: char *
 		/// Applies to: compiler and linker
 		/// </summary>
 		CU_JIT_ERROR_LOG_BUFFER,
 
 		/// <summary>
 		/// IN: Log buffer size in bytes.  Log messages will be capped at this size
-		/// (including null terminator)\n
-		/// OUT: Amount of log buffer filled with messages\n
-		/// Option type: unsigned int\n
+		/// (including null terminator)
+		/// OUT: Amount of log buffer filled with messages
+		/// Option type: unsigned int
 		/// Applies to: compiler and linker
 		/// </summary>
 		CU_JIT_ERROR_LOG_BUFFER_SIZE_BYTES,
 
 		/// <summary>
 		/// Level of optimizations to apply to generated code (0 - 4), with 4
-		/// being the default and highest level of optimizations.\n
-		/// Option type: unsigned int\n
+		/// being the default and highest level of optimizations.
+		/// Option type: unsigned int
 		/// Applies to: compiler only
 		/// </summary>
 		CU_JIT_OPTIMIZATION_LEVEL,
 
 		/// <summary>
 		/// No option value required. Determines the target based on the current
-		/// attached context (default)\n
-		/// Option type: No option value needed\n
+		/// attached context (default)
+		/// Option type: No option value needed
 		/// Applies to: compiler and linker
 		/// </summary>
 		CU_JIT_TARGET_FROM_CUCONTEXT,
 
 		/// <summary>
 		/// Target is chosen based on supplied ::CUjit_target.  Cannot be
-		/// combined with ::CU_JIT_THREADS_PER_BLOCK.\n
-		/// Option type: unsigned int for enumerated type ::CUjit_target\n
+		/// combined with ::CU_JIT_THREADS_PER_BLOCK.
+		/// Option type: unsigned int for enumerated type ::CUjit_target
 		/// Applies to: compiler and linker
 		/// </summary>
 		CU_JIT_TARGET,
@@ -1253,39 +1253,39 @@ namespace CUDAnshita {
 		/// <summary>
 		/// Specifies choice of fallback strategy if matching cubin is not found.
 		/// Choice is based on supplied ::CUjit_fallback.  This option cannot be
-		/// used with cuLink* APIs as the linker requires exact matches.\n
-		/// Option type: unsigned int for enumerated type ::CUjit_fallback\n
+		/// used with cuLink* APIs as the linker requires exact matches.
+		/// Option type: unsigned int for enumerated type ::CUjit_fallback
 		/// Applies to: compiler only
 		/// </summary>
 		CU_JIT_FALLBACK_STRATEGY,
 
 		/// <summary>
 		/// Specifies whether to create debug information in output (-g)
-		/// (0: false, default)\n
-		/// Option type: int\n
+		/// (0: false, default)
+		/// Option type: int
 		/// Applies to: compiler and linker
 		/// </summary>
 		CU_JIT_GENERATE_DEBUG_INFO,
 
 		/// <summary>
-		/// Generate verbose log messages (0: false, default)\n
-		/// Option type: int\n
+		/// Generate verbose log messages (0: false, default)
+		/// Option type: int
 		/// Applies to: compiler and linker
 		/// </summary>
 		CU_JIT_LOG_VERBOSE,
 
 		/// <summary>
-		/// Generate line number information (-lineinfo) (0: false, default)\n
-		/// Option type: int\n
+		/// Generate line number information (-lineinfo) (0: false, default)
+		/// Option type: int
 		/// Applies to: compiler only
 		/// </summary>
 		CU_JIT_GENERATE_LINE_INFO,
 
 		/// <summary>
-		/// Specifies whether to enable caching explicitly (-dlcm) \n
-		/// Choice is based on supplied ::CUjit_cacheMode_enum.\n
-		/// Option type: unsigned int for enumerated type ::CUjit_cacheMode_enum\n
-		/// Applies to: compiler only
+		/// Specifies whether to enable caching explicitly (-dlcm) 
+		/// <para>Choice is based on supplied ::CUjit_cacheMode_enum.</para>
+		/// <para>Option type: unsigned int for enumerated type ::CUjit_cacheMode_enum</para>
+		/// <para>Applies to: compiler only</para>
 		/// </summary>
 		CU_JIT_CACHE_MODE,
 
@@ -1405,31 +1405,31 @@ namespace CUDAnshita {
 	/// </summary>
 	public enum CUjitInputType {
 		/// <summary>
-		/// Compiled device-class-specific device code\n
+		/// Compiled device-class-specific device code
 		/// Applicable options: none
 		/// </summary>
 		CU_JIT_INPUT_CUBIN = 0,
 
 		/// <summary>
-		/// PTX source code\n
+		/// PTX source code
 		/// Applicable options: PTX compiler options
 		/// </summary>
 		CU_JIT_INPUT_PTX,
 
 		/// <summary>
-		/// Bundle of multiple cubins and/or PTX of some device code\n
+		/// Bundle of multiple cubins and/or PTX of some device code
 		/// Applicable options: PTX compiler options, ::CU_JIT_FALLBACK_STRATEGY
 		/// </summary>
 		CU_JIT_INPUT_FATBINARY,
 
 		/// <summary>
-		/// Host object with embedded device code\n
+		/// Host object with embedded device code
 		/// Applicable options: PTX compiler options, ::CU_JIT_FALLBACK_STRATEGY
 		/// </summary>
 		CU_JIT_INPUT_OBJECT,
 
 		/// <summary>
-		/// Archive of host objects with embedded device code\n
+		/// Archive of host objects with embedded device code
 		/// Applicable options: PTX compiler options, ::CU_JIT_FALLBACK_STRATEGY
 		/// </summary>
 		CU_JIT_INPUT_LIBRARY,

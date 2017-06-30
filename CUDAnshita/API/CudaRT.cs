@@ -726,10 +726,10 @@ namespace CUDAnshita {
 			public static extern cudaError_t cudaGetTextureAlignmentOffset(ref size_t offset, ref textureReference texref);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern cudaError_t cudaGetTextureReference(ref textureReference[] texref, IntPtr symbol);
+			public static extern cudaError_t cudaGetTextureReference(ref textureReference texref, IntPtr symbol);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern cudaError_t cudaUnbindTexture(ref textureReference texref);
+			public static extern cudaError_t cudaUnbindTexture(textureReference texref);
 
 			// ----- Surface Reference Management
 
@@ -737,7 +737,7 @@ namespace CUDAnshita {
 			public static extern cudaError_t cudaBindSurfaceToArray(ref surfaceReference surfref, cudaArray_const_t array, ref cudaChannelFormatDesc desc);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern cudaError_t cudaGetSurfaceReference(ref surfaceReference[] surfref, IntPtr symbol);
+			public static extern cudaError_t cudaGetSurfaceReference(ref surfaceReference surfref, IntPtr symbol);
 
 			// ----- Texture Object Management
 
@@ -1226,6 +1226,291 @@ namespace CUDAnshita {
 			return devPtr;
 		}
 
+		public static cudaMipmappedArray_t MallocMipmappedArray(cudaExtent extent, uint numLevels, uint flags = 0) {
+			cudaMipmappedArray_t mipmappedArray = new cudaMipmappedArray_t();
+			cudaChannelFormatDesc desc = new cudaChannelFormatDesc();
+			CheckStatus(API.cudaMallocMipmappedArray(ref mipmappedArray, ref desc, extent, numLevels, flags));
+			return mipmappedArray;
+		}
+
+		public static IntPtr MallocPitch(size_t width, size_t height) {
+			IntPtr devPtr = IntPtr.Zero;
+			size_t pitch = 0;
+			CheckStatus(API.cudaMallocPitch(ref devPtr, ref pitch, width, height));
+			return devPtr;
+		}
+
+		public static void MemAdvise(IntPtr devPtr, size_t count, cudaMemoryAdvise advice, int device) {
+			CheckStatus(API.cudaMemAdvise(devPtr, count, advice, device));
+		}
+
+		public static size_t[] MemGetInfo() {
+			size_t free = 0;
+			size_t total = 0;
+			CheckStatus(API.cudaMemGetInfo(ref free, ref total));
+			return new size_t[] { free, total };
+		}
+
+		public static void MemPrefetchAsync(IntPtr devPtr, size_t count, int dstDevice, cudaStream_t stream) {
+			CheckStatus(API.cudaMemPrefetchAsync(devPtr, count, dstDevice, stream));
+		}
+
+		public static void MemRangeGetAttribute(IntPtr data, size_t dataSize, cudaMemRangeAttribute attribute, IntPtr devPtr, size_t count) {
+			CheckStatus(API.cudaMemRangeGetAttribute(data, dataSize, attribute, devPtr, count));
+		}
+
+		//public static void MemRangeGetAttributes(IntPtr data, size_t dataSize, cudaMemRangeAttribute attribute, IntPtr devPtr, size_t count) {
+		//	CheckStatus(API.cudaMemRangeGetAttributes(data, dataSize, attribute, devPtr, count));
+		//}
+
+		public static void Memcpy(IntPtr dst, IntPtr src, size_t count, cudaMemcpyKind kind) {
+			CheckStatus(API.cudaMemcpy(dst, src, count, kind));
+		}
+
+		public static void Memcpy2D(IntPtr dst, size_t dpitch, IntPtr src, size_t spitch, size_t width, size_t height, cudaMemcpyKind kind) {
+			CheckStatus(API.cudaMemcpy2D(dst, dpitch, src, spitch, width, height, kind));
+		}
+
+		public static void Memcpy2DArrayToArray(cudaArray_t dst, size_t wOffsetDst, size_t hOffsetDst, cudaArray_const_t src, size_t wOffsetSrc, size_t hOffsetSrc, size_t width, size_t height, cudaMemcpyKind kind = cudaMemcpyKind.cudaMemcpyDeviceToDevice) {
+			CheckStatus(API.cudaMemcpy2DArrayToArray(dst, wOffsetDst, hOffsetDst, src, wOffsetSrc, hOffsetSrc, width, height, kind));
+		}
+
+		public static void Memcpy2DAsync(IntPtr dst, size_t dpitch, IntPtr src, size_t spitch, size_t width, size_t height, cudaMemcpyKind kind, cudaStream_t stream) {
+			CheckStatus(API.cudaMemcpy2DAsync(dst, dpitch, src, spitch, width, height, kind, stream));
+		}
+
+		public static void Memcpy2DFromArray(IntPtr dst, size_t dpitch, cudaArray_const_t src, size_t wOffset, size_t hOffset, size_t width, size_t height, cudaMemcpyKind kind) {
+			CheckStatus(API.cudaMemcpy2DFromArray(dst, dpitch, src, wOffset, hOffset, width, height, kind));
+		}
+
+		public static void Memcpy2DFromArrayAsync(IntPtr dst, size_t dpitch, cudaArray_const_t src, size_t wOffset, size_t hOffset, size_t width, size_t height, cudaMemcpyKind kind, cudaStream_t stream) {
+			CheckStatus(API.cudaMemcpy2DFromArrayAsync(dst, dpitch, src, wOffset, hOffset, width, height, kind, stream));
+		}
+
+		public static void Memcpy2DToArray(cudaArray_t dst, size_t wOffset, size_t hOffset, IntPtr src, size_t spitch, size_t width, size_t height, cudaMemcpyKind kind) {
+			CheckStatus(API.cudaMemcpy2DToArray(dst, wOffset, hOffset, src, spitch, width, height, kind));
+		}
+
+		public static void Memcpy2DToArrayAsync(cudaArray_t dst, size_t wOffset, size_t hOffset, IntPtr src, size_t spitch, size_t width, size_t height, cudaMemcpyKind kind, cudaStream_t stream) {
+			CheckStatus(API.cudaMemcpy2DToArrayAsync(dst, wOffset, hOffset, src, spitch, width, height, kind, stream));
+		}
+
+		public static void Memcpy3D(cudaMemcpy3DParms p) {
+			CheckStatus(API.cudaMemcpy3D(ref p));
+		}
+
+		public static void Memcpy3DAsync(cudaMemcpy3DParms p, cudaStream_t stream) {
+			CheckStatus(API.cudaMemcpy3DAsync(ref p, stream));
+		}
+
+		public static void Memcpy3DPeer(cudaMemcpy3DPeerParms p) {
+			CheckStatus(API.cudaMemcpy3DPeer(ref p));
+		}
+
+		public static void Memcpy3DPeerAsync(cudaMemcpy3DPeerParms p, cudaStream_t stream) {
+			CheckStatus(API.cudaMemcpy3DPeerAsync(ref p, stream));
+		}
+
+		public static void MemcpyArrayToArray(cudaArray_t dst, size_t wOffsetDst, size_t hOffsetDst, cudaArray_const_t src, size_t wOffsetSrc, size_t hOffsetSrc, size_t count, cudaMemcpyKind kind = cudaMemcpyKind.cudaMemcpyDeviceToDevice) {
+			CheckStatus(API.cudaMemcpyArrayToArray(dst, wOffsetDst, hOffsetDst, src, wOffsetSrc, hOffsetSrc, count, kind));
+		}
+
+		public static void MemcpyAsync(IntPtr dst, IntPtr src, size_t count, cudaMemcpyKind kind, cudaStream_t stream) {
+			CheckStatus(API.cudaMemcpyAsync(dst, src, count, kind, stream));
+		}
+
+		public static void MemcpyFromArray(IntPtr dst, cudaArray_const_t src, size_t wOffset, size_t hOffset, size_t count, cudaMemcpyKind kind) {
+			CheckStatus(API.cudaMemcpyFromArray(dst, src, wOffset, hOffset, count, kind));
+		}
+
+		public static void MemcpyFromArrayAsync(IntPtr dst, cudaArray_const_t src, size_t wOffset, size_t hOffset, size_t count, cudaMemcpyKind kind, cudaStream_t stream) {
+			CheckStatus(API.cudaMemcpyFromArrayAsync(dst, src, wOffset, hOffset, count, kind, stream));
+		}
+
+		public static void MemcpyFromSymbol(IntPtr dst, IntPtr symbol, size_t count, size_t offset = 0, cudaMemcpyKind kind = cudaMemcpyKind.cudaMemcpyDeviceToHost) {
+			CheckStatus(API.cudaMemcpyFromSymbol(dst, symbol, count, offset, kind));
+		}
+
+		public static void MemcpyFromSymbolAsync(IntPtr dst, IntPtr symbol, size_t count, size_t offset, cudaMemcpyKind kind, cudaStream_t stream) {
+			CheckStatus(API.cudaMemcpyFromSymbolAsync(dst, symbol, count, offset, kind, stream));
+		}
+
+		public static void MemcpyPeer(IntPtr dst, int dstDevice, IntPtr src, int srcDevice, size_t count) {
+			CheckStatus(API.cudaMemcpyPeer(dst, dstDevice, src, srcDevice, count));
+		}
+
+		public static void MemcpyPeerAsync(IntPtr dst, int dstDevice, IntPtr src, int srcDevice, size_t count, cudaStream_t stream) {
+			CheckStatus(API.cudaMemcpyPeerAsync(dst, dstDevice, src, srcDevice, count, stream));
+		}
+
+		public static void MemcpyToArray(cudaArray_t dst, size_t wOffset, size_t hOffset, IntPtr src, size_t count, cudaMemcpyKind kind) {
+			CheckStatus(API.cudaMemcpyToArray(dst, wOffset, hOffset, src, count, kind));
+		}
+
+		public static void MemcpyToArrayAsync(cudaArray_t dst, size_t wOffset, size_t hOffset, IntPtr src, size_t count, cudaMemcpyKind kind, cudaStream_t stream) {
+			CheckStatus(API.cudaMemcpyToArrayAsync(dst, wOffset, hOffset, src, count, kind, stream));
+		}
+
+		public static void MemcpyToSymbol(IntPtr symbol, IntPtr src, size_t count, size_t offset = 0, cudaMemcpyKind kind = cudaMemcpyKind.cudaMemcpyHostToDevice) {
+			CheckStatus(API.cudaMemcpyToSymbol(symbol, src, count, offset, kind));
+		}
+
+		public static void MemcpyToSymbolAsync(IntPtr symbol, IntPtr src, size_t count, size_t offset, cudaMemcpyKind kind, cudaStream_t stream) {
+			CheckStatus(API.cudaMemcpyToSymbolAsync(symbol, src, count, offset, kind, stream));
+		}
+
+		public static void Memset(IntPtr devPtr, int value, size_t count) {
+			CheckStatus(API.cudaMemset(devPtr, value, count));
+		}
+
+		public static void Memset2D(IntPtr devPtr, size_t pitch, int value, size_t width, size_t height) {
+			CheckStatus(API.cudaMemset2D(devPtr, pitch, value, width, height));
+		}
+
+		public static void Memset2DAsync(IntPtr devPtr, size_t pitch, int value, size_t width, size_t height, cudaStream_t stream) {
+			CheckStatus(API.cudaMemset2DAsync(devPtr, pitch, value, width, height, stream));
+		}
+
+		public static void Memset3D(cudaPitchedPtr pitchedDevPtr, int value, cudaExtent extent) {
+			CheckStatus(API.cudaMemset3D(pitchedDevPtr, value, extent));
+		}
+
+		public static void Memset3DAsync(cudaPitchedPtr pitchedDevPtr, int value, cudaExtent extent, cudaStream_t stream) {
+			CheckStatus(API.cudaMemset3DAsync(pitchedDevPtr, value, extent, stream));
+		}
+
+		public static void MemsetAsync(IntPtr devPtr, int value, size_t count, cudaStream_t stream) {
+			CheckStatus(API.cudaMemsetAsync(devPtr, value, count, stream));
+		}
+
+		public static cudaExtent make_cudaExtent(size_t w, size_t h, size_t d) {
+			return API.make_cudaExtent(w, h, d);
+		}
+
+		public static cudaPitchedPtr make_cudaPitchedPtr(IntPtr d, size_t p, size_t xsz, size_t ysz) {
+			return API.make_cudaPitchedPtr(d, p, xsz, ysz);
+		}
+
+		public static cudaPos make_cudaPos(size_t x, size_t y, size_t z) {
+			return API.make_cudaPos(x, y, z);
+		}
+
+		public static cudaPointerAttributes PointerGetAttributes(IntPtr ptr) {
+			cudaPointerAttributes attributes = new cudaPointerAttributes();
+			CheckStatus(API.cudaPointerGetAttributes(ref attributes, ptr));
+			return attributes;
+		}
+
+		public static int DeviceCanAccessPeer(int device, int peerDevice) {
+			int canAccessPeer = 0;
+			CheckStatus(API.cudaDeviceCanAccessPeer(ref canAccessPeer, device, peerDevice));
+			return canAccessPeer;
+		}
+
+		public static void DeviceDisablePeerAccess(int peerDevice) {
+			CheckStatus(API.cudaDeviceDisablePeerAccess(peerDevice));
+		}
+
+		public static void DeviceEnablePeerAccess(int peerDevice, uint flags) {
+			CheckStatus(API.cudaDeviceEnablePeerAccess(peerDevice, flags));
+		}
+
+		public static void BindTexture(size_t offset, textureReference texref, IntPtr devPtr, cudaChannelFormatDesc desc, size_t size = uint.MaxValue) {
+			CheckStatus(API.cudaBindTexture(ref offset, ref texref, devPtr, ref desc, size));
+		}
+
+		public static void BindTexture2D(size_t offset, textureReference texref, IntPtr devPtr, cudaChannelFormatDesc desc, size_t width, size_t height, size_t pitch) {
+			CheckStatus(API.cudaBindTexture2D(ref offset, ref texref, devPtr, ref desc, width, height, pitch));
+		}
+
+		public static void BindTextureToArray(textureReference texref, cudaArray_const_t array, cudaChannelFormatDesc desc) {
+			CheckStatus(API.cudaBindTextureToArray(ref texref, array, ref desc));
+		}
+
+		public static void BindTextureToMipmappedArray(textureReference texref, cudaMipmappedArray_const_t mipmappedArray, cudaChannelFormatDesc desc) {
+			CheckStatus(API.cudaBindTextureToMipmappedArray(ref texref, mipmappedArray, ref desc));
+		}
+
+		public static cudaChannelFormatDesc CreateChannelDesc(int x, int y, int z, int w, cudaChannelFormatKind f) {
+			return API.cudaCreateChannelDesc(x, y, z, w, f);
+		}
+
+		public static cudaChannelFormatDesc GetChannelDesc(cudaArray_const_t array) {
+			cudaChannelFormatDesc desc = new cudaChannelFormatDesc();
+			CheckStatus(API.cudaGetChannelDesc(ref desc, array));
+			return desc;
+		}
+
+		public static size_t GetTextureAlignmentOffset(textureReference texref) {
+			size_t offset = 0;
+			CheckStatus(API.cudaGetTextureAlignmentOffset(ref offset, ref texref));
+			return offset;
+		}
+
+		public static textureReference GetTextureReference(IntPtr symbol) {
+			textureReference texref = new textureReference();
+			CheckStatus(API.cudaGetTextureReference(ref texref, symbol));
+			return texref;
+		}
+
+		public static void UnbindTexture(textureReference texref) {
+			CheckStatus(API.cudaUnbindTexture(texref));
+		}
+
+		public static void BindSurfaceToArray(surfaceReference surfref, cudaArray_const_t array, cudaChannelFormatDesc desc) {
+			CheckStatus(API.cudaBindSurfaceToArray(ref surfref, array, ref desc));
+		}
+
+		public static surfaceReference GetSurfaceReference(IntPtr symbol) {
+			surfaceReference surfref = new surfaceReference();
+			CheckStatus(API.cudaGetSurfaceReference(ref surfref, symbol));
+			return surfref;
+		}
+
+		public static cudaTextureObject_t CreateTextureObject(cudaResourceDesc pResDesc, cudaTextureDesc pTexDesc, cudaResourceViewDesc pResViewDesc) {
+			cudaTextureObject_t pTexObject = IntPtr.Zero;
+			CheckStatus(API.cudaCreateTextureObject(ref pTexObject, ref pResDesc, ref pTexDesc, ref pResViewDesc));
+			return pTexObject;
+		}
+
+		public static void DestroyTextureObject(cudaTextureObject_t texObject) {
+			CheckStatus(API.cudaDestroyTextureObject(texObject));
+		}
+
+		public static cudaResourceDesc GetTextureObjectResourceDesc(cudaTextureObject_t texObject) {
+			cudaResourceDesc pResDesc = new cudaResourceDesc();
+			CheckStatus(API.cudaGetTextureObjectResourceDesc(ref pResDesc, texObject));
+			return pResDesc;
+		}
+
+		public static cudaResourceViewDesc GetTextureObjectResourceViewDesc(cudaTextureObject_t texObject) {
+			cudaResourceViewDesc pResViewDesc = new cudaResourceViewDesc();
+			CheckStatus(API.cudaGetTextureObjectResourceViewDesc(ref pResViewDesc, texObject));
+			return pResViewDesc;
+		}
+
+		public static cudaTextureDesc GetTextureObjectTextureDesc(cudaTextureObject_t texObject) {
+			cudaTextureDesc pTexDesc = new cudaTextureDesc();
+			CheckStatus(API.cudaGetTextureObjectTextureDesc(ref pTexDesc, texObject));
+			return pTexDesc;
+		}
+
+		public static cudaSurfaceObject_t CreateSurfaceObject(cudaResourceDesc pResDesc) {
+			cudaSurfaceObject_t pSurfObject = IntPtr.Zero;
+			CheckStatus(API.cudaCreateSurfaceObject(ref pSurfObject, ref pResDesc));
+			return pSurfObject;
+		}
+
+		public static void DestroySurfaceObject(cudaSurfaceObject_t surfObject) {
+			CheckStatus(API.cudaDestroySurfaceObject(surfObject));
+		}
+
+		public static cudaResourceDesc GetSurfaceObjectResourceDesc(cudaSurfaceObject_t surfObject) {
+			cudaResourceDesc pResDesc = new cudaResourceDesc();
+			CheckStatus(API.cudaGetSurfaceObjectResourceDesc(ref pResDesc, surfObject));
+			return pResDesc;
+		}
+
 		public static int DriverGetVersion() {
 			int driverVersion = 0;
 			CheckStatus(API.cudaDriverGetVersion(ref driverVersion));
@@ -1236,6 +1521,18 @@ namespace CUDAnshita {
 			int runtimeVersion = 0;
 			CheckStatus(API.cudaRuntimeGetVersion(ref runtimeVersion));
 			return runtimeVersion;
+		}
+
+		public static void ProfilerInitialize(string configFile, string outputFile, cudaOutputMode outputMode) {
+			CheckStatus(API.cudaProfilerInitialize(configFile, outputFile, outputMode));
+		}
+
+		public static void ProfilerStart() {
+			CheckStatus(API.cudaProfilerStart());
+		}
+
+		public static void ProfilerStop() {
+			CheckStatus(API.cudaProfilerStop());
 		}
 
 		static void CheckStatus(cudaError status) {

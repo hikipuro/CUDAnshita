@@ -21,12 +21,12 @@ extern ""C"" __global__ void addKernel(int *c, const int *a, const int *b) {
 		}
 
 		private void buttonTest_Click(object sender, EventArgs e) {
-			//TestCompile();
+			TestCompile();
 			//TestCudaRT();
 			//TestCuRAND();
 			//TestCuBLAS();
 			//TestMatrix();
-			TestCuDNN();
+			//TestCuDNN();
 		}
 
 		private void TestCompile() {
