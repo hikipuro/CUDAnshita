@@ -18,7 +18,7 @@ namespace CUDAnshita {
 
 		public void Dispose() {
 			if (module != IntPtr.Zero) {
-				NvCuda.cuModuleUnload(module);
+				NvCuda.API.cuModuleUnload(module);
 				module = IntPtr.Zero;
 			}
 		}
@@ -39,7 +39,7 @@ namespace CUDAnshita {
 			//Dispose();
 			CUresult result;
 			IntPtr ptxImage = Marshal.StringToHGlobalAnsi(image);
-			result = NvCuda.cuModuleLoadData(ref module, ptxImage);
+			result = NvCuda.API.cuModuleLoadData(ref module, ptxImage);
 			CudaException.Check(result, "モジュールデータのロードに失敗しました。");
 		}
 
@@ -47,7 +47,7 @@ namespace CUDAnshita {
 			Dispose();
 			CUresult result;
 			IntPtr ptxImage = Marshal.StringToHGlobalAnsi(image);
-			result = NvCuda.cuModuleLoadDataEx(
+			result = NvCuda.API.cuModuleLoadDataEx(
 				ref module, ptxImage, numOptions, options, optionValues
 			);
 			CudaException.Check(result, "モジュールデータのロードに失敗しました。");
@@ -57,7 +57,7 @@ namespace CUDAnshita {
 			CUresult result;
 
 			IntPtr kernel = IntPtr.Zero;
-			result = NvCuda.cuModuleGetFunction(ref kernel, module, funcName);
+			result = NvCuda.API.cuModuleGetFunction(ref kernel, module, funcName);
 			CudaException.Check(result, "関数の取得に失敗しました。");
 
 			IntPtr ptrArgs = Marshal.AllocHGlobal(IntPtr.Size * args.Length);
@@ -70,7 +70,7 @@ namespace CUDAnshita {
 			}
 			Marshal.Copy(ptrList.ToArray(), 0, ptrArgs, args.Length);
 
-			result = NvCuda.cuLaunchKernel(
+			result = NvCuda.API.cuLaunchKernel(
 				kernel,
 				gridX, gridY, gridZ,		// grid dim
 				blockX, blockY, blockZ,		// block dim

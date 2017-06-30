@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CUDAnshita", "CUDAnshita.csproj", "{17E22436-E486-4801-AD1B-182515996F2F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CUDAnshita", "CUDAnshita\CUDAnshita.csproj", "{17E22436-E486-4801-AD1B-182515996F2F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CUDAnshita_Sample", "..\CUDAnshita_Sample\CUDAnshita_Sample.csproj", "{DEEC9FCA-D58D-4B94-A39C-7996BA657324}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CUDAnshita_Sample", "CUDAnshita_Sample\CUDAnshita_Sample.csproj", "{DEEC9FCA-D58D-4B94-A39C-7996BA657324}"
 	ProjectSection(ProjectDependencies) = postProject
 		{17E22436-E486-4801-AD1B-182515996F2F} = {17E22436-E486-4801-AD1B-182515996F2F}
 	EndProjectSection

@@ -1644,7 +1644,7 @@ namespace CUDAnshita {
 		cudnnHandle_t handle = IntPtr.Zero;
 
 		public cuDNN6() {
-			CheckStatus(API.cudnnCreate(ref handle));
+			handle = CreateHandle();
 		}
 
 		~cuDNN6() {
@@ -1653,7 +1653,7 @@ namespace CUDAnshita {
 
 		public void Dispose() {
 			if (handle != IntPtr.Zero) {
-				CheckStatus(API.cudnnDestroy(handle));
+				DestroyHandle(handle);
 				handle = IntPtr.Zero;
 			}
 		}
@@ -1708,36 +1708,40 @@ namespace CUDAnshita {
 			CheckStatus(API.cudnnDestroyTensorDescriptor(tensorDesc));
 		}
 
-		public void TransformTensor() {
-			NotImplemented("TransformTensor");
+		public void TransformTensor(IntPtr alpha, cudnnTensorDescriptor_t xDesc, IntPtr x, IntPtr beta, cudnnTensorDescriptor_t yDesc, IntPtr y) {
+			CheckStatus(API.cudnnTransformTensor(handle, alpha, xDesc, x, beta, yDesc, y));
 		}
 
-		public void AddTensor() {
-			NotImplemented("AddTensor");
+		public void AddTensor(IntPtr alpha, cudnnTensorDescriptor_t aDesc, IntPtr A, IntPtr beta, cudnnTensorDescriptor_t cDesc, IntPtr C) {
+			CheckStatus(API.cudnnAddTensor(handle, alpha, aDesc, A, beta, cDesc, C));
 		}
 
-		public void CreateOpTensorDescriptor() {
-			NotImplemented("CreateOpTensorDescriptor");
+		public cudnnOpTensorDescriptor_t CreateOpTensorDescriptor() {
+			cudnnOpTensorDescriptor_t opTensorDesc = IntPtr.Zero;
+			CheckStatus(API.cudnnCreateOpTensorDescriptor(ref opTensorDesc));
+			return opTensorDesc;
 		}
 
-		public void SetOpTensorDescriptor() {
-			NotImplemented("SetOpTensorDescriptor");
+		public void SetOpTensorDescriptor(cudnnOpTensorDescriptor_t opTensorDesc, cudnnOpTensorOp_t opTensorOp, cudnnDataType_t opTensorCompType, cudnnNanPropagation_t opTensorNanOpt) {
+			CheckStatus(API.cudnnSetOpTensorDescriptor(opTensorDesc, opTensorOp, opTensorCompType, opTensorNanOpt));
 		}
 
 		public void GetOpTensorDescriptor() {
 			NotImplemented("GetOpTensorDescriptor");
 		}
 
-		public void DestroyOpTensorDescriptor() {
-			NotImplemented("DestroyOpTensorDescriptor");
+		public void DestroyOpTensorDescriptor(cudnnOpTensorDescriptor_t opTensorDesc) {
+			CheckStatus(API.cudnnDestroyOpTensorDescriptor(opTensorDesc));
 		}
 
-		public void OpTensor() {
-			NotImplemented("OpTensor");
+		public void OpTensor(cudnnOpTensorDescriptor_t opTensorDesc, IntPtr alpha1, cudnnTensorDescriptor_t aDesc, IntPtr A, IntPtr alpha2, cudnnTensorDescriptor_t bDesc, IntPtr B, IntPtr beta, cudnnTensorDescriptor_t cDesc, IntPtr C) {
+			CheckStatus(API.cudnnOpTensor(handle, opTensorDesc, alpha1, aDesc, A, alpha2, bDesc, B, beta, cDesc, C));
 		}
 
-		public void CreateReduceTensorDescriptor() {
-			NotImplemented("CreateReduceTensorDescriptor");
+		public cudnnReduceTensorDescriptor_t CreateReduceTensorDescriptor() {
+			cudnnReduceTensorDescriptor_t reduceTensorDesc = IntPtr.Zero;
+			CheckStatus(API.cudnnCreateReduceTensorDescriptor(ref reduceTensorDesc));
+			return reduceTensorDesc;
 		}
 
 		public void SetReduceTensorDescriptor() {
@@ -1748,32 +1752,38 @@ namespace CUDAnshita {
 			NotImplemented("GetReduceTensorDescriptor");
 		}
 
-		public void DestroyReduceTensorDescriptor() {
-			NotImplemented("DestroyReduceTensorDescriptor");
+		public void DestroyReduceTensorDescriptor(cudnnReduceTensorDescriptor_t reduceTensorDesc) {
+			CheckStatus(API.cudnnDestroyReduceTensorDescriptor(reduceTensorDesc));
 		}
 
-		public void GetReductionIndicesSize() {
-			NotImplemented("GetReductionIndicesSize");
+		public size_t GetReductionIndicesSize(cudnnReduceTensorDescriptor_t reduceTensorDesc, cudnnTensorDescriptor_t aDesc, cudnnTensorDescriptor_t cDesc) {
+			size_t sizeInBytes = 0;
+			CheckStatus(API.cudnnGetReductionIndicesSize(handle, reduceTensorDesc, aDesc, cDesc, ref sizeInBytes));
+			return sizeInBytes;
 		}
 
-		public void GetReductionWorkspaceSize() {
-			NotImplemented("GetReductionWorkspaceSize");
+		public size_t GetReductionWorkspaceSize(cudnnReduceTensorDescriptor_t reduceTensorDesc, cudnnTensorDescriptor_t aDesc, cudnnTensorDescriptor_t cDesc) {
+			size_t sizeInBytes = 0;
+			CheckStatus(API.cudnnGetReductionWorkspaceSize(handle, reduceTensorDesc, aDesc, cDesc, ref sizeInBytes));
+			return sizeInBytes;
 		}
 
-		public void ReduceTensor() {
-			NotImplemented("ReduceTensor");
+		public void ReduceTensor(cudnnReduceTensorDescriptor_t reduceTensorDesc, IntPtr indices, size_t indicesSizeInBytes, IntPtr workspace, size_t workspaceSizeInBytes, IntPtr alpha, cudnnTensorDescriptor_t aDesc, IntPtr A, IntPtr beta, cudnnTensorDescriptor_t cDesc, IntPtr C) {
+			CheckStatus(API.cudnnReduceTensor(handle, reduceTensorDesc, indices, indicesSizeInBytes, workspace, workspaceSizeInBytes, alpha, aDesc, A, beta, cDesc, C));
 		}
 
-		public void SetTensor() {
-			NotImplemented("SetTensor");
+		public void SetTensor(cudnnTensorDescriptor_t yDesc, IntPtr y, IntPtr valuePtr) {
+			CheckStatus(API.cudnnSetTensor(handle, yDesc, y, valuePtr));
 		}
 
-		public void ScaleTensor() {
-			NotImplemented("ScaleTensor");
+		public void ScaleTensor(cudnnTensorDescriptor_t yDesc, IntPtr y, IntPtr alpha) {
+			CheckStatus(API.cudnnSetTensor(handle, yDesc, y, alpha));
 		}
 
-		public void CreateFilterDescriptor() {
-			NotImplemented("CreateFilterDescriptor");
+		public cudnnFilterDescriptor_t CreateFilterDescriptor() {
+			cudnnFilterDescriptor_t filterDesc = IntPtr.Zero;
+			CheckStatus(API.cudnnCreateFilterDescriptor(ref filterDesc));
+			return filterDesc;
 		}
 
 		public void SetFilter4dDescriptor() {
@@ -1792,12 +1802,14 @@ namespace CUDAnshita {
 			NotImplemented("GetFilterNdDescriptor");
 		}
 
-		public void DestroyFilterDescriptor() {
-			NotImplemented("DestroyFilterDescriptor");
+		public void DestroyFilterDescriptor(cudnnFilterDescriptor_t filterDesc) {
+			CheckStatus(API.cudnnDestroyFilterDescriptor(filterDesc));
 		}
 
-		public void CreateConvolutionDescriptor() {
-			NotImplemented("CreateConvolutionDescriptor");
+		public cudnnConvolutionDescriptor_t CreateConvolutionDescriptor() {
+			cudnnConvolutionDescriptor_t convDesc = IntPtr.Zero;
+			CheckStatus(API.cudnnCreateConvolutionDescriptor(ref convDesc));
+			return convDesc;
 		}
 
 		public void SetConvolution2dDescriptor() {
@@ -1824,12 +1836,14 @@ namespace CUDAnshita {
 			NotImplemented("GetConvolutionNdForwardOutputDim");
 		}
 
-		public void DestroyConvolutionDescriptor() {
-			NotImplemented("DestroyConvolutionDescriptor");
+		public void DestroyConvolutionDescriptor(cudnnConvolutionDescriptor_t convDesc) {
+			CheckStatus(API.cudnnDestroyConvolutionDescriptor(convDesc));
 		}
 
-		public void FindConvolutionForwardAlgorithm() {
-			NotImplemented("FindConvolutionForwardAlgorithm");
+		public void FindConvolutionForwardAlgorithm(cudnnTensorDescriptor_t xDesc, cudnnFilterDescriptor_t wDesc, cudnnConvolutionDescriptor_t convDesc, cudnnTensorDescriptor_t yDesc, int requestedAlgoCount) {
+			int returnedAlgoCount = 0;
+			cudnnConvolutionFwdAlgoPerf_t perfResults = new cudnnConvolutionFwdAlgoPerf_t();
+			CheckStatus(API.cudnnFindConvolutionForwardAlgorithm(handle, xDesc, wDesc, convDesc, yDesc, requestedAlgoCount, ref returnedAlgoCount, ref perfResults));
 		}
 
 		public void FindConvolutionForwardAlgorithmEx() {
@@ -1840,8 +1854,10 @@ namespace CUDAnshita {
 			NotImplemented("GetConvolutionForwardAlgorithm");
 		}
 
-		public void GetConvolutionForwardWorkspaceSize() {
-			NotImplemented("GetConvolutionForwardWorkspaceSize");
+		public size_t GetConvolutionForwardWorkspaceSize(cudnnTensorDescriptor_t xDesc, cudnnFilterDescriptor_t wDesc, cudnnConvolutionDescriptor_t convDesc, cudnnTensorDescriptor_t yDesc, cudnnConvolutionFwdAlgo_t algo) {
+			size_t sizeInBytes = 0;
+			CheckStatus(API.cudnnGetConvolutionForwardWorkspaceSize(handle, xDesc, wDesc, convDesc, yDesc, algo, ref sizeInBytes));
+			return sizeInBytes;
 		}
 
 		public void ConvolutionForward() {
@@ -1868,8 +1884,10 @@ namespace CUDAnshita {
 			NotImplemented("GetConvolutionBackwardFilterAlgorithm");
 		}
 
-		public void GetConvolutionBackwardFilterWorkspaceSize() {
-			NotImplemented("GetConvolutionBackwardFilterWorkspaceSize");
+		public size_t GetConvolutionBackwardFilterWorkspaceSize(cudnnTensorDescriptor_t xDesc, cudnnTensorDescriptor_t dyDesc, cudnnConvolutionDescriptor_t convDesc, cudnnFilterDescriptor_t gradDesc, cudnnConvolutionBwdFilterAlgo_t algo) {
+			size_t sizeInBytes = 0;
+			CheckStatus(API.cudnnGetConvolutionBackwardFilterWorkspaceSize(handle, xDesc, dyDesc, convDesc, gradDesc, algo, ref sizeInBytes));
+			return sizeInBytes;
 		}
 
 		public void ConvolutionBackwardFilter() {
@@ -1900,16 +1918,18 @@ namespace CUDAnshita {
 			NotImplemented("Im2Col");
 		}
 
-		public void SoftmaxForward() {
-			NotImplemented("SoftmaxForward");
+		public void SoftmaxForward(cudnnSoftmaxAlgorithm_t algo, cudnnSoftmaxMode_t mode, IntPtr alpha, cudnnTensorDescriptor_t xDesc, IntPtr x, IntPtr beta, cudnnTensorDescriptor_t yDesc, IntPtr y) {
+			CheckStatus(API.cudnnSoftmaxForward(handle, algo, mode, alpha, xDesc, x, beta, yDesc, y));
 		}
 
-		public void SoftmaxBackward() {
-			NotImplemented("SoftmaxBackward");
+		public void SoftmaxBackward(cudnnSoftmaxAlgorithm_t algo, cudnnSoftmaxMode_t mode, IntPtr alpha, cudnnTensorDescriptor_t yDesc, IntPtr y, cudnnTensorDescriptor_t dyDesc, IntPtr dy, IntPtr beta, cudnnTensorDescriptor_t dxDesc, IntPtr dx) {
+			CheckStatus(API.cudnnSoftmaxBackward(handle, algo, mode, alpha, yDesc, y, dyDesc, dy, beta, dxDesc, dx));
 		}
 
-		public void CreatePoolingDescriptor() {
-			NotImplemented("CreatePoolingDescriptor");
+		public cudnnPoolingDescriptor_t CreatePoolingDescriptor() {
+			cudnnPoolingDescriptor_t poolingDesc = IntPtr.Zero;
+			CheckStatus(API.cudnnCreatePoolingDescriptor(ref poolingDesc));
+			return poolingDesc;
 		}
 
 		public void SetPooling2dDescriptor() {
@@ -1936,8 +1956,8 @@ namespace CUDAnshita {
 			NotImplemented("GetPooling2dForwardOutputDim");
 		}
 
-		public void DestroyPoolingDescriptor() {
-			NotImplemented("DestroyPoolingDescriptor");
+		public void DestroyPoolingDescriptor(cudnnPoolingDescriptor_t poolingDesc) {
+			CheckStatus(API.cudnnDestroyPoolingDescriptor(poolingDesc));
 		}
 
 		public void PoolingForward() {
@@ -1948,8 +1968,10 @@ namespace CUDAnshita {
 			NotImplemented("PoolingBackward");
 		}
 
-		public void CreateActivationDescriptor() {
-			NotImplemented("CreateActivationDescriptor");
+		public cudnnActivationDescriptor_t CreateActivationDescriptor() {
+			cudnnActivationDescriptor_t activationDesc = IntPtr.Zero;
+			CheckStatus(API.cudnnCreateActivationDescriptor(ref activationDesc));
+			return activationDesc;
 		}
 
 		public void SetActivationDescriptor() {
@@ -1960,8 +1982,8 @@ namespace CUDAnshita {
 			NotImplemented("GetActivationDescriptor");
 		}
 
-		public void DestroyActivationDescriptor() {
-			NotImplemented("DestroyActivationDescriptor");
+		public void DestroyActivationDescriptor(cudnnActivationDescriptor_t activationDesc) {
+			CheckStatus(API.cudnnDestroyActivationDescriptor(activationDesc));
 		}
 
 		public void ActivationForward() {
@@ -1972,8 +1994,10 @@ namespace CUDAnshita {
 			NotImplemented("ActivationBackward");
 		}
 
-		public void CreateLRNDescriptor() {
-			NotImplemented("CreateLRNDescriptor");
+		public cudnnLRNDescriptor_t CreateLRNDescriptor() {
+			cudnnLRNDescriptor_t lrnDesc = IntPtr.Zero;
+			CheckStatus(API.cudnnCreateLRNDescriptor(ref lrnDesc));
+			return lrnDesc;
 		}
 
 		public void SetLRNDescriptor() {
@@ -1984,8 +2008,8 @@ namespace CUDAnshita {
 			NotImplemented("GetLRNDescriptor");
 		}
 
-		public void DestroyLRNDescriptor() {
-			NotImplemented("DestroyLRNDescriptor");
+		public void DestroyLRNDescriptor(cudnnLRNDescriptor_t lrnDesc) {
+			CheckStatus(API.cudnnDestroyLRNDescriptor(lrnDesc));
 		}
 
 		public void LRNCrossChannelForward() {
@@ -2020,16 +2044,18 @@ namespace CUDAnshita {
 			NotImplemented("BatchNormalizationBackward");
 		}
 
-		public void CreateSpatialTransformerDescriptor() {
-			NotImplemented("CreateSpatialTransformerDescriptor");
+		public cudnnSpatialTransformerDescriptor_t CreateSpatialTransformerDescriptor() {
+			cudnnSpatialTransformerDescriptor_t stDesc = IntPtr.Zero;
+			CheckStatus(API.cudnnCreateSpatialTransformerDescriptor(ref stDesc));
+			return stDesc;
 		}
 
 		public void SetSpatialTransformerNdDescriptor() {
 			NotImplemented("SetSpatialTransformerNdDescriptor");
 		}
 
-		public void DestroySpatialTransformerDescriptor() {
-			NotImplemented("DestroySpatialTransformerDescriptor");
+		public void DestroySpatialTransformerDescriptor(cudnnSpatialTransformerDescriptor_t stDesc) {
+			CheckStatus(API.cudnnDestroySpatialTransformerDescriptor(stDesc));
 		}
 
 		public void SpatialTfGridGeneratorForward() {
@@ -2048,20 +2074,26 @@ namespace CUDAnshita {
 			NotImplemented("SpatialTfSamplerBackward");
 		}
 
-		public void CreateDropoutDescriptor() {
-			NotImplemented("CreateDropoutDescriptor");
+		public cudnnDropoutDescriptor_t CreateDropoutDescriptor() {
+			cudnnDropoutDescriptor_t dropoutDesc = IntPtr.Zero;
+			CheckStatus(API.cudnnCreateDropoutDescriptor(ref dropoutDesc));
+			return dropoutDesc;
 		}
 
-		public void DestroyDropoutDescriptor() {
-			NotImplemented("DestroyDropoutDescriptor");
+		public void DestroyDropoutDescriptor(cudnnDropoutDescriptor_t dropoutDesc) {
+			CheckStatus(API.cudnnDestroyDropoutDescriptor(dropoutDesc));
 		}
 
-		public void DropoutGetStatesSize() {
-			NotImplemented("DropoutGetStatesSize");
+		public size_t DropoutGetStatesSize() {
+			size_t sizeInBytes = 0;
+			CheckStatus(API.cudnnDropoutGetStatesSize(handle, ref sizeInBytes));
+			return sizeInBytes;
 		}
 
-		public void DropoutGetReserveSpaceSize() {
-			NotImplemented("DropoutGetReserveSpaceSize");
+		public size_t DropoutGetReserveSpaceSize(cudnnTensorDescriptor_t xdesc) {
+			size_t sizeInBytes = 0;
+			CheckStatus(API.cudnnDropoutGetReserveSpaceSize(xdesc, ref sizeInBytes));
+			return sizeInBytes;
 		}
 
 		public void SetDropoutDescriptor() {
@@ -2076,20 +2108,28 @@ namespace CUDAnshita {
 			NotImplemented("DropoutBackward");
 		}
 
-		public void CreateRNNDescriptor() {
-			NotImplemented("CreateRNNDescriptor");
+		public cudnnRNNDescriptor_t CreateRNNDescriptor() {
+			cudnnRNNDescriptor_t rnnDesc = IntPtr.Zero;
+			CheckStatus(API.cudnnCreateRNNDescriptor(ref rnnDesc));
+			return rnnDesc;
 		}
 
-		public void CreatePersistentRNNPlan() {
-			NotImplemented("CreatePersistentRNNPlan");
+		public void DestroyRNNDescriptor(cudnnRNNDescriptor_t rnnDesc) {
+			CheckStatus(API.cudnnDestroyRNNDescriptor(rnnDesc));
+		}
+
+		public cudnnPersistentRNNPlan_t CreatePersistentRNNPlan(cudnnRNNDescriptor_t rnnDesc, int minibatch, cudnnDataType_t dataType) {
+			cudnnPersistentRNNPlan_t plan = IntPtr.Zero;
+			CheckStatus(API.cudnnCreatePersistentRNNPlan(rnnDesc, minibatch, dataType, ref plan));
+			return plan;
 		}
 
 		public void SetPersistentRNNPlan() {
 			NotImplemented("SetPersistentRNNPlan");
 		}
 
-		public void DestroyPersistentRNNPlan() {
-			NotImplemented("DestroyPersistentRNNPlan");
+		public void DestroyPersistentRNNPlan(cudnnPersistentRNNPlan_t plan) {
+			CheckStatus(API.cudnnDestroyPersistentRNNPlan(plan));
 		}
 
 		public void SetRNNDescriptor_v6() {
@@ -2176,6 +2216,16 @@ namespace CUDAnshita {
 			if (status != cudnnStatus.CUDNN_STATUS_SUCCESS) {
 				throw new Exception(status.ToString());
 			}
+		}
+
+		cudnnHandle_t CreateHandle() {
+			cudnnHandle_t handle = IntPtr.Zero;
+			CheckStatus(API.cudnnCreate(ref handle));
+			return handle;
+		}
+
+		void DestroyHandle(cudnnHandle_t handle) {
+			CheckStatus(API.cudnnDestroy(handle));
 		}
 
 		void NotImplemented(string message) {
@@ -2307,13 +2357,13 @@ namespace CUDAnshita {
 
 	[StructLayout(LayoutKind.Sequential)]
 	public struct cudnnConvolutionFwdAlgoPerf {
-		cudnnConvolutionFwdAlgo algo;
-		cudnnStatus_t status;
-		float time;
-		size_t memory;
-		cudnnDeterminism determinism;
+		public cudnnConvolutionFwdAlgo algo;
+		public cudnnStatus_t status;
+		public float time;
+		public size_t memory;
+		public cudnnDeterminism determinism;
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-		int[] reserved;
+		public int[] reserved;
 	}
 
 	public enum cudnnConvolutionBwdFilterPreference {
@@ -2335,13 +2385,13 @@ namespace CUDAnshita {
 
 	[StructLayout(LayoutKind.Sequential)]
 	public struct cudnnConvolutionBwdFilterAlgoPerf {
-		cudnnConvolutionBwdFilterAlgo algo;
-		cudnnStatus_t status;
-		float time;
-		size_t memory;
-		cudnnDeterminism determinism;
+		public cudnnConvolutionBwdFilterAlgo algo;
+		public cudnnStatus_t status;
+		public float time;
+		public size_t memory;
+		public cudnnDeterminism determinism;
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-		int[] reserved;
+		public int[] reserved;
 	}
 
 	public enum cudnnConvolutionBwdDataPreference {
@@ -2362,13 +2412,13 @@ namespace CUDAnshita {
 
 	[StructLayout(LayoutKind.Sequential)]
 	public struct cudnnConvolutionBwdDataAlgoPerf {
-		cudnnConvolutionBwdDataAlgo algo;
-		cudnnStatus_t status;
-		float time;
-		size_t memory;
-		cudnnDeterminism determinism;
+		public cudnnConvolutionBwdDataAlgo algo;
+		public cudnnStatus_t status;
+		public float time;
+		public size_t memory;
+		public cudnnDeterminism determinism;
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-		int[] reserved;
+		public int[] reserved;
 	}
 
 	public enum cudnnSoftmaxAlgorithm {

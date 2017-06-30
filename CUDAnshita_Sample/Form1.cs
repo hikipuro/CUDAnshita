@@ -21,12 +21,12 @@ extern ""C"" __global__ void addKernel(int *c, const int *a, const int *b) {
 		}
 
 		private void buttonTest_Click(object sender, EventArgs e) {
-			TestCompile();
+			//TestCompile();
 			//TestCudaRT();
 			//TestCuRAND();
 			//TestCuBLAS();
 			//TestMatrix();
-			//TestCuDNN();
+			TestCuDNN();
 		}
 
 		private void TestCompile() {
@@ -114,7 +114,7 @@ extern ""C"" __global__ void addKernel(int *c, const int *a, const int *b) {
 
 		private void TestCudaRT() {
 			int count = 0;
-			CudaRT.cudaGetDeviceCount(ref count);
+			CudaRT.API.cudaGetDeviceCount(ref count);
 			Console.WriteLine("CudaRT: {0}", count);
 		}
 
@@ -151,6 +151,26 @@ extern ""C"" __global__ void addKernel(int *c, const int *a, const int *b) {
 			Console.WriteLine("cudnnGetVersion: {0}", cuDNN6.GetVersion());
 			Console.WriteLine("cudnnGetCudartVersion: {0}", cuDNN6.GetCudartVersion());
 			Console.WriteLine("cudnnGetErrorString: {0}", cuDNN6.GetErrorString(cudnnStatus.CUDNN_STATUS_SUCCESS));
+
+			var config = CudaRT.DeviceGetCacheConfig();
+			Console.WriteLine(config);
+			Console.WriteLine(CudaRT.DeviceGetPCIBusId(0));
+
+			int totalDevices = CudaRT.GetDeviceCount();
+
+			for (int i = 0; i < totalDevices; i++) {
+				cudaDeviceProp prop = CudaRT.GetDeviceProperties(i);
+
+				Console.WriteLine("device {0}, {1}", i, prop.name);
+				Console.WriteLine("sms {0}", prop.multiProcessorCount);
+				Console.WriteLine("Capabilities {0}.{1}", prop.major, prop.minor);
+				Console.WriteLine("SmClock {0} Mhz", (float)prop.clockRate * 1e-3);
+				Console.WriteLine("MemSize (Mb) {0}", (int)(prop.totalGlobalMem / (1024 * 1024)));
+				Console.WriteLine("MemClock {0} Mhz", (float)prop.memoryClockRate * 1e-3);
+			}
+
+			//DNNTest test = new DNNTest();
+			//test.Test();
 		}
 	}
 }

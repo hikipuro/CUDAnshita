@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 
 namespace CUDAnshita {
+	using System.Text;
 	using cudaArray_t = IntPtr;
 	using cudaMipmappedArray_t = IntPtr;
 	using size_t = Int64;
@@ -71,91 +72,354 @@ namespace CUDAnshita {
 	/// <summary>
 	/// CUDA device properties
 	/// </summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 	public struct cudaDeviceProp {
-		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 256)]
-		public byte[] name;                  /**< ASCII string identifying device */
-		public size_t totalGlobalMem;             /**< Global memory available on device in bytes */
-		public size_t sharedMemPerBlock;          /**< Shared memory available per block in bytes */
-		public int regsPerBlock;               /**< 32-bit registers available per block */
-		public int warpSize;                   /**< Warp size in threads */
-		public size_t memPitch;                   /**< Maximum pitch in bytes allowed by memory copies */
-		public int maxThreadsPerBlock;         /**< Maximum number of threads per block */
+		/// <summary>
+		/// ASCII string identifying device
+		/// </summary>
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
+		public string name;
+
+		/// <summary>
+		/// Global memory available on device in bytes
+		/// </summary>
+		public size_t totalGlobalMem;
+
+		/// <summary>
+		/// Shared memory available per block in bytes
+		/// </summary>
+		public size_t sharedMemPerBlock;
+
+		/// <summary>
+		/// 32-bit registers available per block
+		/// </summary>
+		public int regsPerBlock;
+
+		/// <summary>
+		/// Warp size in threads
+		/// </summary>
+		public int warpSize;
+
+		/// <summary>
+		/// Maximum pitch in bytes allowed by memory copies
+		/// </summary>
+		public size_t memPitch;
+
+		/// <summary>
+		/// Maximum number of threads per block
+		/// </summary>
+		public int maxThreadsPerBlock;
+
+		/// <summary>
+		/// Maximum size of each dimension of a block
+		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-		public int[] maxThreadsDim;           /**< Maximum size of each dimension of a block */
+		public int[] maxThreadsDim;
+
+		/// <summary>
+		/// Maximum size of each dimension of a grid
+		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-		public int[] maxGridSize;             /**< Maximum size of each dimension of a grid */
-		public int clockRate;                  /**< Clock frequency in kilohertz */
-		public size_t totalConstMem;              /**< Constant memory available on device in bytes */
-		public int major;                      /**< Major compute capability */
-		public int minor;                      /**< Minor compute capability */
-		public size_t textureAlignment;           /**< Alignment requirement for textures */
-		public size_t texturePitchAlignment;      /**< Pitch alignment requirement for texture references bound to pitched memory */
-		public int deviceOverlap;              /**< Device can concurrently copy memory and execute a kernel. Deprecated. Use instead asyncEngineCount. */
-		public int multiProcessorCount;        /**< Number of multiprocessors on device */
-		public int kernelExecTimeoutEnabled;   /**< Specified whether there is a run time limit on kernels */
-		public int integrated;                 /**< Device is integrated as opposed to discrete */
-		public int canMapHostMemory;           /**< Device can map host memory with cudaHostAlloc/cudaHostGetDevicePointer */
-		public int computeMode;                /**< Compute mode (See ::cudaComputeMode) */
-		public int maxTexture1D;               /**< Maximum 1D texture size */
-		public int maxTexture1DMipmap;         /**< Maximum 1D mipmapped texture size */
-		public int maxTexture1DLinear;         /**< Maximum size for 1D textures bound to linear memory */
+		public int[] maxGridSize;
+
+		/// <summary>
+		/// Clock frequency in kilohertz
+		/// </summary>
+		public int clockRate;
+
+		/// <summary>
+		/// Constant memory available on device in bytes
+		/// </summary>
+		public size_t totalConstMem;
+
+		/// <summary>
+		/// Major compute capability
+		/// </summary>
+		public int major;
+
+		/// <summary>
+		/// Minor compute capability
+		/// </summary>
+		public int minor;
+
+		/// <summary>
+		/// Alignment requirement for textures
+		/// </summary>
+		public size_t textureAlignment;
+
+		/// <summary>
+		/// Pitch alignment requirement for texture references bound to pitched memory
+		/// </summary>
+		public size_t texturePitchAlignment;
+
+		/// <summary>
+		/// Device can concurrently copy memory and execute a kernel. Deprecated. Use instead asyncEngineCount
+		/// </summary>
+		public int deviceOverlap;
+
+		/// <summary>
+		/// Number of multiprocessors on device
+		/// </summary>
+		public int multiProcessorCount;
+
+		/// <summary>
+		/// Specified whether there is a run time limit on kernels
+		/// </summary>
+		public int kernelExecTimeoutEnabled;
+
+		/// <summary>
+		/// Device is integrated as opposed to discrete
+		/// </summary>
+		public int integrated;
+
+		/// <summary>
+		/// Device can map host memory with cudaHostAlloc/cudaHostGetDevicePointer
+		/// </summary>
+		public int canMapHostMemory;
+
+		/// <summary>
+		/// Compute mode (See ::cudaComputeMode)
+		/// </summary>
+		public int computeMode;
+
+		/// <summary>
+		/// Maximum 1D texture size
+		/// </summary>
+		public int maxTexture1D;
+
+		/// <summary>
+		/// Maximum 1D mipmapped texture size
+		/// </summary>
+		public int maxTexture1DMipmap;
+
+		/// <summary>
+		/// Maximum size for 1D textures bound to linear memory
+		/// </summary>
+		public int maxTexture1DLinear;
+
+		/// <summary>
+		/// Maximum 2D texture dimensions
+		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-		public int[] maxTexture2D;            /**< Maximum 2D texture dimensions */
+		public int[] maxTexture2D;
+
+		/// <summary>
+		/// Maximum 2D mipmapped texture dimensions
+		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-		public int[] maxTexture2DMipmap;      /**< Maximum 2D mipmapped texture dimensions */
+		public int[] maxTexture2DMipmap;
+
+		/// <summary>
+		/// Maximum dimensions (width, height, pitch) for 2D textures bound to pitched memory
+		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-		public int[] maxTexture2DLinear;      /**< Maximum dimensions (width, height, pitch) for 2D textures bound to pitched memory */
+		public int[] maxTexture2DLinear;
+
+		/// <summary>
+		/// Maximum 2D texture dimensions if texture gather operations have to be performed
+		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-		public int[] maxTexture2DGather;      /**< Maximum 2D texture dimensions if texture gather operations have to be performed */
+		public int[] maxTexture2DGather;
+
+		/// <summary>
+		/// Maximum 3D texture dimensions
+		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-		public int[] maxTexture3D;            /**< Maximum 3D texture dimensions */
+		public int[] maxTexture3D;
+
+		/// <summary>
+		/// Maximum alternate 3D texture dimensions
+		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-		public int[] maxTexture3DAlt;         /**< Maximum alternate 3D texture dimensions */
-		public int maxTextureCubemap;          /**< Maximum Cubemap texture dimensions */
+		public int[] maxTexture3DAlt;
+
+		/// <summary>
+		/// Maximum Cubemap texture dimensions
+		/// </summary>
+		public int maxTextureCubemap;
+
+		/// <summary>
+		/// Maximum 1D layered texture dimensions
+		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-		public int[] maxTexture1DLayered;     /**< Maximum 1D layered texture dimensions */
+		public int[] maxTexture1DLayered;
+
+		/// <summary>
+		/// Maximum 2D layered texture dimensions
+		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-		public int[] maxTexture2DLayered;     /**< Maximum 2D layered texture dimensions */
+		public int[] maxTexture2DLayered;
+
+		/// <summary>
+		/// Maximum Cubemap layered texture dimensions
+		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-		public int[] maxTextureCubemapLayered;/**< Maximum Cubemap layered texture dimensions */
-		public int maxSurface1D;               /**< Maximum 1D surface size */
+		public int[] maxTextureCubemapLayered;
+
+		/// <summary>
+		/// Maximum 1D surface size
+		/// </summary>
+		public int maxSurface1D;
+
+		/// <summary>
+		/// Maximum 2D surface dimensions
+		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-		public int[] maxSurface2D;            /**< Maximum 2D surface dimensions */
+		public int[] maxSurface2D;
+
+		/// <summary>
+		/// Maximum 3D surface dimensions
+		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-		public int[] maxSurface3D;            /**< Maximum 3D surface dimensions */
+		public int[] maxSurface3D;
+
+		/// <summary>
+		/// Maximum 1D layered surface dimensions
+		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-		public int[] maxSurface1DLayered;     /**< Maximum 1D layered surface dimensions */
+		public int[] maxSurface1DLayered;
+
+		/// <summary>
+		/// Maximum 2D layered surface dimensions
+		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-		public int[] maxSurface2DLayered;     /**< Maximum 2D layered surface dimensions */
-		public int maxSurfaceCubemap;          /**< Maximum Cubemap surface dimensions */
+		public int[] maxSurface2DLayered;
+
+		/// <summary>
+		/// Maximum Cubemap surface dimensions
+		/// </summary>
+		public int maxSurfaceCubemap;
+
+		/// <summary>
+		/// Maximum Cubemap layered surface dimensions
+		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-		public int[] maxSurfaceCubemapLayered;/**< Maximum Cubemap layered surface dimensions */
-		public size_t surfaceAlignment;           /**< Alignment requirements for surfaces */
-		public int concurrentKernels;          /**< Device can possibly execute multiple kernels concurrently */
-		public int ECCEnabled;                 /**< Device has ECC support enabled */
-		public int pciBusID;                   /**< PCI bus ID of the device */
-		public int pciDeviceID;                /**< PCI device ID of the device */
-		public int pciDomainID;                /**< PCI domain ID of the device */
-		public int tccDriver;                  /**< 1 if device is a Tesla device using TCC driver, 0 otherwise */
-		public int asyncEngineCount;           /**< Number of asynchronous engines */
-		public int unifiedAddressing;          /**< Device shares a unified address space with the host */
-		public int memoryClockRate;            /**< Peak memory clock frequency in kilohertz */
-		public int memoryBusWidth;             /**< Global memory bus width in bits */
-		public int l2CacheSize;                /**< Size of L2 cache in bytes */
-		public int maxThreadsPerMultiProcessor;/**< Maximum resident threads per multiprocessor */
-		public int streamPrioritiesSupported;  /**< Device supports stream priorities */
-		public int globalL1CacheSupported;     /**< Device supports caching globals in L1 */
-		public int localL1CacheSupported;      /**< Device supports caching locals in L1 */
-		public size_t sharedMemPerMultiprocessor; /**< Shared memory available per multiprocessor in bytes */
-		public int regsPerMultiprocessor;      /**< 32-bit registers available per multiprocessor */
-		public int managedMemory;              /**< Device supports allocating managed memory on this system */
-		public int isMultiGpuBoard;            /**< Device is on a multi-GPU board */
-		public int multiGpuBoardGroupID;       /**< Unique identifier for a group of devices on the same multi-GPU board */
-		public int hostNativeAtomicSupported;  /**< Link between the device and the host supports native atomic operations */
-		public int singleToDoublePrecisionPerfRatio; /**< Ratio of single precision performance (in floating-point operations per second) to double precision performance */
-		public int pageableMemoryAccess;       /**< Device supports coherently accessing pageable memory without calling cudaHostRegister on it */
-		public int concurrentManagedAccess;    /**< Device can coherently access managed memory concurrently with the CPU */
+		public int[] maxSurfaceCubemapLayered;
+
+		/// <summary>
+		/// Alignment requirements for surfaces
+		/// </summary>
+		public size_t surfaceAlignment;
+
+		/// <summary>
+		/// Device can possibly execute multiple kernels concurrently
+		/// </summary>
+		public int concurrentKernels;
+
+		/// <summary>
+		/// Device has ECC support enabled
+		/// </summary>
+		public int ECCEnabled;
+
+		/// <summary>
+		/// PCI bus ID of the device
+		/// </summary>
+		public int pciBusID;
+
+		/// <summary>
+		/// PCI device ID of the device
+		/// </summary>
+		public int pciDeviceID;
+
+		/// <summary>
+		/// PCI domain ID of the device
+		/// </summary>
+		public int pciDomainID;
+
+		/// <summary>
+		/// 1 if device is a Tesla device using TCC driver, 0 otherwise
+		/// </summary>
+		public int tccDriver;
+
+		/// <summary>
+		/// Number of asynchronous engines
+		/// </summary>
+		public int asyncEngineCount;
+
+		/// <summary>
+		/// Device shares a unified address space with the host
+		/// </summary>
+		public int unifiedAddressing;
+
+		/// <summary>
+		/// Peak memory clock frequency in kilohertz
+		/// </summary>
+		public int memoryClockRate;
+
+		/// <summary>
+		/// Global memory bus width in bits
+		/// </summary>
+		public int memoryBusWidth;
+
+		/// <summary>
+		/// Size of L2 cache in bytes
+		/// </summary>
+		public int l2CacheSize;
+
+		/// <summary>
+		/// Maximum resident threads per multiprocessor
+		/// </summary>
+		public int maxThreadsPerMultiProcessor;
+
+		/// <summary>
+		/// Device supports stream priorities
+		/// </summary>
+		public int streamPrioritiesSupported;
+
+		/// <summary>
+		/// Device supports caching globals in L1
+		/// </summary>
+		public int globalL1CacheSupported;
+
+		/// <summary>
+		/// Device supports caching locals in L1
+		/// </summary>
+		public int localL1CacheSupported;
+
+		/// <summary>
+		/// Shared memory available per multiprocessor in bytes
+		/// </summary>
+		public size_t sharedMemPerMultiprocessor;
+
+		/// <summary>
+		/// 32-bit registers available per multiprocessor
+		/// </summary>
+		public int regsPerMultiprocessor;
+
+		/// <summary>
+		/// Device supports allocating managed memory on this system
+		/// </summary>
+		public int managedMemory;
+
+		/// <summary>
+		/// Device is on a multi-GPU board
+		/// </summary>
+		public int isMultiGpuBoard;
+
+		/// <summary>
+		/// Unique identifier for a group of devices on the same multi-GPU board
+		/// </summary>
+		public int multiGpuBoardGroupID;
+
+		/// <summary>
+		/// Link between the device and the host supports native atomic operations
+		/// </summary>
+		public int hostNativeAtomicSupported;
+
+		/// <summary>
+		/// Ratio of single precision performance (in floating-point operations per second) to double precision performance
+		/// </summary>
+		public int singleToDoublePrecisionPerfRatio;
+
+		/// <summary>
+		/// Device supports coherently accessing pageable memory without calling cudaHostRegister on it
+		/// </summary>
+		public int pageableMemoryAccess;
+
+		/// <summary>
+		/// Device can coherently access managed memory concurrently with the CPU
+		/// </summary>
+		public int concurrentManagedAccess;
 	}
 
 	[StructLayout(LayoutKind.Sequential)]
@@ -171,54 +435,54 @@ namespace CUDAnshita {
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct cudaFuncAttributes {
-		/**
-		 * The size in bytes of statically-allocated shared memory per block
-		 * required by this function. This does not include dynamically-allocated
-		 * shared memory requested by the user at runtime.
-		 */
+		/// <summary>
+		/// The size in bytes of statically-allocated shared memory per block
+		/// required by this function.This does not include dynamically-allocated
+		/// shared memory requested by the user at runtime.
+		/// </summary>
 		public size_t sharedSizeBytes;
 
-		/**
-		 * The size in bytes of user-allocated constant memory required by this
-		 * function.
-		 */
+		/// <summary>
+		/// The size in bytes of user-allocated constant memory required by this
+		/// function.
+		/// </summary>
 		public size_t constSizeBytes;
 
-		/**
-		 * The size in bytes of local memory used by each thread of this function.
-		 */
+		/// <summary>
+		/// The size in bytes of local memory used by each thread of this function.
+		/// </summary>
 		public size_t localSizeBytes;
 
-		/**
-		 * The maximum number of threads per block, beyond which a launch of the
-		 * function would fail. This number depends on both the function and the
-		 * device on which the function is currently loaded.
-		 */
+		/// <summary>
+		/// The maximum number of threads per block, beyond which a launch of the
+		/// function would fail.This number depends on both the function and the
+		/// device on which the function is currently loaded.
+		/// </summary>
 		public int maxThreadsPerBlock;
 
-		/**
-		 * The number of registers used by each thread of this function.
-		 */
+		/// <summary>
+		/// The number of registers used by each thread of this function.
+		/// </summary>
 		public int numRegs;
 
-		/**
-		 * The PTX virtual architecture version for which the function was
-		 * compiled. This value is the major PTX version * 10 + the minor PTX
-		 * version, so a PTX version 1.3 function would return the value 13.
-		 */
+		/// <summary>
+		/// The PTX virtual architecture version for which the function was
+		/// compiled.This value is the major PTX version * 10 + the minor PTX
+		/// version, so a PTX version 1.3 function would return the value 13.
+		/// </summary>
 		public int ptxVersion;
 
-		/**
-		 * The binary architecture version for which the function was compiled.
-		 * This value is the major binary version * 10 + the minor binary version,
-		 * so a binary version 1.3 function would return the value 13.
-		 */
+		/// <summary>
+		/// The binary architecture version for which the function was compiled.
+		/// This value is the major binary version * 10 + the minor binary version,
+		/// so a binary version 1.3 function would return the value 13.
+		/// </summary>
 		public int binaryVersion;
 
-		/**
-		 * The attribute to indicate whether the function has been compiled with 
-		 * user specified option "-Xptxas --dlcm=ca" set.
-		 */
+		/// <summary>
+		/// The attribute to indicate whether the function has been compiled with
+		/// user specified option "-Xptxas --dlcm=ca" set.
+		/// </summary>
 		public int cacheModeCA;
 	}
 
@@ -245,16 +509,45 @@ namespace CUDAnshita {
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct cudaMemcpy3DParms {
-		public cudaArray_t srcArray;  /**< Source memory address */
-		public cudaPos         srcPos;    /**< Source position offset */
-		public cudaPitchedPtr  srcPtr;    /**< Pitched source memory address */
+		/// <summary>
+		/// Source memory address
+		/// </summary>
+		public cudaArray_t srcArray;
 
-		public cudaArray_t dstArray;  /**< Destination memory address */
-		public cudaPos         dstPos;    /**< Destination position offset */
-		public cudaPitchedPtr  dstPtr;    /**< Pitched destination memory address */
+		/// <summary>
+		/// Source position offset
+		/// </summary>
+		public cudaPos srcPos;
 
-		public cudaExtent      extent;    /**< Requested memory copy size */
-		public cudaMemcpyKind    kind;      /**< Type of transfer */
+		/// <summary>
+		/// Pitched source memory address
+		/// </summary>
+		public cudaPitchedPtr srcPtr;
+
+		/// <summary>
+		/// Destination memory address
+		/// </summary>
+		public cudaArray_t dstArray;
+
+		/// <summary>
+		/// Destination position offset
+		/// </summary>
+		public cudaPos dstPos;
+
+		/// <summary>
+		/// Pitched destination memory address
+		/// </summary>
+		public cudaPitchedPtr  dstPtr;
+
+		/// <summary>
+		/// Requested memory copy size
+		/// </summary>
+		public cudaExtent      extent;
+
+		/// <summary>
+		/// Type of transfer
+		/// </summary>
+		public cudaMemcpyKind    kind;
 	}
 
 	/// <summary>
@@ -262,17 +555,50 @@ namespace CUDAnshita {
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct cudaMemcpy3DPeerParms {
-		public cudaArray_t srcArray;  /**< Source memory address */
-		public cudaPos         srcPos;    /**< Source position offset */
-		public cudaPitchedPtr  srcPtr;    /**< Pitched source memory address */
-		public int srcDevice; /**< Source device */
+		/// <summary>
+		/// Source memory address
+		/// </summary>
+		public cudaArray_t srcArray;
 
-		public cudaArray_t dstArray;  /**< Destination memory address */
-		public cudaPos         dstPos;    /**< Destination position offset */
-		public cudaPitchedPtr  dstPtr;    /**< Pitched destination memory address */
-		public int dstDevice; /**< Destination device */
+		/// <summary>
+		/// Source position offset
+		/// </summary>
+		public cudaPos srcPos;
 
-		public cudaExtent      extent;    /**< Requested memory copy size */
+		/// <summary>
+		/// Pitched source memory address
+		/// </summary>
+		public cudaPitchedPtr srcPtr;
+
+		/// <summary>
+		/// Source device
+		/// </summary>
+		public int srcDevice;
+
+		/// <summary>
+		/// Destination memory address
+		/// </summary>
+		public cudaArray_t dstArray;
+
+		/// <summary>
+		/// Destination position offset
+		/// </summary>
+		public cudaPos dstPos;
+
+		/// <summary>
+		/// Pitched destination memory address
+		/// </summary>
+		public cudaPitchedPtr dstPtr;
+
+		/// <summary>
+		/// Destination device
+		/// </summary>
+		public int dstDevice;
+
+		/// <summary>
+		/// Requested memory copy size
+		/// </summary>
+		public cudaExtent extent;
 	}
 
 	/// <summary>
@@ -280,38 +606,38 @@ namespace CUDAnshita {
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct cudaPointerAttributes {
-		/**
-		 * The physical location of the memory, ::cudaMemoryTypeHost or 
-		 * ::cudaMemoryTypeDevice.
-		 */
+		/// <summary>
+		/// The physical location of the memory, ::cudaMemoryTypeHost or 
+		/// ::cudaMemoryTypeDevice.
+		/// </summary>
 		public cudaMemoryType memoryType;
 
-		/** 
-		 * The device against which the memory was allocated or registered.
-		 * If the memory type is ::cudaMemoryTypeDevice then this identifies 
-		 * the device on which the memory referred physically resides.  If
-		 * the memory type is ::cudaMemoryTypeHost then this identifies the 
-		 * device which was current when the memory was allocated or registered
-		 * (and if that device is deinitialized then this allocation will vanish
-		 * with that device's state).
-		 */
+		/// <summary>
+		/// The device against which the memory was allocated or registered.
+		/// If the memory type is ::cudaMemoryTypeDevice then this identifies
+		/// the device on which the memory referred physically resides.  If
+		/// the memory type is ::cudaMemoryTypeHost then this identifies the 
+		/// device which was current when the memory was allocated or registered
+		/// (and if that device is deinitialized then this allocation will vanish
+		/// with that device's state).
+		/// </summary>
 		public int device;
 
-		/**
-		 * The address which may be dereferenced on the current device to access 
-		 * the memory or NULL if no such address exists.
-		 */
+		/// <summary>
+		/// The address which may be dereferenced on the current device to access 
+		/// the memory or NULL if no such address exists.
+		/// </summary>
 		public IntPtr devicePointer;
 
-		/**
-		 * The address which may be dereferenced on the host to access the
-		 * memory or NULL if no such address exists.
-		 */
+		/// <summary>
+		/// The address which may be dereferenced on the host to access the
+		/// memory or NULL if no such address exists.
+		/// </summary>
 		public IntPtr hostPointer;
 
-		/**
-		 * Indicates if this pointer points to managed memory
-		 */
+		/// <summary>
+		/// Indicates if this pointer points to managed memory
+		/// </summary>
 		public int isManaged;
 	}
 
@@ -388,19 +714,41 @@ namespace CUDAnshita {
 			[FieldOffset(0)]
 			public cudaMipmappedArray_t mipmap;
 
+			/// <summary>
+			/// Device pointer
+			/// </summary>
 			[FieldOffset(0)]
-			IntPtr devPtr;                      /**< Device pointer */
-			[FieldOffset(8)]
-			cudaChannelFormatDesc desc; /**< Channel descriptor */
-			[FieldOffset(28)]
-			size_t sizeInBytes;                /**< Size in bytes */
+			IntPtr devPtr;
 
+			/// <summary>
+			/// Channel descriptor
+			/// </summary>
+			[FieldOffset(8)]
+			cudaChannelFormatDesc desc;
+
+			/// <summary>
+			/// Size in bytes
+			/// </summary>
+			[FieldOffset(28)]
+			size_t sizeInBytes;
+
+			/// <summary>
+			/// Width of the array in elements
+			/// </summary>
 			[FieldOffset(36)]
-			size_t width;                      /**< Width of the array in elements */
+			size_t width;
+
+			/// <summary>
+			/// Height of the array in elements
+			/// </summary>
 			[FieldOffset(44)]
-			size_t height;                     /**< Height of the array in elements */
+			size_t height;
+
+			/// <summary>
+			/// Pitch between two rows in bytes
+			/// </summary>
 			[FieldOffset(52)]
-			size_t pitchInBytes;               /**< Pitch between two rows in bytes */
+			size_t pitchInBytes;
 		}
 		public Resource res;
 	}
@@ -410,14 +758,45 @@ namespace CUDAnshita {
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct cudaResourceViewDesc {
-		public cudaResourceViewFormat format;           /**< Resource view format */
-		public size_t width;            /**< Width of the resource view */
-		public size_t height;           /**< Height of the resource view */
-		public size_t depth;            /**< Depth of the resource view */
-		public uint firstMipmapLevel; /**< First defined mipmap level */
-		public uint lastMipmapLevel;  /**< Last defined mipmap level */
-		public uint firstLayer;       /**< First layer index */
-		public uint lastLayer;        /**< Last layer index */
+		/// <summary>
+		/// Resource view format
+		/// </summary>
+		public cudaResourceViewFormat format;
+
+		/// <summary>
+		/// Width of the resource view
+		/// </summary>
+		public size_t width;
+
+		/// <summary>
+		/// Height of the resource view
+		/// </summary>
+		public size_t height;
+
+		/// <summary>
+		/// Depth of the resource view
+		/// </summary>
+		public size_t depth;
+
+		/// <summary>
+		/// First defined mipmap level
+		/// </summary>
+		public uint firstMipmapLevel;
+
+		/// <summary>
+		/// Last defined mipmap level
+		/// </summary>
+		public uint lastMipmapLevel;
+
+		/// <summary>
+		/// First layer index
+		/// </summary>
+		public uint firstLayer;
+
+		/// <summary>
+		/// Last layer index
+		/// </summary>
+		public uint lastLayer;
 	}
 
 	/// <summary>
@@ -425,47 +804,57 @@ namespace CUDAnshita {
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct textureReference {
-		/**
-		 * Indicates whether texture reads are normalized or not
-		 */
+		/// <summary>
+		/// Indicates whether texture reads are normalized or not
+		/// </summary>
 		int normalized;
-		/**
-		 * Texture filter mode
-		 */
-		cudaTextureFilterMode   filterMode;
-		/**
-		 * Texture address mode for up to 3 dimensions
-		 */
+
+		/// <summary>
+		/// Texture filter mode
+		/// </summary>
+		cudaTextureFilterMode filterMode;
+
+		/// <summary>
+		/// Texture address mode for up to 3 dimensions
+		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-		cudaTextureAddressMode[]  addressMode;
-		/**
-		 * Channel descriptor for the texture reference
-		 */
+		cudaTextureAddressMode[] addressMode;
+
+		/// <summary>
+		/// Channel descriptor for the texture reference
+		/// </summary>
 		cudaChannelFormatDesc channelDesc;
-		/**
-		 * Perform sRGB->linear conversion during texture read
-		 */
+
+		/// <summary>
+		/// Perform sRGB->linear conversion during texture read
+		/// </summary>
 		int sRGB;
-		/**
-		 * Limit to the anisotropy ratio
-		 */
+
+		/// <summary>
+		/// Limit to the anisotropy ratio
+		/// </summary>
 		uint maxAnisotropy;
-		/**
-		 * Mipmap filter mode
-		 */
-		cudaTextureFilterMode   mipmapFilterMode;
-		/**
-		 * Offset applied to the supplied mipmap level
-		 */
+
+		/// <summary>
+		/// Mipmap filter mode
+		/// </summary>
+		cudaTextureFilterMode mipmapFilterMode;
+
+		/// <summary>
+		/// Offset applied to the supplied mipmap level
+		/// </summary>
 		float mipmapLevelBias;
-		/**
-		 * Lower end of the mipmap level range to clamp access to
-		 */
+
+		/// <summary>
+		/// Lower end of the mipmap level range to clamp access to
+		/// </summary>
 		float minMipmapLevelClamp;
-		/**
-		 * Upper end of the mipmap level range to clamp access to
-		 */
+
+		/// <summary>
+		/// Upper end of the mipmap level range to clamp access to
+		/// </summary>
 		float maxMipmapLevelClamp;
+
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 15)]
 		int[] __cudaReserved;
 	}
@@ -475,51 +864,61 @@ namespace CUDAnshita {
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct cudaTextureDesc {
-		/**
-		 * Texture address mode for up to 3 dimensions
-		 */
+		/// <summary>
+		/// Texture address mode for up to 3 dimensions
+		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
 		cudaTextureAddressMode[] addressMode;
-		/**
-		 * Texture filter mode
-		 */
-		cudaTextureFilterMode  filterMode;
-		/**
-		 * Texture read mode
-		 */
-		cudaTextureReadMode    readMode;
-		/**
-		 * Perform sRGB->linear conversion during texture read
-		 */
+
+		/// <summary>
+		/// Texture filter mode
+		/// </summary>
+		cudaTextureFilterMode filterMode;
+
+		/// <summary>
+		/// Texture read mode
+		/// </summary>
+		cudaTextureReadMode readMode;
+
+		/// <summary>
+		/// Perform sRGB->linear conversion during texture read
+		/// </summary>
 		int sRGB;
-		/**
-		 * Texture Border Color
-		 */
+
+		/// <summary>
+		/// Texture Border Color
+		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
 		float[] borderColor;
-		/**
-		 * Indicates whether texture reads are normalized or not
-		 */
+
+		/// <summary>
+		/// Indicates whether texture reads are normalized or not
+		/// </summary>
 		int normalizedCoords;
-		/**
-		 * Limit to the anisotropy ratio
-		 */
+
+		/// <summary>
+		/// Limit to the anisotropy ratio
+		/// </summary>
 		uint maxAnisotropy;
-		/**
-		 * Mipmap filter mode
-		 */
-		cudaTextureFilterMode  mipmapFilterMode;
-		/**
-		 * Offset applied to the supplied mipmap level
-		 */
+
+		/// <summary>
+		/// Mipmap filter mode
+		/// </summary>
+		cudaTextureFilterMode mipmapFilterMode;
+
+		/// <summary>
+		/// Offset applied to the supplied mipmap level
+		/// </summary>
 		float mipmapLevelBias;
-		/**
-		 * Lower end of the mipmap level range to clamp access to
-		 */
+
+		/// <summary>
+		/// Lower end of the mipmap level range to clamp access to
+		/// </summary>
 		float minMipmapLevelClamp;
-		/**
-		 * Upper end of the mipmap level range to clamp access to
-		 */
+
+		/// <summary>
+		/// Upper end of the mipmap level range to clamp access to
+		/// </summary>
 		float maxMipmapLevelClamp;
 	}
 
@@ -528,9 +927,9 @@ namespace CUDAnshita {
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct surfaceReference {
-		/**
-		 * Channel descriptor for surface reference
-		 */
+		/// <summary>
+		/// Channel descriptor for surface reference
+		/// </summary>
 		cudaChannelFormatDesc channelDesc;
 	}
 
@@ -539,13 +938,24 @@ namespace CUDAnshita {
 	/// Channel format kind
 	/// </summary>
 	public enum cudaChannelFormatKind {
-		// Signed channel format
+		/// <summary>
+		/// Signed channel format
+		/// </summary>
 		cudaChannelFormatKindSigned = 0,
-		// Unsigned channel format
+
+		/// <summary>
+		/// Unsigned channel format
+		/// </summary>
 		cudaChannelFormatKindUnsigned = 1,
-		// Float channel format
+
+		/// <summary>
+		/// Float channel format
+		/// </summary>
 		cudaChannelFormatKindFloat = 2,
-		// No channel format
+
+		/// <summary>
+		/// No channel format
+		/// </summary>
 		cudaChannelFormatKindNone = 3
 	}
 
@@ -553,13 +963,24 @@ namespace CUDAnshita {
 	/// CUDA device compute modes
 	/// </summary>
 	public enum cudaComputeMode {
-		// Default compute mode (Multiple threads can use cudaSetDevice() with this device)
+		/// <summary>
+		/// Default compute mode (Multiple threads can use cudaSetDevice() with this device)
+		/// </summary>
 		cudaComputeModeDefault = 0,
-		// Compute-exclusive-thread mode (Only one thread in one process will be able to use cudaSetDevice() with this device)
+
+		/// <summary>
+		/// Compute-exclusive-thread mode (Only one thread in one process will be able to use cudaSetDevice() with this device)
+		/// </summary>
 		cudaComputeModeExclusive = 1,
-		// Compute-prohibited mode (No threads can use cudaSetDevice() with this device)
+
+		/// <summary>
+		/// Compute-prohibited mode (No threads can use cudaSetDevice() with this device)
+		/// </summary>
 		cudaComputeModeProhibited = 2,
-		// Compute-exclusive-process mode (Many threads in one process will be able to use cudaSetDevice() with this device)
+
+		/// <summary>
+		/// Compute-exclusive-process mode (Many threads in one process will be able to use cudaSetDevice() with this device)
+		/// </summary>
 		cudaComputeModeExclusiveProcess = 3
 	}
 
@@ -567,185 +988,454 @@ namespace CUDAnshita {
 	/// CUDA device attributes
 	/// </summary>
 	public enum cudaDeviceAttr {
-		// Maximum number of threads per block
+		/// <summary>
+		/// Maximum number of threads per block
+		/// </summary>
 		cudaDevAttrMaxThreadsPerBlock = 1,
-		// Maximum block dimension X
+
+		/// <summary>
+		/// Maximum block dimension X
+		/// </summary>
 		cudaDevAttrMaxBlockDimX = 2,
-		// Maximum block dimension Y
+
+		/// <summary>
+		/// Maximum block dimension Y
+		/// </summary>
 		cudaDevAttrMaxBlockDimY = 3,
-		// Maximum block dimension Z
+
+		/// <summary>
+		/// Maximum block dimension Z
+		/// </summary>
 		cudaDevAttrMaxBlockDimZ = 4,
-		// Maximum grid dimension X
+
+		/// <summary>
+		/// Maximum grid dimension X
+		/// </summary>
 		cudaDevAttrMaxGridDimX = 5,
-		// Maximum grid dimension Y
+
+		/// <summary>
+		/// Maximum grid dimension Y
+		/// </summary>
 		cudaDevAttrMaxGridDimY = 6,
-		// Maximum grid dimension Z
+
+		/// <summary>
+		/// Maximum grid dimension Z
+		/// </summary>
 		cudaDevAttrMaxGridDimZ = 7,
-		// Maximum shared memory available per block in bytes
+
+		/// <summary>
+		/// Maximum shared memory available per block in bytes
+		/// </summary>
 		cudaDevAttrMaxSharedMemoryPerBlock = 8,
-		// Memory available on device for __constant__ variables in a CUDA C kernel in bytes
+
+		/// <summary>
+		/// Memory available on device for __constant__ variables in a CUDA C kernel in bytes
+		/// </summary>
 		cudaDevAttrTotalConstantMemory = 9,
-		// Warp size in threads
+
+		/// <summary>
+		/// Warp size in threads
+		/// </summary>
 		cudaDevAttrWarpSize = 10,
-		// Maximum pitch in bytes allowed by memory copies
+
+		/// <summary>
+		/// Maximum pitch in bytes allowed by memory copies
+		/// </summary>
 		cudaDevAttrMaxPitch = 11,
-		// Maximum number of 32-bit registers available per block
+
+		/// <summary>
+		/// Maximum number of 32-bit registers available per block
+		/// </summary>
 		cudaDevAttrMaxRegistersPerBlock = 12,
-		// Peak clock frequency in kilohertz
+
+		/// <summary>
+		/// Peak clock frequency in kilohertz
+		/// </summary>
 		cudaDevAttrClockRate = 13,
-		// Alignment requirement for textures
+
+		/// <summary>
+		/// Alignment requirement for textures
+		/// </summary>
 		cudaDevAttrTextureAlignment = 14,
-		// Device can possibly copy memory and execute a kernel concurrently
+
+		/// <summary>
+		/// Device can possibly copy memory and execute a kernel concurrently
+		/// </summary>
 		cudaDevAttrGpuOverlap = 15,
-		// Number of multiprocessors on device
+
+		/// <summary>
+		/// Number of multiprocessors on device
+		/// </summary>
 		cudaDevAttrMultiProcessorCount = 16,
-		// Specifies whether there is a run time limit on kernels
+
+		/// <summary>
+		/// Specifies whether there is a run time limit on kernels
+		/// </summary>
 		cudaDevAttrKernelExecTimeout = 17,
-		// Device is integrated with host memory
+
+		/// <summary>
+		/// Device is integrated with host memory
+		/// </summary>
 		cudaDevAttrIntegrated = 18,
-		// Device can map host memory into CUDA address space
+
+		/// <summary>
+		/// Device can map host memory into CUDA address space
+		/// </summary>
 		cudaDevAttrCanMapHostMemory = 19,
-		// Compute mode (See cudaComputeMode for details)
+
+		/// <summary>
+		/// Compute mode (See cudaComputeMode for details)
+		/// </summary>
 		cudaDevAttrComputeMode = 20,
-		// Maximum 1D texture width
+
+		/// <summary>
+		/// Maximum 1D texture width
+		/// </summary>
 		cudaDevAttrMaxTexture1DWidth = 21,
-		// Maximum 2D texture width
+
+		/// <summary>
+		/// Maximum 2D texture width
+		/// </summary>
 		cudaDevAttrMaxTexture2DWidth = 22,
-		// Maximum 2D texture height
+
+		/// <summary>
+		/// Maximum 2D texture height
+		/// </summary>
 		cudaDevAttrMaxTexture2DHeight = 23,
-		// Maximum 3D texture width
+
+		/// <summary>
+		/// Maximum 3D texture width
+		/// </summary>
 		cudaDevAttrMaxTexture3DWidth = 24,
-		// Maximum 3D texture height
+
+		/// <summary>
+		/// Maximum 3D texture height
+		/// </summary>
 		cudaDevAttrMaxTexture3DHeight = 25,
-		// Maximum 3D texture depth
+
+		/// <summary>
+		/// Maximum 3D texture depth
+		/// </summary>
 		cudaDevAttrMaxTexture3DDepth = 26,
-		// Maximum 2D layered texture width
+
+		/// <summary>
+		/// Maximum 2D layered texture width
+		/// </summary>
 		cudaDevAttrMaxTexture2DLayeredWidth = 27,
-		// Maximum 2D layered texture height
+
+		/// <summary>
+		/// Maximum 2D layered texture height
+		/// </summary>
 		cudaDevAttrMaxTexture2DLayeredHeight = 28,
-		// Maximum layers in a 2D layered texture
+
+		/// <summary>
+		/// Maximum layers in a 2D layered texture
+		/// </summary>
 		cudaDevAttrMaxTexture2DLayeredLayers = 29,
-		// Alignment requirement for surfaces
+
+		/// <summary>
+		/// Alignment requirement for surfaces
+		/// </summary>
 		cudaDevAttrSurfaceAlignment = 30,
-		// Device can possibly execute multiple kernels concurrently
+
+		/// <summary>
+		/// Device can possibly execute multiple kernels concurrently
+		/// </summary>
 		cudaDevAttrConcurrentKernels = 31,
-		// Device has ECC support enabled
+
+		/// <summary>
+		/// Device has ECC support enabled
+		/// </summary>
 		cudaDevAttrEccEnabled = 32,
-		// PCI bus ID of the device
+
+		/// <summary>
+		/// PCI bus ID of the device
+		/// </summary>
 		cudaDevAttrPciBusId = 33,
-		// PCI device ID of the device
+
+		/// <summary>
+		/// PCI device ID of the device
+		/// </summary>
 		cudaDevAttrPciDeviceId = 34,
-		// Device is using TCC driver model
+
+		/// <summary>
+		/// Device is using TCC driver model
+		/// </summary>
 		cudaDevAttrTccDriver = 35,
-		// Peak memory clock frequency in kilohertz
+
+		/// <summary>
+		/// Peak memory clock frequency in kilohertz
+		/// </summary>
 		cudaDevAttrMemoryClockRate = 36,
-		// Global memory bus width in bits
+
+		/// <summary>
+		/// Global memory bus width in bits
+		/// </summary>
 		cudaDevAttrGlobalMemoryBusWidth = 37,
-		// Size of L2 cache in bytes
+
+		/// <summary>
+		/// Size of L2 cache in bytes
+		/// </summary>
 		cudaDevAttrL2CacheSize = 38,
-		// Maximum resident threads per multiprocessor
+
+		/// <summary>
+		/// Maximum resident threads per multiprocessor
+		/// </summary>
 		cudaDevAttrMaxThreadsPerMultiProcessor = 39,
-		// Number of asynchronous engines
+
+		/// <summary>
+		/// Number of asynchronous engines
+		/// </summary>
 		cudaDevAttrAsyncEngineCount = 40,
-		// Device shares a unified address space with the host
+
+		/// <summary>
+		/// Device shares a unified address space with the host
+		/// </summary>
 		cudaDevAttrUnifiedAddressing = 41,
-		// Maximum 1D layered texture width
+
+		/// <summary>
+		/// Maximum 1D layered texture width
+		/// </summary>
 		cudaDevAttrMaxTexture1DLayeredWidth = 42,
-		// Maximum layers in a 1D layered texture
+
+		/// <summary>
+		/// Maximum layers in a 1D layered texture
+		/// </summary>
 		cudaDevAttrMaxTexture1DLayeredLayers = 43,
-		// Maximum 2D texture width if cudaArrayTextureGather is set
+
+		/// <summary>
+		/// Maximum 2D texture width if cudaArrayTextureGather is set
+		/// </summary>
 		cudaDevAttrMaxTexture2DGatherWidth = 45,
-		// Maximum 2D texture height if cudaArrayTextureGather is set
+
+		/// <summary>
+		/// Maximum 2D texture height if cudaArrayTextureGather is set
+		/// </summary>
 		cudaDevAttrMaxTexture2DGatherHeight = 46,
-		// Alternate maximum 3D texture width
+
+		/// <summary>
+		/// Alternate maximum 3D texture width
+		/// </summary>
 		cudaDevAttrMaxTexture3DWidthAlt = 47,
-		// Alternate maximum 3D texture height
+
+		/// <summary>
+		/// Alternate maximum 3D texture height
+		/// </summary>
 		cudaDevAttrMaxTexture3DHeightAlt = 48,
-		// Alternate maximum 3D texture depth
+
+		/// <summary>
+		/// Alternate maximum 3D texture depth
+		/// </summary>
 		cudaDevAttrMaxTexture3DDepthAlt = 49,
-		// PCI domain ID of the device
+
+		/// <summary>
+		/// PCI domain ID of the device
+		/// </summary>
 		cudaDevAttrPciDomainId = 50,
-		// Pitch alignment requirement for textures
+
+		/// <summary>
+		/// Pitch alignment requirement for textures
+		/// </summary>
 		cudaDevAttrTexturePitchAlignment = 51,
-		// Maximum cubemap texture width/height
+
+		/// <summary>
+		/// Maximum cubemap texture width/height
+		/// </summary>
 		cudaDevAttrMaxTextureCubemapWidth = 52,
-		// Maximum cubemap layered texture width/height
+
+		/// <summary>
+		/// Maximum cubemap layered texture width/height
+		/// </summary>
 		cudaDevAttrMaxTextureCubemapLayeredWidth = 53,
-		// Maximum layers in a cubemap layered texture
+
+		/// <summary>
+		/// Maximum layers in a cubemap layered texture
+		/// </summary>
 		cudaDevAttrMaxTextureCubemapLayeredLayers = 54,
-		// Maximum 1D surface width
+
+		/// <summary>
+		/// Maximum 1D surface width
+		/// </summary>
 		cudaDevAttrMaxSurface1DWidth = 55,
-		// Maximum 2D surface width
+
+		/// <summary>
+		/// Maximum 2D surface width
+		/// </summary>
 		cudaDevAttrMaxSurface2DWidth = 56,
-		// Maximum 2D surface height
+
+		/// <summary>
+		/// Maximum 2D surface height
+		/// </summary>
 		cudaDevAttrMaxSurface2DHeight = 57,
-		// Maximum 3D surface width
+
+		/// <summary>
+		/// Maximum 3D surface width
+		/// </summary>
 		cudaDevAttrMaxSurface3DWidth = 58,
-		// Maximum 3D surface height
+
+		/// <summary>
+		/// Maximum 3D surface height
+		/// </summary>
 		cudaDevAttrMaxSurface3DHeight = 59,
-		// Maximum 3D surface depth
+
+		/// <summary>
+		/// Maximum 3D surface depth
+		/// </summary>
 		cudaDevAttrMaxSurface3DDepth = 60,
-		// Maximum 1D layered surface width
+
+		/// <summary>
+		/// Maximum 1D layered surface width
+		/// </summary>
 		cudaDevAttrMaxSurface1DLayeredWidth = 61,
-		// Maximum layers in a 1D layered surface
+
+		/// <summary>
+		/// Maximum layers in a 1D layered surface
+		/// </summary>
 		cudaDevAttrMaxSurface1DLayeredLayers = 62,
-		// Maximum 2D layered surface width
+
+		/// <summary>
+		/// Maximum 2D layered surface width
+		/// </summary>
 		cudaDevAttrMaxSurface2DLayeredWidth = 63,
-		// Maximum 2D layered surface height
+
+		/// <summary>
+		/// Maximum 2D layered surface height
+		/// </summary>
 		cudaDevAttrMaxSurface2DLayeredHeight = 64,
-		// Maximum layers in a 2D layered surface
+
+		/// <summary>
+		/// Maximum layers in a 2D layered surface
+		/// </summary>
 		cudaDevAttrMaxSurface2DLayeredLayers = 65,
-		// Maximum cubemap surface width
+
+		/// <summary>
+		/// Maximum cubemap surface width
+		/// </summary>
 		cudaDevAttrMaxSurfaceCubemapWidth = 66,
-		// Maximum cubemap layered surface width
+
+		/// <summary>
+		/// Maximum cubemap layered surface width
+		/// </summary>
 		cudaDevAttrMaxSurfaceCubemapLayeredWidth = 67,
-		// Maximum layers in a cubemap layered surface
+
+		/// <summary>
+		/// Maximum layers in a cubemap layered surface
+		/// </summary>
 		cudaDevAttrMaxSurfaceCubemapLayeredLayers = 68,
-		// Maximum 1D linear texture width
+
+		/// <summary>
+		/// Maximum 1D linear texture width
+		/// </summary>
 		cudaDevAttrMaxTexture1DLinearWidth = 69,
-		// Maximum 2D linear texture width
+
+		/// <summary>
+		/// Maximum 2D linear texture width
+		/// </summary>
 		cudaDevAttrMaxTexture2DLinearWidth = 70,
-		// Maximum 2D linear texture height
+
+		/// <summary>
+		/// Maximum 2D linear texture height
+		/// </summary>
 		cudaDevAttrMaxTexture2DLinearHeight = 71,
-		// Maximum 2D linear texture pitch in bytes
+
+		/// <summary>
+		/// Maximum 2D linear texture pitch in bytes
+		/// </summary>
 		cudaDevAttrMaxTexture2DLinearPitch = 72,
-		// Maximum mipmapped 2D texture width
+
+		/// <summary>
+		/// Maximum mipmapped 2D texture width
+		/// </summary>
 		cudaDevAttrMaxTexture2DMipmappedWidth = 73,
-		// Maximum mipmapped 2D texture height
+
+		/// <summary>
+		/// Maximum mipmapped 2D texture height
+		/// </summary>
 		cudaDevAttrMaxTexture2DMipmappedHeight = 74,
-		// Major compute capability version number
+
+		/// <summary>
+		/// Major compute capability version number
+		/// </summary>
 		cudaDevAttrComputeCapabilityMajor = 75,
-		// Minor compute capability version number
+
+		/// <summary>
+		/// Minor compute capability version number
+		/// </summary>
 		cudaDevAttrComputeCapabilityMinor = 76,
-		// Maximum mipmapped 1D texture width
+
+		/// <summary>
+		/// Maximum mipmapped 1D texture width
+		/// </summary>
 		cudaDevAttrMaxTexture1DMipmappedWidth = 77,
-		// Device supports stream priorities
+
+		/// <summary>
+		/// Device supports stream priorities
+		/// </summary>
 		cudaDevAttrStreamPrioritiesSupported = 78,
-		// Device supports caching globals in L1
+
+		/// <summary>
+		/// Device supports caching globals in L1
+		/// </summary>
 		cudaDevAttrGlobalL1CacheSupported = 79,
-		// Device supports caching locals in L1
+
+		/// <summary>
+		/// Device supports caching locals in L1
+		/// </summary>
 		cudaDevAttrLocalL1CacheSupported = 80,
-		// Maximum shared memory available per multiprocessor in bytes
+
+		/// <summary>
+		/// Maximum shared memory available per multiprocessor in bytes
+		/// </summary>
 		cudaDevAttrMaxSharedMemoryPerMultiprocessor = 81,
-		// Maximum number of 32-bit registers available per multiprocessor
+
+		/// <summary>
+		/// Maximum number of 32-bit registers available per multiprocessor
+		/// </summary>
 		cudaDevAttrMaxRegistersPerMultiprocessor = 82,
-		// Device can allocate managed memory on this system
+
+		/// <summary>
+		/// Device can allocate managed memory on this system
+		/// </summary>
 		cudaDevAttrManagedMemory = 83,
-		// Device is on a multi-GPU board
+
+		/// <summary>
+		/// Device is on a multi-GPU board
+		/// </summary>
 		cudaDevAttrIsMultiGpuBoard = 84,
-		// Unique identifier for a group of devices on the same multi-GPU board
+
+		/// <summary>
+		/// Unique identifier for a group of devices on the same multi-GPU board
+		/// </summary>
 		cudaDevAttrMultiGpuBoardGroupID = 85,
-		// Link between the device and the host supports native atomic operations
+
+		/// <summary>
+		/// Link between the device and the host supports native atomic operations
+		/// </summary>
 		cudaDevAttrHostNativeAtomicSupported = 86,
-		// Ratio of single precision performance (in floating-point operations per second) to double precision performance
+
+		/// <summary>
+		/// Ratio of single precision performance (in floating-point operations per second) to double precision performance
+		/// </summary>
 		cudaDevAttrSingleToDoublePrecisionPerfRatio = 87,
-		// Device supports coherently accessing pageable memory without calling cudaHostRegister on it
+
+		/// <summary>
+		/// Device supports coherently accessing pageable memory without calling cudaHostRegister on it
+		/// </summary>
 		cudaDevAttrPageableMemoryAccess = 88,
-		// Device can coherently access managed memory concurrently with the CPU
+
+		/// <summary>
+		/// Device can coherently access managed memory concurrently with the CPU
+		/// </summary>
 		cudaDevAttrConcurrentManagedAccess = 89,
-		// Device supports Compute Preemption
+
+		/// <summary>
+		/// Device supports Compute Preemption
+		/// </summary>
 		cudaDevAttrComputePreemptionSupported = 90,
-		// Device can access host registered memory at the same virtual address as the CPU
+
+		/// <summary>
+		/// Device can access host registered memory at the same virtual address as the CPU
+		/// </summary>
 		cudaDevAttrCanUseHostPointerForRegisteredMem = 91
 	}
 
@@ -753,11 +1443,19 @@ namespace CUDAnshita {
 	/// CUDA device P2P attributes
 	/// </summary>
 	public enum cudaDeviceP2PAttr {
-		// A relative value indicating the performance of the link between two devices
+		/// <summary>
+		/// A relative value indicating the performance of the link between two devices
+		/// </summary>
 		cudaDevP2PAttrPerformanceRank = 1,
-		// Peer access is enabled
+
+		/// <summary>
+		/// Peer access is enabled
+		/// </summary>
 		cudaDevP2PAttrAccessSupported = 2,
-		// Native atomic operation over the link supported
+
+		/// <summary>
+		/// Native atomic operation over the link supported
+		/// </summary>
 		cudaDevP2PAttrNativeAtomicSupported = 3
 	}
 
@@ -765,33 +1463,74 @@ namespace CUDAnshita {
 	/// CUDA EGL Color Format - The different planar and multiplanar formats currently supported for CUDA_EGL interops.
 	/// </summary>
 	public enum cudaEglColorFormat {
-		// Y, U, V in three surfaces, each in a separate surface, U/V width = 1 / 2 Y width, U/V height = 1 / 2 Y height.
+		/// <summary>
+		/// Y, U, V in three surfaces, each in a separate surface, U/V width = 1 / 2 Y width, U/V height = 1 / 2 Y height.
+		/// </summary>
 		cudaEglColorFormatYUV420Planar = 0,
-		// Y, UV in two surfaces (UV as one surface), width, height ratio same as YUV420Planar.
+
+		/// <summary>
+		/// Y, UV in two surfaces (UV as one surface), width, height ratio same as YUV420Planar.
+		/// </summary>
 		cudaEglColorFormatYUV420SemiPlanar = 1,
-		// Y, U, V each in a separate surface, U/V width = 1 / 2 Y width, U/V height = Y height.
+
+		/// <summary>
+		/// Y, U, V each in a separate surface, U/V width = 1 / 2 Y width, U/V height = Y height.
+		/// </summary>
 		cudaEglColorFormatYUV422Planar = 2,
-		// Y, UV in two surfaces, width, height ratio same as YUV422Planar.
+
+		/// <summary>
+		/// Y, UV in two surfaces, width, height ratio same as YUV422Planar.
+		/// </summary>
 		cudaEglColorFormatYUV422SemiPlanar = 3,
-		// R/G/B three channels in one surface with RGB byte ordering.
+
+		/// <summary>
+		/// R/G/B three channels in one surface with RGB byte ordering.
+		/// </summary>
 		cudaEglColorFormatRGB = 4,
-		// R/G/B three channels in one surface with BGR byte ordering.
+
+		/// <summary>
+		/// R/G/B three channels in one surface with BGR byte ordering.
+		/// </summary>
 		cudaEglColorFormatBGR = 5,
-		// R/G/B/A four channels in one surface with ARGB byte ordering.
+
+		/// <summary>
+		/// R/G/B/A four channels in one surface with ARGB byte ordering.
+		/// </summary>
 		cudaEglColorFormatARGB = 6,
-		// R/G/B/A four channels in one surface with RGBA byte ordering.
+
+		/// <summary>
+		/// R/G/B/A four channels in one surface with RGBA byte ordering.
+		/// </summary>
 		cudaEglColorFormatRGBA = 7,
-		// single luminance channel in one surface.
+
+		/// <summary>
+		/// single luminance channel in one surface.
+		/// </summary>
 		cudaEglColorFormatL = 8,
-		// single color channel in one surface.
+
+		/// <summary>
+		/// single color channel in one surface.
+		/// </summary>
 		cudaEglColorFormatR = 9,
-		// Y, U, V in three surfaces, each in a separate surface, U/V width = Y width, U/V height = Y height.
+
+		/// <summary>
+		/// Y, U, V in three surfaces, each in a separate surface, U/V width = Y width, U/V height = Y height.
+		/// </summary>
 		cudaEglColorFormatYUV444Planar = 10,
-		// Y, UV in two surfaces (UV as one surface), width, height ratio same as YUV444Planar.
+
+		/// <summary>
+		/// Y, UV in two surfaces (UV as one surface), width, height ratio same as YUV444Planar.
+		/// </summary>
 		cudaEglColorFormatYUV444SemiPlanar = 11,
-		// Y, U, V in one surface, interleaved as YUYV.
+
+		/// <summary>
+		/// Y, U, V in one surface, interleaved as YUYV.
+		/// </summary>
 		cudaEglColorFormatYUYV422 = 12,
-		// Y, U, V in one surface, interleaved as UYVY.
+
+		/// <summary>
+		/// Y, U, V in one surface, interleaved as UYVY.
+		/// </summary>
 		cudaEglColorFormatUYVY422 = 13
 	}
 
@@ -799,9 +1538,14 @@ namespace CUDAnshita {
 	/// CUDA EglFrame type - array or pointer
 	/// </summary>
 	public enum cudaEglFrameType {
-		// Frame type CUDA array
+		/// <summary>
+		/// Frame type CUDA array
+		/// </summary>
 		cudaEglFrameTypeArray = 0,
-		// Frame type CUDA pointer
+
+		/// <summary>
+		/// Frame type CUDA pointer
+		/// </summary>
 		cudaEglFrameTypePitch = 1
 	}
 
@@ -809,9 +1553,14 @@ namespace CUDAnshita {
 	/// Resource location flags- sysmem or vidmem
 	/// </summary>
 	public enum cudaEglResourceLocationFlags {
-		// Resource location sysmem
+		/// <summary>
+		/// Resource location sysmem
+		/// </summary>
 		cudaEglResourceLocationSysmem = 0x00,
-		// Resource location vidmem
+
+		/// <summary>
+		/// Resource location vidmem
+		/// </summary>
 		cudaEglResourceLocationVidmem = 0x01
 	}
 
@@ -906,13 +1655,24 @@ namespace CUDAnshita {
 	/// CUDA function cache configurations
 	/// </summary>
 	public enum cudaFuncCache {
-		// Default function cache configuration, no preference
+		/// <summary>
+		/// Default function cache configuration, no preference
+		/// </summary>
 		cudaFuncCachePreferNone = 0,
-		// Prefer larger shared memory and smaller L1 cache
+
+		/// <summary>
+		/// Prefer larger shared memory and smaller L1 cache
+		/// </summary>
 		cudaFuncCachePreferShared = 1,
-		// Prefer larger L1 cache and smaller shared memory
+
+		/// <summary>
+		/// Prefer larger L1 cache and smaller shared memory
+		/// </summary>
 		cudaFuncCachePreferL1 = 2,
-		// Prefer equal size L1 cache and shared memory
+
+		/// <summary>
+		/// Prefer equal size L1 cache and shared memory
+		/// </summary>
 		cudaFuncCachePreferEqual = 3
 	}
 
@@ -920,17 +1680,34 @@ namespace CUDAnshita {
 	/// CUDA graphics interop array indices for cube maps
 	/// </summary>
 	public enum cudaGraphicsCubeFace {
-		// Positive X face of cubemap
+		/// <summary>
+		/// Positive X face of cubemap
+		/// </summary>
 		cudaGraphicsCubeFacePositiveX = 0x00,
-		// Negative X face of cubemap
+
+		/// <summary>
+		/// Negative X face of cubemap
+		/// </summary>
 		cudaGraphicsCubeFaceNegativeX = 0x01,
-		// Positive Y face of cubemap
+
+		/// <summary>
+		/// Positive Y face of cubemap
+		/// </summary>
 		cudaGraphicsCubeFacePositiveY = 0x02,
-		// Negative Y face of cubemap
+
+		/// <summary>
+		/// Negative Y face of cubemap
+		/// </summary>
 		cudaGraphicsCubeFaceNegativeY = 0x03,
-		// Positive Z face of cubemap
+
+		/// <summary>
+		/// Positive Z face of cubemap
+		/// </summary>
 		cudaGraphicsCubeFacePositiveZ = 0x04,
-		// Negative Z face of cubemap
+
+		/// <summary>
+		/// Negative Z face of cubemap
+		/// </summary>
 		cudaGraphicsCubeFaceNegativeZ = 0x05
 	}
 
@@ -938,15 +1715,29 @@ namespace CUDAnshita {
 	/// CUDA graphics interop register flags
 	/// </summary>
 	public enum cudaGraphicsMapFlags {
-		// Default
+		/// <summary>
+		/// Default
+		/// </summary>
 		cudaGraphicsRegisterFlagsNone = 0,
-		// CUDA will not write to this resource
+
+		/// <summary>
+		/// CUDA will not write to this resource
+		/// </summary>
 		cudaGraphicsRegisterFlagsReadOnly = 1,
-		// CUDA will only write to and will not read from this resource
+
+		/// <summary>
+		/// CUDA will only write to and will not read from this resource
+		/// </summary>
 		cudaGraphicsRegisterFlagsWriteDiscard = 2,
-		// CUDA will bind this resource to a surface reference
+
+		/// <summary>
+		/// CUDA will bind this resource to a surface reference
+		/// </summary>
 		cudaGraphicsRegisterFlagsSurfaceLoadStore = 4,
-		// CUDA will perform texture gather operations on this resource
+
+		/// <summary>
+		/// CUDA will perform texture gather operations on this resource
+		/// </summary>
 		cudaGraphicsRegisterFlagsTextureGather = 8
 	}
 
@@ -954,15 +1745,29 @@ namespace CUDAnshita {
 	/// CUDA Limits
 	/// </summary>
 	public enum cudaLimit {
-		// GPU thread stack size
+		/// <summary>
+		/// GPU thread stack size
+		/// </summary>
 		cudaLimitStackSize = 0x00,
-		// GPU printf/fprintf FIFO size
+
+		/// <summary>
+		/// GPU printf/fprintf FIFO size
+		/// </summary>
 		cudaLimitPrintfFifoSize = 0x01,
-		// GPU malloc heap size
+
+		/// <summary>
+		/// GPU malloc heap size
+		/// </summary>
 		cudaLimitMallocHeapSize = 0x02,
-		// GPU device runtime synchronize depth
+
+		/// <summary>
+		/// GPU device runtime synchronize depth
+		/// </summary>
 		cudaLimitDevRuntimeSyncDepth = 0x03,
-		// GPU device runtime pending launch count
+
+		/// <summary>
+		/// GPU device runtime pending launch count
+		/// </summary>
 		cudaLimitDevRuntimePendingLaunchCount = 0x04
 	}
 
@@ -970,13 +1775,24 @@ namespace CUDAnshita {
 	/// CUDA range attributes
 	/// </summary>
 	public enum cudaMemRangeAttribute {
-		// Whether the range will mostly be read and only occassionally be written to
+		/// <summary>
+		/// Whether the range will mostly be read and only occassionally be written to
+		/// </summary>
 		cudaMemRangeAttributeReadMostly = 1,
-		// The preferred location of the range
+
+		/// <summary>
+		/// The preferred location of the range
+		/// </summary>
 		cudaMemRangeAttributePreferredLocation = 2,
-		// Memory range has cudaMemAdviseSetAccessedBy set for specified device
+
+		/// <summary>
+		/// Memory range has cudaMemAdviseSetAccessedBy set for specified device
+		/// </summary>
 		cudaMemRangeAttributeAccessedBy = 3,
-		// The last location to which the range was prefetched
+
+		/// <summary>
+		/// The last location to which the range was prefetched
+		/// </summary>
 		cudaMemRangeAttributeLastPrefetchLocation = 4
 	}
 
@@ -984,15 +1800,29 @@ namespace CUDAnshita {
 	/// CUDA memory copy types
 	/// </summary>
 	public enum cudaMemcpyKind {
-		// Host -> Host
+		/// <summary>
+		/// Host -> Host
+		/// </summary>
 		cudaMemcpyHostToHost = 0,
-		// Host -> Device
+
+		/// <summary>
+		/// Host -> Device
+		/// </summary>
 		cudaMemcpyHostToDevice = 1,
-		// Device -> Host
+
+		/// <summary>
+		/// Device -> Host
+		/// </summary>
 		cudaMemcpyDeviceToHost = 2,
-		// Device -> Device
+
+		/// <summary>
+		/// Device -> Device
+		/// </summary>
 		cudaMemcpyDeviceToDevice = 3,
-		// Direction of the transfer is inferred from the pointer values. Requires unified virtual addressing
+
+		/// <summary>
+		/// Direction of the transfer is inferred from the pointer values. Requires unified virtual addressing
+		/// </summary>
 		cudaMemcpyDefault = 4
 	}
 
@@ -1000,17 +1830,34 @@ namespace CUDAnshita {
 	/// CUDA Memory Advise values
 	/// </summary>
 	public enum cudaMemoryAdvise {
-		// Data will mostly be read and only occassionally be written to
+		/// <summary>
+		/// Data will mostly be read and only occassionally be written to
+		/// </summary>
 		cudaMemAdviseSetReadMostly = 1,
-		// Undo the effect of cudaMemAdviseSetReadMostly
+
+		/// <summary>
+		/// Undo the effect of cudaMemAdviseSetReadMostly
+		/// </summary>
 		cudaMemAdviseUnsetReadMostly = 2,
-		// Set the preferred location for the data as the specified device
+
+		/// <summary>
+		/// Set the preferred location for the data as the specified device
+		/// </summary>
 		cudaMemAdviseSetPreferredLocation = 3,
-		// Clear the preferred location for the data
+
+		/// <summary>
+		/// Clear the preferred location for the data
+		/// </summary>
 		cudaMemAdviseUnsetPreferredLocation = 4,
-		// Data will be accessed by the specified device, so prevent page faults as much as possible
+
+		/// <summary>
+		/// Data will be accessed by the specified device, so prevent page faults as much as possible
+		/// </summary>
 		cudaMemAdviseSetAccessedBy = 5,
-		// Let the Unified Memory subsystem decide on the page faulting policy for the specified device
+
+		/// <summary>
+		/// Let the Unified Memory subsystem decide on the page faulting policy for the specified device
+		/// </summary>
 		cudaMemAdviseUnsetAccessedBy = 6
 	}
 
@@ -1018,9 +1865,14 @@ namespace CUDAnshita {
 	/// CUDA memory types
 	/// </summary>
 	public enum cudaMemoryType {
-		// Host memory
+		/// <summary>
+		/// Host memory
+		/// </summary>
 		cudaMemoryTypeHost = 1,
-		// Device memory
+
+		/// <summary>
+		/// Device memory
+		/// </summary>
 		cudaMemoryTypeDevice = 2
 	}
 
@@ -1028,9 +1880,14 @@ namespace CUDAnshita {
 	/// CUDA Profiler Output modes
 	/// </summary>
 	public enum cudaOutputMode {
-		// Output mode Key-Value pair format.
+		/// <summary>
+		/// Output mode Key-Value pair format.
+		/// </summary>
 		cudaKeyValuePair = 0x00,
-		// Output mode Comma separated values format.
+
+		/// <summary>
+		/// Output mode Comma separated values format.
+		/// </summary>
 		cudaCSV = 0x01
 	}
 
@@ -1038,13 +1895,24 @@ namespace CUDAnshita {
 	/// CUDA resource types
 	/// </summary>
 	public enum cudaResourceType {
-		// Array resource
+		/// <summary>
+		/// Array resource
+		/// </summary>
 		cudaResourceTypeArray = 0x00,
-		// Mipmapped array resource
+
+		/// <summary>
+		/// Mipmapped array resource
+		/// </summary>
 		cudaResourceTypeMipmappedArray = 0x01,
-		// Linear resource
+
+		/// <summary>
+		/// Linear resource
+		/// </summary>
 		cudaResourceTypeLinear = 0x02,
-		// Pitch 2D resource
+
+		/// <summary>
+		/// Pitch 2D resource
+		/// </summary>
 		cudaResourceTypePitch2D = 0x03
 	}
 
@@ -1052,75 +1920,179 @@ namespace CUDAnshita {
 	/// CUDA texture resource view formats
 	/// </summary>
 	public enum cudaResourceViewFormat {
-		// No resource view format (use underlying resource format)
+		/// <summary>
+		/// No resource view format (use underlying resource format)
+		/// </summary>
 		cudaResViewFormatNone = 0x00,
-		// 1 channel unsigned 8-bit integers
+
+		/// <summary>
+		/// 1 channel unsigned 8-bit integers
+		/// </summary>
 		cudaResViewFormatUnsignedChar1 = 0x01,
-		// 2 channel unsigned 8-bit integers
+
+		/// <summary>
+		/// 2 channel unsigned 8-bit integers
+		/// </summary>
 		cudaResViewFormatUnsignedChar2 = 0x02,
-		// 4 channel unsigned 8-bit integers
+
+		/// <summary>
+		/// 4 channel unsigned 8-bit integers
+		/// </summary>
 		cudaResViewFormatUnsignedChar4 = 0x03,
-		// 1 channel signed 8-bit integers
+
+		/// <summary>
+		/// 1 channel signed 8-bit integers
+		/// </summary>
 		cudaResViewFormatSignedChar1 = 0x04,
-		// 2 channel signed 8-bit integers
+
+		/// <summary>
+		/// 2 channel signed 8-bit integers
+		/// </summary>
 		cudaResViewFormatSignedChar2 = 0x05,
-		// 4 channel signed 8-bit integers
+
+		/// <summary>
+		/// 4 channel signed 8-bit integers
+		/// </summary>
 		cudaResViewFormatSignedChar4 = 0x06,
-		// 1 channel unsigned 16-bit integers
+
+		/// <summary>
+		/// 1 channel unsigned 16-bit integers
+		/// </summary>
 		cudaResViewFormatUnsignedShort1 = 0x07,
-		// 2 channel unsigned 16-bit integers
+
+		/// <summary>
+		/// 2 channel unsigned 16-bit integers
+		/// </summary>
 		cudaResViewFormatUnsignedShort2 = 0x08,
-		// 4 channel unsigned 16-bit integers
+
+		/// <summary>
+		/// 4 channel unsigned 16-bit integers
+		/// </summary>
 		cudaResViewFormatUnsignedShort4 = 0x09,
-		// 1 channel signed 16-bit integers
+
+		/// <summary>
+		/// 1 channel signed 16-bit integers
+		/// </summary>
 		cudaResViewFormatSignedShort1 = 0x0a,
-		// 2 channel signed 16-bit integers
+
+		/// <summary>
+		/// 2 channel signed 16-bit integers
+		/// </summary>
 		cudaResViewFormatSignedShort2 = 0x0b,
-		// 4 channel signed 16-bit integers
+
+		/// <summary>
+		/// 4 channel signed 16-bit integers
+		/// </summary>
 		cudaResViewFormatSignedShort4 = 0x0c,
-		// 1 channel unsigned 32-bit integers
+
+		/// <summary>
+		/// 1 channel unsigned 32-bit integers
+		/// </summary>
 		cudaResViewFormatUnsignedInt1 = 0x0d,
-		// 2 channel unsigned 32-bit integers
+
+		/// <summary>
+		/// 2 channel unsigned 32-bit integers
+		/// </summary>
 		cudaResViewFormatUnsignedInt2 = 0x0e,
-		// 4 channel unsigned 32-bit integers
+
+		/// <summary>
+		/// 4 channel unsigned 32-bit integers
+		/// </summary>
 		cudaResViewFormatUnsignedInt4 = 0x0f,
-		// 1 channel signed 32-bit integers
+
+		/// <summary>
+		/// 1 channel signed 32-bit integers
+		/// </summary>
 		cudaResViewFormatSignedInt1 = 0x10,
-		// 2 channel signed 32-bit integers
+
+		/// <summary>
+		/// 2 channel signed 32-bit integers
+		/// </summary>
 		cudaResViewFormatSignedInt2 = 0x11,
-		// 4 channel signed 32-bit integers
+
+		/// <summary>
+		/// 4 channel signed 32-bit integers
+		/// </summary>
 		cudaResViewFormatSignedInt4 = 0x12,
-		// 1 channel 16-bit floating point
+
+		/// <summary>
+		/// 1 channel 16-bit floating point
+		/// </summary>
 		cudaResViewFormatHalf1 = 0x13,
-		// 2 channel 16-bit floating point
+
+		/// <summary>
+		/// 2 channel 16-bit floating point
+		/// </summary>
 		cudaResViewFormatHalf2 = 0x14,
-		// 4 channel 16-bit floating point
+
+		/// <summary>
+		/// 4 channel 16-bit floating point
+		/// </summary>
 		cudaResViewFormatHalf4 = 0x15,
-		// 1 channel 32-bit floating point
+
+		/// <summary>
+		/// 1 channel 32-bit floating point
+		/// </summary>
 		cudaResViewFormatFloat1 = 0x16,
-		// 2 channel 32-bit floating point
+
+		/// <summary>
+		/// 2 channel 32-bit floating point
+		/// </summary>
 		cudaResViewFormatFloat2 = 0x17,
-		// 4 channel 32-bit floating point
+
+		/// <summary>
+		/// 4 channel 32-bit floating point
+		/// </summary>
 		cudaResViewFormatFloat4 = 0x18,
-		// Block compressed 1
+
+		/// <summary>
+		/// Block compressed 1
+		/// </summary>
 		cudaResViewFormatUnsignedBlockCompressed1 = 0x19,
-		// Block compressed 2
+
+		/// <summary>
+		/// Block compressed 2
+		/// </summary>
 		cudaResViewFormatUnsignedBlockCompressed2 = 0x1a,
-		// Block compressed 3
+
+		/// <summary>
+		/// Block compressed 3
+		/// </summary>
 		cudaResViewFormatUnsignedBlockCompressed3 = 0x1b,
-		// Block compressed 4 unsigned
+
+		/// <summary>
+		/// Block compressed 4 unsigned
+		/// </summary>
 		cudaResViewFormatUnsignedBlockCompressed4 = 0x1c,
-		// Block compressed 4 signed
+
+		/// <summary>
+		/// Block compressed 4 signed
+		/// </summary>
 		cudaResViewFormatSignedBlockCompressed4 = 0x1d,
-		// Block compressed 5 unsigned
+
+		/// <summary>
+		/// Block compressed 5 unsigned
+		/// </summary>
 		cudaResViewFormatUnsignedBlockCompressed5 = 0x1e,
-		// Block compressed 5 signed
+
+		/// <summary>
+		/// Block compressed 5 signed
+		/// </summary>
 		cudaResViewFormatSignedBlockCompressed5 = 0x1f,
-		// Block compressed 6 unsigned half-float
+
+		/// <summary>
+		/// Block compressed 6 unsigned half-float
+		/// </summary>
 		cudaResViewFormatUnsignedBlockCompressed6H = 0x20,
-		// Block compressed 6 signed half-float
+
+		/// <summary>
+		/// Block compressed 6 signed half-float
+		/// </summary>
 		cudaResViewFormatSignedBlockCompressed6H = 0x21,
-		// Block compressed 7
+
+		/// <summary>
+		/// Block compressed 7
+		/// </summary>
 		cudaResViewFormatUnsignedBlockCompressed7 = 0x22
 	}
 
@@ -1137,11 +2109,19 @@ namespace CUDAnshita {
 	/// CUDA Surface boundary modes
 	/// </summary>
 	public enum cudaSurfaceBoundaryMode {
-		// Zero boundary mode
+		/// <summary>
+		/// Zero boundary mode
+		/// </summary>
 		cudaBoundaryModeZero = 0,
-		// Clamp boundary mode
+
+		/// <summary>
+		/// Clamp boundary mode
+		/// </summary>
 		cudaBoundaryModeClamp = 1,
-		// Trap boundary mode
+
+		/// <summary>
+		/// Trap boundary mode
+		/// </summary>
 		cudaBoundaryModeTrap = 2
 	}
 
@@ -1149,9 +2129,14 @@ namespace CUDAnshita {
 	/// CUDA Surface format modes
 	/// </summary>
 	public enum cudaSurfaceFormatMode {
-		// Forced format mode
+		/// <summary>
+		/// Forced format mode
+		/// </summary>
 		cudaFormatModeForced = 0,
-		// Auto format mode
+
+		/// <summary>
+		/// Auto format mode
+		/// </summary>
 		cudaFormatModeAuto = 1
 	}
 
@@ -1159,13 +2144,24 @@ namespace CUDAnshita {
 	/// CUDA texture address modes
 	/// </summary>
 	public enum cudaTextureAddressMode {
-		// Wrapping address mode
+		/// <summary>
+		/// Wrapping address mode
+		/// </summary>
 		cudaAddressModeWrap = 0,
-		// Clamp to edge address mode
+
+		/// <summary>
+		/// Clamp to edge address mode
+		/// </summary>
 		cudaAddressModeClamp = 1,
-		// Mirror address mode
+
+		/// <summary>
+		/// Mirror address mode
+		/// </summary>
 		cudaAddressModeMirror = 2,
-		// Border address mode
+
+		/// <summary>
+		/// Border address mode
+		/// </summary>
 		cudaAddressModeBorder = 3
 	}
 
@@ -1173,9 +2169,14 @@ namespace CUDAnshita {
 	/// CUDA texture filter modes
 	/// </summary>
 	public enum cudaTextureFilterMode {
-		// Point filter mode
+		/// <summary>
+		/// Point filter mode
+		/// </summary>
 		cudaFilterModePoint = 0,
-		// Linear filter mode
+
+		/// <summary>
+		/// Linear filter mode
+		/// </summary>
 		cudaFilterModeLinear = 1
 	}
 
@@ -1183,9 +2184,14 @@ namespace CUDAnshita {
 	/// CUDA texture read modes
 	/// </summary>
 	public enum cudaTextureReadMode {
-		// Read texture as specified element type
+		/// <summary>
+		/// Read texture as specified element type
+		/// </summary>
 		cudaReadModeElementType = 0,
-		// Read texture as normalized float
+
+		/// <summary>
+		/// Read texture as normalized float
+		/// </summary>
 		cudaReadModeNormalizedFloat = 1
 	}
 }

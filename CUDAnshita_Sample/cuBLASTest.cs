@@ -88,11 +88,11 @@ namespace CUDAnshita_Sample {
 			IntPtr destB = IntPtr.Zero;
 			IntPtr destC = IntPtr.Zero;
 			cudaError result2;
-			result2 = CudaRT.cudaMalloc(ref destA, elemSize * 4);
+			result2 = CudaRT.API.cudaMalloc(ref destA, elemSize * 4);
 			CudaException.Check(result2, "デバイスメモリの割り当てに失敗しました。");
-			result2 = CudaRT.cudaMalloc(ref destB, elemSize * 4);
+			result2 = CudaRT.API.cudaMalloc(ref destB, elemSize * 4);
 			CudaException.Check(result2, "デバイスメモリの割り当てに失敗しました。");
-			result2 = CudaRT.cudaMalloc(ref destC, byteSize);
+			result2 = CudaRT.API.cudaMalloc(ref destC, byteSize);
 			CudaException.Check(result2, "デバイスメモリの割り当てに失敗しました。");
 
 			Console.WriteLine("cuBLAS Test destA: {0}", destA);
@@ -148,9 +148,9 @@ namespace CUDAnshita_Sample {
 			}
 			*/
 
-			CudaRT.cudaFree(destA);
-			CudaRT.cudaFree(destB);
-			CudaRT.cudaFree(destC);
+			CudaRT.API.cudaFree(destA);
+			CudaRT.API.cudaFree(destB);
+			CudaRT.API.cudaFree(destC);
 
 			// 全てのスレッドが終了するまで待つ
 			//context.Synchronize();
