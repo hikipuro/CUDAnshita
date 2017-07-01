@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using CUDAnshita.Errors;
 
 namespace CUDAnshita {
 	using cufftHandle = Int32;

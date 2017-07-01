@@ -1,5 +1,4 @@
-﻿using CUDAnshita.Errors;
-using System;
+﻿using System;
 
 namespace CUDAnshita {
 	public class Context : IDisposable {

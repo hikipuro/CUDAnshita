@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CUDAnshita.Errors {
+namespace CUDAnshita {
 	public class CudaException : Exception {
 		public CudaException() {
 		}

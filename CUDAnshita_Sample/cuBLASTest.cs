@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using CUDAnshita;
-using CUDAnshita.Errors;
 
 namespace CUDAnshita_Sample {
 	class cuBLASTest {

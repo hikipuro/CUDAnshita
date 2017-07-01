@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using CUDAnshita.Errors;
 
 namespace CUDAnshita {
 	using cublasStatus_t = cublasStatus;
@@ -99,6 +98,7 @@ namespace CUDAnshita {
 			public static extern void cublasXerbla(string srName, int info);
 
 			/* ---------------- CUBLAS BLAS1 functions ---------------- */
+
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasNrm2Ex(cublasHandle_t handle,
 																 int n,
@@ -3894,6 +3894,98 @@ namespace CUDAnshita {
 		}
 
 		// ----- C# Interface
+
+		public static cublasHandle_t Create_v2() {
+			cublasHandle_t handle = IntPtr.Zero;
+			CheckStatus(API.cublasCreate_v2(ref handle));
+			return handle;
+		}
+
+		public static void Destroy_v2(cublasHandle_t handle) {
+			CheckStatus(API.cublasDestroy_v2(handle));
+		}
+
+		public static int GetVersion_v2(cublasHandle_t handle) {
+			int version = 0;
+			CheckStatus(API.cublasGetVersion_v2(handle, ref version));
+			return version;
+		}
+
+		public static int GetProperty(libraryPropertyType type) {
+			int value = 0;
+			CheckStatus(API.cublasGetProperty(type, ref value));
+			return value;
+		}
+
+		public static void SetStream_v2(cublasHandle_t handle, cudaStream_t streamId) {
+			CheckStatus(API.cublasSetStream_v2(handle, streamId));
+		}
+
+		public static cudaStream_t GetStream_v2(cublasHandle_t handle) {
+			cudaStream_t streamId = IntPtr.Zero;
+			CheckStatus(API.cublasGetStream_v2(handle, ref streamId));
+			return streamId;
+		}
+
+		public static cublasPointerMode_t GetPointerMode_v2(cublasHandle_t handle) {
+			cublasPointerMode_t mode = cublasPointerMode_t.CUBLAS_POINTER_MODE_HOST;
+			CheckStatus(API.cublasGetPointerMode_v2(handle, ref mode));
+			return mode;
+		}
+
+		public static void SetPointerMode_v2(cublasHandle_t handle, cublasPointerMode_t mode) {
+			CheckStatus(API.cublasSetPointerMode_v2(handle, mode));
+		}
+
+		public static cublasAtomicsMode_t GetAtomicsMode(cublasHandle_t handle) {
+			cublasAtomicsMode_t mode = cublasAtomicsMode_t.CUBLAS_ATOMICS_NOT_ALLOWED;
+			CheckStatus(API.cublasGetAtomicsMode(handle, ref mode));
+			return mode;
+		}
+
+		public static void SetAtomicsMode(cublasHandle_t handle, cublasAtomicsMode_t mode) {
+			CheckStatus(API.cublasSetAtomicsMode(handle, mode));
+		}
+
+		public static void SetVector(int n, int elemSize, IntPtr x, int incx, IntPtr devicePtr, int incy) {
+			CheckStatus(API.cublasSetVector(n, elemSize, x, incx, devicePtr, incy));
+		}
+
+		public static void GetVector(int n, int elemSize, IntPtr x, int incx, IntPtr y, int incy) {
+			CheckStatus(API.cublasGetVector(n, elemSize, x, incx, y, incy));
+		}
+
+		public static void SetMatrix(int rows, int cols, int elemSize, IntPtr A, int lda, IntPtr B, int ldb) {
+			CheckStatus(API.cublasSetMatrix(rows, cols, elemSize, A, lda, B, ldb));
+		}
+
+		public static void GetMatrix(int rows, int cols, int elemSize, IntPtr A, int lda, IntPtr B, int ldb) {
+			CheckStatus(API.cublasGetMatrix(rows, cols, elemSize, A, lda, B, ldb));
+		}
+
+		public static void SetVectorAsync(int n, int elemSize, IntPtr hostPtr, int incx, IntPtr devicePtr, int incy, cudaStream_t stream) {
+			CheckStatus(API.cublasSetVectorAsync(n, elemSize, hostPtr, incx, devicePtr, incy, stream));
+		}
+
+		public static void GetVectorAsync(int n, int elemSize, IntPtr devicePtr, int incx, IntPtr hostPtr, int incy, cudaStream_t stream) {
+			CheckStatus(API.cublasGetVectorAsync(n, elemSize, devicePtr, incx, hostPtr, incy, stream));
+		}
+
+		public static void SetMatrixAsync(int rows, int cols, int elemSize, IntPtr A, int lda, IntPtr B, int ldb, cudaStream_t stream) {
+			CheckStatus(API.cublasSetMatrixAsync(rows, cols, elemSize, A, lda, B, ldb, stream));
+		}
+
+		public static void GetMatrixAsync(int rows, int cols, int elemSize, IntPtr A, int lda, IntPtr B, int ldb, cudaStream_t stream) {
+			CheckStatus(API.cublasGetMatrixAsync(rows, cols, elemSize, A, lda, B, ldb, stream));
+		}
+
+		public static void Xerbla(string srName, int info) {
+			API.cublasXerbla(srName, info);
+		}
+
+		public static void Nrm2Ex(cublasHandle_t handle, int n, IntPtr x, cudaDataType xType, int incx, IntPtr result, cudaDataType resultType, cudaDataType executionType) {
+			CheckStatus(API.cublasNrm2Ex(handle, n, x, xType, incx, result, resultType, executionType));
+		}
 
 		IntPtr handle = IntPtr.Zero;
 

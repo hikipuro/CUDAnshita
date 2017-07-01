@@ -1,11 +1,12 @@
 # CUDAnshita
-C#から簡単にCUDAを呼び出すためのライブラリ
+C# から簡単に CUDA を呼び出すためのライブラリ
 
 ## 実行に必要なもの
 * NVIDIA の GPU と新しめのドライバ
 * CUDA Toolkit 8.0
  * nvcuda.dll (ドライバに付属している？)
  * nvrtc64_80.dll (CUDA Toolkit 8.0に含まれている)
+ * cuDNN を使用する場合は、 CUDA Toolkit とは別にダウンロードする必要があります
 * .NET Framework 2.0 以降
 
 ## コードサンプル
@@ -111,6 +112,54 @@ device.Dispose();
 
 ### 注意事項
 * cuBLAS, cuFFT, cuFFTW, cuRAND, cuDNN の機能は全くテストできていませんので、CUDAnshita のコードを底の方から修正する気力のあるかたのみ、ご使用ください。
+
+## CUDAnshita の使い方
+
+CUDAnshita の API は 3 つの層に分けて実装されています。
+(現段階では未実装箇所が多いため、実装予定という感じです。)
+
+### API Layer 1
+
+DLL の関数を直接呼び出す形式です。
+
+```cs
+// 例:
+int version = 0;
+cudaError error = CudaRT.API.cudaRuntimeGetVersion(ref version);
+if (error != cudaError.cudaSuccess) {
+	Console.WriteLine("Error");
+}
+```
+
+* クラス名.API.関数名の形式で呼び出す
+* DLLImport された関数を直接呼び出す
+* 関数呼び出しごとに戻り値のチェックが必要
+* C 言語の API に慣れた人向け
+* 検索して出てきたコードサンプルを移植する用途向け
+
+### API Layer 2
+
+C# 用の薄いラッパー経由で API を呼び出す形式です。
+
+```cs
+// 例:
+int version = CudaRT.RuntimeGetVersion();
+```
+
+* クラス名.関数名の形式で呼び出す
+* 関数名は、プリフィックスを取った形式 (cudaRuntimeGetVersion -> RuntimeGetVersion)
+* エラー発生時は例外が投げられる (CudaException クラスの例外が発生する)
+* CUDA の深い部分まで理解する必要がある人向け
+* C 言語の API よりはちょっとだけ楽をしたい人向け
+
+### API Layer 3
+
+C# 用に実装されたクラス経由で API を呼び出す形式です。
+
+* 使用する機能に特化したクラスのインスタンスを作成する
+* メモリ確保、解放等の処理は内部で実行される
+* CUDA の理解が薄くても問題ないと考える人向け
+* 煩雑な処理を書きたくない人向け
 
 ## 開発環境
 * Visual Studio 2015
