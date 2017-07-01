@@ -27,6 +27,714 @@ namespace CUDAnshita {
 			const CallingConvention CALLING_CONVENTION = CallingConvention.Cdecl;
 			const CharSet CHAR_SET = CharSet.Ansi;
 
+			// ----- v1
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cublasStatus cublasInit();
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cublasStatus cublasShutdown();
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cublasStatus cublasGetError();
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cublasStatus cublasGetVersion(ref int version);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cublasStatus cublasAlloc(int n, int elemSize, ref IntPtr devicePtr);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cublasStatus cublasFree(IntPtr devicePtr);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cublasStatus cublasSetKernelStream(cudaStream_t stream);
+
+			// ---------------- CUBLAS BLAS1 functions ----------------
+			// NRM2
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern float cublasSnrm2(int n, ref float x, int incx);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern double cublasDnrm2(int n, ref double x, int incx);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern float cublasScnrm2(int n, ref cuComplex x, int incx);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern double cublasDznrm2(int n, ref cuDoubleComplex x, int incx);
+
+			// -----------------------------------------------------------------------
+			// DOT
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern float cublasSdot(int n, ref float x, int incx, ref float y, int incy);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern double cublasDdot(int n, ref double x, int incx, ref double y, int incy);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cuComplex cublasCdotu(int n, ref cuComplex x, int incx, ref cuComplex y, int incy);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cuComplex cublasCdotc(int n, ref cuComplex x, int incx, ref cuComplex y, int incy);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cuDoubleComplex cublasZdotu(int n, ref cuDoubleComplex x, int incx, ref cuDoubleComplex y, int incy);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cuDoubleComplex cublasZdotc(int n, ref cuDoubleComplex x, int incx, ref cuDoubleComplex y, int incy);
+
+			// -----------------------------------------------------------------------
+			// SCAL
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasSscal(int n, float alpha, ref float x, int incx);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasDscal(int n, double alpha, ref double x, int incx);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasCscal(int n, cuComplex alpha, ref cuComplex x, int incx);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasZscal(int n, cuDoubleComplex alpha, ref cuDoubleComplex x, int incx);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasCsscal(int n, float alpha, ref cuComplex x, int incx);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasZdscal(int n, double alpha, ref cuDoubleComplex x, int incx);
+
+			// -----------------------------------------------------------------------
+			// AXPY
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasSaxpy(int n, float alpha, ref float x, int incx, ref float y, int incy);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasDaxpy(int n, double alpha, ref double x, int incx, ref double y, int incy);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasCaxpy(int n, cuComplex alpha, ref cuComplex x, int incx, ref cuComplex y, int incy);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasZaxpy(int n, cuDoubleComplex alpha, ref cuDoubleComplex x, int incx, ref cuDoubleComplex y, int incy);
+
+			// -----------------------------------------------------------------------
+			// COPY
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasScopy(int n, ref float x, int incx, ref float y, int incy);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasDcopy(int n, ref double x, int incx, ref double y, int incy);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasCcopy(int n, ref cuComplex x, int incx, ref cuComplex y, int incy);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasZcopy(int n, ref cuDoubleComplex x, int incx, ref cuDoubleComplex y, int incy);
+
+			// -----------------------------------------------------------------------
+			// SWAP
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasSswap(int n, ref float x, int incx, ref float y, int incy);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasDswap(int n, ref double x, int incx, ref double y, int incy);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasCswap(int n, ref cuComplex x, int incx, ref cuComplex y, int incy);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasZswap(int n, ref cuDoubleComplex x, int incx, ref cuDoubleComplex y, int incy);
+
+			// -----------------------------------------------------------------------
+			// AMAX
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern int cublasIsamax(int n, ref float x, int incx);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern int cublasIdamax(int n, ref double x, int incx);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern int cublasIcamax(int n, ref cuComplex x, int incx);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern int cublasIzamax(int n, ref cuDoubleComplex x, int incx);
+
+			// -----------------------------------------------------------------------
+			// AMIN
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern int cublasIsamin(int n, ref float x, int incx);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern int cublasIdamin(int n, ref double x, int incx);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern int cublasIcamin(int n, ref cuComplex x, int incx);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern int cublasIzamin(int n, ref cuDoubleComplex x, int incx);
+
+			// -----------------------------------------------------------------------
+			// ASUM
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern float cublasSasum(int n, ref float x, int incx);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern double cublasDasum(int n, ref double x, int incx);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern float cublasScasum(int n, ref cuComplex x, int incx);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern double cublasDzasum(int n, ref cuDoubleComplex x, int incx);
+
+			// -----------------------------------------------------------------------
+			// ROT
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasSrot(int n, ref float x, int incx, ref float y, int incy, float sc, float ss);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasDrot(int n, ref double x, int incx, ref double y, int incy, double sc, double ss);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasCrot(int n, ref cuComplex x, int incx, ref cuComplex y, int incy, float c, cuComplex s);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasZrot(int n, ref cuDoubleComplex x, int incx, ref cuDoubleComplex y, int incy, double sc, cuDoubleComplex cs);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasCsrot(int n, ref cuComplex x, int incx, ref cuComplex y, int incy, float c, float s);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasZdrot(int n, ref cuDoubleComplex x, int incx, ref cuDoubleComplex y, int incy, double c, double s);
+
+			// -----------------------------------------------------------------------
+			// ROTG
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasSrotg(ref float sa, ref float sb, ref float sc, ref float ss);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasDrotg(ref double sa, ref double sb, ref double sc, ref double ss);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasCrotg(ref cuComplex ca, cuComplex cb, ref float sc, ref cuComplex cs);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasZrotg(ref cuDoubleComplex ca, cuDoubleComplex cb, ref double sc, ref cuDoubleComplex cs);
+
+			// -----------------------------------------------------------------------
+			// ROTM
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasSrotm(int n, ref float x, int incx, ref float y, int incy, ref float sparam);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasDrotm(int n, ref double x, int incx, ref double y, int incy, ref double sparam);
+
+			// -----------------------------------------------------------------------
+			// ROTMG
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasSrotmg(ref float sd1, ref float sd2, ref float sx1, ref float sy1, ref float sparam);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasDrotmg(ref double sd1, ref double sd2, ref double sx1, ref double sy1, ref double sparam);
+
+			// --------------- CUBLAS BLAS2 functions  ----------------
+			// GEMV
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasSgemv(char trans, int m, int n, float alpha, ref float A, int lda, ref float x, int incx, float beta, ref float y, int incy);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasDgemv(char trans, int m, int n, double alpha, ref double A, int lda, ref double x, int incx, double beta, ref double y, int incy);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasCgemv(char trans, int m, int n, cuComplex alpha, ref cuComplex A, int lda, ref cuComplex x, int incx, cuComplex beta, ref cuComplex y, int incy);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasZgemv(char trans, int m, int n, cuDoubleComplex alpha, ref cuDoubleComplex A, int lda, ref cuDoubleComplex x, int incx, cuDoubleComplex beta, ref cuDoubleComplex y, int incy);
+
+			// -----------------------------------------------------------------------
+			// GBMV
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasSgbmv(char trans, int m, int n, int kl, int ku, float alpha, ref float A, int lda, ref float x, int incx, float beta, ref float y, int incy);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasDgbmv(char trans, int m, int n, int kl, int ku, double alpha, ref double A, int lda, ref double x, int incx, double beta, ref double y, int incy);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasCgbmv(char trans, int m, int n, int kl, int ku, cuComplex alpha, ref cuComplex A, int lda, ref cuComplex x, int incx, cuComplex beta, ref cuComplex y, int incy);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasZgbmv(char trans, int m, int n, int kl, int ku, cuDoubleComplex alpha, ref cuDoubleComplex A, int lda, ref cuDoubleComplex x, int incx, cuDoubleComplex beta, ref cuDoubleComplex y, int incy);
+
+			// -----------------------------------------------------------------------
+			// TRMV
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasStrmv(char uplo, char trans, char diag, int n, ref float A, int lda, ref float x, int incx);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasDtrmv(char uplo, char trans, char diag, int n, ref double A, int lda, ref double x, int incx);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasCtrmv(char uplo, char trans, char diag, int n, ref cuComplex A, int lda, ref cuComplex x, int incx);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasZtrmv(char uplo, char trans, char diag, int n, ref cuDoubleComplex A, int lda, ref cuDoubleComplex x, int incx);
+
+			// -----------------------------------------------------------------------
+			// TBMV
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasStbmv(char uplo, char trans, char diag, int n, int k, ref float A, int lda, ref float x, int incx);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasDtbmv(char uplo, char trans, char diag, int n, int k, ref double A, int lda, ref double x, int incx);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasCtbmv(char uplo, char trans, char diag, int n, int k, ref cuComplex A, int lda, ref cuComplex x, int incx);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasZtbmv(char uplo, char trans, char diag, int n, int k, ref cuDoubleComplex A, int lda, ref cuDoubleComplex x, int incx);
+
+			// -----------------------------------------------------------------------
+			// TPMV
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasStpmv(char uplo, char trans, char diag, int n, ref float AP, ref float x, int incx);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasDtpmv(char uplo, char trans, char diag, int n, ref double AP, ref double x, int incx);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasCtpmv(char uplo, char trans, char diag, int n, ref cuComplex AP, ref cuComplex x, int incx);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasZtpmv(char uplo, char trans, char diag, int n, ref cuDoubleComplex AP, ref cuDoubleComplex x, int incx);
+
+			// -----------------------------------------------------------------------
+			// TRSV
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasStrsv(char uplo, char trans, char diag, int n, ref float A, int lda, ref float x, int incx);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasDtrsv(char uplo, char trans, char diag, int n, ref double A, int lda, ref double x, int incx);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasCtrsv(char uplo, char trans, char diag, int n, ref cuComplex A, int lda, ref cuComplex x, int incx);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasZtrsv(char uplo, char trans, char diag, int n, ref cuDoubleComplex A, int lda, ref cuDoubleComplex x, int incx);
+
+			// -----------------------------------------------------------------------
+			// TPSV
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasStpsv(char uplo, char trans, char diag, int n, ref float AP, ref float x, int incx);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasDtpsv(char uplo, char trans, char diag, int n, ref double AP, ref double x, int incx);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasCtpsv(char uplo, char trans, char diag, int n, ref cuComplex AP, ref cuComplex x, int incx);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasZtpsv(char uplo, char trans, char diag, int n, ref cuDoubleComplex AP, ref cuDoubleComplex x, int incx);
+
+			// -----------------------------------------------------------------------
+			// TBSV
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasStbsv(char uplo, char trans, char diag, int n, int k, ref float A, int lda, ref float x, int incx);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasDtbsv(char uplo, char trans, char diag, int n, int k, ref double A, int lda, ref double x, int incx);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasCtbsv(char uplo, char trans, char diag, int n, int k, ref cuComplex A, int lda, ref cuComplex x, int incx);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasZtbsv(char uplo, char trans, char diag, int n, int k, ref cuDoubleComplex A, int lda, ref cuDoubleComplex x, int incx);
+
+			// -----------------------------------------------------------------------
+			// SYMV/HEMV
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasSsymv(char uplo, int n, float alpha, ref float A, int lda, ref float x, int incx, float beta, ref float y, int incy);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasDsymv(char uplo, int n, double alpha, ref double A, int lda, ref double x, int incx, double beta, ref double y, int incy);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasChemv(char uplo, int n, cuComplex alpha, ref cuComplex A, int lda, ref cuComplex x, int incx, cuComplex beta, ref cuComplex y, int incy);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasZhemv(char uplo, int n, cuDoubleComplex alpha, ref cuDoubleComplex A, int lda, ref cuDoubleComplex x, int incx, cuDoubleComplex beta, ref cuDoubleComplex y, int incy);
+
+			// -----------------------------------------------------------------------
+			// SBMV/HBMV
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasSsbmv(char uplo, int n, int k, float alpha, ref float A, int lda, ref float x, int incx, float beta, ref float y, int incy);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasDsbmv(char uplo, int n, int k, double alpha, ref double A, int lda, ref double x, int incx, double beta, ref double y, int incy);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasChbmv(char uplo, int n, int k, cuComplex alpha, ref cuComplex A, int lda, ref cuComplex x, int incx, cuComplex beta, ref cuComplex y, int incy);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasZhbmv(char uplo, int n, int k, cuDoubleComplex alpha, ref cuDoubleComplex A, int lda, ref cuDoubleComplex x, int incx, cuDoubleComplex beta, ref cuDoubleComplex y, int incy);
+
+			// -----------------------------------------------------------------------
+			// SPMV/HPMV
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasSspmv(char uplo, int n, float alpha, ref float AP, ref float x, int incx, float beta, ref float y, int incy);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasDspmv(char uplo, int n, double alpha, ref double AP, ref double x, int incx, double beta, ref double y, int incy);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasChpmv(char uplo, int n, cuComplex alpha, ref cuComplex AP, ref cuComplex x, int incx, cuComplex beta, ref cuComplex y, int incy);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasZhpmv(char uplo, int n, cuDoubleComplex alpha, ref cuDoubleComplex AP, ref cuDoubleComplex x, int incx, cuDoubleComplex beta, ref cuDoubleComplex y, int incy);
+
+			// -----------------------------------------------------------------------
+			// GER
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasSger(int m, int n, float alpha, ref float x, int incx, ref float y, int incy, ref float A, int lda);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasDger(int m, int n, double alpha, ref double x, int incx, ref double y, int incy, ref double A, int lda);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasCgeru(int m, int n, cuComplex alpha, ref cuComplex x, int incx, ref cuComplex y, int incy, ref cuComplex A, int lda);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasCgerc(int m, int n, cuComplex alpha, ref cuComplex x, int incx, ref cuComplex y, int incy, ref cuComplex A, int lda);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasZgeru(int m, int n, cuDoubleComplex alpha, ref cuDoubleComplex x, int incx, ref cuDoubleComplex y, int incy, ref cuDoubleComplex A, int lda);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasZgerc(int m, int n, cuDoubleComplex alpha, ref cuDoubleComplex x, int incx, ref cuDoubleComplex y, int incy, ref cuDoubleComplex A, int lda);
+
+			// -----------------------------------------------------------------------
+			// SYR/HER
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasSsyr(char uplo, int n, float alpha, ref float x, int incx, ref float A, int lda);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasDsyr(char uplo, int n, double alpha, ref double x, int incx, ref double A, int lda);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasCher(char uplo, int n, float alpha, ref cuComplex x, int incx, ref cuComplex A, int lda);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasZher(char uplo, int n, double alpha, ref cuDoubleComplex x, int incx, ref cuDoubleComplex A, int lda);
+
+			// -----------------------------------------------------------------------
+			// SPR/HPR
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasSspr(char uplo, int n, float alpha, ref float x, int incx, ref float AP);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasDspr(char uplo, int n, double alpha, ref double x, int incx, ref double AP);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasChpr(char uplo, int n, float alpha, ref cuComplex x, int incx, ref cuComplex AP);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasZhpr(char uplo, int n, double alpha, ref cuDoubleComplex x, int incx, ref cuDoubleComplex AP);
+
+			// -----------------------------------------------------------------------
+			// SYR2/HER2
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasSsyr2(char uplo, int n, float alpha, ref float x, int incx, ref float y, int incy, ref float A, int lda);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasDsyr2(char uplo, int n, double alpha, ref double x, int incx, ref double y, int incy, ref double A, int lda);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasCher2(char uplo, int n, cuComplex alpha, ref cuComplex x, int incx, ref cuComplex y, int incy, ref cuComplex A, int lda);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasZher2(char uplo, int n, cuDoubleComplex alpha, ref cuDoubleComplex x, int incx, ref cuDoubleComplex y, int incy, ref cuDoubleComplex A, int lda);
+
+			// -----------------------------------------------------------------------
+			// SPR2/HPR2
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasSspr2(char uplo, int n, float alpha, ref float x, int incx, ref float y, int incy, ref float AP);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasDspr2(char uplo, int n, double alpha, ref double x, int incx, ref double y, int incy, ref double AP);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasChpr2(char uplo, int n, cuComplex alpha, ref cuComplex x, int incx, ref cuComplex y, int incy, ref cuComplex AP);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasZhpr2(char uplo, int n, cuDoubleComplex alpha, ref cuDoubleComplex x, int incx, ref cuDoubleComplex y, int incy, ref cuDoubleComplex AP);
+
+			// ------------------------BLAS3 Functions -------------------------------
+			// GEMM
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasSgemm(char transa, char transb, int m, int n, int k, float alpha, ref float A, int lda, ref float B, int ldb, float beta, ref float C, int ldc);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasDgemm(char transa, char transb, int m, int n, int k, double alpha, ref double A, int lda, ref double B, int ldb, double beta, ref double C, int ldc);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasCgemm(char transa, char transb, int m, int n, int k, cuComplex alpha, ref cuComplex A, int lda, ref cuComplex B, int ldb, cuComplex beta, ref cuComplex C, int ldc);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasZgemm(char transa, char transb, int m, int n, int k, cuDoubleComplex alpha, ref cuDoubleComplex A, int lda, ref cuDoubleComplex B, int ldb, cuDoubleComplex beta, ref cuDoubleComplex C, int ldc);
+
+			// -------------------------------------------------------
+			// SYRK
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasSsyrk(char uplo, char trans, int n, int k, float alpha, ref float A, int lda, float beta, ref float C, int ldc);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasDsyrk(char uplo, char trans, int n, int k, double alpha, ref double A, int lda, double beta, ref double C, int ldc);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasCsyrk(char uplo, char trans, int n, int k, cuComplex alpha, ref cuComplex A, int lda, cuComplex beta, ref cuComplex C, int ldc);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasZsyrk(char uplo, char trans, int n, int k, cuDoubleComplex alpha, ref cuDoubleComplex A, int lda, cuDoubleComplex beta, ref cuDoubleComplex C, int ldc);
+
+			// -------------------------------------------------------
+			// HERK
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasCherk(char uplo, char trans, int n, int k, float alpha, ref cuComplex A, int lda, float beta, ref cuComplex C, int ldc);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasZherk(char uplo, char trans, int n, int k, double alpha, ref cuDoubleComplex A, int lda, double beta, ref cuDoubleComplex C, int ldc);
+
+			// -------------------------------------------------------
+			// SYR2K
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasSsyr2k(char uplo, char trans, int n, int k, float alpha, ref float A, int lda, ref float B, int ldb, float beta, ref float C, int ldc);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasDsyr2k(char uplo, char trans, int n, int k, double alpha, ref double A, int lda, ref double B, int ldb, double beta, ref double C, int ldc);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasCsyr2k(char uplo, char trans, int n, int k, cuComplex alpha, ref cuComplex A, int lda, ref cuComplex B, int ldb, cuComplex beta, ref cuComplex C, int ldc);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasZsyr2k(char uplo, char trans, int n, int k, cuDoubleComplex alpha, ref cuDoubleComplex A, int lda, ref cuDoubleComplex B, int ldb, cuDoubleComplex beta, ref cuDoubleComplex C, int ldc);
+
+			// -------------------------------------------------------
+			// HER2K
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasCher2k(char uplo, char trans, int n, int k, cuComplex alpha, ref cuComplex A, int lda, ref cuComplex B, int ldb, float beta, ref cuComplex C, int ldc);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasZher2k(char uplo, char trans, int n, int k, cuDoubleComplex alpha, ref cuDoubleComplex A, int lda, ref cuDoubleComplex B, int ldb, double beta, ref cuDoubleComplex C, int ldc);
+
+			// -----------------------------------------------------------------------
+			// SYMM*/
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasSsymm(char side, char uplo, int m, int n, float alpha, ref float A, int lda, ref float B, int ldb, float beta, ref float C, int ldc);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasDsymm(char side, char uplo, int m, int n, double alpha, ref double A, int lda, ref double B, int ldb, double beta, ref double C, int ldc);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasCsymm(char side, char uplo, int m, int n, cuComplex alpha, ref cuComplex A, int lda, ref cuComplex B, int ldb, cuComplex beta, ref cuComplex C, int ldc);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasZsymm(char side, char uplo, int m, int n, cuDoubleComplex alpha, ref cuDoubleComplex A, int lda, ref cuDoubleComplex B, int ldb, cuDoubleComplex beta, ref cuDoubleComplex C, int ldc);
+
+			// -----------------------------------------------------------------------
+			// HEMM*/
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasChemm(char side, char uplo, int m, int n, cuComplex alpha, ref cuComplex A, int lda, ref cuComplex B, int ldb, cuComplex beta, ref cuComplex C, int ldc);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasZhemm(char side, char uplo, int m, int n, cuDoubleComplex alpha, ref cuDoubleComplex A, int lda, ref cuDoubleComplex B, int ldb, cuDoubleComplex beta, ref cuDoubleComplex C, int ldc);
+
+			// -----------------------------------------------------------------------
+			// TRSM*/
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasStrsm(char side, char uplo, char transa, char diag, int m, int n, float alpha, ref float A, int lda, ref float B, int ldb);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasDtrsm(char side, char uplo, char transa, char diag, int m, int n, double alpha, ref double A, int lda, ref double B, int ldb);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasCtrsm(char side, char uplo, char transa, char diag, int m, int n, cuComplex alpha, ref cuComplex A, int lda, ref cuComplex B, int ldb);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasZtrsm(char side, char uplo, char transa, char diag, int m, int n, cuDoubleComplex alpha, ref cuDoubleComplex A, int lda, ref cuDoubleComplex B, int ldb);
+
+			// -----------------------------------------------------------------------
+			// TRMM*/
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasStrmm(char side, char uplo, char transa, char diag, int m, int n, float alpha, ref float A, int lda, ref float B, int ldb);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasDtrmm(char side, char uplo, char transa, char diag, int m, int n, double alpha, ref double A, int lda, ref double B, int ldb);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasCtrmm(char side, char uplo, char transa, char diag, int m, int n, cuComplex alpha, ref cuComplex A, int lda, ref cuComplex B, int ldb);
+
+			[Obsolete]
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern void cublasZtrmm(char side, char uplo, char transa, char diag, int m, int n, cuDoubleComplex alpha, ref cuDoubleComplex A, int lda, ref cuDoubleComplex B, int ldb);
+
+			// ----- v2
+
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasCreate_v2(ref cublasHandle_t handle);
 
@@ -97,7 +805,7 @@ namespace CUDAnshita {
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern void cublasXerbla(string srName, int info);
 
-			/* ---------------- CUBLAS BLAS1 functions ---------------- */
+			// ---------------- CUBLAS BLAS1 functions ----------------
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasNrm2Ex(cublasHandle_t handle,
@@ -107,35 +815,35 @@ namespace CUDAnshita {
 													int incx,
 													IntPtr result,
 													cudaDataType resultType,
-													cudaDataType executionType); /* host or device pointer */
+													cudaDataType executionType); // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSnrm2_v2(cublasHandle_t handle,
 													int n,
 													IntPtr x,
 													int incx,
-													ref float result); /* host or device pointer */
+													ref float result); // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasDnrm2_v2(cublasHandle_t handle,
 													int n,
 													double[] x,
 													int incx,
-													ref double result);  /* host or device pointer */
+													ref double result);  // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasScnrm2_v2(cublasHandle_t handle,
 													int n,
 													ref cuComplex x,
 													int incx,
-													ref float result);  /* host or device pointer */
+													ref float result);  // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasDznrm2_v2(cublasHandle_t handle,
 													int n,
 													ref cuDoubleComplex x,
 													int incx,
-													ref double result);  /* host or device pointer */
+													ref double result);  // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasDotEx(cublasHandle_t handle,
@@ -170,7 +878,7 @@ namespace CUDAnshita {
 													int incx,
 													ref float y,
 													int incy,
-													ref float result);  /* host or device pointer */
+													ref float result);  // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasDdot_v2(cublasHandle_t handle,
@@ -179,7 +887,7 @@ namespace CUDAnshita {
 													int incx,
 													ref double y,
 													int incy,
-													ref double result);  /* host or device pointer */
+													ref double result);  // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasCdotu_v2(cublasHandle_t handle,
@@ -188,7 +896,7 @@ namespace CUDAnshita {
 													int incx,
 													ref cuComplex y,
 													int incy,
-													ref cuComplex result);  /* host or device pointer */
+													ref cuComplex result);  // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasCdotc_v2(cublasHandle_t handle,
@@ -197,7 +905,7 @@ namespace CUDAnshita {
 													int incx,
 													ref cuComplex y,
 													int incy,
-													ref cuComplex result); /* host or device pointer */
+													ref cuComplex result); // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasZdotu_v2(cublasHandle_t handle,
@@ -206,7 +914,7 @@ namespace CUDAnshita {
 													int incx,
 													ref cuDoubleComplex y,
 													int incy,
-													ref cuDoubleComplex result); /* host or device pointer */
+													ref cuDoubleComplex result); // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasZdotc_v2(cublasHandle_t handle,
@@ -215,12 +923,12 @@ namespace CUDAnshita {
 													int incx,
 													ref cuDoubleComplex y,
 													int incy,
-													ref cuDoubleComplex result); /* host or device pointer */
+													ref cuDoubleComplex result); // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasScalEx(cublasHandle_t handle,
 													int n,
-													IntPtr alpha,  /* host or device pointer */
+													IntPtr alpha,  // host or device pointer
 													cudaDataType alphaType,
                                                     IntPtr x,
 													cudaDataType xType,
@@ -230,49 +938,49 @@ namespace CUDAnshita {
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSscal_v2(cublasHandle_t handle,
 													int n,
-													ref float alpha,  /* host or device pointer */
+													ref float alpha,  // host or device pointer
 													ref float x,
 													int incx);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasDscal_v2(cublasHandle_t handle,
 													int n,
-													ref double alpha,  /* host or device pointer */
+													ref double alpha,  // host or device pointer
 													ref double x,
 													int incx);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasCscal_v2(cublasHandle_t handle,
 													int n,
-													ref cuComplex alpha, /* host or device pointer */
+													ref cuComplex alpha, // host or device pointer
 													ref cuComplex x, 
 													int incx);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasCsscal_v2(cublasHandle_t handle,
 													int n,
-													ref float alpha, /* host or device pointer */
+													ref float alpha, // host or device pointer
 													ref cuComplex x, 
 													int incx);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasZscal_v2(cublasHandle_t handle,
 													int n,
-													ref cuDoubleComplex alpha, /* host or device pointer */
+													ref cuDoubleComplex alpha, // host or device pointer
 													ref cuDoubleComplex x, 
 													int incx);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasZdscal_v2(cublasHandle_t handle,
 													int n,
-													ref double alpha, /* host or device pointer */
+													ref double alpha, // host or device pointer
 													ref cuDoubleComplex x, 
 													int incx);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasAxpyEx(cublasHandle_t handle,
 													int n,
-													IntPtr alpha, /* host or device pointer */
+													IntPtr alpha, // host or device pointer
 													cudaDataType alphaType,
 													IntPtr x,
 													cudaDataType xType,
@@ -285,7 +993,7 @@ namespace CUDAnshita {
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSaxpy_v2(cublasHandle_t handle,
 													int n,
-													ref float alpha, /* host or device pointer */
+													ref float alpha, // host or device pointer
 													ref float x,
 													int incx,
 													ref float y,
@@ -294,7 +1002,7 @@ namespace CUDAnshita {
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasDaxpy_v2(cublasHandle_t handle,
 													int n,
-													ref double alpha, /* host or device pointer */
+													ref double alpha, // host or device pointer
 													ref double x,
 													int incx,
 													ref double y,
@@ -303,7 +1011,7 @@ namespace CUDAnshita {
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasCaxpy_v2(cublasHandle_t handle,
 													int n,
-													ref cuComplex alpha, /* host or device pointer */
+													ref cuComplex alpha, // host or device pointer
 													ref cuComplex x,
 													int incx,
 													ref cuComplex y, 
@@ -312,7 +1020,7 @@ namespace CUDAnshita {
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasZaxpy_v2(cublasHandle_t handle,
 													int n,
-													ref cuDoubleComplex alpha, /* host or device pointer */
+													ref cuDoubleComplex alpha, // host or device pointer
 													ref cuDoubleComplex x,
 													int incx,
 													ref cuDoubleComplex y, 
@@ -387,84 +1095,84 @@ namespace CUDAnshita {
 													int n,
 													ref float x,
 													int incx,
-													ref int result); /* host or device pointer */
+													ref int result); // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasIdamax_v2(cublasHandle_t handle,
 													int n,
 													ref double x,
 													int incx,
-													ref int result); /* host or device pointer */
+													ref int result); // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasIcamax_v2(cublasHandle_t handle,
 													int n,
 													ref cuComplex x,
 													int incx,
-													ref int result); /* host or device pointer */
+													ref int result); // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasIzamax_v2(cublasHandle_t handle,
 													int n,
 													ref cuDoubleComplex x,
 													int incx,
-													ref int result); /* host or device pointer */
+													ref int result); // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasIsamin_v2(cublasHandle_t handle,
 													int n,
 													ref float x,
 													int incx,
-													ref int result); /* host or device pointer */
+													ref int result); // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasIdamin_v2(cublasHandle_t handle,
 													int n,
 													ref double x,
 													int incx,
-													ref int result); /* host or device pointer */
+													ref int result); // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasIcamin_v2(cublasHandle_t handle,
 													int n,
 													ref cuComplex x,
 													int incx,
-													ref int result); /* host or device pointer */
+													ref int result); // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasIzamin_v2(cublasHandle_t handle,
 													int n,
 													ref cuDoubleComplex x,
 													int incx,
-													ref int result); /* host or device pointer */
+													ref int result); // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSasum_v2(cublasHandle_t handle,
 													int n,
 													ref float x,
 													int incx,
-													ref float result); /* host or device pointer */
+													ref float result); // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasDasum_v2(cublasHandle_t handle,
 													int n,
 													ref double x,
 													int incx,
-													ref double result); /* host or device pointer */
+													ref double result); // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasScasum_v2(cublasHandle_t handle,
 													int n,
 													ref cuComplex x,
 													int incx,
-													ref float result); /* host or device pointer */
+													ref float result); // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasDzasum_v2(cublasHandle_t handle,
 													int n,
 													ref cuDoubleComplex x,
 													int incx,
-													ref double result); /* host or device pointer */
+													ref double result); // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSrot_v2(cublasHandle_t handle,
@@ -473,8 +1181,8 @@ namespace CUDAnshita {
 													int incx,
 													ref float y,
 													int incy,
-													ref float c,  /* host or device pointer */
-													ref float s); /* host or device pointer */
+													ref float c,  // host or device pointer
+													ref float s); // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasDrot_v2(cublasHandle_t handle,
@@ -483,8 +1191,8 @@ namespace CUDAnshita {
 													int incx,
 													ref double y,
 													int incy,
-													ref double c,  /* host or device pointer */
-													ref double s); /* host or device pointer */
+													ref double c,  // host or device pointer
+													ref double s); // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasCrot_v2(cublasHandle_t handle,
@@ -493,8 +1201,8 @@ namespace CUDAnshita {
 													int incx,
 													ref cuComplex y,
 													int incy,
-													ref float c,      /* host or device pointer */
-													ref cuComplex s); /* host or device pointer */
+													ref float c,      // host or device pointer
+													ref cuComplex s); // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasCsrot_v2(cublasHandle_t handle,
@@ -503,8 +1211,8 @@ namespace CUDAnshita {
 													int incx,
 													ref cuComplex y,
 													int incy,
-													ref float c,  /* host or device pointer */
-													ref float s); /* host or device pointer */
+													ref float c,  // host or device pointer
+													ref float s); // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasZrot_v2(cublasHandle_t handle,
@@ -513,8 +1221,8 @@ namespace CUDAnshita {
 													int incx,
 													ref cuDoubleComplex y,
 													int incy,
-													ref double c,            /* host or device pointer */
-													ref cuDoubleComplex s);  /* host or device pointer */
+													ref double c,            // host or device pointer
+													ref cuDoubleComplex s);  // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasZdrot_v2(cublasHandle_t handle,
@@ -523,36 +1231,36 @@ namespace CUDAnshita {
 													int incx,
 													ref cuDoubleComplex y,
 													int incy,
-													ref double c,  /* host or device pointer */
-													ref double s); /* host or device pointer */
+													ref double c,  // host or device pointer
+													ref double s); // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSrotg_v2(cublasHandle_t handle,
-													ref float a,   /* host or device pointer */
-													ref float b,   /* host or device pointer */
-													ref float c,   /* host or device pointer */
-													ref float s);  /* host or device pointer */
+													ref float a,   // host or device pointer
+													ref float b,   // host or device pointer
+													ref float c,   // host or device pointer
+													ref float s);  // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasDrotg_v2(cublasHandle_t handle,
-													ref double a,  /* host or device pointer */
-													ref double b,  /* host or device pointer */
-													ref double c,  /* host or device pointer */
-													ref double s); /* host or device pointer */
+													ref double a,  // host or device pointer
+													ref double b,  // host or device pointer
+													ref double c,  // host or device pointer
+													ref double s); // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasCrotg_v2(cublasHandle_t handle,
-													ref cuComplex a,  /* host or device pointer */
-													ref cuComplex b,  /* host or device pointer */
-													ref float c,      /* host or device pointer */
-													ref cuComplex s); /* host or device pointer */
+													ref cuComplex a,  // host or device pointer
+													ref cuComplex b,  // host or device pointer
+													ref float c,      // host or device pointer
+													ref cuComplex s); // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasZrotg_v2(cublasHandle_t handle,
-													ref cuDoubleComplex a,  /* host or device pointer */
-													ref cuDoubleComplex b,  /* host or device pointer */
-													ref double c,           /* host or device pointer */
-													ref cuDoubleComplex s); /* host or device pointer */
+													ref cuDoubleComplex a,  // host or device pointer
+													ref cuDoubleComplex b,  // host or device pointer
+													ref double c,           // host or device pointer
+													ref cuDoubleComplex s); // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSrotm_v2(cublasHandle_t handle,
@@ -561,7 +1269,7 @@ namespace CUDAnshita {
 													int incx,
 													ref float y,
 													int incy,
-													ref float param);  /* host or device pointer */
+													ref float param);  // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasDrotm_v2(cublasHandle_t handle,
@@ -570,38 +1278,38 @@ namespace CUDAnshita {
 													int incx,
 													ref double y,
 													int incy,
-													ref double param);  /* host or device pointer */
+													ref double param);  // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSrotmg_v2(cublasHandle_t handle,
-													ref float d1,        /* host or device pointer */
-													ref float d2,        /* host or device pointer */
-													ref float x1,        /* host or device pointer */
-													ref float y1,  /* host or device pointer */
-													ref float param);    /* host or device pointer */
+													ref float d1,        // host or device pointer
+													ref float d2,        // host or device pointer
+													ref float x1,        // host or device pointer
+													ref float y1,  // host or device pointer
+													ref float param);    // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasDrotmg_v2(cublasHandle_t handle,
-													ref double d1,        /* host or device pointer */
-													ref double d2,        /* host or device pointer */
-													ref double x1,        /* host or device pointer */
-													ref double y1,  /* host or device pointer */
-													ref double param);    /* host or device pointer */
+													ref double d1,        // host or device pointer
+													ref double d2,        // host or device pointer
+													ref double x1,        // host or device pointer
+													ref double y1,  // host or device pointer
+													ref double param);    // host or device pointer
 
-			/* --------------- CUBLAS BLAS2 functions  ---------------- */
+			// --------------- CUBLAS BLAS2 functions  ----------------
 
-			/* GEMV */
+			// GEMV
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSgemv_v2(cublasHandle_t handle,
 													cublasOperation_t trans,
 													int m,
 													int n,
-													ref float alpha, /* host or device pointer */
+													ref float alpha, // host or device pointer
 													ref float A,
 													int lda,
 													ref float x,
 													int incx,
-													ref float beta,  /* host or device pointer */
+													ref float beta,  // host or device pointer
 													ref float y,
 													int incy);
 
@@ -610,12 +1318,12 @@ namespace CUDAnshita {
 													cublasOperation_t trans,
 													int m,
 													int n,
-													ref double alpha, /* host or device pointer */
+													ref double alpha, // host or device pointer
 													ref double A,
 													int lda,
 													ref double x,
 													int incx,
-													ref double beta, /* host or device pointer */
+													ref double beta, // host or device pointer
 													ref double y,
 													int incy);
 
@@ -624,12 +1332,12 @@ namespace CUDAnshita {
 													cublasOperation_t trans,
 													int m,
 													int n,
-													ref cuComplex alpha, /* host or device pointer */
+													ref cuComplex alpha, // host or device pointer
 													ref cuComplex A,
 													int lda,
 													ref cuComplex x,
 													int incx,
-													ref cuComplex beta, /* host or device pointer */
+													ref cuComplex beta, // host or device pointer
 													ref cuComplex y,
                                                     int incy);
 
@@ -638,15 +1346,15 @@ namespace CUDAnshita {
 													cublasOperation_t trans,
 													int m,
 													int n,
-													ref cuDoubleComplex alpha, /* host or device pointer */
+													ref cuDoubleComplex alpha, // host or device pointer
 													ref cuDoubleComplex A,
 													int lda,
 													ref cuDoubleComplex x,
 													int incx,
-													ref cuDoubleComplex beta, /* host or device pointer */
+													ref cuDoubleComplex beta, // host or device pointer
 													ref cuDoubleComplex y,
                                                     int incy);
-			/* GBMV */
+			// GBMV
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSgbmv_v2(cublasHandle_t handle,
 													cublasOperation_t trans,
@@ -654,12 +1362,12 @@ namespace CUDAnshita {
 													int n,
 													int kl,
 													int ku,
-													ref float alpha, /* host or device pointer */
+													ref float alpha, // host or device pointer
 													ref float A,
 													int lda,
 													ref float x,
 													int incx,
-													ref float beta, /* host or device pointer */
+													ref float beta, // host or device pointer
 													ref float y,
 													int incy);
 
@@ -670,12 +1378,12 @@ namespace CUDAnshita {
 													int n,
 													int kl,
 													int ku,
-													ref double alpha, /* host or device pointer */
+													ref double alpha, // host or device pointer
 													ref double A,
 													int lda,
 													ref double x,
 													int incx,
-													ref double beta, /* host or device pointer */
+													ref double beta, // host or device pointer
 													ref double y,
 													int incy);
 
@@ -686,12 +1394,12 @@ namespace CUDAnshita {
 													int n,
 													int kl,
 													int ku,
-													ref cuComplex alpha, /* host or device pointer */
+													ref cuComplex alpha, // host or device pointer
 													ref cuComplex A,
 													int lda,
 													ref cuComplex x,
 													int incx,
-													ref cuComplex beta, /* host or device pointer */
+													ref cuComplex beta, // host or device pointer
 													ref cuComplex y,
                                                     int incy);
 
@@ -702,16 +1410,16 @@ namespace CUDAnshita {
 													int n,
 													int kl,
 													int ku,
-													ref cuDoubleComplex alpha, /* host or device pointer */
+													ref cuDoubleComplex alpha, // host or device pointer
 													ref cuDoubleComplex A,
 													int lda,
 													ref cuDoubleComplex x,
 													int incx,
-													ref cuDoubleComplex beta, /* host or device pointer */
+													ref cuDoubleComplex beta, // host or device pointer
 													ref cuDoubleComplex y,
                                                     int incy);
 
-			/* TRMV */
+			// TRMV
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasStrmv_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
@@ -756,7 +1464,7 @@ namespace CUDAnshita {
 													ref cuDoubleComplex x, 
                                                     int incx);
 
-			/* TBMV */
+			// TBMV
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasStbmv_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
@@ -805,7 +1513,7 @@ namespace CUDAnshita {
 													ref cuDoubleComplex x, 
                                                     int incx);
 
-			/* TPMV */
+			// TPMV
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasStpmv_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
@@ -846,7 +1554,7 @@ namespace CUDAnshita {
 													ref cuDoubleComplex x, 
                                                     int incx);
 
-			/* TRSV */
+			// TRSV
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasStrsv_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
@@ -891,7 +1599,7 @@ namespace CUDAnshita {
 													ref cuDoubleComplex x, 
                                                     int incx);
 
-			/* TPSV */
+			// TPSV
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasStpsv_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
@@ -931,7 +1639,7 @@ namespace CUDAnshita {
 													ref cuDoubleComplex AP,
 													ref cuDoubleComplex x, 
                                                     int incx);
-			/* TBSV */
+			// TBSV
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasStbsv_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
@@ -980,17 +1688,17 @@ namespace CUDAnshita {
 													ref cuDoubleComplex x, 
                                                     int incx);
 
-			/* SYMV/HEMV */
+			// SYMV/HEMV
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSsymv_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													int n,
-													ref float alpha, /* host or device pointer */
+													ref float alpha, // host or device pointer
 													ref float A,
 													int lda,
 													ref float x,
 													int incx,
-													ref float beta, /* host or device pointer */
+													ref float beta, // host or device pointer
 													ref float y,
 													int incy);
 
@@ -998,12 +1706,12 @@ namespace CUDAnshita {
 			public static extern cublasStatus_t cublasDsymv_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													int n,
-													ref double alpha, /* host or device pointer */
+													ref double alpha, // host or device pointer
 													ref double A,
 													int lda,
 													ref double x,
 													int incx,
-													ref double beta, /* host or device pointer */
+													ref double beta, // host or device pointer
 													ref double y,
 													int incy);
 
@@ -1011,12 +1719,12 @@ namespace CUDAnshita {
 			public static extern cublasStatus_t cublasCsymv_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													int n,
-													ref cuComplex alpha, /* host or device pointer */
+													ref cuComplex alpha, // host or device pointer
 													ref cuComplex A,
 													int lda,
 													ref cuComplex x,
 													int incx,
-													ref cuComplex beta, /* host or device pointer */
+													ref cuComplex beta, // host or device pointer
 													ref cuComplex y,
                                                     int incy);
 
@@ -1024,12 +1732,12 @@ namespace CUDAnshita {
 			public static extern cublasStatus_t cublasZsymv_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													int n,
-													ref cuDoubleComplex alpha,  /* host or device pointer */
+													ref cuDoubleComplex alpha,  // host or device pointer
 													ref cuDoubleComplex A,
 													int lda,
 													ref cuDoubleComplex x,
 													int incx,
-													ref cuDoubleComplex beta,   /* host or device pointer */
+													ref cuDoubleComplex beta,   // host or device pointer
 													ref cuDoubleComplex y,
                                                     int incy);
 
@@ -1037,12 +1745,12 @@ namespace CUDAnshita {
 			public static extern cublasStatus_t cublasChemv_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													int n,
-													ref cuComplex alpha, /* host or device pointer */
+													ref cuComplex alpha, // host or device pointer
 													ref cuComplex A,
 													int lda,
 													ref cuComplex x,
 													int incx,
-													ref cuComplex beta, /* host or device pointer */
+													ref cuComplex beta, // host or device pointer
 													ref cuComplex y,
                                                     int incy);
 
@@ -1050,27 +1758,27 @@ namespace CUDAnshita {
 			public static extern cublasStatus_t cublasZhemv_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													int n,
-													ref cuDoubleComplex alpha,  /* host or device pointer */
+													ref cuDoubleComplex alpha,  // host or device pointer
 													ref cuDoubleComplex A,
 													int lda,
 													ref cuDoubleComplex x,
 													int incx,
-													ref cuDoubleComplex beta,   /* host or device pointer */
+													ref cuDoubleComplex beta,   // host or device pointer
 													ref cuDoubleComplex y,
                                                     int incy);
 
-			/* SBMV/HBMV */
+			// SBMV/HBMV
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSsbmv_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													int n,
 													int k,
-													ref float alpha,   /* host or device pointer */
+													ref float alpha,   // host or device pointer
 													ref float A,
 													int lda,
 													ref float x,
 													int incx,
-													ref float beta,  /* host or device pointer */
+													ref float beta,  // host or device pointer
 													ref float y,
 													int incy);
 
@@ -1079,12 +1787,12 @@ namespace CUDAnshita {
 													cublasFillMode_t uplo,
 													int n,
 													int k,
-													ref double alpha,   /* host or device pointer */
+													ref double alpha,   // host or device pointer
 													ref double A,
 													int lda,
 													ref double x,
 													int incx,
-													ref double beta,   /* host or device pointer */
+													ref double beta,   // host or device pointer
 													ref double y,
 													int incy);
 
@@ -1093,12 +1801,12 @@ namespace CUDAnshita {
 													cublasFillMode_t uplo,
 													int n,
 													int k,
-													ref cuComplex alpha, /* host or device pointer */
+													ref cuComplex alpha, // host or device pointer
 													ref cuComplex A,
 													int lda,
 													ref cuComplex x,
 													int incx,
-													ref cuComplex beta, /* host or device pointer */
+													ref cuComplex beta, // host or device pointer
 													ref cuComplex y,
                                                     int incy);
 
@@ -1107,25 +1815,25 @@ namespace CUDAnshita {
 													cublasFillMode_t uplo,
 													int n,
 													int k,
-													ref cuDoubleComplex alpha, /* host or device pointer */
+													ref cuDoubleComplex alpha, // host or device pointer
 													ref cuDoubleComplex A,
 													int lda,
 													ref cuDoubleComplex x,
 													int incx,
-													ref cuDoubleComplex beta, /* host or device pointer */
+													ref cuDoubleComplex beta, // host or device pointer
 													ref cuDoubleComplex y,
                                                     int incy);
 
-			/* SPMV/HPMV */
+			// SPMV/HPMV
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSspmv_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													int n,
-													ref float alpha,  /* host or device pointer */
+													ref float alpha,  // host or device pointer
 													ref float AP,
 													ref float x,
 													int incx,
-													ref float beta,   /* host or device pointer */
+													ref float beta,   // host or device pointer
 													ref float y,
 													int incy);
 
@@ -1133,11 +1841,11 @@ namespace CUDAnshita {
 			public static extern cublasStatus_t cublasDspmv_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													int n,
-													ref double alpha, /* host or device pointer */
+													ref double alpha, // host or device pointer
 													ref double AP,
 													ref double x,
 													int incx,
-													ref double beta,  /* host or device pointer */
+													ref double beta,  // host or device pointer
 													ref double y,
 													int incy);
 
@@ -1145,11 +1853,11 @@ namespace CUDAnshita {
 			public static extern cublasStatus_t cublasChpmv_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													int n,
-													ref cuComplex alpha, /* host or device pointer */
+													ref cuComplex alpha, // host or device pointer
 													ref cuComplex AP,
 													ref cuComplex x,
 													int incx,
-													ref cuComplex beta, /* host or device pointer */
+													ref cuComplex beta, // host or device pointer
 													ref cuComplex y,
                                                     int incy);
 
@@ -1157,20 +1865,20 @@ namespace CUDAnshita {
 			public static extern cublasStatus_t cublasZhpmv_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													int n,
-													ref cuDoubleComplex alpha, /* host or device pointer */
+													ref cuDoubleComplex alpha, // host or device pointer
 													ref cuDoubleComplex AP,
 													ref cuDoubleComplex x,
 													int incx,
-													ref cuDoubleComplex beta, /* host or device pointer */
+													ref cuDoubleComplex beta, // host or device pointer
 													ref cuDoubleComplex y, 
                                                     int incy);
 
-			/* GER */
+			// GER
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSger_v2(cublasHandle_t handle,
 													int m,
 													int n,
-													ref float alpha, /* host or device pointer */
+													ref float alpha, // host or device pointer
 													ref float x,
 													int incx,
 													ref float y,
@@ -1182,7 +1890,7 @@ namespace CUDAnshita {
 			public static extern cublasStatus_t cublasDger_v2(cublasHandle_t handle,
 													int m,
 													int n,
-													ref double alpha, /* host or device pointer */
+													ref double alpha, // host or device pointer
 													ref double x,
 													int incx,
 													ref double y,
@@ -1194,7 +1902,7 @@ namespace CUDAnshita {
 			public static extern cublasStatus_t cublasCgeru_v2(cublasHandle_t handle,
 													int m,
 													int n,
-													ref cuComplex alpha, /* host or device pointer */
+													ref cuComplex alpha, // host or device pointer
 													ref cuComplex x,
 													int incx,
 													ref cuComplex y,
@@ -1206,7 +1914,7 @@ namespace CUDAnshita {
 			public static extern cublasStatus_t cublasCgerc_v2(cublasHandle_t handle,
 													int m,
 													int n,
-													ref cuComplex alpha, /* host or device pointer */
+													ref cuComplex alpha, // host or device pointer
 													ref cuComplex x,
 													int incx,
 													ref cuComplex y,
@@ -1218,7 +1926,7 @@ namespace CUDAnshita {
 			public static extern cublasStatus_t cublasZgeru_v2(cublasHandle_t handle,
 													int m,
 													int n,
-													ref cuDoubleComplex alpha, /* host or device pointer */
+													ref cuDoubleComplex alpha, // host or device pointer
 													ref cuDoubleComplex x,
 													int incx,
 													ref cuDoubleComplex y,
@@ -1230,7 +1938,7 @@ namespace CUDAnshita {
 			public static extern cublasStatus_t cublasZgerc_v2(cublasHandle_t handle,
 													int m,
 													int n,
-													ref cuDoubleComplex alpha, /* host or device pointer */
+													ref cuDoubleComplex alpha, // host or device pointer
 													ref cuDoubleComplex x,
 													int incx,
 													ref cuDoubleComplex y,
@@ -1238,12 +1946,12 @@ namespace CUDAnshita {
 													ref cuDoubleComplex A,
                                                     int lda);
 
-			/* SYR/HER */
+			// SYR/HER
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSsyr_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													int n,
-													ref float alpha, /* host or device pointer */
+													ref float alpha, // host or device pointer
 													ref float x,
 													int incx,
 													ref float A,
@@ -1253,7 +1961,7 @@ namespace CUDAnshita {
 			public static extern cublasStatus_t cublasDsyr_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													int n,
-													ref double alpha, /* host or device pointer */
+													ref double alpha, // host or device pointer
 													ref double x,
 													int incx,
 													ref double A,
@@ -1263,7 +1971,7 @@ namespace CUDAnshita {
 			public static extern cublasStatus_t cublasCsyr_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													int n,
-													ref cuComplex alpha, /* host or device pointer */
+													ref cuComplex alpha, // host or device pointer
 													ref cuComplex x,
 													int incx,
 													ref cuComplex A, 
@@ -1273,7 +1981,7 @@ namespace CUDAnshita {
 			public static extern cublasStatus_t cublasZsyr_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													int n,
-													ref cuDoubleComplex alpha, /* host or device pointer */
+													ref cuDoubleComplex alpha, // host or device pointer
 													ref cuDoubleComplex x,
 													int incx,
 													ref cuDoubleComplex A, 
@@ -1283,7 +1991,7 @@ namespace CUDAnshita {
 			public static extern cublasStatus_t cublasCher_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													int n,
-													ref float alpha, /* host or device pointer */
+													ref float alpha, // host or device pointer
 													ref cuComplex x,
 													int incx,
 													ref cuComplex A, 
@@ -1293,18 +2001,18 @@ namespace CUDAnshita {
 			public static extern cublasStatus_t cublasZher_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													int n,
-													ref double alpha, /* host or device pointer */
+													ref double alpha, // host or device pointer
 													ref cuDoubleComplex x,
 													int incx,
 													ref cuDoubleComplex A, 
                                                     int lda);
 
-			/* SPR/HPR */
+			// SPR/HPR
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSspr_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													int n,
-													ref float alpha, /* host or device pointer */
+													ref float alpha, // host or device pointer
 													ref float x,
 													int incx,
 													ref float AP);
@@ -1313,7 +2021,7 @@ namespace CUDAnshita {
 			public static extern cublasStatus_t cublasDspr_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													int n,
-													ref double alpha, /* host or device pointer */
+													ref double alpha, // host or device pointer
 													ref double x,
 													int incx,
 													ref double AP);
@@ -1322,7 +2030,7 @@ namespace CUDAnshita {
 			public static extern cublasStatus_t cublasChpr_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													int n,
-													ref float alpha, /* host or device pointer */
+													ref float alpha, // host or device pointer
 													ref cuComplex x,
 													int incx,
 													ref cuComplex AP);
@@ -1331,17 +2039,17 @@ namespace CUDAnshita {
 			public static extern cublasStatus_t cublasZhpr_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													int n,
-													ref double alpha, /* host or device pointer */
+													ref double alpha, // host or device pointer
 													ref cuDoubleComplex x,
 													int incx,
 													ref cuDoubleComplex AP);                       
     
-			/* SYR2/HER2 */                                    
+			// SYR2/HER2                                    
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSsyr2_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													int n,
-													ref float alpha, /* host or device pointer */
+													ref float alpha, // host or device pointer
 													ref float x,
 													int incx,
 													ref float y,
@@ -1353,7 +2061,7 @@ namespace CUDAnshita {
 			public static extern cublasStatus_t cublasDsyr2_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													int n,
-													ref double alpha, /* host or device pointer */
+													ref double alpha, // host or device pointer
 													ref double x,
 													int incx,
 													ref double y,
@@ -1364,7 +2072,7 @@ namespace CUDAnshita {
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasCsyr2_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo, int n,
-													ref cuComplex alpha,  /* host or device pointer */
+													ref cuComplex alpha,  // host or device pointer
 													ref cuComplex x,
 													int incx,
 													ref cuComplex y,
@@ -1376,7 +2084,7 @@ namespace CUDAnshita {
 			public static extern cublasStatus_t cublasZsyr2_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													int n,
-													ref cuDoubleComplex alpha,  /* host or device pointer */
+													ref cuDoubleComplex alpha,  // host or device pointer
 													ref cuDoubleComplex x,
 													int incx,
 													ref cuDoubleComplex y,
@@ -1387,7 +2095,7 @@ namespace CUDAnshita {
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasCher2_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo, int n,
-													ref cuComplex alpha,  /* host or device pointer */
+													ref cuComplex alpha,  // host or device pointer
 													ref cuComplex x,
 													int incx,
 													ref cuComplex y,
@@ -1399,7 +2107,7 @@ namespace CUDAnshita {
 			public static extern cublasStatus_t cublasZher2_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													int n,
-													ref cuDoubleComplex alpha,  /* host or device pointer */
+													ref cuDoubleComplex alpha,  // host or device pointer
 													ref cuDoubleComplex x,
 													int incx,
 													ref cuDoubleComplex y,
@@ -1407,12 +2115,12 @@ namespace CUDAnshita {
 													ref cuDoubleComplex A,
                                                     int lda);
 
-			/* SPR2/HPR2 */
+			// SPR2/HPR2
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSspr2_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													int n,
-													ref float alpha,  /* host or device pointer */
+													ref float alpha,  // host or device pointer
 													ref float x,
 													int incx,
 													ref float y,
@@ -1423,7 +2131,7 @@ namespace CUDAnshita {
 			public static extern cublasStatus_t cublasDspr2_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													int n,
-													ref double alpha,  /* host or device pointer */
+													ref double alpha,  // host or device pointer
 													ref double x,
 													int incx,
 													ref double y,
@@ -1434,7 +2142,7 @@ namespace CUDAnshita {
 			public static extern cublasStatus_t cublasChpr2_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													int n,
-													ref cuComplex alpha, /* host or device pointer */
+													ref cuComplex alpha, // host or device pointer
 													ref cuComplex x,
 													int incx,
 													ref cuComplex y,
@@ -1445,16 +2153,16 @@ namespace CUDAnshita {
 			public static extern cublasStatus_t cublasZhpr2_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													int n,
-													ref cuDoubleComplex alpha, /* host or device pointer */
+													ref cuDoubleComplex alpha, // host or device pointer
 													ref cuDoubleComplex x,
 													int incx,
 													ref cuDoubleComplex y,
 													int incy,
 													ref cuDoubleComplex AP); 
 
-			/* ---------------- CUBLAS BLAS3 functions ---------------- */
+			// ---------------- CUBLAS BLAS3 functions ----------------
 
-			/* GEMM */
+			// GEMM
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSgemm_v2(cublasHandle_t handle,
 													cublasOperation_t transa,
@@ -1462,12 +2170,12 @@ namespace CUDAnshita {
 													int m,
 													int n,
 													int k,
-													ref float alpha, /* host or device pointer */
+													ref float alpha, // host or device pointer
 													ref float A,
 													int lda,
 													ref float B,
 													int ldb,
-													ref float beta, /* host or device pointer */
+													ref float beta, // host or device pointer
 													ref float C,
 													int ldc);
 
@@ -1478,12 +2186,12 @@ namespace CUDAnshita {
 													int m,
 													int n,
 													int k,
-													ref double alpha, /* host or device pointer */
+													ref double alpha, // host or device pointer
 													ref double A,
 													int lda,
 													ref double B,
 													int ldb,
-													ref double beta, /* host or device pointer */
+													ref double beta, // host or device pointer
 													ref double C,
 													int ldc);
 
@@ -1494,12 +2202,12 @@ namespace CUDAnshita {
 													int m,
 													int n,
 													int k,
-													ref cuComplex alpha, /* host or device pointer */
+													ref cuComplex alpha, // host or device pointer
 													ref cuComplex A,
 													int lda,
 													ref cuComplex B,
 													int ldb,
-													ref cuComplex beta, /* host or device pointer */
+													ref cuComplex beta, // host or device pointer
 													ref cuComplex C,
                                                     int ldc);
 
@@ -1510,12 +2218,12 @@ namespace CUDAnshita {
 													int m,
 													int n,
 													int k,
-													ref cuComplex alpha, /* host or device pointer */
+													ref cuComplex alpha, // host or device pointer
 													ref cuComplex A,
 													int lda,
 													ref cuComplex B,
 													int ldb,
-													ref cuComplex beta, /* host or device pointer */
+													ref cuComplex beta, // host or device pointer
 													ref cuComplex C,
                                                     int ldc);
 
@@ -1542,12 +2250,12 @@ namespace CUDAnshita {
 													int m,
 													int n,
 													int k,
-													ref cuDoubleComplex alpha, /* host or device pointer */
+													ref cuDoubleComplex alpha, // host or device pointer
 													ref cuDoubleComplex A,
 													int lda,
 													ref cuDoubleComplex B,
 													int ldb,
-													ref cuDoubleComplex beta, /* host or device pointer */
+													ref cuDoubleComplex beta, // host or device pointer
 													ref cuDoubleComplex C,
                                                     int ldc);
 
@@ -1558,12 +2266,12 @@ namespace CUDAnshita {
 													int m,
 													int n,
 													int k,
-													ref cuDoubleComplex alpha, /* host or device pointer */
+													ref cuDoubleComplex alpha, // host or device pointer
 													ref cuDoubleComplex A,
 													int lda,
 													ref cuDoubleComplex B,
 													int ldb,
-													ref cuDoubleComplex beta, /* host or device pointer */
+													ref cuDoubleComplex beta, // host or device pointer
 													ref cuDoubleComplex C,
                                                     int ldc);
 
@@ -1574,16 +2282,16 @@ namespace CUDAnshita {
 													int m,
 													int n,
 													int k,
-													ref __half alpha, /* host or device pointer */
+													ref __half alpha, // host or device pointer
 													ref __half A,
 													int lda,
 													ref __half B,
 													int ldb,
-													ref __half beta, /* host or device pointer */
+													ref __half beta, // host or device pointer
 													ref __half C,
                                                     int ldc);
 
-			/* IO in FP16/FP32, computation in float */
+			// IO in FP16/FP32, computation in float
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSgemmEx(cublasHandle_t handle,
 													cublasOperation_t transa,
@@ -1591,14 +2299,14 @@ namespace CUDAnshita {
 													int m,
 													int n,
 													int k,
-													ref float alpha, /* host or device pointer */
+													ref float alpha, // host or device pointer
 													IntPtr A,
 													cudaDataType Atype,
                                                     int lda,
 													IntPtr B,
 													cudaDataType Btype,
                                                     int ldb,
-													ref float beta, /* host or device pointer */
+													ref float beta, // host or device pointer
 													IntPtr C,
 													cudaDataType Ctype,
                                                     int ldc);
@@ -1610,57 +2318,57 @@ namespace CUDAnshita {
 													int m,
 													int n,
 													int k,
-													IntPtr alpha, /* host or device pointer */
+													IntPtr alpha, // host or device pointer
 													IntPtr A,
 													cudaDataType Atype,
                                                     int lda,
 													IntPtr B,
 													cudaDataType Btype,
                                                     int ldb,
-													IntPtr beta, /* host or device pointer */
+													IntPtr beta, // host or device pointer
 													IntPtr C,
 													cudaDataType Ctype,
                                                     int ldc,
 													cudaDataType computeType,
                                                     cublasGemmAlgo_t algo);
 
-			/* IO in Int8 complex/cuComplex, computation in ref cuComplex /
+			// IO in Int8 complex/cuComplex, computation in ref cuComplex /
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasCgemmEx(cublasHandle_t handle,
-																 cublasOperation_t transa, cublasOperation_t transb,
-																 int m, int n, int k,
-													 ref cuComplex alpha,
-													 IntPtr A,
-													 cudaDataType Atype, 
-                                                     int lda,
-													 IntPtr B,
-													 cudaDataType Btype, 
-                                                     int ldb,
-													 ref cuComplex beta,
-													 IntPtr C,
-													 cudaDataType Ctype, 
-                                                     int ldc);
+													cublasOperation_t transa, cublasOperation_t transb,
+													int m, int n, int k,
+													ref cuComplex alpha,
+													IntPtr A,
+													cudaDataType Atype, 
+                                                    int lda,
+													IntPtr B,
+													cudaDataType Btype, 
+                                                    int ldb,
+													ref cuComplex beta,
+													IntPtr C,
+													cudaDataType Ctype, 
+                                                    int ldc);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasUint8gemmBias(cublasHandle_t handle,
-																	   cublasOperation_t transa, cublasOperation_t transb, cublasOperation_t transc,
-																	   int m, int n, int k,
-														   const unsigned char* A, int A_bias, int lda,
-														   const unsigned char* B, int B_bias, int ldb,
-																 unsigned char* C, int C_bias, int ldc,
-														   int C_mult, int C_shift);
+													cublasOperation_t transa, cublasOperation_t transb, cublasOperation_t transc,
+													int m, int n, int k,
+													ref byte A, int A_bias, int lda,
+													ref byte B, int B_bias, int ldb,
+													ref byte C, int C_bias, int ldc,
+													int C_mult, int C_shift);
 
-			/* SYRK */
+			// SYRK
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSsyrk_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													cublasOperation_t trans,
 													int n,
 													int k,
-													ref float alpha, /* host or device pointer */
+													ref float alpha, // host or device pointer
 													ref float A,
 													int lda,
-													ref float beta, /* host or device pointer */
+													ref float beta, // host or device pointer
 													ref float C,
 													int ldc);
 
@@ -1670,10 +2378,10 @@ namespace CUDAnshita {
 													cublasOperation_t trans,
 													int n,
 													int k,
-													ref double alpha,  /* host or device pointer */
+													ref double alpha,  // host or device pointer
 													ref double A,
 													int lda,
-													ref double beta,  /* host or device pointer */
+													ref double beta,  // host or device pointer
 													ref double C,
 													int ldc);
 
@@ -1683,10 +2391,10 @@ namespace CUDAnshita {
 													cublasOperation_t trans,
 													int n,
 													int k,
-													ref cuComplex alpha, /* host or device pointer */
+													ref cuComplex alpha, // host or device pointer
 													ref cuComplex A,
 													int lda,
-													ref cuComplex beta, /* host or device pointer */
+													ref cuComplex beta, // host or device pointer
 													ref cuComplex C,
                                                     int ldc);
 
@@ -1696,30 +2404,30 @@ namespace CUDAnshita {
 													cublasOperation_t trans,
 													int n,
 													int k,
-													ref cuDoubleComplex alpha, /* host or device pointer */
+													ref cuDoubleComplex alpha, // host or device pointer
 													ref cuDoubleComplex A,
 													int lda,
-													ref cuDoubleComplex beta, /* host or device pointer */
+													ref cuDoubleComplex beta, // host or device pointer
 													ref cuDoubleComplex C, 
                                                     int ldc);
 
-			/* IO in Int8 complex/cuComplex, computation in ref cuComplex */
+			// IO in Int8 complex/cuComplex, computation in ref ref cuComplex
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasCsyrkEx(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													cublasOperation_t trans,
 													int n,
 													int k,
-													ref cuComplex alpha, /* host or device pointer */
+													ref cuComplex alpha, // host or device pointer
 													IntPtr A,
 													cudaDataType Atype, 
                                                     int lda,
-													ref cuComplex beta, /* host or device pointer */
+													ref cuComplex beta, // host or device pointer
 													IntPtr C,
 													cudaDataType Ctype, 
                                                     int ldc);
 
-			/* IO in Int8 complex/cuComplex, computation in cuComplex, Gaussian math */
+			// IO in Int8 complex/cuComplex, computation in cuComplex, Gaussian math
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasCsyrk3mEx(cublasHandle_t handle,
 													cublasFillMode_t uplo,
@@ -1735,17 +2443,17 @@ namespace CUDAnshita {
 													cudaDataType Ctype, 
                                                     int ldc);
 
-			/* HERK */
+			// HERK
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasCherk_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													cublasOperation_t trans,
 													int n,
 													int k,
-													ref float alpha,  /* host or device pointer */
+													ref float alpha,  // host or device pointer
 													ref cuComplex A,
 													int lda,
-													ref float beta,   /* host or device pointer */
+													ref float beta,   // host or device pointer
 													ref cuComplex C,
                                                     int ldc);
 
@@ -1755,30 +2463,30 @@ namespace CUDAnshita {
 													cublasOperation_t trans,
 													int n,
 													int k,
-													ref double alpha,  /* host or device pointer */
+													ref double alpha,  // host or device pointer
 													ref cuDoubleComplex A,
 													int lda,
-													ref double beta,  /* host or device pointer */
+													ref double beta,  // host or device pointer
 													ref cuDoubleComplex C,
                                                     int ldc);
 
-			/* IO in Int8 complex/cuComplex, computation in ref cuComplex */
+			// IO in Int8 complex/cuComplex, computation in ref ref cuComplex
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasCherkEx(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													cublasOperation_t trans,
 													int n,
 													int k,
-													ref float alpha,  /* host or device pointer */
+													ref float alpha,  // host or device pointer
 													IntPtr A,
 													cudaDataType Atype,
                                                     int lda,
-													ref float beta,   /* host or device pointer */
+													ref float beta,   // host or device pointer
 													IntPtr C,
 													cudaDataType Ctype,
                                                     int ldc);
 
-			/* IO in Int8 complex/cuComplex, computation in cuComplex, Gaussian math */
+			// IO in Int8 complex/cuComplex, computation in cuComplex, Gaussian math
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasCherk3mEx(cublasHandle_t handle,
 													cublasFillMode_t uplo,
@@ -1793,19 +2501,19 @@ namespace CUDAnshita {
 													cudaDataType Ctype, 
                                                     int ldc);
 
-			/* SYR2K */
+			// SYR2K
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSsyr2k_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													cublasOperation_t trans,
 													int n,
 													int k,
-													ref float alpha, /* host or device pointer */
+													ref float alpha, // host or device pointer
 													ref float A,
 													int lda,
 													ref float B,
 													int ldb,
-													ref float beta, /* host or device pointer */
+													ref float beta, // host or device pointer
 													ref float C,
 													int ldc);
 
@@ -1815,12 +2523,12 @@ namespace CUDAnshita {
 													cublasOperation_t trans,
 													int n,
 													int k,
-													ref double alpha, /* host or device pointer */
+													ref double alpha, // host or device pointer
 													ref double A,
 													int lda,
 													ref double B,
 													int ldb,
-													ref double beta, /* host or device pointer */
+													ref double beta, // host or device pointer
 													ref double C,
 													int ldc);
 
@@ -1830,12 +2538,12 @@ namespace CUDAnshita {
 													cublasOperation_t trans,
 													int n,
 													int k,
-													ref cuComplex alpha, /* host or device pointer */
+													ref cuComplex alpha, // host or device pointer
 													ref cuComplex A,
 													int lda,
 													ref cuComplex B,
 													int ldb,
-													ref cuComplex beta, /* host or device pointer */
+													ref cuComplex beta, // host or device pointer
 													ref cuComplex C,
                                                     int ldc);
 
@@ -1845,28 +2553,28 @@ namespace CUDAnshita {
 													cublasOperation_t trans,
 													int n,
 													int k,
-													ref cuDoubleComplex alpha,  /* host or device pointer */
+													ref cuDoubleComplex alpha,  // host or device pointer
 													ref cuDoubleComplex A,
 													int lda,
 													ref cuDoubleComplex B,
 													int ldb,
-													ref cuDoubleComplex beta,  /* host or device pointer */
+													ref cuDoubleComplex beta,  // host or device pointer
 													ref cuDoubleComplex C,
                                                     int ldc);
 
-			/* HER2K */
+			// HER2K
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasCher2k_v2(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													cublasOperation_t trans,
 													int n,
 													int k,
-													ref cuComplex alpha, /* host or device pointer */
+													ref cuComplex alpha, // host or device pointer
 													ref cuComplex A,
 													int lda,
 													ref cuComplex B,
 													int ldb,
-													ref float beta,   /* host or device pointer */
+													ref float beta,   // host or device pointer
 													ref cuComplex C,
                                                     int ldc);
 
@@ -1876,28 +2584,28 @@ namespace CUDAnshita {
 													cublasOperation_t trans,
 													int n,
 													int k,
-													ref cuDoubleComplex alpha, /* host or device pointer */
+													ref cuDoubleComplex alpha, // host or device pointer
 													ref cuDoubleComplex A,
 													int lda,
 													ref cuDoubleComplex B,
 													int ldb,
-													ref double beta, /* host or device pointer */
+													ref double beta, // host or device pointer
 													ref cuDoubleComplex C,
                                                     int ldc);
 
-			/* SYRKX : eXtended SYRK*/
+			// SYRKX : eXtended SYRK*/
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSsyrkx(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													cublasOperation_t trans,
 													int n,
 													int k,
-													ref float alpha, /* host or device pointer */
+													ref float alpha, // host or device pointer
 													ref float A,
 													int lda,
 													ref float B,
 													int ldb,
-													ref float beta, /* host or device pointer */
+													ref float beta, // host or device pointer
 													ref float C,
 													int ldc);
 
@@ -1907,12 +2615,12 @@ namespace CUDAnshita {
 													cublasOperation_t trans,
 													int n,
 													int k,
-													ref double alpha, /* host or device pointer */
+													ref double alpha, // host or device pointer
 													ref double A,
 													int lda,
 													ref double B,
 													int ldb,
-													ref double beta, /* host or device pointer */
+													ref double beta, // host or device pointer
 													ref double C,
 													int ldc);
 
@@ -1922,12 +2630,12 @@ namespace CUDAnshita {
 													cublasOperation_t trans,
 													int n,
 													int k,
-													ref cuComplex alpha, /* host or device pointer */
+													ref cuComplex alpha, // host or device pointer
 													ref cuComplex A,
 													int lda,
 													ref cuComplex B,
 													int ldb,
-													ref cuComplex beta, /* host or device pointer */
+													ref cuComplex beta, // host or device pointer
 													ref cuComplex C, 
                                                     int ldc);
 
@@ -1937,28 +2645,28 @@ namespace CUDAnshita {
 													cublasOperation_t trans,
 													int n,
 													int k,
-													ref cuDoubleComplex alpha, /* host or device pointer */
+													ref cuDoubleComplex alpha, // host or device pointer
 													ref cuDoubleComplex A,
 													int lda,
 													ref cuDoubleComplex B,
 													int ldb,
-													ref cuDoubleComplex beta, /* host or device pointer */
+													ref cuDoubleComplex beta, // host or device pointer
 													ref cuDoubleComplex C, 
                                                     int ldc);
 
-			/* HERKX : eXtended HERK */
+			// HERKX : eXtended HERK
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasCherkx(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													cublasOperation_t trans,
 													int n,
 													int k,
-													ref cuComplex alpha, /* host or device pointer */
+													ref cuComplex alpha, // host or device pointer
 													ref cuComplex A,
 													int lda,
 													ref cuComplex B,
 													int ldb,
-													ref float beta, /* host or device pointer */
+													ref float beta, // host or device pointer
 													ref cuComplex C,
                                                     int ldc);
 
@@ -1968,28 +2676,28 @@ namespace CUDAnshita {
 													cublasOperation_t trans,
 													int n,
 													int k,
-													ref cuDoubleComplex alpha, /* host or device pointer */
+													ref cuDoubleComplex alpha, // host or device pointer
 													ref cuDoubleComplex A,
 													int lda,
 													ref cuDoubleComplex B,
 													int ldb,
-													ref double beta, /* host or device pointer */
+													ref double beta, // host or device pointer
 													ref cuDoubleComplex C,
 													int ldc);
 
-			/* SYMM */
+			// SYMM
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSsymm_v2(cublasHandle_t handle,
 													cublasSideMode_t side,
 													cublasFillMode_t uplo,
 													int m,
 													int n,
-													ref float alpha, /* host or device pointer */
+													ref float alpha, // host or device pointer
 													ref float A,
 													int lda,
 													ref float B,
 													int ldb,
-													ref float beta, /* host or device pointer */
+													ref float beta, // host or device pointer
 													ref float C,
 													int ldc);
 
@@ -1999,12 +2707,12 @@ namespace CUDAnshita {
 													cublasFillMode_t uplo,
 													int m,
 													int n,
-													ref double alpha, /* host or device pointer */
+													ref double alpha, // host or device pointer
 													ref double A,
 													int lda,
 													ref double B,
 													int ldb,
-													ref double beta, /* host or device pointer */
+													ref double beta, // host or device pointer
 													ref double C,
 													int ldc);
 
@@ -2014,12 +2722,12 @@ namespace CUDAnshita {
 													cublasFillMode_t uplo,
 													int m,
 													int n,
-													ref cuComplex alpha, /* host or device pointer */
+													ref cuComplex alpha, // host or device pointer
 													ref cuComplex A,
 													int lda,
 													ref cuComplex B,
 													int ldb,
-													ref cuComplex beta, /* host or device pointer */
+													ref cuComplex beta, // host or device pointer
 													ref cuComplex C,
                                                     int ldc);
 
@@ -2029,28 +2737,28 @@ namespace CUDAnshita {
 													cublasFillMode_t uplo,
 													int m,
 													int n,
-													ref cuDoubleComplex alpha, /* host or device pointer */
+													ref cuDoubleComplex alpha, // host or device pointer
 													ref cuDoubleComplex A,
 													int lda,
 													ref cuDoubleComplex B,
 													int ldb,
-													ref cuDoubleComplex beta, /* host or device pointer */
+													ref cuDoubleComplex beta, // host or device pointer
 													ref cuDoubleComplex C,
                                                     int ldc);
 
-			/* HEMM */
+			// HEMM
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasChemm_v2(cublasHandle_t handle,
 													cublasSideMode_t side,
 													cublasFillMode_t uplo,
 													int m,
 													int n,
-													ref cuComplex alpha, /* host or device pointer */
+													ref cuComplex alpha, // host or device pointer
 													ref cuComplex A,
 													int lda,
 													ref cuComplex B,
 													int ldb,
-													ref cuComplex beta, /* host or device pointer */
+													ref cuComplex beta, // host or device pointer
 													ref cuComplex C, 
                                                     int ldc);
 
@@ -2060,16 +2768,16 @@ namespace CUDAnshita {
 													cublasFillMode_t uplo,
 													int m,
 													int n,
-													ref cuDoubleComplex alpha, /* host or device pointer */
+													ref cuDoubleComplex alpha, // host or device pointer
 													ref cuDoubleComplex A,
 													int lda,
 													ref cuDoubleComplex B,
 													int ldb,
-													ref cuDoubleComplex beta, /* host or device pointer */
+													ref cuDoubleComplex beta, // host or device pointer
 													ref cuDoubleComplex C,
                                                     int ldc);
 
-			/* TRSM */
+			// TRSM
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasStrsm_v2(cublasHandle_t handle,
 													cublasSideMode_t side,
@@ -2078,7 +2786,7 @@ namespace CUDAnshita {
 													cublasDiagType_t diag,
 													int m,
 													int n,
-													ref float alpha, /* host or device pointer */
+													ref float alpha, // host or device pointer
 													ref float A,
 													int lda,
 													ref float B,
@@ -2093,7 +2801,7 @@ namespace CUDAnshita {
 													cublasDiagType_t diag,
 													int m,
 													int n,
-													ref double alpha, /* host or device pointer */
+													ref double alpha, // host or device pointer
 													ref double A,
 													int lda,
 													ref double B,
@@ -2107,7 +2815,7 @@ namespace CUDAnshita {
 													cublasDiagType_t diag,
 													int m,
 													int n,
-													ref cuComplex alpha, /* host or device pointer */
+													ref cuComplex alpha, // host or device pointer
 													ref cuComplex A,
 													int lda,
 													ref cuComplex B,
@@ -2121,13 +2829,13 @@ namespace CUDAnshita {
 													cublasDiagType_t diag,
 													int m,
 													int n,
-													ref cuDoubleComplex alpha, /* host or device pointer */
+													ref cuDoubleComplex alpha, // host or device pointer
 													ref cuDoubleComplex A,
 													int lda,
 													ref cuDoubleComplex B,
                                                     int ldb);
 
-			/* TRMM */
+			// TRMM
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasStrmm_v2(cublasHandle_t handle,
 													cublasSideMode_t side,
@@ -2136,7 +2844,7 @@ namespace CUDAnshita {
 													cublasDiagType_t diag,
 													int m,
 													int n,
-													ref float alpha, /* host or device pointer */
+													ref float alpha, // host or device pointer
 													ref float A,
 													int lda,
 													ref float B,
@@ -2152,7 +2860,7 @@ namespace CUDAnshita {
 													cublasDiagType_t diag,
 													int m,
 													int n,
-													ref double alpha, /* host or device pointer */
+													ref double alpha, // host or device pointer
 													ref double A,
 													int lda,
 													ref double B,
@@ -2168,7 +2876,7 @@ namespace CUDAnshita {
 													cublasDiagType_t diag,
 													int m,
 													int n,
-													ref cuComplex alpha, /* host or device pointer */
+													ref cuComplex alpha, // host or device pointer
 													ref cuComplex A,
 													int lda,
 													ref cuComplex B,
@@ -2183,7 +2891,7 @@ namespace CUDAnshita {
 													cublasDiagType_t diag,
 													int m,
 													int n,
-													ref cuDoubleComplex alpha, /* host or device pointer */
+													ref cuDoubleComplex alpha, // host or device pointer
 													ref cuDoubleComplex A,
 													int lda,
 													ref cuDoubleComplex B,
@@ -2191,7 +2899,7 @@ namespace CUDAnshita {
 													ref cuDoubleComplex C,
                                                     int ldc);
 
-			/* BATCH GEMM */
+			// BATCH GEMM
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSgemmBatched(cublasHandle_t handle,
 													cublasOperation_t transa,
@@ -2199,12 +2907,12 @@ namespace CUDAnshita {
 													int m,
 													int n,
 													int k,
-													ref float alpha,  /* host or device pointer */
+													ref float alpha,  // host or device pointer
 													ref float[] Aarray,
 													int lda,
 													ref float[] Barray,
 													int ldb,
-													ref float beta,   /* host or device pointer */
+													ref float beta,   // host or device pointer
 													ref float[] Carray,
 													int ldc,
 													int batchCount);
@@ -2216,12 +2924,12 @@ namespace CUDAnshita {
 													int m,
 													int n,
 													int k,
-													ref double alpha,  /* host or device pointer */
+													ref double alpha,  // host or device pointer
 													ref double[] Aarray,
 													int lda,
 													ref double[] Barray,
 													int ldb,
-													ref double beta,  /* host or device pointer */
+													ref double beta,  // host or device pointer
 													ref double[] Carray,
 													int ldc,
 													int batchCount);
@@ -2233,12 +2941,12 @@ namespace CUDAnshita {
 													int m,
 													int n,
 													int k,
-													ref cuComplex alpha, /* host or device pointer */
+													ref cuComplex alpha, // host or device pointer
 													ref cuComplex[] Aarray,
 													int lda,
 													ref cuComplex[] Barray,
 													int ldb,
-													ref cuComplex beta, /* host or device pointer */
+													ref cuComplex beta, // host or device pointer
 													ref cuComplex[] Carray,
                                                     int ldc,
 													int batchCount);
@@ -2250,12 +2958,12 @@ namespace CUDAnshita {
 													int m,
 													int n,
 													int k,
-													ref cuComplex alpha, /* host or device pointer */
+													ref cuComplex alpha, // host or device pointer
 													ref cuComplex[] Aarray,
 													int lda,
 													ref cuComplex[] Barray,
 													int ldb,
-													ref cuComplex beta, /* host or device pointer */
+													ref cuComplex beta, // host or device pointer
 													ref cuComplex[] Carray,
                                                     int ldc,
 													int batchCount);
@@ -2267,12 +2975,12 @@ namespace CUDAnshita {
 													int m,
 													int n,
 													int k,
-													ref cuDoubleComplex alpha, /* host or device pointer */
+													ref cuDoubleComplex alpha, // host or device pointer
 													ref cuDoubleComplex[] Aarray,
 													int lda,
 													ref cuDoubleComplex[] Barray,
 													int ldb,
-													ref cuDoubleComplex beta, /* host or device pointer */
+													ref cuDoubleComplex beta, // host or device pointer
 													ref cuDoubleComplex[] Carray,
                                                     int ldc,
 													int batchCount);
@@ -2284,14 +2992,14 @@ namespace CUDAnshita {
 													int m,
 													int n,
 													int k,
-													ref float alpha,  /* host or device pointer */
+													ref float alpha,  // host or device pointer
 													ref float A,
 													int lda,
-													long strideA,   /* purposely signed */
+													long strideA,   // purposely signed
 													ref float B,
 													int ldb,
 													long strideB,
-													ref float beta,   /* host or device pointer */
+													ref float beta,   // host or device pointer
 													ref float C,
 													int ldc,
 													long strideC,
@@ -2304,14 +3012,14 @@ namespace CUDAnshita {
 													int m,
 													int n,
 													int k,
-													ref double alpha,  /* host or device pointer */
+													ref double alpha,  // host or device pointer
 													ref double A,
 													int lda,
-													long strideA,   /* purposely signed */
+													long strideA,   // purposely signed
 													ref double B,
 													int ldb,
 													long strideB,
-													ref double beta,   /* host or device pointer */
+													ref double beta,   // host or device pointer
 													ref double C,
 													int ldc,
 													long strideC,
@@ -2324,14 +3032,14 @@ namespace CUDAnshita {
 													int m,
 													int n,
 													int k,
-													ref cuComplex alpha,  /* host or device pointer */
+													ref cuComplex alpha,  // host or device pointer
 													ref cuComplex A,
 													int lda,
-													long strideA,   /* purposely signed */
+													long strideA,   // purposely signed
 													ref cuComplex B,
 													int ldb,
 													long strideB,
-													ref cuComplex beta,   /* host or device pointer */
+													ref cuComplex beta,   // host or device pointer
 													ref cuComplex C,
                                                     int ldc,
 													long strideC,
@@ -2344,14 +3052,14 @@ namespace CUDAnshita {
 													int m,
 													int n,
 													int k,
-													ref cuComplex alpha,  /* host or device pointer */
+													ref cuComplex alpha,  // host or device pointer
 													ref cuComplex A,
 													int lda,
-													long strideA,   /* purposely signed */
+													long strideA,   // purposely signed
 													ref cuComplex B,
 													int ldb,
 													long strideB,
-													ref cuComplex beta,   /* host or device pointer */
+													ref cuComplex beta,   // host or device pointer
 													ref cuComplex C,
                                                     int ldc,
 													long strideC,
@@ -2365,14 +3073,14 @@ namespace CUDAnshita {
 													int m,
 													int n,
 													int k,
-													ref cuDoubleComplex alpha,  /* host or device pointer */
+													ref cuDoubleComplex alpha,  // host or device pointer
 													ref cuDoubleComplex A,
 													int lda,
-													long strideA,   /* purposely signed */
+													long strideA,   // purposely signed
 													ref cuDoubleComplex B,
 													int ldb,
 													long strideB,
-													ref cuDoubleComplex beta,   /* host or device poi */
+													ref cuDoubleComplex beta,   // host or device poi
 													ref cuDoubleComplex C,
                                                     int ldc,
 													long strideC,
@@ -2385,31 +3093,31 @@ namespace CUDAnshita {
 													int m,
 													int n,
 													int k,
-													ref __half alpha,  /* host or device pointer */
+													ref __half alpha,  // host or device pointer
 													ref __half A,
 													int lda,
-													long strideA,   /* purposely signed */
+													long strideA,   // purposely signed
 													ref __half B,
 													int ldb,
 													long strideB,
-													ref __half beta,   /* host or device pointer */
+													ref __half beta,   // host or device pointer
 													ref __half C,
                                                     int ldc,
 													long strideC,
 													int batchCount);
 
-			/* ---------------- CUBLAS BLAS-like extension ---------------- */
-			/* GEAM */
+			// ---------------- CUBLAS BLAS-like extension ----------------
+			// GEAM
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSgeam(cublasHandle_t handle,
 													cublasOperation_t transa,
 													cublasOperation_t transb,
 													int m,
 													int n,
-													ref float alpha, /* host or device pointer */
+													ref float alpha, // host or device pointer
 													ref float A,
 													int lda,
-													ref float beta, /* host or device pointer */
+													ref float beta, // host or device pointer
 													ref float B,
 													int ldb,
 													ref float C,
@@ -2421,10 +3129,10 @@ namespace CUDAnshita {
 													cublasOperation_t transb,
 													int m,
 													int n,
-													ref double alpha, /* host or device pointer */
+													ref double alpha, // host or device pointer
 													ref double A,
 													int lda,
-													ref double beta, /* host or device pointer */
+													ref double beta, // host or device pointer
 													ref double B,
 													int ldb,
 													ref double C,
@@ -2436,10 +3144,10 @@ namespace CUDAnshita {
 													cublasOperation_t transb,
 													int m,
 													int n,
-													ref cuComplex alpha, /* host or device pointer */
+													ref cuComplex alpha, // host or device pointer
 													ref cuComplex A,
 													int lda,
-													ref cuComplex beta, /* host or device pointer */
+													ref cuComplex beta, // host or device pointer
 													ref cuComplex B,
 													int ldb,
 													ref cuComplex C, 
@@ -2451,16 +3159,16 @@ namespace CUDAnshita {
 													cublasOperation_t transb,
 													int m,
 													int n,
-													ref cuDoubleComplex alpha, /* host or device pointer */
+													ref cuDoubleComplex alpha, // host or device pointer
 													ref cuDoubleComplex A,
 													int lda,
-													ref cuDoubleComplex beta, /* host or device pointer */
+													ref cuDoubleComplex beta, // host or device pointer
 													ref cuDoubleComplex B,
 													int ldb,
 													ref cuDoubleComplex C, 
 													int ldc);
 
-			/* Batched LU - GETRF*/
+			// Batched LU - GETRF*/
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSgetrfBatched(cublasHandle_t handle,
 													int n,
@@ -2497,7 +3205,7 @@ namespace CUDAnshita {
 													ref int info,                      /*Device Pointer*/
 													int batchSize);
 
-			/* Batched inversion based on LU factorization from getrf */
+			// Batched inversion based on LU factorization from getrf
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSgetriBatched(cublasHandle_t handle,
 													int n,
@@ -2542,7 +3250,7 @@ namespace CUDAnshita {
 													ref int info,
 													int batchSize);
 
-			/* Batched solver based on LU factorization from getrf */
+			// Batched solver based on LU factorization from getrf
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t  cublasSgetrsBatched(cublasHandle_t handle,
@@ -2596,7 +3304,7 @@ namespace CUDAnshita {
 													ref int info,
 													int batchSize);
 
-			/* TRSM - Batched Triangular Solver */
+			// TRSM - Batched Triangular Solver
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasStrsmBatched(cublasHandle_t handle,
 													cublasSideMode_t side,
@@ -2657,7 +3365,7 @@ namespace CUDAnshita {
                                                     int ldb,
 													int batchCount);
 
-			/* Batched - MATINV*/
+			// Batched - MATINV*/
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSmatinvBatched(cublasHandle_t handle,
 													int n,
@@ -2698,14 +3406,14 @@ namespace CUDAnshita {
 													ref int info,                   /*Device Pointer*/
 													int batchSize);
 
-			/* Batch QR Factorization */
+			// Batch QR Factorization
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSgeqrfBatched(cublasHandle_t handle,
 													int m,
 													int n,
 													ref float[] Aarray,           /*Device pointer*/
 													int lda,
-													ref float[] TauArray,        /* Device pointer*/
+													ref float[] TauArray,        // Device pointer*/
 													ref int info,
 													int batchSize);
 
@@ -2715,7 +3423,7 @@ namespace CUDAnshita {
 													int n,
 													ref double[] Aarray,           /*Device pointer*/
 													int lda,
-													ref double[] TauArray,        /* Device pointer*/
+													ref double[] TauArray,        // Device pointer*/
 													ref int info,
 													int batchSize);
 
@@ -2725,7 +3433,7 @@ namespace CUDAnshita {
 													int n,
 													ref cuComplex[] Aarray,           /*Device pointer*/
 													int lda,
-													ref cuComplex[] TauArray,        /* Device pointer*/
+													ref cuComplex[] TauArray,        // Device pointer*/
 													ref int info,
 													int batchSize);
 
@@ -2735,11 +3443,11 @@ namespace CUDAnshita {
 													int n,
 													ref cuDoubleComplex[] Aarray,           /*Device pointer*/
 													int lda,
-													ref cuDoubleComplex[] TauArray,        /* Device pointer*/
+													ref cuDoubleComplex[] TauArray,        // Device pointer*/
 													ref int info,
 													int batchSize);
 
-			/* Least Square Min only m >= n and Non-transpose supported */
+			// Least Square Min only m >= n and Non-transpose supported
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSgelsBatched(cublasHandle_t handle,
 													cublasOperation_t trans,
@@ -2748,10 +3456,10 @@ namespace CUDAnshita {
 													int nrhs,
 													ref float[] Aarray, /*Device pointer*/
 													int lda,
-													ref float[] Carray, /* Device pointer*/
+													ref float[] Carray, // Device pointer*/
 													int ldc,
 													ref int info,
-													ref int devInfoArray, /* Device pointer*/
+													ref int devInfoArray, // Device pointer*/
 													int batchSize);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
@@ -2762,10 +3470,10 @@ namespace CUDAnshita {
 													int nrhs,
 													ref double[] Aarray, /*Device pointer*/
 													int lda,
-													ref double[] Carray, /* Device pointer*/
+													ref double[] Carray, // Device pointer*/
 													int ldc,
 													ref int info,
-													ref int devInfoArray, /* Device pointer*/
+													ref int devInfoArray, // Device pointer*/
 													int batchSize);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
@@ -2776,7 +3484,7 @@ namespace CUDAnshita {
 													int nrhs,
 													ref cuComplex[] Aarray, /*Device pointer*/
 													int lda,
-													ref cuComplex[] Carray, /* Device pointer*/
+													ref cuComplex[] Carray, // Device pointer*/
 													int ldc,
 													ref int info,
 													ref int devInfoArray,
@@ -2790,12 +3498,12 @@ namespace CUDAnshita {
 													int nrhs,
 													ref cuDoubleComplex[] Aarray, /*Device pointer*/
 													int lda,
-													ref cuDoubleComplex[] Carray, /* Device pointer*/
+													ref cuDoubleComplex[] Carray, // Device pointer*/
 													int ldc,
 													ref int info,
 													ref int devInfoArray,
 													int batchSize);
-			/* DGMM */
+			// DGMM
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSdgmm(cublasHandle_t handle,
 													cublasSideMode_t mode,
@@ -2844,7 +3552,7 @@ namespace CUDAnshita {
 													ref cuDoubleComplex C, 
 													int ldc);
 
-			/* TPTTR : Triangular Pack format to Triangular format */
+			// TPTTR : Triangular Pack format to Triangular format
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasStpttr(cublasHandle_t handle,
 													cublasFillMode_t uplo,
@@ -2877,7 +3585,7 @@ namespace CUDAnshita {
 													ref cuDoubleComplex A,  
                                                     int lda );
 
-			/* TRTTP : Triangular format to Triangular Pack format */
+			// TRTTP : Triangular format to Triangular Pack format
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasStrttp(cublasHandle_t handle,
 													cublasFillMode_t uplo,
