@@ -21,9 +21,9 @@ extern ""C"" __global__ void addKernel(int *c, const int *a, const int *b) {
 		}
 
 		private void buttonTest_Click(object sender, EventArgs e) {
-			TestCompile();
+			//TestCompile();
 			//TestCudaRT();
-			//TestCuRAND();
+			TestCuRAND();
 			//TestCuBLAS();
 			//TestMatrix();
 			//TestCuDNN();
@@ -64,6 +64,13 @@ extern ""C"" __global__ void addKernel(int *c, const int *a, const int *b) {
 			Device device = new Device(0);
 			Context context = device.CreateContext();
 			Module module = new Module();
+
+			Console.WriteLine(device.Name);
+			Console.WriteLine(device.PCIBusId);
+			Console.WriteLine(device.TotalMem);
+			Console.WriteLine(device.GetProperties().name);
+			Console.WriteLine(context.ApiVersion);
+			//return;
 
 			// PTX データをロード
 			module.LoadData(ptx);
@@ -119,7 +126,7 @@ extern ""C"" __global__ void addKernel(int *c, const int *a, const int *b) {
 		}
 
 		private void TestCuRAND() {
-			cuRAND rand = new cuRAND();
+			CUDAnshita.Random rand = new CUDAnshita.Random();
 			rand.Seed = (ulong)DateTime.Now.Ticks;
 			//uint[] test = rand.Generate(10);
 			//float[] test = rand.GenerateUniform(10);
@@ -155,6 +162,8 @@ extern ""C"" __global__ void addKernel(int *c, const int *a, const int *b) {
 			var config = CudaRT.DeviceGetCacheConfig();
 			Console.WriteLine(config);
 			Console.WriteLine(CudaRT.DeviceGetPCIBusId(0));
+
+			Console.WriteLine(NvCuda.DeviceGetPCIBusId(0));
 
 			int totalDevices = CudaRT.GetDeviceCount();
 

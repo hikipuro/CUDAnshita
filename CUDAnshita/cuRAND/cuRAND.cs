@@ -18,7 +18,7 @@ namespace CUDAnshita {
 	/// <remarks>
 	/// <a href="http://docs.nvidia.com/cuda/curand/">http://docs.nvidia.com/cuda/curand/</a>
 	/// </remarks>
-	public class cuRAND : IDisposable {
+	public class cuRAND {
 		public class API {
 			const string DLL_PATH = "curand64_80.dll";
 			const CallingConvention CALLING_CONVENTION = CallingConvention.Cdecl;
@@ -131,6 +131,13 @@ namespace CUDAnshita {
 				size_t num
 			);
 
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern curandStatus curandGenerate(
+				curandGenerator_t generator,
+				IntPtr outputPtr,
+				size_t num
+			);
+
 			/// <summary>
 			/// Generate log-normally distributed floats.
 			/// </summary>
@@ -167,6 +174,15 @@ namespace CUDAnshita {
 			public static extern curandStatus curandGenerateLogNormal(
 				curandGenerator_t generator,
 				float[] outputPtr,
+				size_t n,
+				float mean,
+				float stddev
+			);
+
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern curandStatus curandGenerateLogNormal(
+				curandGenerator_t generator,
+				IntPtr outputPtr,
 				size_t n,
 				float mean,
 				float stddev
@@ -215,6 +231,15 @@ namespace CUDAnshita {
 				double stddev
 			);
 
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern curandStatus curandGenerateLogNormalDouble(
+				curandGenerator_t generator,
+				IntPtr outputPtr,
+				size_t n,
+				double mean,
+				double stddev
+			);
+
 			/// <summary>
 			/// Generate 64-bit quasirandom numbers.
 			/// </summary>
@@ -241,6 +266,13 @@ namespace CUDAnshita {
 			public static extern curandStatus curandGenerateLongLong(
 				curandGenerator_t generator,
 				ulong[] outputPtr,
+				size_t num
+			);
+
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern curandStatus curandGenerateLongLong(
+				curandGenerator_t generator,
+				IntPtr outputPtr,
 				size_t num
 			);
 
@@ -284,6 +316,15 @@ namespace CUDAnshita {
 				float stddev
 			);
 
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern curandStatus curandGenerateNormal(
+				curandGenerator_t generator,
+				IntPtr outputPtr,
+				size_t n,
+				float mean,
+				float stddev
+			);
+
 			/// <summary>
 			/// Generate normally distributed doubles.
 			/// </summary>
@@ -313,6 +354,15 @@ namespace CUDAnshita {
 				double stddev
 			);
 
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern curandStatus curandGenerateNormalDouble(
+				curandGenerator_t generator,
+				IntPtr outputPtr,
+				size_t n,
+				double mean,
+				double stddev
+			);
+
 			/// <summary>
 			/// Generate Poisson-distributed unsigned ints.
 			/// </summary>
@@ -337,6 +387,14 @@ namespace CUDAnshita {
 			public static extern curandStatus curandGeneratePoisson(
 				curandGenerator_t generator,
 				uint[] outputPtr,
+				size_t n,
+				double lambda
+			);
+
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern curandStatus curandGeneratePoisson(
+				curandGenerator_t generator,
+				IntPtr outputPtr,
 				size_t n,
 				double lambda
 			);
@@ -388,6 +446,13 @@ namespace CUDAnshita {
 				size_t num
 			);
 
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern curandStatus curandGenerateUniform(
+				curandGenerator_t generator,
+				IntPtr outputPtr,
+				size_t num
+			);
+
 			/// <summary>
 			/// Generate uniformly distributed doubles.
 			/// </summary>
@@ -410,6 +475,13 @@ namespace CUDAnshita {
 			public static extern curandStatus curandGenerateUniformDouble(
 				curandGenerator_t generator,
 				double[] outputPtr,
+				size_t num
+			);
+
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern curandStatus curandGenerateUniformDouble(
+				curandGenerator_t generator,
+				IntPtr outputPtr,
 				size_t num
 			);
 
@@ -603,6 +675,13 @@ namespace CUDAnshita {
 			return outputPtr;
 		}
 
+		public static void Generate(curandGenerator_t generator, IntPtr outputPtr, size_t num) {
+			if (num < 1) {
+				return;
+			}
+			CheckStatus(API.curandGenerate(generator, outputPtr, num));
+		}
+
 		public static float[] GenerateLogNormal(curandGenerator_t generator, size_t n, float mean, float stddev) {
 			if (n < 1) {
 				return new float[0];
@@ -610,6 +689,13 @@ namespace CUDAnshita {
 			float[] outputPtr = new float[n];
 			CheckStatus(API.curandGenerateLogNormal(generator, outputPtr, n, mean, stddev));
 			return outputPtr;
+		}
+
+		public static void GenerateLogNormal(curandGenerator_t generator, IntPtr outputPtr, size_t n, float mean, float stddev) {
+			if (n < 1) {
+				return;
+			}
+			CheckStatus(API.curandGenerateLogNormal(generator, outputPtr, n, mean, stddev));
 		}
 
 		public static double[] GenerateLogNormalDouble(curandGenerator_t generator, size_t n, double mean, double stddev) {
@@ -621,6 +707,13 @@ namespace CUDAnshita {
 			return outputPtr;
 		}
 
+		public static void GenerateLogNormalDouble(curandGenerator_t generator, IntPtr outputPtr, size_t n, double mean, double stddev) {
+			if (n < 1) {
+				return;
+			}
+			CheckStatus(API.curandGenerateLogNormalDouble(generator, outputPtr, n, mean, stddev));
+		}
+
 		public static ulong[] GenerateLongLong(curandGenerator_t generator, size_t num) {
 			if (num < 1) {
 				return new ulong[0];
@@ -628,6 +721,13 @@ namespace CUDAnshita {
 			ulong[] outputPtr = new ulong[num];
 			CheckStatus(API.curandGenerateLongLong(generator, outputPtr, num));
 			return outputPtr;
+		}
+
+		public static void GenerateLongLong(curandGenerator_t generator, IntPtr outputPtr, size_t num) {
+			if (num < 1) {
+				return;
+			}
+			CheckStatus(API.curandGenerateLongLong(generator, outputPtr, num));
 		}
 
 		public static float[] GenerateNormal(curandGenerator_t generator, size_t n, float mean, float stddev) {
@@ -639,6 +739,13 @@ namespace CUDAnshita {
 			return outputPtr;
 		}
 
+		public static void GenerateNormal(curandGenerator_t generator, IntPtr outputPtr, size_t n, float mean, float stddev) {
+			if (n < 1) {
+				return;
+			}
+			CheckStatus(API.curandGenerateNormal(generator, outputPtr, n, mean, stddev));
+		}
+
 		public static double[] GenerateNormalDouble(curandGenerator_t generator, size_t n, double mean, double stddev) {
 			if (n < 1) {
 				return new double[0];
@@ -648,6 +755,13 @@ namespace CUDAnshita {
 			return outputPtr;
 		}
 
+		public static void GenerateNormalDouble(curandGenerator_t generator, IntPtr outputPtr, size_t n, double mean, double stddev) {
+			if (n < 1) {
+				return;
+			}
+			CheckStatus(API.curandGenerateNormalDouble(generator, outputPtr, n, mean, stddev));
+		}
+
 		public static uint[] GeneratePoisson(curandGenerator_t generator, size_t n, double lambda) {
 			if (n < 1) {
 				return new uint[0];
@@ -655,6 +769,13 @@ namespace CUDAnshita {
 			uint[] outputPtr = new uint[n];
 			CheckStatus(API.curandGeneratePoisson(generator, outputPtr, n, lambda));
 			return outputPtr;
+		}
+
+		public static void GeneratePoisson(curandGenerator_t generator, IntPtr outputPtr, size_t n, double lambda) {
+			if (n < 1) {
+				return;
+			}
+			CheckStatus(API.curandGeneratePoisson(generator, outputPtr, n, lambda));
 		}
 
 		public static void GenerateSeeds(curandGenerator_t generator) {
@@ -670,6 +791,13 @@ namespace CUDAnshita {
 			return outputPtr;
 		}
 
+		public static void GenerateUniform(curandGenerator_t generator, IntPtr outputPtr, size_t num) {
+			if (num < 1) {
+				return;
+			}
+			CheckStatus(API.curandGenerateUniform(generator, outputPtr, num));
+		}
+
 		public static double[] GenerateUniformDouble(curandGenerator_t generator, size_t num) {
 			if (num < 1) {
 				return new double[0];
@@ -677,6 +805,13 @@ namespace CUDAnshita {
 			double[] outputPtr = new double[num];
 			CheckStatus(API.curandGenerateUniformDouble(generator, outputPtr, num));
 			return outputPtr;
+		}
+
+		public static void GenerateUniformDouble(curandGenerator_t generator, IntPtr outputPtr, size_t num) {
+			if (num < 1) {
+				return;
+			}
+			CheckStatus(API.curandGenerateUniformDouble(generator, outputPtr, num));
 		}
 
 		public static int[] GetDirectionVectors32(curandDirectionVectorSet set) {
@@ -745,88 +880,6 @@ namespace CUDAnshita {
 
 		public static void SetStream(curandGenerator_t generator, cudaStream_t stream) {
 			CheckStatus(API.curandSetStream(generator, stream));
-		}
-
-		IntPtr generator = IntPtr.Zero;
-		ulong seed = 0;
-
-		public ulong Seed {
-			get { return seed; }
-			set {
-				seed = value;
-				SetPseudoRandomGeneratorSeed(generator, value);
-			}
-		}
-
-		public cuRAND(curandRngType type = curandRngType.CURAND_RNG_PSEUDO_DEFAULT, bool host = true) {
-			if (host) {
-				generator = CreateGeneratorHost(type);
-			} else {
-				generator = CreateGenerator(type);
-			}
-		}
-
-		~cuRAND() {
-			Dispose();
-		}
-
-		public void Dispose() {
-			if (generator != IntPtr.Zero) {
-				DestroyGenerator(generator);
-				generator = IntPtr.Zero;
-			}
-		}
-
-		public uint[] Generate(int num) {
-			return Generate(generator, num);
-		}
-
-		public float[] GenerateLogNormal(int num, float mean, float stddev) {
-			return GenerateLogNormal(generator, num, mean, stddev);
-		}
-
-		public double[] GenerateLogNormalDouble(int num, double mean, double stddev) {
-			return GenerateLogNormalDouble(generator, num, mean, stddev);
-		}
-
-		public ulong[] GenerateLong(int num) {
-			return GenerateLongLong(generator, num);
-		}
-
-		public float[] GenerateNormal(int num, float mean, float stddev) {
-			return GenerateNormal(generator, num, mean, stddev);
-		}
-
-		public double[] GenerateNormalDouble(int num, double mean, double stddev) {
-			return GenerateNormalDouble(generator, num, mean, stddev);
-		}
-
-		public uint[] GeneratePoisson(int num, double lambda) {
-			return GeneratePoisson(generator, num, lambda);
-		}
-
-		public float[] GenerateUniform(int num) {
-			return GenerateUniform(generator, num);
-		}
-
-		public double[] GenerateUniformDouble(int num) {
-			return GenerateUniformDouble(generator, num);
-		}
-
-		public void SetGeneratorOffset(ulong offset) {
-			SetGeneratorOffset(generator, offset);
-		}
-
-		public void SetGeneratorOrdering(curandOrdering order) {
-			SetGeneratorOrdering(generator, order);
-		}
-
-		public void SetQuasiRandomGeneratorDimensions(uint num_dimensions) {
-			SetQuasiRandomGeneratorDimensions(generator, num_dimensions);
-		}
-
-		public void SetStream(cudaStream_t stream) {
-			SetStream(generator, stream);
 		}
 
 		static void CheckStatus(curandStatus status) {
@@ -935,6 +988,5 @@ namespace CUDAnshita {
 		CURAND_STATUS_ARCH_MISMATCH = 204,
 		///<summary>Internal library error.</summary>
 		CURAND_STATUS_INTERNAL_ERROR = 999
-
 	}
 }

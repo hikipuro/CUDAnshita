@@ -1,11 +1,33 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CUDAnshita;
-using System.Collections.Generic;
 
 namespace UnitTest {
 	[TestClass]
 	public class cuRANDTest {
+		[ClassInitialize]
+		public static void ClassInit(TestContext context) {
+			CudaRT.DeviceReset();
+		}
+
+		[TestMethod]
+		public void Test1() {
+			IntPtr generator = IntPtr.Zero;
+			generator = cuRAND.CreateGenerator(curandRngType.CURAND_RNG_PSEUDO_MTGP32);
+			IntPtr output = CudaRT.Malloc(10 * 4);
+			float[] outp = new float[10];
+
+			cuRAND.API.curandGenerateUniform(generator, output, 10);
+			//CudaRT.DeviceSynchronize();
+			Console.WriteLine("Test: {0}", output);
+
+			foreach (float i in outp) {
+				Console.WriteLine("Test 2: {0}", i);
+			}
+
+			cuRAND.DestroyGenerator(generator);
+		}
+
 		[TestMethod]
 		public void CreateGenerator() {
 			IntPtr generator = IntPtr.Zero;
@@ -23,6 +45,7 @@ namespace UnitTest {
 				generator = cuRAND.CreateGenerator(curandRngType.CURAND_RNG_PSEUDO_MT19937);
 				Assert.AreNotEqual(IntPtr.Zero, generator);
 				cuRAND.DestroyGenerator(generator);
+				Assert.Fail();
 			} catch (CudaException e) {
 				string message = curandStatus.CURAND_STATUS_ARCH_MISMATCH.ToString();
 				Assert.AreEqual(message, e.Message);
