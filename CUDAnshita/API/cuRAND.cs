@@ -595,42 +595,63 @@ namespace CUDAnshita {
 		}
 
 		public static uint[] Generate(curandGenerator_t generator, size_t num) {
+			if (num < 1) {
+				return new uint[0];
+			}
 			uint[] outputPtr = new uint[num];
 			CheckStatus(API.curandGenerate(generator, outputPtr, num));
 			return outputPtr;
 		}
 
 		public static float[] GenerateLogNormal(curandGenerator_t generator, size_t n, float mean, float stddev) {
+			if (n < 1) {
+				return new float[0];
+			}
 			float[] outputPtr = new float[n];
 			CheckStatus(API.curandGenerateLogNormal(generator, outputPtr, n, mean, stddev));
 			return outputPtr;
 		}
 
 		public static double[] GenerateLogNormalDouble(curandGenerator_t generator, size_t n, double mean, double stddev) {
+			if (n < 1) {
+				return new double[0];
+			}
 			double[] outputPtr = new double[n];
 			CheckStatus(API.curandGenerateLogNormalDouble(generator, outputPtr, n, mean, stddev));
 			return outputPtr;
 		}
 
 		public static ulong[] GenerateLongLong(curandGenerator_t generator, size_t num) {
+			if (num < 1) {
+				return new ulong[0];
+			}
 			ulong[] outputPtr = new ulong[num];
 			CheckStatus(API.curandGenerateLongLong(generator, outputPtr, num));
 			return outputPtr;
 		}
 
 		public static float[] GenerateNormal(curandGenerator_t generator, size_t n, float mean, float stddev) {
+			if (n < 1) {
+				return new float[0];
+			}
 			float[] outputPtr = new float[n];
 			CheckStatus(API.curandGenerateNormal(generator, outputPtr, n, mean, stddev));
 			return outputPtr;
 		}
 
 		public static double[] GenerateNormalDouble(curandGenerator_t generator, size_t n, double mean, double stddev) {
+			if (n < 1) {
+				return new double[0];
+			}
 			double[] outputPtr = new double[n];
 			CheckStatus(API.curandGenerateNormalDouble(generator, outputPtr, n, mean, stddev));
 			return outputPtr;
 		}
 
 		public static uint[] GeneratePoisson(curandGenerator_t generator, size_t n, double lambda) {
+			if (n < 1) {
+				return new uint[0];
+			}
 			uint[] outputPtr = new uint[n];
 			CheckStatus(API.curandGeneratePoisson(generator, outputPtr, n, lambda));
 			return outputPtr;
@@ -641,12 +662,18 @@ namespace CUDAnshita {
 		}
 
 		public static float[] GenerateUniform(curandGenerator_t generator, size_t num) {
+			if (num < 1) {
+				return new float[0];
+			}
 			float[] outputPtr = new float[num];
 			CheckStatus(API.curandGenerateUniform(generator, outputPtr, num));
 			return outputPtr;
 		}
 
 		public static double[] GenerateUniformDouble(curandGenerator_t generator, size_t num) {
+			if (num < 1) {
+				return new double[0];
+			}
 			double[] outputPtr = new double[num];
 			CheckStatus(API.curandGenerateUniformDouble(generator, outputPtr, num));
 			return outputPtr;
