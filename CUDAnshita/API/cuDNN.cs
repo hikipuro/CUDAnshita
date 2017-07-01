@@ -158,13 +158,13 @@ namespace CUDAnshita {
 								ref size_t size);
 
 
-			/* Destroy an instance of Tensor4d descriptor */
+			// Destroy an instance of Tensor4d descriptor
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnDestroyTensorDescriptor(
 											cudnnTensorDescriptor_t tensorDesc);
 
 
-			/* Tensor layout conversion helper (y = alpha * x + beta * y) */
+			// Tensor layout conversion helper (y = alpha * x + beta * y)
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnTransformTensor(
 											cudnnHandle_t handle,
@@ -176,7 +176,7 @@ namespace CUDAnshita {
 											IntPtr y);
 
 
-			/* Tensor Bias addition : C = alpha * A + beta * C  */
+			// Tensor Bias addition : C = alpha * A + beta * C 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnAddTensor(
 											cudnnHandle_t handle,
@@ -210,8 +210,8 @@ namespace CUDAnshita {
 			public static extern cudnnStatus_t cudnnDestroyOpTensorDescriptor(
 								cudnnOpTensorDescriptor_t opTensorDesc);
 
-			/* Tensor operation : C = op( alpha1 * A, alpha2 * B ) + beta * C */
-			/* B tensor is ignored for CUDNN_OP_TENSOR_SQRT. */
+			// Tensor operation : C = op( alpha1 * A, alpha2 * B ) + beta * C
+			// B tensor is ignored for CUDNN_OP_TENSOR_SQRT.
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnOpTensor(
 											cudnnHandle_t handle,
@@ -253,7 +253,7 @@ namespace CUDAnshita {
 			public static extern cudnnStatus_t cudnnDestroyReduceTensorDescriptor(
 								cudnnReduceTensorDescriptor_t reduceTensorDesc);
 
-			/* Helper function to return the minimum size of the index space to be passed to the reduction given the input and output tensors */
+			// Helper function to return the minimum size of the index space to be passed to the reduction given the input and output tensors
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnGetReductionIndicesSize(
 											cudnnHandle_t handle,
@@ -262,7 +262,7 @@ namespace CUDAnshita {
 											cudnnTensorDescriptor_t cDesc,
 											ref size_t sizeInBytes );
 
-			/* Helper function to return the minimum size of the workspace to be passed to the reduction given the input and output tensors */
+			// Helper function to return the minimum size of the workspace to be passed to the reduction given the input and output tensors
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnGetReductionWorkspaceSize(
 								cudnnHandle_t handle,
@@ -271,9 +271,9 @@ namespace CUDAnshita {
 								cudnnTensorDescriptor_t cDesc,
 								ref size_t sizeInBytes);
 
-			/* Tensor operation : C = reduce op( alpha * A ) + beta * C */
-			/* The NaN propagation enum applies to only the min and max reduce ops; the other reduce ops propagate NaN as usual. */
-			/* The indices space is ignored for reduce ops other than min or max. */
+			// Tensor operation : C = reduce op( alpha * A ) + beta * C
+			// The NaN propagation enum applies to only the min and max reduce ops; the other reduce ops propagate NaN as usual.
+			// The indices space is ignored for reduce ops other than min or max.
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnReduceTensor(
 								cudnnHandle_t handle,
@@ -289,7 +289,7 @@ namespace CUDAnshita {
 								cudnnTensorDescriptor_t cDesc,
 								IntPtr C);
 
-			/* Set all values of a tensor to a given value : y[i] = value[0] */
+			// Set all values of a tensor to a given value : y[i] = value[0]
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnSetTensor(
 											cudnnHandle_t handle,
@@ -297,7 +297,7 @@ namespace CUDAnshita {
 											IntPtr y,
 											IntPtr valuePtr );
 
-			/* Scale all values of a tensor by a given factor : y[i] = alpha * y[i] */
+			// Scale all values of a tensor by a given factor : y[i] = alpha * y[i]
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnScaleTensor(
 											cudnnHandle_t handle,
@@ -306,7 +306,7 @@ namespace CUDAnshita {
 											IntPtr alpha);
 
 
-			/* Create an instance of FilterStruct */
+			// Create an instance of FilterStruct
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnCreateFilterDescriptor(
 											ref cudnnFilterDescriptor_t filterDesc);
@@ -356,7 +356,7 @@ namespace CUDAnshita {
 			public static extern cudnnStatus_t cudnnDestroyFilterDescriptor(
 											cudnnFilterDescriptor_t filterDesc);
 
-			/* Create an instance of convolution descriptor */
+			// Create an instance of convolution descriptor
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnCreateConvolutionDescriptor(
 											ref cudnnConvolutionDescriptor_t convDesc);
@@ -385,7 +385,7 @@ namespace CUDAnshita {
                                                             ref cudnnDataType_t computeType
                                                          );
 
-			/* Helper function to return the dimensions of the output tensor given a convolution descriptor */
+			// Helper function to return the dimensions of the output tensor given a convolution descriptor
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnGetConvolution2dForwardOutputDim(
 								cudnnConvolutionDescriptor_t convDesc,
@@ -400,7 +400,7 @@ namespace CUDAnshita {
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnSetConvolutionNdDescriptor(
 											cudnnConvolutionDescriptor_t convDesc,
-											int arrayLength,             /* nbDims-2 size */
+											int arrayLength,             // nbDims-2 size
 											int[] padA,
 											int[] filterStrideA,
 											int[] dilationA,
@@ -419,7 +419,7 @@ namespace CUDAnshita {
                                 ref cudnnDataType_t computeType );   // convolution data type
 
 
-			/* Helper function to return the dimensions of the output tensor given a convolution descriptor */
+			// Helper function to return the dimensions of the output tensor given a convolution descriptor
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnGetConvolutionNdForwardOutputDim(
 								cudnnConvolutionDescriptor_t convDesc,
@@ -428,7 +428,7 @@ namespace CUDAnshita {
 								int nbDims,
 								int[] tensorOuputDimA);
 
-			/* Destroy an instance of convolution descriptor */
+			// Destroy an instance of convolution descriptor
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnDestroyConvolutionDescriptor(
 											cudnnConvolutionDescriptor_t convDesc);
@@ -473,11 +473,11 @@ namespace CUDAnshita {
                                 size_t memoryLimitInBytes,
 								ref cudnnConvolutionFwdAlgo_t          algo );
 
-			/*
-			 *  convolution algorithm (which requires potentially some workspace)
-			 */
+			//
+			// convolution algorithm (which requires potentially some workspace)
+			//
 
-			/* Helper function to return the minimum size of the workspace to be passed to the convolution given an algo*/
+			// Helper function to return the minimum size of the workspace to be passed to the convolution given an algo
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnGetConvolutionForwardWorkspaceSize(
 								cudnnHandle_t handle,
@@ -489,9 +489,9 @@ namespace CUDAnshita {
                                 ref size_t sizeInBytes );
 
 
-			/* Convolution functions: All of the form "output = alpha * Op(inputs) + beta * output" */
+			// Convolution functions: All of the form "output = alpha * Op(inputs) + beta * output"
 
-			/* Function to perform the forward pass for batch convolution */
+			// Function to perform the forward pass for batch convolution
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnConvolutionForward(
 											cudnnHandle_t handle,
@@ -508,7 +508,7 @@ namespace CUDAnshita {
 								 cudnnTensorDescriptor_t yDesc,
 								IntPtr y);
 
-			/* Fused conv/bias/activation operation : y = Act( alpha1 * conv(x) + alpha2 * z + bias ) */
+			// Fused conv/bias/activation operation : y = Act( alpha1 * conv(x) + alpha2 * z + bias )
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnConvolutionBiasActivationForward(
 											cudnnHandle_t handle,
@@ -530,21 +530,15 @@ namespace CUDAnshita {
 								 cudnnTensorDescriptor_t yDesc,
 								IntPtr y );
 
-			/* Function to compute the bias gradient for batch convolution */
+			// Function to compute the bias gradient for batch convolution
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnConvolutionBackwardBias(
 											cudnnHandle_t handle,
-
 								 IntPtr alpha,
-
 								 cudnnTensorDescriptor_t dyDesc,
-
 								 IntPtr dy,
-
 								 IntPtr beta,
-
 								 cudnnTensorDescriptor_t dbDesc,
-
 								IntPtr db );
 
 
@@ -586,11 +580,11 @@ namespace CUDAnshita {
 								size_t memoryLimitInBytes,
 								ref cudnnConvolutionBwdFilterAlgo_t algo);
 
-			/*
-			 *  convolution algorithm (which requires potentially some workspace)
-			 */
+			//
+			// convolution algorithm (which requires potentially some workspace)
+			//
 
-			/* Helper function to return the minimum size of the workspace to be passed to the convolution given an algo*/
+			// Helper function to return the minimum size of the workspace to be passed to the convolution given an algo
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnGetConvolutionBackwardFilterWorkspaceSize(
 								cudnnHandle_t handle,
@@ -655,7 +649,7 @@ namespace CUDAnshita {
 								size_t memoryLimitInBytes,
 								ref cudnnConvolutionBwdDataAlgo_t algo);
 
-			/* Helper function to return the minimum size of the workspace to be passed to the convolution given an algo*/
+			// Helper function to return the minimum size of the workspace to be passed to the convolution given an algo
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnGetConvolutionBackwardDataWorkspaceSize(
 								cudnnHandle_t handle,
@@ -693,7 +687,7 @@ namespace CUDAnshita {
 								 cudnnConvolutionDescriptor_t convDesc,
 								IntPtr colBuffer );
 
-			/* Function to perform forward softmax */
+			// Function to perform forward softmax
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnSoftmaxForward(
 											cudnnHandle_t handle,
@@ -706,7 +700,7 @@ namespace CUDAnshita {
 								 cudnnTensorDescriptor_t yDesc,
 								IntPtr y );
 
-			/* Function to perform backward softmax */
+			// Function to perform backward softmax
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnSoftmaxBackward(
 											cudnnHandle_t handle,
@@ -722,7 +716,7 @@ namespace CUDAnshita {
 								IntPtr dx );
 
 
-			/* Create an instance of pooling descriptor */
+			// Create an instance of pooling descriptor
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnCreatePoolingDescriptor(
 											ref cudnnPoolingDescriptor_t poolingDesc);
@@ -789,14 +783,14 @@ namespace CUDAnshita {
 								ref int w);
 
 
-			/* Destroy an instance of pooling descriptor */
+			// Destroy an instance of pooling descriptor
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnDestroyPoolingDescriptor(
 											cudnnPoolingDescriptor_t poolingDesc);
 
-			/* Pooling functions: All of the form "output = alpha * Op(inputs) + beta * output" */
+			// Pooling functions: All of the form "output = alpha * Op(inputs) + beta * output"
 
-			/* Function to perform forward pooling */
+			// Function to perform forward pooling
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnPoolingForward(
 											cudnnHandle_t handle,
@@ -808,7 +802,7 @@ namespace CUDAnshita {
 								 cudnnTensorDescriptor_t yDesc,
 								IntPtr y );
 
-			/* Function to perform backward pooling */
+			// Function to perform backward pooling
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnPoolingBackward(
 											cudnnHandle_t handle,
@@ -825,7 +819,7 @@ namespace CUDAnshita {
 								IntPtr dx );
 
 
-			/* Activation functions: All of the form "output = alpha * Op(inputs) + beta * output" */
+			// Activation functions: All of the form "output = alpha * Op(inputs) + beta * output"
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnCreateActivationDescriptor(
 											ref cudnnActivationDescriptor_t activationDesc);
@@ -835,20 +829,20 @@ namespace CUDAnshita {
 											cudnnActivationDescriptor_t activationDesc,
 											cudnnActivationMode_t mode,
 											cudnnNanPropagation_t reluNanOpt,
-											double coef); /* ceiling for clipped RELU, alpha for ELU */
+											double coef); // ceiling for clipped RELU, alpha for ELU
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnGetActivationDescriptor(
 								 cudnnActivationDescriptor_t activationDesc,
 								ref cudnnActivationMode_t              mode,
                                 ref cudnnNanPropagation_t reluNanOpt,
-								ref double coef ); /* ceiling for clipped RELU, alpha for ELU */
+								ref double coef ); // ceiling for clipped RELU, alpha for ELU
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnDestroyActivationDescriptor(
 											cudnnActivationDescriptor_t activationDesc);
 
-			/* Function to perform forward activation  */
+			// Function to perform forward activation 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnActivationForward(
 											cudnnHandle_t handle,
@@ -860,7 +854,7 @@ namespace CUDAnshita {
 								 cudnnTensorDescriptor_t yDesc,
 								IntPtr y );
 
-			/* Function to perform backward activation  */
+			// Function to perform backward activation 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnActivationBackward(
 											cudnnHandle_t handle,
@@ -876,19 +870,19 @@ namespace CUDAnshita {
 								 cudnnTensorDescriptor_t dxDesc,
 								IntPtr dx );
 
-			/* 
-			* Create an instance of LRN (Local Response Normalization) descriptor
-			* Uses lrnN=5, lrnAlpha=1e-4, lrnBeta=0.75, lrnK=2.0 as defaults from Krizhevsky'12 ImageNet paper
-			*/
+			// 
+			// Create an instance of LRN (Local Response Normalization) descriptor
+			// Uses lrnN=5, lrnAlpha=1e-4, lrnBeta=0.75, lrnK=2.0 as defaults from Krizhevsky'12 ImageNet paper
+			//
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnCreateLRNDescriptor(
 											ref cudnnLRNDescriptor_t normDesc);
 
-			/*
-			* Uses a window [center-lookBehind, center+lookAhead], where
-			* lookBehind = floor( (lrnN-1)/2 ), lookAhead = lrnN-lookBehind-1.
-			* Values of double parameters cast to tensor data type.
-			*/
+			//
+			// Uses a window [center-lookBehind, center+lookAhead], where
+			// lookBehind = floor( (lrnN-1)/2 ), lookAhead = lrnN-lookBehind-1.
+			// Values of double parameters cast to tensor data type.
+			//
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnSetLRNDescriptor(
 											cudnnLRNDescriptor_t normDesc,
@@ -896,10 +890,10 @@ namespace CUDAnshita {
 											double lrnAlpha,
 											double lrnBeta,
 											double lrnK);
-			/*
-			* Retrieve the settings currently stored in an LRN layer descriptor
-			* Any of the provided pointers can be NULL (no corresponding value will be returned)
-			*/
+			//
+			// Retrieve the settings currently stored in an LRN layer descriptor
+			// Any of the provided pointers can be NULL (no corresponding value will be returned)
+			//
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnGetLRNDescriptor(
 											cudnnLRNDescriptor_t normDesc,
@@ -908,81 +902,56 @@ namespace CUDAnshita {
 											ref double lrnBeta,
 											ref double lrnK);
 
-			/* Destroy an instance of LRN descriptor */
+			// Destroy an instance of LRN descriptor
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnDestroyLRNDescriptor(cudnnLRNDescriptor_t lrnDesc);
 
-			/* LRN functions: output = alpha * normalize(x) + beta * old_y */
+			// LRN functions: output = alpha * normalize(x) + beta * old_y
 
-			/* LRN cross-channel forward computation. Double parameters cast to tensor data type */
+			// LRN cross-channel forward computation. Double parameters cast to tensor data type
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnLRNCrossChannelForward(
 											cudnnHandle_t handle,
 											cudnnLRNDescriptor_t normDesc,
 											cudnnLRNMode_t lrnMode,
-
 								 IntPtr alpha,
-
 								 cudnnTensorDescriptor_t xDesc,
-
 								 IntPtr x,
-
 								 IntPtr beta,
-
 								 cudnnTensorDescriptor_t yDesc,
-
 								IntPtr y );
 
-			/* LRN cross-channel backward computation. Double parameters cast to tensor data type */
+			// LRN cross-channel backward computation. Double parameters cast to tensor data type
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnLRNCrossChannelBackward(
 											cudnnHandle_t handle,
 											cudnnLRNDescriptor_t normDesc,
 											cudnnLRNMode_t lrnMode,
-
 								 IntPtr alpha,
-
 								 cudnnTensorDescriptor_t yDesc,
-
 								 IntPtr y,
-
 								 cudnnTensorDescriptor_t dyDesc,
-
 								 IntPtr dy,
-
 								 cudnnTensorDescriptor_t xDesc,
-
 								 IntPtr x,
-
 								 IntPtr beta,
-
 								 cudnnTensorDescriptor_t dxDesc,
-
 								IntPtr dx);
 
-			/* LCN/divisive normalization functions: y = alpha * normalize(x) + beta * y */
+			// LCN/divisive normalization functions: y = alpha * normalize(x) + beta * y
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnDivisiveNormalizationForward(
 											cudnnHandle_t handle,
 											cudnnLRNDescriptor_t normDesc,
 											cudnnDivNormMode_t mode,
-
 								 IntPtr alpha,
-
 								 cudnnTensorDescriptor_t xDesc, // same desc for means, temp, temp2
-
 								 IntPtr x,
-
 								 IntPtr means, // if NULL, means are assumed to be zero
-
 								IntPtr temp,
-
 								IntPtr temp2,
-
 								 IntPtr beta,
-
 								 cudnnTensorDescriptor_t yDesc,
-
 								IntPtr y );
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
@@ -990,183 +959,135 @@ namespace CUDAnshita {
 											cudnnHandle_t handle,
 											cudnnLRNDescriptor_t normDesc,
 											cudnnDivNormMode_t mode,
-
 								 IntPtr alpha,
-
 								 cudnnTensorDescriptor_t xDesc, // same desc for x, means, dy, temp, temp2
-
 								 IntPtr x,
-
 								 IntPtr means, // if NULL, means are assumed to be zero
-
 								 IntPtr dy,
-
 								IntPtr temp,
-
 								IntPtr temp2,
-
 								 IntPtr beta,
-
 								 cudnnTensorDescriptor_t dXdMeansDesc, // same desc for dx, dMeans
-
 								IntPtr dx, // output x differential
-
 								IntPtr dMeans ); // output means differential, can be NULL
 
-			/*
-			* Derives a tensor descriptor from layer data descriptor for BatchNormalization 
-			* scale, invVariance, bnBias, bnScale tensors. Use this tensor desc for 
-			* bnScaleBiasMeanVarDesc and bnScaleBiasDiffDesc in Batch Normalization forward and backward functions.
-			*/
+			//
+			// Derives a tensor descriptor from layer data descriptor for BatchNormalization 
+			// scale, invVariance, bnBias, bnScale tensors. Use this tensor desc for 
+			// bnScaleBiasMeanVarDesc and bnScaleBiasDiffDesc in Batch Normalization forward and backward functions.
+			//
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnDeriveBNTensorDescriptor(
 											cudnnTensorDescriptor_t derivedBnDesc,
-
 								 cudnnTensorDescriptor_t xDesc,
 								cudnnBatchNormMode_t                mode );
 
-			/* Computes y = BN(x). Also accumulates moving averages of mean and inverse variances */
+			// Computes y = BN(x). Also accumulates moving averages of mean and inverse variances
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnBatchNormalizationForwardTraining(
 								cudnnHandle_t handle,
 								cudnnBatchNormMode_t mode,
-
-
 								 IntPtr alpha, // alpha[0] = result blend factor
-
 								 IntPtr beta,  // beta[0] = dest layer blend factor
-
-
 								 cudnnTensorDescriptor_t xDesc,
-
 								 IntPtr x,     // NxCxHxW
-
 								 cudnnTensorDescriptor_t yDesc,
-
 								IntPtr y,     // NxCxHxW
 
-								/* Shared desc for the next 6 tensors in the argument list.
-                                   Data type to be set as follows:
-                                   type = (typeOf(x) == double) ? double : float
-                                   Dimensions for this descriptor depend on normalization mode
-                                   - Spatial Normalization : tensors are expected to have dims 1xCx1x1
-                                    (normalization is performed across NxHxW)
-                                   - Per-Activation Normalization : tensors are expected to have dims of 1xCxHxW 
-                                    (normalization is performed across N) */
-								 cudnnTensorDescriptor_t bnScaleBiasMeanVarDesc,
+								// Shared desc for the next 6 tensors in the argument list.
+								// Data type to be set as follows:
+								// type = (typeOf(x) == double) ? double : float
+								// Dimensions for this descriptor depend on normalization mode
+								// - Spatial Normalization : tensors are expected to have dims 1xCx1x1
+								// (normalization is performed across NxHxW)
+								// - Per-Activation Normalization : tensors are expected to have dims of 1xCxHxW 
+								// (normalization is performed across N)
+								// cudnnTensorDescriptor_t bnScaleBiasMeanVarDesc,
 
 								// 'Gamma' and 'Beta' respectively in Ioffe and Szegedy's paper's notation
-			 IntPtr bnScale,
+								IntPtr bnScale,
 
 								 IntPtr bnBias,
 
-								/* MUST use factor=1 in the very first call of a complete training cycle.
-                                   Use a factor=1/(1+n) at N-th call to the function to get
-                                   Cumulative Moving Average (CMA) behavior
-                                   CMA[n] = (x[1]+...+x[n])/n
-                                   Since CMA[n+1] = (n*CMA[n]+x[n+1])/(n+1) =
-                                   ((n+1)*CMA[n]-CMA[n])/(n+1) + x[n+1]/(n+1) =
-                                   CMA[n]*(1-1/(n+1)) + x[n+1]*1/(n+1) */
+								// MUST use factor=1 in the very first call of a complete training cycle.
+								// Use a factor=1/(1+n) at N-th call to the function to get
+								// Cumulative Moving Average (CMA) behavior
+								// CMA[n] = (x[1]+...+x[n])/n
+								// Since CMA[n+1] = (n*CMA[n]+x[n+1])/(n+1) =
+								// ((n+1)*CMA[n]-CMA[n])/(n+1) + x[n+1]/(n+1) =
+								// CMA[n]*(1-1/(n+1)) + x[n+1]*1/(n+1)
 								double exponentialAverageFactor,
 
-								/* Used in Training phase only. 
-                                   runningMean = newMean*factor + runningMean*(1-factor) */
+								// Used in Training phase only. 
+                                // runningMean = newMean*factor + runningMean*(1-factor)
 								IntPtr resultRunningMean,
-								/* Output in training mode, input in inference. Is the moving average
-                                   of  variance[x] (factor is applied in the same way as for runningMean) */
+								// Output in training mode, input in inference. Is the moving average
+                                // of  variance[x] (factor is applied in the same way as for runningMean)
 								IntPtr resultRunningVariance,
 
-								/* Has to be >= CUDNN_BN_MIN_EPSILON. Should be the same in forward and backward functions. */
+								// Has to be >= CUDNN_BN_MIN_EPSILON. Should be the same in forward and backward functions.
 								double epsilon,
 
-								/* Optionally save intermediate results from the forward pass here
-                                   - can be reused to speed up backward pass. NULL if unused */
+								// Optionally save intermediate results from the forward pass here
+								//   - can be reused to speed up backward pass. NULL if unused
 								IntPtr resultSaveMean,
 
 								IntPtr resultSaveInvVariance );
 
-			/*
-			* Performs Batch Normalization during Inference: 
-			* y[i] = bnScale[k]*(x[i]-estimatedMean[k])/sqrt(epsilon+estimatedVariance[k]) + bnBias[k]
-			* with bnScale, bnBias, runningMean, runningInvVariance tensors indexed
-			* according to spatial or per-activation mode. Refer to cudnnBatchNormalizationForwardTraining
-			* above for notes on function arguments.
-			*/
+			//
+			// Performs Batch Normalization during Inference: 
+			// y[i] = bnScale[k]*(x[i]-estimatedMean[k])/sqrt(epsilon+estimatedVariance[k]) + bnBias[k]
+			// with bnScale, bnBias, runningMean, runningInvVariance tensors indexed
+			// according to spatial or per-activation mode. Refer to cudnnBatchNormalizationForwardTraining
+			// above for notes on function arguments.
+			//
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnBatchNormalizationForwardInference(
 											cudnnHandle_t handle,
 											cudnnBatchNormMode_t mode,
-
 								 IntPtr alpha, // alpha[0] = result blend factor
-
 								 IntPtr beta,  // beta[0] = dest layer blend factor
-
 								 cudnnTensorDescriptor_t xDesc,
-
 								 IntPtr x,     // NxCxHxW
-
 								 cudnnTensorDescriptor_t yDesc,
-
 								IntPtr y,     // NxCxHxW
-
 								 cudnnTensorDescriptor_t bnScaleBiasMeanVarDesc,
-
 								 IntPtr bnScale,
-
 								 IntPtr bnBias,
-
 								 IntPtr estimatedMean,
-
 								 IntPtr estimatedVariance,
-
 								double epsilon );
 
-			/* Performs backward pass of Batch Normalization layer. Returns x gradient,
-			* bnScale gradient and bnBias gradient */
+			// Performs backward pass of Batch Normalization layer. Returns x gradient,
+			// bnScale gradient and bnBias gradient
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnBatchNormalizationBackward(
 											cudnnHandle_t handle,
 											cudnnBatchNormMode_t mode,
-
 								 IntPtr alphaDataDiff,
-
 								 IntPtr betaDataDiff,
-
 								 IntPtr alphaParamDiff,
-
 								 IntPtr betaParamDiff,
-
 								 cudnnTensorDescriptor_t xDesc, // same desc for x, dx, dy
-
 								 IntPtr x,
-
 								 cudnnTensorDescriptor_t dyDesc,
-
 								 IntPtr dy,
-
 								 cudnnTensorDescriptor_t dxDesc,
-
 								IntPtr dx,
-								/* Shared tensor desc for the 4 tensors below */
+								// Shared tensor desc for the 4 tensors below
 								 cudnnTensorDescriptor_t dBnScaleBiasDesc,
-
 								 IntPtr bnScale, // bnBias doesn't affect backpropagation
-								/* scale and bias diff are not backpropagated below this layer */
+								// scale and bias diff are not backpropagated below this layer
 								IntPtr dBnScaleResult,
-
 								IntPtr dBnBiasResult,
-								/* Same epsilon as forward pass */
+								// Same epsilon as forward pass
 								double epsilon,
-
-								/* Optionally cached intermediate results from
-                                   forward pass */
+								// Optionally cached intermediate results from forward pass
 								 IntPtr savedMean,
-
 								 IntPtr savedInvVariance );
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnCreateSpatialTransformerDescriptor(
-
 										   ref cudnnSpatialTransformerDescriptor_t stDesc);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
@@ -1174,9 +1095,7 @@ namespace CUDAnshita {
 											cudnnSpatialTransformerDescriptor_t stDesc,
 											cudnnSamplerType_t samplerType,
 											cudnnDataType_t dataType,
-
 								 int nbDims,
-
 								 int[] dimA);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
@@ -1186,36 +1105,25 @@ namespace CUDAnshita {
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnSpatialTfGridGeneratorForward(
 											 cudnnHandle_t handle,
-
 								 cudnnSpatialTransformerDescriptor_t stDesc,
-
 								 IntPtr theta,
-
 								 IntPtr grid);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnSpatialTfGridGeneratorBackward(
 											 cudnnHandle_t handle,
-
 								 cudnnSpatialTransformerDescriptor_t stDesc,
-
 								 IntPtr dgrid,
-
 								 IntPtr dtheta);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnSpatialTfSamplerForward(
 											 cudnnHandle_t handle,
 											 cudnnSpatialTransformerDescriptor_t stDesc,
-
 								 IntPtr alpha,
-
 								 cudnnTensorDescriptor_t xDesc,
-
 								 IntPtr x,
-
 								 IntPtr grid,
-
 								 IntPtr beta,
 								 cudnnTensorDescriptor_t                    yDesc,
                                  IntPtr y);
@@ -1224,29 +1132,17 @@ namespace CUDAnshita {
 			public static extern cudnnStatus_t cudnnSpatialTfSamplerBackward(
 											 cudnnHandle_t handle,
 											 cudnnSpatialTransformerDescriptor_t stDesc,
-
 								 IntPtr alpha,
-
 								 cudnnTensorDescriptor_t xDesc,
-
 								 IntPtr x,
-
 								 IntPtr beta,
-
 								 cudnnTensorDescriptor_t dxDesc,
-
 								 IntPtr dx,
-
 								 IntPtr alphaDgrid,
-
 								 cudnnTensorDescriptor_t dyDesc,
-
 								 IntPtr dy,
-
 								 IntPtr grid,
-
 								 IntPtr betaDgrid,
-
 								 IntPtr dgrid);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
@@ -1255,11 +1151,11 @@ namespace CUDAnshita {
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnDestroyDropoutDescriptor(cudnnDropoutDescriptor_t dropoutDesc);
 
-			/*helper function to determine size of the states to be passed to cudnnSetDropoutDescriptor */
+			// helper function to determine size of the states to be passed to cudnnSetDropoutDescriptor
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnDropoutGetStatesSize(cudnnHandle_t handle, ref size_t sizeInBytes);
 
-			/*helper function to determine size of the reserve space to be passed to dropout forward/backward calls */
+			// helper function to determine size of the reserve space to be passed to dropout forward/backward calls
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnDropoutGetReserveSpaceSize(cudnnTensorDescriptor_t xdesc, ref size_t sizeInBytes);
 
@@ -1308,14 +1204,10 @@ namespace CUDAnshita {
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnDestroyRNNDescriptor(cudnnRNNDescriptor_t rnnDesc);
 
-
-
 			// Expensive. Creates the plan for the specific settings.
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnCreatePersistentRNNPlan(cudnnRNNDescriptor_t rnnDesc,
-
 											 int minibatch,
-
 											 cudnnDataType_t dataType,
 											 ref cudnnPersistentRNNPlan_t plan);
                                              
@@ -1361,22 +1253,16 @@ namespace CUDAnshita {
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnGetRNNWorkspaceSize(cudnnHandle_t handle,
-
 													 cudnnRNNDescriptor_t rnnDesc,
-
 													 int seqLength,
-
 													 ref cudnnTensorDescriptor_t xDesc,
 													ref size_t sizeInBytes
 													);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnGetRNNTrainingReserveSize(cudnnHandle_t handle,
-
 														  cudnnRNNDescriptor_t rnnDesc,
-
 														  int seqLength,
-
 														  ref cudnnTensorDescriptor_t xDesc,
 														  ref size_t sizeInBytes
 													);
@@ -1384,9 +1270,7 @@ namespace CUDAnshita {
                                                     
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnGetRNNParamsSize(cudnnHandle_t handle,
-
 												 cudnnRNNDescriptor_t rnnDesc,
-
 												 cudnnTensorDescriptor_t xDesc,
 												 ref size_t                     sizeInBytes,
                                                  cudnnDataType_t dataType
@@ -1394,17 +1278,11 @@ namespace CUDAnshita {
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnGetRNNLinLayerMatrixParams(cudnnHandle_t handle,
-
 							 cudnnRNNDescriptor_t rnnDesc,
-
 							 int layer,
-
 							 cudnnTensorDescriptor_t xDesc,
-
 							 cudnnFilterDescriptor_t wDesc,
-
 							 IntPtr w,
-
 							 int linLayerID,
 							 cudnnFilterDescriptor_t linLayerMatDesc, 
                              ref IntPtr linLayerMat
@@ -1412,98 +1290,55 @@ namespace CUDAnshita {
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnGetRNNLinLayerBiasParams(cudnnHandle_t handle,
-
 							 cudnnRNNDescriptor_t rnnDesc,
-
 							 int layer,
-
 							 cudnnTensorDescriptor_t xDesc,
-
 							 cudnnFilterDescriptor_t wDesc,
-
 							 IntPtr w,
-
 							 int linLayerID,
 							 cudnnFilterDescriptor_t linLayerBiasDesc, 
                              ref IntPtr linLayerBias                       
                              );
 
-
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnRNNForwardInference(cudnnHandle_t handle,
-
 													 cudnnRNNDescriptor_t rnnDesc,
-
 													 int seqLength,
-
 													 ref cudnnTensorDescriptor_t xDesc,
-
 													 IntPtr x,
-
 													 cudnnTensorDescriptor_t hxDesc,
-
 													 IntPtr hx,
-
 													 cudnnTensorDescriptor_t cxDesc,
-
 													 IntPtr cx,
-
 													 cudnnFilterDescriptor_t wDesc,
-
 													 IntPtr w,
-
 													 ref cudnnTensorDescriptor_t yDesc,
-
 													IntPtr y,
-
 													 cudnnTensorDescriptor_t hyDesc,
-
 													IntPtr hy,
-
 													 cudnnTensorDescriptor_t cyDesc,
-
 													IntPtr cy,
-
 													IntPtr workspace,
 													size_t workSpaceSizeInBytes);
 
-
-
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnRNNForwardTraining(cudnnHandle_t handle,
-
 												   cudnnRNNDescriptor_t rnnDesc,
-
 												   int seqLength,
-
 												   ref cudnnTensorDescriptor_t xDesc,
-
 												   IntPtr x,
-
 												   cudnnTensorDescriptor_t hxDesc,
-
 												   IntPtr hx,
-
 												   cudnnTensorDescriptor_t cxDesc,
-
 												   IntPtr cx,
-
 												   cudnnFilterDescriptor_t wDesc,
-
 												   IntPtr w,
-
 												   ref cudnnTensorDescriptor_t yDesc,
-
 												   IntPtr y,
-
 												   cudnnTensorDescriptor_t hyDesc,
-
 												   IntPtr hy,
-
 												   cudnnTensorDescriptor_t cyDesc,
-
 												   IntPtr cy,
-
 												   IntPtr workspace,
 												   size_t workSpaceSizeInBytes,
                                                    IntPtr reserveSpace,
@@ -1555,13 +1390,12 @@ namespace CUDAnshita {
 												   IntPtr dw,
 												   IntPtr reserveSpace,
 												   size_t reserveSpaceSizeInBytes );
-                                
 
-			/* DEPRECATED routines to be removed next release : 
-			   User should use the non-suffixed version (which has the API and functionality of _v5 version)
-			   Routines with _v4 suffix has the functionality of the non-suffixed routines in the CUDNN V5
-			 */
 
+			// DEPRECATED routines to be removed next release : 
+			// User should use the non-suffixed version (which has the API and functionality of _v5 version)
+			// Routines with _v4 suffix has the functionality of the non-suffixed routines in the CUDNN V5
+			//
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudnnStatus_t cudnnSetConvolution2dDescriptor_v4(
 								cudnnConvolutionDescriptor_t convDesc,
@@ -2280,9 +2114,20 @@ namespace CUDAnshita {
 	}
 
 	public enum cudnnTensorFormat {
-		CUDNN_TENSOR_NCHW = 0,          /* row major (wStride = 1, hStride = w) */
-		CUDNN_TENSOR_NHWC = 1,          /* feature maps interleaved ( cStride = 1 )*/
-		CUDNN_TENSOR_NCHW_VECT_C = 2    /* each image point is vector of element of C : the length of the vector is carried by the data type*/
+		/// <summary>
+		/// row major (wStride = 1, hStride = w)
+		/// </summary>
+		CUDNN_TENSOR_NCHW = 0,
+
+		/// <summary>
+		/// feature maps interleaved ( cStride = 1 )
+		/// </summary>
+		CUDNN_TENSOR_NHWC = 1,
+
+		/// <summary>
+		/// each image point is vector of element of C : the length of the vector is carried by the data type
+		/// </summary>
+		CUDNN_TENSOR_NCHW_VECT_C = 2
 	}
 
 	/// <summary>
@@ -2373,11 +2218,20 @@ namespace CUDAnshita {
 	}
 
 	public enum cudnnConvolutionBwdFilterAlgo {
-		CUDNN_CONVOLUTION_BWD_FILTER_ALGO_0 = 0,  // non-deterministic
+		/// <summary>
+		/// non-deterministic
+		/// </summary>
+		CUDNN_CONVOLUTION_BWD_FILTER_ALGO_0 = 0,
 		CUDNN_CONVOLUTION_BWD_FILTER_ALGO_1 = 1,
 		CUDNN_CONVOLUTION_BWD_FILTER_ALGO_FFT = 2,
-		CUDNN_CONVOLUTION_BWD_FILTER_ALGO_3 = 3,  // non-deterministic, algo0 with workspace
-		CUDNN_CONVOLUTION_BWD_FILTER_ALGO_WINOGRAD = 4,  // not implemented
+		/// <summary>
+		/// non-deterministic, algo0 with workspace
+		/// </summary>
+		CUDNN_CONVOLUTION_BWD_FILTER_ALGO_3 = 3,
+		/// <summary>
+		/// not implemented
+		/// </summary>
+		CUDNN_CONVOLUTION_BWD_FILTER_ALGO_WINOGRAD = 4,
 		CUDNN_CONVOLUTION_BWD_FILTER_ALGO_WINOGRAD_NONFUSED = 5,
 		CUDNN_CONVOLUTION_BWD_FILTER_ALGO_FFT_TILING = 6,
 		CUDNN_CONVOLUTION_BWD_FILTER_ALGO_COUNT = 7,
@@ -2401,7 +2255,10 @@ namespace CUDAnshita {
 	}
 
 	public enum cudnnConvolutionBwdDataAlgo {
-		CUDNN_CONVOLUTION_BWD_DATA_ALGO_0 = 0, // non-deterministic
+		/// <summary>
+		///  non-deterministic
+		/// </summary>
+		CUDNN_CONVOLUTION_BWD_DATA_ALGO_0 = 0,
 		CUDNN_CONVOLUTION_BWD_DATA_ALGO_1 = 1,
 		CUDNN_CONVOLUTION_BWD_DATA_ALGO_FFT = 2,
 		CUDNN_CONVOLUTION_BWD_DATA_ALGO_FFT_TILING = 3,
@@ -2422,20 +2279,38 @@ namespace CUDAnshita {
 	}
 
 	public enum cudnnSoftmaxAlgorithm {
-		CUDNN_SOFTMAX_FAST = 0,         /* straightforward implementation */
-		CUDNN_SOFTMAX_ACCURATE = 1,         /* subtract max from every point to avoid overflow */
+		/// <summary>
+		/// straightforward implementation
+		/// </summary>
+		CUDNN_SOFTMAX_FAST = 0,
+		/// <summary>
+		/// subtract max from every point to avoid overflow
+		/// </summary>
+		CUDNN_SOFTMAX_ACCURATE = 1,
 		CUDNN_SOFTMAX_LOG = 2
 	}
 
 	public enum cudnnSoftmaxMode {
-		CUDNN_SOFTMAX_MODE_INSTANCE = 0,   /* compute the softmax over all C, H, W for each N */
-		CUDNN_SOFTMAX_MODE_CHANNEL = 1     /* compute the softmax over all C for each H, W, N */
+		/// <summary>
+		/// compute the softmax over all C, H, W for each N
+		/// </summary>
+		CUDNN_SOFTMAX_MODE_INSTANCE = 0,
+		/// <summary>
+		/// compute the softmax over all C for each H, W, N
+		/// </summary>
+		CUDNN_SOFTMAX_MODE_CHANNEL = 1
 	}
 
 	public enum cudnnPoolingMode {
 		CUDNN_POOLING_MAX = 0,
-		CUDNN_POOLING_AVERAGE_COUNT_INCLUDE_PADDING = 1, // count for average includes padded values
-		CUDNN_POOLING_AVERAGE_COUNT_EXCLUDE_PADDING = 2, // count for average does not include padded values
+		/// <summary>
+		/// count for average includes padded values
+		/// </summary>
+		CUDNN_POOLING_AVERAGE_COUNT_INCLUDE_PADDING = 1,
+		/// <summary>
+		/// count for average does not include padded values
+		/// </summary>
+		CUDNN_POOLING_AVERAGE_COUNT_EXCLUDE_PADDING = 2,
 		CUDNN_POOLING_MAX_DETERMINISTIC = 3
 	}
 
@@ -2451,38 +2326,60 @@ namespace CUDAnshita {
 	/// LRN layer mode
 	/// </summary>
 	public enum cudnnLRNMode {
-		CUDNN_LRN_CROSS_CHANNEL_DIM1 = 0,// Normalize across tensor's dimA[1] dimension
+		/// <summary>
+		/// Normalize across tensor's dimA[1] dimension
+		/// </summary>
+		CUDNN_LRN_CROSS_CHANNEL_DIM1 = 0
 	}
 
 	public enum cudnnDivNormMode {
-		CUDNN_DIVNORM_PRECOMPUTED_MEANS = 0,
+		CUDNN_DIVNORM_PRECOMPUTED_MEANS = 0
 	}
 
 	public enum cudnnBatchNormMode {
-		// bnScale, bnBias tensor dims are 1xCxHxWx.. (one value per CHW...-slice, normalized over N slice)
+		/// <summary>
+		/// bnScale, bnBias tensor dims are 1xCxHxWx.. (one value per CHW...-slice, normalized over N slice)
+		/// </summary>
 		CUDNN_BATCHNORM_PER_ACTIVATION = 0,
 
-		//bnScale, bnBias tensor dims are 1xCx1x1 (one value per C-dim normalized over Nx1xHxW subtensors)
-		CUDNN_BATCHNORM_SPATIAL = 1,
+		/// <summary>
+		/// bnScale, bnBias tensor dims are 1xCx1x1 (one value per C-dim normalized over Nx1xHxW subtensors)
+		/// </summary>
+		CUDNN_BATCHNORM_SPATIAL = 1
 	}
 
 	/// <summary>
 	/// APIs for spatial transformer network
 	/// </summary>
 	public enum cudnnSamplerType {
-		CUDNN_SAMPLER_BILINEAR = 0,
+		CUDNN_SAMPLER_BILINEAR = 0
 	}
 
 	public enum cudnnRNNMode {
-		CUDNN_RNN_RELU = 0, // Stock RNN with ReLu activation
-		CUDNN_RNN_TANH = 1, // Stock RNN with tanh activation
-		CUDNN_LSTM = 2,     // LSTM with no peephole connections
-		CUDNN_GRU = 3       // Using h' = tanh(r * Uh(t-1) + Wx) and h = (1 - z) * h' + z * h(t-1);
+		/// <summary>
+		/// Stock RNN with ReLu activation
+		/// </summary>
+		CUDNN_RNN_RELU = 0,
+		/// <summary>
+		/// Stock RNN with tanh activation
+		/// </summary>
+		CUDNN_RNN_TANH = 1,
+		/// <summary>
+		/// LSTM with no peephole connections
+		/// </summary>
+		CUDNN_LSTM = 2,
+		/// <summary>
+		/// Using h' = tanh(r * Uh(t-1) + Wx) and h = (1 - z) * h' + z * h(t-1);
+		/// </summary>
+		CUDNN_GRU = 3
 	}
 
 	public enum cudnnDirectionMode {
 		CUDNN_UNIDIRECTIONAL = 0,
-		CUDNN_BIDIRECTIONAL = 1      // Using output concatination at each step. Do we also want to support output sum?
+		/// <summary>
+		/// Using output concatination at each step. Do we also want to support output sum?
+		/// </summary>
+		CUDNN_BIDIRECTIONAL = 1
 	}
 
 	public enum cudnnRNNInputMode {
