@@ -41,9 +41,11 @@ namespace CUDAnshita {
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cufftResult cufftPlanMany(ref cufftHandle plan,
 											   int rank,
-											   ref int n,
-											   ref int inembed, int istride, int idist,
-											   ref int onembed, int ostride, int odist,
+											   IntPtr n,
+											   IntPtr inembed, // int*
+											   int istride, int idist,
+											   IntPtr onembed, // int*
+											   int ostride, int odist,
 											   cufftType type,
 											   int batch);
 
@@ -52,57 +54,56 @@ namespace CUDAnshita {
 												 int nx,
 												 cufftType type,
 												 int batch,
-												 ref size_t workSize);
+												 IntPtr workSize); // size_t*
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cufftResult cufftMakePlan2d(cufftHandle plan,
 												 int nx, int ny,
 												 cufftType type,
-												 ref size_t workSize);
+												 IntPtr workSize); // size_t*
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cufftResult cufftMakePlan3d(cufftHandle plan,
 												 int nx, int ny, int nz,
 												 cufftType type,
-												 ref size_t workSize);
+												 IntPtr workSize); // size_t*
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cufftResult cufftMakePlanMany(cufftHandle plan,
 												   int rank,
-												   ref int n,
-												   ref int inembed, int istride, int idist,
-												   ref int onembed, int ostride, int odist,
+												   IntPtr n, // int*
+												   IntPtr inembed, // int*
+												   int istride, int idist,
+												   IntPtr onembed, // int*
+												   int ostride, int odist,
 												   cufftType type,
 												   int batch,
-												   ref size_t workSize);
+												   IntPtr workSize); // size_t*
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cufftResult cufftMakePlanMany64(cufftHandle plan,
 													 int rank,
-													 ref long n,
-													 ref long inembed,
+													 IntPtr n, // long*
+													 IntPtr inembed, // long*
 													 long istride,
 													 long idist,
-													 ref long onembed,
+													 IntPtr onembed, // long*
 													 long ostride, long odist,
 													 cufftType type,
 													 long batch,
-													 ref size_t workSize);
+													 IntPtr workSize); // size_t*
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cufftResult cufftGetSizeMany64(cufftHandle plan,
 													int rank,
-													ref long n,
-													ref long inembed,
+													IntPtr n, // long*
+													IntPtr inembed, // long*
 													long istride, long idist,
-													ref long onembed,
+													IntPtr onembed, // long*
 													long ostride, long odist,
 													cufftType type,
 													long batch,
-													ref size_t workSize);
-
-
-
+													IntPtr workSize); // size_t*
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cufftResult cufftEstimate1d(int nx,
@@ -122,9 +123,11 @@ namespace CUDAnshita {
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cufftResult cufftEstimateMany(int rank,
-												   ref int n,
-												   ref int inembed, int istride, int idist,
-												   ref int onembed, int ostride, int odist,
+												   IntPtr n, // int*
+												   IntPtr inembed, // int*
+												   int istride, int idist,
+												   IntPtr onembed, // int*
+												   int ostride, int odist,
 												   cufftType type,
 												   int batch,
 												   ref size_t workSize);
@@ -153,10 +156,14 @@ namespace CUDAnshita {
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cufftResult cufftGetSizeMany(cufftHandle handle,
-												  int rank, ref int n,
-												  ref int inembed, int istride, int idist,
-												  ref int onembed, int ostride, int odist,
-												  cufftType type, int batch, ref size_t workArea);
+												  int rank,
+												  IntPtr n, // int*
+												  IntPtr inembed, // int*
+												  int istride, int idist,
+												  IntPtr onembed, // int*
+												  int ostride, int odist,
+												  cufftType type, int batch,
+												  ref size_t workArea);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cufftResult cufftGetSize(cufftHandle handle, ref size_t workSize);
@@ -169,35 +176,35 @@ namespace CUDAnshita {
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cufftResult cufftExecC2C(cufftHandle plan,
-											  ref cufftComplex idata,
-											  ref cufftComplex odata,
-											  int direction);
+											  IntPtr idata, // cufftComplex*
+											  IntPtr odata, // cufftComplex*
+											  cufftDirection direction);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cufftResult cufftExecR2C(cufftHandle plan,
-											  ref cufftReal idata,
-											  ref cufftComplex odata);
+											  IntPtr idata,  // cufftReal*
+											  IntPtr odata); // cufftComplex*
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cufftResult cufftExecC2R(cufftHandle plan,
-											  ref cufftComplex idata,
-											  ref cufftReal odata);
+											  IntPtr idata,  // cufftComplex*
+											  IntPtr odata); // cufftReal*
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cufftResult cufftExecZ2Z(cufftHandle plan,
-											  ref cufftDoubleComplex idata,
-											  ref cufftDoubleComplex odata,
-											  int direction);
+											  IntPtr idata, // cufftDoubleComplex*
+											  IntPtr odata, // cufftDoubleComplex*
+											  cufftDirection direction);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cufftResult cufftExecD2Z(cufftHandle plan,
-											  ref cufftDoubleReal idata,
-											  ref cufftDoubleComplex odata);
+											  IntPtr idata,  // cufftDoubleReal*
+											  IntPtr odata); // cufftDoubleComplex*
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cufftResult cufftExecZ2D(cufftHandle plan,
-											  ref cufftDoubleComplex idata,
-											  ref cufftDoubleReal odata);
+											  IntPtr idata,  // cufftDoubleComplex*
+											  IntPtr odata); // cufftDoubleReal*
 
 
 			// utility functions
@@ -218,14 +225,260 @@ namespace CUDAnshita {
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cufftResult cufftGetProperty(libraryPropertyType type,
 												  ref int value);
-
-
 		}
 
 		public const int MAX_CUFFT_ERROR = 0x11;
+
+		/// <summary>
+		/// CUFFT transform directions 
+		/// Forward FFT
+		/// </summary>
 		public const int CUFFT_FORWARD = -1;
+
+		/// <summary>
+		/// CUFFT transform directions 
+		/// Inverse FFT
+		/// </summary>
 		public const int CUFFT_INVERSE = 1;
+
+		/// <summary>
+		/// structure definition used by the shim between old and new APIs
+		/// </summary>
 		public const int MAX_SHIM_RANK = 3;
+
+		// ----- C# Interface
+
+		public static cufftHandle Plan1d(int nx, cufftType type, int batch) {
+			cufftHandle plan = 0;
+			CheckStatus(API.cufftPlan1d(ref plan, nx, type, batch));
+			return plan;
+		}
+
+		public static cufftHandle Plan2d(int nx, int ny, cufftType type) {
+			cufftHandle plan = 0;
+			CheckStatus(API.cufftPlan2d(ref plan, nx, ny, type));
+			return plan;
+		}
+
+		public static cufftHandle Plan3d(int nx, int ny, int nz, cufftType type) {
+			cufftHandle plan = 0;
+			CheckStatus(API.cufftPlan3d(ref plan, nx, ny, nz, type));
+			return plan;
+		}
+
+		public static cufftHandle PlanMany(int rank, IntPtr n, IntPtr inembed, int istride, int idist, IntPtr onembed, int ostride, int odist, cufftType type, int batch) {
+			cufftHandle plan = 0;
+			CheckStatus(API.cufftPlanMany(
+				ref plan,
+				rank,
+				n,
+				inembed, istride, idist,
+				onembed, ostride, odist,
+				type,
+				batch
+			));
+			return plan;
+		}
+
+		public static IntPtr MakePlan1d(cufftHandle plan, int nx, cufftType type, int batch) {
+			IntPtr workSize = IntPtr.Zero;
+			CheckStatus(API.cufftMakePlan1d(plan, nx, type, batch, workSize));
+			return workSize;
+		}
+
+		public static IntPtr MakePlan2d(cufftHandle plan, int nx, int ny, cufftType type) {
+			IntPtr workSize = IntPtr.Zero;
+			CheckStatus(API.cufftMakePlan2d(plan, nx, ny, type, workSize));
+			return workSize;
+		}
+
+		public static IntPtr MakePlan3d(cufftHandle plan, int nx, int ny, int nz, cufftType type) {
+			IntPtr workSize = IntPtr.Zero;
+			CheckStatus(API.cufftMakePlan3d(plan, nx, ny, nz, type, workSize));
+			return workSize;
+		}
+
+		public static IntPtr MakePlanMany(cufftHandle plan, int rank, IntPtr n, IntPtr inembed, int istride, int idist, IntPtr onembed, int ostride, int odist, cufftType type, int batch) {
+			IntPtr workSize = IntPtr.Zero;
+			CheckStatus(API.cufftMakePlanMany(
+				plan,
+				rank,
+				n,
+				inembed, istride, idist,
+				onembed, ostride, odist,
+				type,
+				batch,
+				workSize
+			));
+			return workSize;
+		}
+
+		public static IntPtr MakePlanMany64(cufftHandle plan, int rank, IntPtr n, IntPtr inembed, long istride, long idist, IntPtr onembed, long ostride, long odist, cufftType type, long batch) {
+			IntPtr workSize = IntPtr.Zero;
+			CheckStatus(API.cufftMakePlanMany64(
+				plan,
+				rank,
+				n,
+				inembed, istride, idist,
+				onembed, ostride, odist,
+				type,
+				batch,
+				workSize
+			));
+			return workSize;
+		}
+
+		public static IntPtr GetSizeMany64(cufftHandle plan, int rank, IntPtr n, IntPtr inembed, long istride, long idist, IntPtr onembed, long ostride, long odist, cufftType type, long batch) {
+			IntPtr workSize = IntPtr.Zero;
+			CheckStatus(API.cufftGetSizeMany64(
+				plan,
+				rank,
+				n,
+				inembed, istride, idist,
+				onembed, ostride, odist,
+				type,
+				batch,
+				workSize
+			));
+			return workSize;
+		}
+
+		public static size_t Estimate1d(int nx, cufftType type, int batch) {
+			size_t workSize = 0;
+			CheckStatus(API.cufftEstimate1d(nx, type, batch, ref workSize));
+			return workSize;
+		}
+
+		public static size_t Estimate2d(int nx, int ny, cufftType type) {
+			size_t workSize = 0;
+			CheckStatus(API.cufftEstimate2d(nx, ny, type, ref workSize));
+			return workSize;
+		}
+
+		public static size_t Estimate3d(int nx, int ny, int nz, cufftType type) {
+			size_t workSize = 0;
+			CheckStatus(API.cufftEstimate3d(nx, ny, nz, type, ref workSize));
+			return workSize;
+		}
+
+		public static size_t EstimateMany(int rank, IntPtr n, IntPtr inembed, int istride, int idist, IntPtr onembed, int ostride, int odist, cufftType type, int batch) {
+			size_t workSize = 0;
+			CheckStatus(API.cufftEstimateMany(
+				rank,
+				n,
+				inembed, istride, idist,
+				onembed, ostride, odist,
+				type,
+				batch,
+				ref workSize
+			));
+			return workSize;
+		}
+
+		public static cufftHandle Create() {
+			cufftHandle handle = 0;
+			CheckStatus(API.cufftCreate(ref handle));
+			return handle;
+		}
+
+		public static size_t GetSize1d(cufftHandle handle, int nx, cufftType type, int batch) {
+			size_t workSize = 0;
+			CheckStatus(API.cufftGetSize1d(handle, nx, type, batch, ref workSize));
+			return workSize;
+		}
+
+		public static size_t GetSize2d(cufftHandle handle, int nx, int ny, cufftType type) {
+			size_t workSize = 0;
+			CheckStatus(API.cufftGetSize2d(handle, nx, ny, type, ref workSize));
+			return workSize;
+		}
+
+		public static size_t GetSize3d(cufftHandle handle, int nx, int ny, int nz, cufftType type) {
+			size_t workSize = 0;
+			CheckStatus(API.cufftGetSize3d(handle, nx, ny, nz, type, ref workSize));
+			return workSize;
+		}
+
+		public static size_t GetSizeMany(cufftHandle handle, int rank, IntPtr n, IntPtr inembed, int istride, int idist, IntPtr onembed, int ostride, int odist, cufftType type, int batch) {
+			size_t workSize = 0;
+			CheckStatus(API.cufftGetSizeMany(
+				handle,
+				rank, n,
+				inembed, istride, idist,
+				onembed, ostride, odist,
+				type, batch,
+				ref workSize
+			));
+			return workSize;
+		}
+
+		public static size_t GetSize(cufftHandle handle) {
+			size_t workSize = 0;
+			CheckStatus(API.cufftGetSize(handle, ref workSize));
+			return workSize;
+		}
+
+		public static void SetWorkArea(cufftHandle plan, IntPtr workArea) {
+			CheckStatus(API.cufftSetWorkArea(plan, workArea));
+		}
+
+		public static void SetAutoAllocation(cufftHandle plan, int autoAllocate) {
+			CheckStatus(API.cufftSetAutoAllocation(plan, autoAllocate));
+		}
+
+		public static void ExecC2C(cufftHandle plan, IntPtr idata, IntPtr odata, cufftDirection direction) {
+			CheckStatus(API.cufftExecC2C(plan, idata, odata, direction));
+		}
+
+		public static void ExecR2C(cufftHandle plan, IntPtr idata, IntPtr odata) {
+			CheckStatus(API.cufftExecR2C(plan, idata, odata));
+		}
+
+		public static void ExecC2R(cufftHandle plan, IntPtr idata, IntPtr odata) {
+			CheckStatus(API.cufftExecC2R(plan, idata, odata));
+		}
+
+		public static void ExecZ2Z(cufftHandle plan, IntPtr idata, IntPtr odata, cufftDirection direction) {
+			CheckStatus(API.cufftExecZ2Z(plan, idata, odata, direction));
+		}
+
+		public static void ExecD2Z(cufftHandle plan, IntPtr idata, IntPtr odata) {
+			CheckStatus(API.cufftExecD2Z(plan, idata, odata));
+		}
+
+		public static void ExecZ2D(cufftHandle plan, IntPtr idata, IntPtr odata) {
+			CheckStatus(API.cufftExecZ2D(plan, idata, odata));
+		}
+
+		public static void SetStream(cufftHandle plan, cudaStream_t stream) {
+			CheckStatus(API.cufftSetStream(plan, stream));
+		}
+
+		public static void SetCompatibilityMode(cufftHandle plan, cufftCompatibility mode) {
+			CheckStatus(API.cufftSetCompatibilityMode(plan, mode));
+		}
+
+		public static void Destroy(cufftHandle plan) {
+			CheckStatus(API.cufftDestroy(plan));
+		}
+
+		public static int GetVersion() {
+			int version = 0;
+			CheckStatus(API.cufftGetVersion(ref version));
+			return version;
+		}
+
+		public static int GetProperty(libraryPropertyType type) {
+			int value = 0;
+			CheckStatus(API.cufftGetProperty(type, ref value));
+			return value;
+		}
+
+		static void CheckStatus(cufftResult status) {
+			if (status != cufftResult.CUFFT_SUCCESS) {
+				throw new CudaException(status.ToString());
+			}
+		}
 	}
 
 	/// <summary>
@@ -255,18 +508,49 @@ namespace CUDAnshita {
 	/// CUFFT supports the following transform types
 	/// </summary>
 	public enum cufftType {
-		CUFFT_R2C = 0x2a,     // Real to Complex (interleaved)
-		CUFFT_C2R = 0x2c,     // Complex (interleaved) to Real
-		CUFFT_C2C = 0x29,     // Complex to Complex, interleaved
-		CUFFT_D2Z = 0x6a,     // Double to Double-Complex
-		CUFFT_Z2D = 0x6c,     // Double-Complex to Double
-		CUFFT_Z2Z = 0x69      // Double-Complex to Double-Complex
+		/// <summary>
+		/// Real to Complex (interleaved)
+		/// </summary>
+		CUFFT_R2C = 0x2a,
+
+		/// <summary>
+		/// Complex (interleaved) to Real
+		/// </summary>
+		CUFFT_C2R = 0x2c,
+
+		/// <summary>
+		/// Complex to Complex, interleaved
+		/// </summary>
+		CUFFT_C2C = 0x29,
+
+		/// <summary>
+		/// Double to Double-Complex
+		/// </summary>
+		CUFFT_D2Z = 0x6a,
+
+		/// <summary>
+		/// Double-Complex to Double
+		/// </summary>
+		CUFFT_Z2D = 0x6c,
+
+		/// <summary>
+		/// Double-Complex to Double-Complex
+		/// </summary>
+		CUFFT_Z2Z = 0x69
 	}
 
 	/// <summary>
 	/// CUFFT supports the following data layouts
 	/// </summary>
 	public enum cufftCompatibility {
-		CUFFT_COMPATIBILITY_FFTW_PADDING = 0x01    // The default value
+		/// <summary>
+		/// The default value
+		/// </summary>
+		CUFFT_COMPATIBILITY_FFTW_PADDING = 0x01
+	}
+
+	public enum cufftDirection {
+		CUFFT_FORWARD = -1,
+		CUFFT_INVERSE = 1
 	}
 }
