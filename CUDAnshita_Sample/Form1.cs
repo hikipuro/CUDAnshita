@@ -21,9 +21,9 @@ extern ""C"" __global__ void addKernel(int *c, const int *a, const int *b) {
 		}
 
 		private void buttonTest_Click(object sender, EventArgs e) {
-			//TestCompile();
+			TestCompile();
 			//TestCudaRT();
-			TestCuRAND();
+			//TestCuRAND();
 			//TestCuBLAS();
 			//TestMatrix();
 			//TestCuDNN();
@@ -121,12 +121,12 @@ extern ""C"" __global__ void addKernel(int *c, const int *a, const int *b) {
 
 		private void TestCudaRT() {
 			int count = 0;
-			CudaRT.API.cudaGetDeviceCount(ref count);
+			Runtime.API.cudaGetDeviceCount(ref count);
 			Console.WriteLine("CudaRT: {0}", count);
 		}
 
 		private void TestCuRAND() {
-			CUDAnshita.Random rand = new CUDAnshita.Random();
+			CudaRandomHost rand = new CudaRandomHost();
 			rand.Seed = (ulong)DateTime.Now.Ticks;
 			//uint[] test = rand.Generate(10);
 			//float[] test = rand.GenerateUniform(10);
@@ -159,16 +159,16 @@ extern ""C"" __global__ void addKernel(int *c, const int *a, const int *b) {
 			Console.WriteLine("cudnnGetCudartVersion: {0}", cuDNN6.GetCudartVersion());
 			Console.WriteLine("cudnnGetErrorString: {0}", cuDNN6.GetErrorString(cudnnStatus.CUDNN_STATUS_SUCCESS));
 
-			var config = CudaRT.DeviceGetCacheConfig();
+			var config = Runtime.DeviceGetCacheConfig();
 			Console.WriteLine(config);
-			Console.WriteLine(CudaRT.DeviceGetPCIBusId(0));
+			Console.WriteLine(Runtime.DeviceGetPCIBusId(0));
 
-			Console.WriteLine(NvCuda.DeviceGetPCIBusId(0));
+			Console.WriteLine(Driver.DeviceGetPCIBusId(0));
 
-			int totalDevices = CudaRT.GetDeviceCount();
+			int totalDevices = Runtime.GetDeviceCount();
 
 			for (int i = 0; i < totalDevices; i++) {
-				cudaDeviceProp prop = CudaRT.GetDeviceProperties(i);
+				cudaDeviceProp prop = Runtime.GetDeviceProperties(i);
 
 				Console.WriteLine("device {0}, {1}", i, prop.name);
 				Console.WriteLine("sms {0}", prop.multiProcessorCount);

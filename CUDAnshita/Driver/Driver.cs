@@ -34,7 +34,7 @@ namespace CUDAnshita {
 	/// <remarks>
 	/// <a href="http://docs.nvidia.com/cuda/cuda-driver-api/">http://docs.nvidia.com/cuda/cuda-driver-api/</a>
 	/// </remarks>
-	public class NvCuda {
+	public class Driver {
 		public class API {
 			const string DLL_PATH = "nvcuda.dll";
 			const CallingConvention CALLING_CONVENTION = CallingConvention.Cdecl;

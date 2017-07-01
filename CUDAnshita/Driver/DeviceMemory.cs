@@ -35,7 +35,7 @@ namespace CUDAnshita {
 
 		public void Remove(string name) {
 			IntPtr ptr = list[name];
-			NvCuda.MemFree(ptr);
+			Driver.MemFree(ptr);
 			list.Remove(name);
 		}
 
@@ -68,7 +68,7 @@ namespace CUDAnshita {
 		}
 
 		private IntPtr _Alloc(int byteSize) {
-			return NvCuda.MemAlloc(byteSize);
+			return Driver.MemAlloc(byteSize);
 		}
 
 		private void _CopyHtoD<T>(IntPtr dest, T[] data) {
@@ -76,14 +76,14 @@ namespace CUDAnshita {
 			IntPtr ptr = Marshal.AllocHGlobal(byteSize);
 			MarshalUtil.Copy<T>(data, 0, ptr, data.Length);
 
-			NvCuda.MemcpyHtoD(dest, ptr, byteSize);
+			Driver.MemcpyHtoD(dest, ptr, byteSize);
 			Marshal.FreeHGlobal(ptr);
 		}
 
 		private T[] _CopyDtoH<T>(IntPtr src, int count) {
 			int byteSize = Marshal.SizeOf(typeof(T)) * count;
 			IntPtr ptr = Marshal.AllocHGlobal(byteSize);
-			NvCuda.MemcpyDtoH(ptr, src, byteSize);
+			Driver.MemcpyDtoH(ptr, src, byteSize);
 
 			T[] dest = new T[count];
 			MarshalUtil.Copy<T>(ptr, dest, 0, count);

@@ -5,67 +5,67 @@ namespace CUDAnshita {
 		IntPtr context = IntPtr.Zero;
 
 		public uint ApiVersion {
-			get { return NvCuda.CtxGetApiVersion(context); }
+			get { return Driver.CtxGetApiVersion(context); }
 		}
 
 		public CUfunc_cache CacheConfig {
-			get { return NvCuda.CtxGetCacheConfig(); }
-			set { NvCuda.CtxSetCacheConfig(value); }
+			get { return Driver.CtxGetCacheConfig(); }
+			set { Driver.CtxSetCacheConfig(value); }
 		}
 
 		public int Device {
-			get { return NvCuda.CtxGetDevice(); }
+			get { return Driver.CtxGetDevice(); }
 		}
 
 		public uint Flags {
-			get { return NvCuda.CtxGetFlags(); }
+			get { return Driver.CtxGetFlags(); }
 		}
 
 		internal Context(int deviceHandle) {
-			context = NvCuda.CtxCreate(0, deviceHandle);
+			context = Driver.CtxCreate(0, deviceHandle);
 		}
 
 		public void Dispose() {
 			if (context != IntPtr.Zero) {
-				NvCuda.CtxDestroy(context);
+				Driver.CtxDestroy(context);
 				context = IntPtr.Zero;
 			}
 		}
 
 		public void Synchronize() {
-			NvCuda.CtxSynchronize();
+			Driver.CtxSynchronize();
 		}
 
 		public void Push() {
-			NvCuda.CtxPushCurrent(context);
+			Driver.CtxPushCurrent(context);
 		}
 
 		public IntPtr Pop() {
-			return NvCuda.CtxPopCurrent();
+			return Driver.CtxPopCurrent();
 		}
 
 		public void DisablePeerAccess(IntPtr peerContext) {
-			NvCuda.CtxDisablePeerAccess(peerContext);
+			Driver.CtxDisablePeerAccess(peerContext);
 		}
 
 		public void EnablePeerAccess(IntPtr peerContext, uint flags) {
-			NvCuda.CtxEnablePeerAccess(peerContext, flags);
+			Driver.CtxEnablePeerAccess(peerContext, flags);
 		}
 
 		public long GetLimit(CUlimit limit) {
-			return NvCuda.CtxGetLimit(limit);
+			return Driver.CtxGetLimit(limit);
 		}
 
 		public void SetLimit(CUlimit limit, long value) {
-			NvCuda.CtxSetLimit(limit, value);
+			Driver.CtxSetLimit(limit, value);
 		}
 
 		public CUsharedconfig GetSharedMemConfig(CUlimit limit) {
-			return NvCuda.CtxGetSharedMemConfig(limit);
+			return Driver.CtxGetSharedMemConfig(limit);
 		}
 
 		public void SetSharedMemConfig(CUsharedconfig config) {
-			NvCuda.CtxSetSharedMemConfig(config);
+			Driver.CtxSetSharedMemConfig(config);
 		}
 	}
 }

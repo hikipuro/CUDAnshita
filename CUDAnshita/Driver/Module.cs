@@ -61,25 +61,25 @@ namespace CUDAnshita {
 
 		public void Dispose() {
 			if (module != IntPtr.Zero) {
-				NvCuda.ModuleUnload(module);
+				Driver.ModuleUnload(module);
 				module = IntPtr.Zero;
 			}
 		}
 
 		public IntPtr GetFunction(string name) {
-			return NvCuda.ModuleGetFunction(module, name);
+			return Driver.ModuleGetFunction(module, name);
 		}
 
 		public IntPtr GetGlobal(string name) {
-			return NvCuda.ModuleGetGlobal(module, name);
+			return Driver.ModuleGetGlobal(module, name);
 		}
 
 		public IntPtr GetSurfRef(string name) {
-			return NvCuda.ModuleGetSurfRef(module, name);
+			return Driver.ModuleGetSurfRef(module, name);
 		}
 
 		public IntPtr GetTexRef(string name) {
-			return NvCuda.ModuleGetTexRef(module, name);
+			return Driver.ModuleGetTexRef(module, name);
 		}
 
 		public void SetBlockCount(int x, int y, int z) {
@@ -95,31 +95,31 @@ namespace CUDAnshita {
 		}
 
 		public void Load(string path) {
-			module = NvCuda.ModuleLoad(path);
+			module = Driver.ModuleLoad(path);
 		}
 
 		public void LoadData(string image) {
 			//Dispose();
 			IntPtr ptxImage = Marshal.StringToHGlobalAnsi(image);
-			module = NvCuda.ModuleLoadData(ptxImage);
+			module = Driver.ModuleLoadData(ptxImage);
 		}
 
 		public void LoadDataEx(string image, uint numOptions, CUjit_option options, IntPtr optionValues) {
 			//Dispose();
 			IntPtr ptxImage = Marshal.StringToHGlobalAnsi(image);
-			module = NvCuda.ModuleLoadDataEx(
+			module = Driver.ModuleLoadDataEx(
 				ptxImage, numOptions, options, optionValues
 			);
 		}
 
 		public void LoadFatBinary(IntPtr fatCubin) {
-			module = NvCuda.ModuleLoadFatBinary(fatCubin);
+			module = Driver.ModuleLoadFatBinary(fatCubin);
 		}
 
 		public void Excecute(string funcName, params object[] args) {
-			IntPtr kernel = NvCuda.ModuleGetFunction(module, funcName);
+			IntPtr kernel = Driver.ModuleGetFunction(module, funcName);
 			Args arguments = Args.Create(args);
-			NvCuda.LaunchKernel(
+			Driver.LaunchKernel(
 				kernel,
 				gridX, gridY, gridZ,		// grid dim
 				blockX, blockY, blockZ,		// block dim

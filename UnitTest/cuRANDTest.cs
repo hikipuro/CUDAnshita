@@ -7,14 +7,14 @@ namespace UnitTest {
 	public class cuRANDTest {
 		[ClassInitialize]
 		public static void ClassInit(TestContext context) {
-			CudaRT.DeviceReset();
+			Runtime.DeviceReset();
 		}
 
 		[TestMethod]
 		public void Test1() {
 			IntPtr generator = IntPtr.Zero;
 			generator = cuRAND.CreateGenerator(curandRngType.CURAND_RNG_PSEUDO_MTGP32);
-			IntPtr output = CudaRT.Malloc(10 * 4);
+			IntPtr output = Runtime.Malloc(10 * 4);
 			float[] outp = new float[10];
 
 			cuRAND.API.curandGenerateUniform(generator, output, 10);
