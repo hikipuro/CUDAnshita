@@ -460,35 +460,35 @@ namespace CUDAnshita {
 
 			// ----- OpenGL Interoperability [DEPRECATED]
 
-			//[Obsolete]
+			//[Obsolete("This function is deprecated as of CUDA 3.0")]
 			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			//public static extern cudaError_t cudaGLMapBufferObject(ref IntPtr devPtr, GLuint bufObj);
 
-			//[Obsolete]
+			//[Obsolete("This function is deprecated as of CUDA 3.0")]
 			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			//public static extern cudaError_t cudaGLMapBufferObjectAsync(ref IntPtr devPtr, GLuint bufObj, cudaStream_t stream);
 
-			//[Obsolete]
+			//[Obsolete("This function is deprecated as of CUDA 3.0")]
 			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			//public static extern cudaError_t cudaGLRegisterBufferObject(GLuint bufObj);
 
-			//[Obsolete]
+			//[Obsolete("This function is deprecated as of CUDA 3.0")]
 			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			//public static extern cudaError_t cudaGLSetBufferObjectMapFlags(GLuint bufObj, uint flags);
 
-			//[Obsolete]
+			//[Obsolete("This function is deprecated as of CUDA 5.0")]
 			//​[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			//public static extern cudaError_t cudaGLSetGLDevice(int device);
 
-			//[Obsolete]
+			//[Obsolete("This function is deprecated as of CUDA 3.0")]
 			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			//public static extern cudaError_t cudaGLUnmapBufferObject(GLuint bufObj);
 
-			//[Obsolete]
+			//[Obsolete("This function is deprecated as of CUDA 3.0")]
 			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			//public static extern cudaError_t cudaGLUnmapBufferObjectAsync(GLuint bufObj, cudaStream_t stream);
 
-			//[Obsolete]
+			//[Obsolete("This function is deprecated as of CUDA 3.0")]
 			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			//public static extern cudaError_t cudaGLUnregisterBufferObject(GLuint bufObj);
 
@@ -511,43 +511,43 @@ namespace CUDAnshita {
 
 			// ----- Direct3D 9 Interoperability [DEPRECATED]
 
-			//[Obsolete]
+			//[Obsolete("This function is deprecated as of CUDA 3.0")]
 			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			//public static extern cudaError_t cudaD3D9MapResources(int count, ref IDirect3DResource9[] ppResources);
 
-			//[Obsolete]
+			//[Obsolete("This function is deprecated as of CUDA 3.0")]
 			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			//public static extern cudaError_t cudaD3D9RegisterResource(ref IDirect3DResource9 pResource, uint flags);
 
-			//[Obsolete]
+			//[Obsolete("This function is deprecated as of CUDA 3.0")]
 			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			//public static extern cudaError_t cudaD3D9ResourceGetMappedArray(ref cudaArray[] ppArray, ref IDirect3DResource9 pResource, uint face, uint level);
 
-			//[Obsolete]
+			//[Obsolete("This function is deprecated as of CUDA 3.0")]
 			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			//public static extern cudaError_t cudaD3D9ResourceGetMappedPitch(ref size_t pPitch, ref size_t pPitchSlice, ref IDirect3DResource9 pResource, uint face, uint level);
 
-			//[Obsolete]
+			//[Obsolete("This function is deprecated as of CUDA 3.0")]
 			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			//public static extern cudaError_t cudaD3D9ResourceGetMappedPointer(ref IntPtr pPointer, ref IDirect3DResource9 pResource, uint face, uint level);
 
-			//[Obsolete]
+			//[Obsolete("This function is deprecated as of CUDA 3.0")]
 			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			//public static extern cudaError_t cudaD3D9ResourceGetMappedSize(ref size_t pSize, ref IDirect3DResource9 pResource, uint face, uint level);
 
-			//[Obsolete]
+			//[Obsolete("This function is deprecated as of CUDA 3.0")]
 			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			//public static extern cudaError_t cudaD3D9ResourceGetSurfaceDimensions(ref size_t pWidth, ref size_t pHeight, ref size_t pDepth, ref IDirect3DResource9 pResource, uint face, uint level);
 
-			//[Obsolete]
+			//[Obsolete("This function is deprecated as of CUDA 3.0")]
 			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			//public static extern cudaError_t cudaD3D9ResourceSetMapFlags(ref IDirect3DResource9 pResource, uint flags);
 
-			//[Obsolete]
+			//[Obsolete("This function is deprecated as of CUDA 3.0")]
 			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			//public static extern cudaError_t cudaD3D9UnmapResources(int count, ref IDirect3DResource9[] ppResources);
 
-			//[Obsolete]
+			//[Obsolete("This function is deprecated as of CUDA 3.0")]
 			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			//public static extern cudaError_t cudaD3D9UnregisterResource(ref IDirect3DResource9 pResource);
 
@@ -564,51 +564,51 @@ namespace CUDAnshita {
 
 			// ----- Direct3D 10 Interoperability [DEPRECATED]
 
-			//[Obsolete]
+			//[Obsolete("This function is deprecated as of CUDA 5.0")]
 			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			//public static extern cudaError_t cudaD3D10GetDirect3DDevice(ref ID3D10Device[] ppD3D10Device);
 
-			//[Obsolete]
+			//[Obsolete("This function is deprecated as of CUDA 3.0")]
 			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			//public static extern cudaError_t cudaD3D10MapResources(int count, ref ID3D10Resource[] ppResources);
 
-			//[Obsolete]
+			//[Obsolete("This function is deprecated as of CUDA 3.0")]
 			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			//public static extern cudaError_t cudaD3D10RegisterResource(ref ID3D10Resource pResource, uint flags);
 
-			//[Obsolete]
+			//[Obsolete("This function is deprecated as of CUDA 3.0")]
 			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			//public static extern cudaError_t cudaD3D10ResourceGetMappedArray(ref cudaArray[] ppArray, ref ID3D10Resource pResource, uint subResource);
 
-			//[Obsolete]
+			//[Obsolete("This function is deprecated as of CUDA 3.0")]
 			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			//public static extern cudaError_t cudaD3D10ResourceGetMappedPitch(ref size_t pPitch, ref size_t pPitchSlice, ref ID3D10Resource pResource, uint subResource);
 
-			//[Obsolete]
+			//[Obsolete("This function is deprecated as of CUDA 3.0")]
 			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			//public static extern cudaError_t cudaD3D10ResourceGetMappedPointer(ref IntPtr pPointer, ref ID3D10Resource pResource, uint subResource);
 
-			//[Obsolete]
+			//[Obsolete("This function is deprecated as of CUDA 3.0")]
 			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			//public static extern cudaError_t cudaD3D10ResourceGetMappedSize(ref size_t pSize, ref ID3D10Resource pResource, uint subResource);
 
-			//[Obsolete]
+			//[Obsolete("This function is deprecated as of CUDA 3.0")]
 			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			//public static extern cudaError_t cudaD3D10ResourceGetSurfaceDimensions(ref size_t pWidth, ref size_t pHeight, ref size_t pDepth, ref ID3D10Resource pResource, uint subResource);
 
-			//[Obsolete]
+			//[Obsolete("This function is deprecated as of CUDA 3.0")]
 			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			//public static extern cudaError_t cudaD3D10ResourceSetMapFlags(ref ID3D10Resource pResource, uint flags);
 
-			//[Obsolete]
+			//[Obsolete("This function is deprecated as of CUDA 5.0")]
 			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			//public static extern cudaError_t cudaD3D10SetDirect3DDevice(ref ID3D10Device pD3D10Device, int device = -1);
 
-			//[Obsolete]
+			//[Obsolete("This function is deprecated as of CUDA 3.0")]
 			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			//public static extern cudaError_t cudaD3D10UnmapResources(int count, ref ID3D10Resource[] ppResources);
 
-			//[Obsolete]
+			//[Obsolete("This function is deprecated as of CUDA 3.0")]
 			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			//public static extern cudaError_t cudaD3D10UnregisterResource(ref ID3D10Resource pResource);
 
@@ -625,11 +625,11 @@ namespace CUDAnshita {
 
 			// ----- Direct3D 11 Interoperability [DEPRECATED]
 
-			//[Obsolete]
+			//[Obsolete("This function is deprecated as of CUDA 5.0")]
 			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			//public static extern cudaError_t cudaD3D11GetDirect3DDevice(ref ID3D11Device[] ppD3D11Device);
 
-			//[Obsolete]
+			//[Obsolete("This function is deprecated as of CUDA 5.0")]
 			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			//public static extern cudaError_t cudaD3D11SetDirect3DDevice(ref ID3D11Device pD3D11Device, int device = -1);
 
