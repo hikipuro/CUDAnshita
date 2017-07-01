@@ -151,12 +151,12 @@ extern ""C"" {
 		}
 
 		string Compile(string name, string src) {
-			NVRTC compiler = new NVRTC();
+			RuntimeCompiler compiler = new RuntimeCompiler();
 			compiler.AddOptions(
-				NVRTC.OPTION_TARGET_20,
-				NVRTC.OPTION_FMAD_FALSE,
-				NVRTC.OPTION_LINE_INFO,
-				NVRTC.OPTION_DEVICE_AS_DEFAULT_EXECUTION_SPACE
+				RuntimeCompiler.OPTION_TARGET_20,
+				RuntimeCompiler.OPTION_FMAD_FALSE,
+				RuntimeCompiler.OPTION_LINE_INFO,
+				RuntimeCompiler.OPTION_DEVICE_AS_DEFAULT_EXECUTION_SPACE
 			);
 
 			string ptx = compiler.Compile(name, src);

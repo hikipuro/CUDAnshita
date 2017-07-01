@@ -29,11 +29,11 @@ using CUDAnshita;
 ### cuのコンパイル
 ```cs
 // プログラムのコンパイル (cu から PTX へ)
-NVRTC compiler = new NVRTC();
+RuntimeCompiler compiler = new RuntimeCompiler();
 compiler.AddOptions(
-	NVRTC.OPTION_TARGET_20,
-	NVRTC.OPTION_FMAD_FALSE,
-	NVRTC.OPTION_LINE_INFO
+	RuntimeCompiler.OPTION_TARGET_20,
+	RuntimeCompiler.OPTION_FMAD_FALSE,
+	RuntimeCompiler.OPTION_LINE_INFO
 );
 string ptx = compiler.Compile(
 	"addKernel.cu",

@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace CUDAnshita {
-	using System.Collections.Generic;
 	using cudaStream_t = IntPtr;
 
 	/// <summary>

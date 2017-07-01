@@ -38,6 +38,7 @@
   <ItemGroup>
     <Compile Include="API\cuBLAS.cs" />
     <Compile Include="cuRAND\CudaRandomDevice.cs" />
+    <Compile Include="NVRTC\RuntimeCompiler.cs" />
     <Compile Include="Runtime\Runtime.cs" />
     <Compile Include="Runtime\RuntimeData.cs" />
     <Compile Include="API\cuDNN.cs" />
@@ -49,7 +50,7 @@
     <Compile Include="API\MathConstants.cs" />
     <Compile Include="Driver\Driver.cs" />
     <Compile Include="Driver\DriverData.cs" />
-    <Compile Include="API\NVRTC.cs" />
+    <Compile Include="NVRTC\NVRTC.cs" />
     <Compile Include="API\VectorTypes.cs" />
     <Compile Include="cuRAND\CudaRandomHost.cs" />
     <Compile Include="Driver\Context.cs" />

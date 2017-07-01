@@ -31,14 +31,14 @@ extern ""C"" __global__ void addKernel(int *c, const int *a, const int *b) {
 
 		private void TestCompile() {
 			// プログラムのコンパイル (cu から PTX へ)
-			NVRTC compiler = new NVRTC();
+			RuntimeCompiler compiler = new RuntimeCompiler();
 			//compiler.AddHeader("curand_kernel.h", @"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\curand_kernel.h");
 			compiler.AddOptions(
-				NVRTC.OPTION_TARGET_20,
-				NVRTC.OPTION_FMAD_FALSE,
-				NVRTC.OPTION_LINE_INFO,
-				NVRTC.OPTION_DEVICE_AS_DEFAULT_EXECUTION_SPACE
-				//NVRTC.OPTION_INCLUDE_PATH_ + @"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\"
+				RuntimeCompiler.OPTION_TARGET_20,
+				RuntimeCompiler.OPTION_FMAD_FALSE,
+				RuntimeCompiler.OPTION_LINE_INFO,
+				RuntimeCompiler.OPTION_DEVICE_AS_DEFAULT_EXECUTION_SPACE
+				//RuntimeCompiler.OPTION_INCLUDE_PATH_ + @"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\"
 			);
 
 			string ptx = compiler.Compile("addKernel.cu", addKernelString);
