@@ -568,6 +568,158 @@ namespace CUDAnshita {
 
 		// ----- C# Interface
 
+		public static curandGenerator_t CreateGenerator(curandRngType_t rng_type) {
+			curandGenerator_t generator = IntPtr.Zero;
+			CheckStatus(API.curandCreateGenerator(ref generator, rng_type));
+			return generator;
+		}
+
+		public static curandGenerator_t CreateGeneratorHost(curandRngType_t rng_type) {
+			curandGenerator_t generator = IntPtr.Zero;
+			CheckStatus(API.curandCreateGeneratorHost(ref generator, rng_type));
+			return generator;
+		}
+
+		public static curandDiscreteDistribution_t CreatePoissonDistribution(double lambda) {
+			curandDiscreteDistribution_t discrete_distribution = IntPtr.Zero;
+			CheckStatus(API.curandCreatePoissonDistribution(lambda, ref discrete_distribution));
+			return discrete_distribution;
+		}
+
+		public static void DestroyDistribution(curandDiscreteDistribution_t discrete_distribution) {
+			CheckStatus(API.curandDestroyDistribution(discrete_distribution));
+		}
+
+		public static void DestroyGenerator(curandGenerator_t generator) {
+			CheckStatus(API.curandDestroyGenerator(generator));
+		}
+
+		public static uint[] Generate(curandGenerator_t generator, size_t num) {
+			uint[] outputPtr = new uint[num];
+			CheckStatus(API.curandGenerate(generator, outputPtr, num));
+			return outputPtr;
+		}
+
+		public static float[] GenerateLogNormal(curandGenerator_t generator, size_t n, float mean, float stddev) {
+			float[] outputPtr = new float[n];
+			CheckStatus(API.curandGenerateLogNormal(generator, outputPtr, n, mean, stddev));
+			return outputPtr;
+		}
+
+		public static double[] GenerateLogNormalDouble(curandGenerator_t generator, size_t n, double mean, double stddev) {
+			double[] outputPtr = new double[n];
+			CheckStatus(API.curandGenerateLogNormalDouble(generator, outputPtr, n, mean, stddev));
+			return outputPtr;
+		}
+
+		public static ulong[] GenerateLongLong(curandGenerator_t generator, size_t num) {
+			ulong[] outputPtr = new ulong[num];
+			CheckStatus(API.curandGenerateLongLong(generator, outputPtr, num));
+			return outputPtr;
+		}
+
+		public static float[] GenerateNormal(curandGenerator_t generator, size_t n, float mean, float stddev) {
+			float[] outputPtr = new float[n];
+			CheckStatus(API.curandGenerateNormal(generator, outputPtr, n, mean, stddev));
+			return outputPtr;
+		}
+
+		public static double[] GenerateNormalDouble(curandGenerator_t generator, size_t n, double mean, double stddev) {
+			double[] outputPtr = new double[n];
+			CheckStatus(API.curandGenerateNormalDouble(generator, outputPtr, n, mean, stddev));
+			return outputPtr;
+		}
+
+		public static uint[] GeneratePoisson(curandGenerator_t generator, size_t n, double lambda) {
+			uint[] outputPtr = new uint[n];
+			CheckStatus(API.curandGeneratePoisson(generator, outputPtr, n, lambda));
+			return outputPtr;
+		}
+
+		public static void GenerateSeeds(curandGenerator_t generator) {
+			CheckStatus(API.curandGenerateSeeds(generator));
+		}
+
+		public static float[] GenerateUniform(curandGenerator_t generator, size_t num) {
+			float[] outputPtr = new float[num];
+			CheckStatus(API.curandGenerateUniform(generator, outputPtr, num));
+			return outputPtr;
+		}
+
+		public static double[] GenerateUniformDouble(curandGenerator_t generator, size_t num) {
+			double[] outputPtr = new double[num];
+			CheckStatus(API.curandGenerateUniformDouble(generator, outputPtr, num));
+			return outputPtr;
+		}
+
+		public static int[] GetDirectionVectors32(curandDirectionVectorSet set) {
+			IntPtr vectors = IntPtr.Zero;
+			CheckStatus(API.curandGetDirectionVectors32(ref vectors, set));
+
+			int[] result = new int[20000];
+			Marshal.Copy(vectors, result, 0, result.Length);
+			return result;
+		}
+
+		public static long[] GetDirectionVectors64(curandDirectionVectorSet set) {
+			IntPtr vectors = IntPtr.Zero;
+			CheckStatus(API.curandGetDirectionVectors64(ref vectors, set));
+
+			long[] result = new long[20000];
+			Marshal.Copy(vectors, result, 0, result.Length);
+			return result;
+		}
+
+		public static int GetProperty(libraryPropertyType type) {
+			int value = 0;
+			CheckStatus(API.curandGetProperty(type, ref value));
+			return value;
+		}
+
+		public static int[] GetScrambleConstants32() {
+			IntPtr constants = IntPtr.Zero;
+			CheckStatus(API.curandGetScrambleConstants32(ref constants));
+
+			int[] result = new int[20000];
+			Marshal.Copy(constants, result, 0, result.Length);
+			return result;
+		}
+
+		public static long[] GetScrambleConstants64() {
+			IntPtr constants = IntPtr.Zero;
+			CheckStatus(API.curandGetScrambleConstants64(ref constants));
+
+			long[] result = new long[20000];
+			Marshal.Copy(constants, result, 0, result.Length);
+			return result;
+		}
+
+		public static int GetVersion() {
+			int version = 0;
+			CheckStatus(API.curandGetVersion(ref version));
+			return version;
+		}
+
+		public static void SetGeneratorOffset(curandGenerator_t generator, ulong offset) {
+			CheckStatus(API.curandSetGeneratorOffset(generator, offset));
+		}
+
+		public static void SetGeneratorOrdering(curandGenerator_t generator, curandOrdering order) {
+			CheckStatus(API.curandSetGeneratorOrdering(generator, order));
+		}
+
+		public static void SetPseudoRandomGeneratorSeed(curandGenerator_t generator, ulong seed) {
+			CheckStatus(API.curandSetPseudoRandomGeneratorSeed(generator, seed));
+		}
+
+		public static void SetQuasiRandomGeneratorDimensions(curandGenerator_t generator, uint num_dimensions) {
+			CheckStatus(API.curandSetQuasiRandomGeneratorDimensions(generator, num_dimensions));
+		}
+
+		public static void SetStream(curandGenerator_t generator, cudaStream_t stream) {
+			CheckStatus(API.curandSetStream(generator, stream));
+		}
+
 		IntPtr generator = IntPtr.Zero;
 		ulong seed = 0;
 
@@ -598,154 +750,56 @@ namespace CUDAnshita {
 			}
 		}
 
-		public void CreatePoissonDistribution(double lambda, IntPtr discreteDistribution) {
-			CheckStatus(API.curandCreatePoissonDistribution(lambda, ref discreteDistribution));
-		}
-
-		public void DestroyDistribution(IntPtr discreteDistribution) {
-			CheckStatus(API.curandDestroyDistribution(discreteDistribution));
-		}
-
 		public uint[] Generate(int num) {
-			uint[] result = new uint[num];
-			CheckStatus(API.curandGenerate(generator, result, num));
-			return result;
+			return Generate(generator, num);
 		}
 
 		public float[] GenerateLogNormal(int num, float mean, float stddev) {
-			float[] result = new float[num];
-			CheckStatus(API.curandGenerateLogNormal(generator, result, num, mean, stddev));
-			return result;
+			return GenerateLogNormal(generator, num, mean, stddev);
 		}
 
 		public double[] GenerateLogNormalDouble(int num, double mean, double stddev) {
-			double[] result = new double[num];
-			CheckStatus(API.curandGenerateLogNormalDouble(generator, result, num, mean, stddev));
-			return result;
+			return GenerateLogNormalDouble(generator, num, mean, stddev);
 		}
 
 		public ulong[] GenerateLong(int num) {
-			ulong[] result = new ulong[num];
-			CheckStatus(API.curandGenerateLongLong(generator, result, num));
-			return result;
+			return GenerateLongLong(generator, num);
 		}
 
 		public float[] GenerateNormal(int num, float mean, float stddev) {
-			float[] result = new float[num];
-			CheckStatus(API.curandGenerateNormal(generator, result, num, mean, stddev));
-			return result;
+			return GenerateNormal(generator, num, mean, stddev);
 		}
 
 		public double[] GenerateNormalDouble(int num, double mean, double stddev) {
-			double[] result = new double[num];
-			CheckStatus(API.curandGenerateNormalDouble(generator, result, num, mean, stddev));
-			return result;
+			return GenerateNormalDouble(generator, num, mean, stddev);
 		}
 
 		public uint[] GeneratePoisson(int num, double lambda) {
-			uint[] result = new uint[num];
-			CheckStatus(API.curandGeneratePoisson(generator, result, num, lambda));
-			return result;
+			return GeneratePoisson(generator, num, lambda);
 		}
 
 		public float[] GenerateUniform(int num) {
-			float[] result = new float[num];
-			CheckStatus(API.curandGenerateUniform(generator, result, num));
-			return result;
+			return GenerateUniform(generator, num);
 		}
 
 		public double[] GenerateUniformDouble(int num) {
-			double[] result = new double[num];
-			CheckStatus(API.curandGenerateUniformDouble(generator, result, num));
-			return result;
-		}
-
-		public int[] GetDirectionVectors32(curandDirectionVectorSet set = curandDirectionVectorSet.CURAND_DIRECTION_VECTORS_32_JOEKUO6) {
-			IntPtr vectors = IntPtr.Zero;
-			CheckStatus(API.curandGetDirectionVectors32(ref vectors, set));
-
-			int[] result = new int[20000];
-			Marshal.Copy(vectors, result, 0, result.Length);
-			return result;
-		}
-
-		public long[] GetDirectionVectors64(curandDirectionVectorSet set = curandDirectionVectorSet.CURAND_DIRECTION_VECTORS_64_JOEKUO6) {
-			IntPtr vectors = IntPtr.Zero;
-			CheckStatus(API.curandGetDirectionVectors64(ref vectors, set));
-
-			long[] result = new long[20000];
-			Marshal.Copy(vectors, result, 0, result.Length);
-			return result;
-		}
-
-		public int GetProperty(libraryPropertyType type) {
-			int result = 0;
-			CheckStatus(API.curandGetProperty(type, ref result));
-			return result;
-		}
-
-		public int[] GetScrambleConstants32() {
-			IntPtr constants = IntPtr.Zero;
-			CheckStatus(API.curandGetScrambleConstants32(ref constants));
-
-			int[] result = new int[20000];
-			Marshal.Copy(constants, result, 0, result.Length);
-			return result;
-		}
-
-		public long[] GetScrambleConstants64() {
-			IntPtr constants = IntPtr.Zero;
-			CheckStatus(API.curandGetScrambleConstants64(ref constants));
-
-			long[] result = new long[20000];
-			Marshal.Copy(constants, result, 0, result.Length);
-			return result;
+			return GenerateUniformDouble(generator, num);
 		}
 
 		public void SetGeneratorOffset(ulong offset) {
-			CheckStatus(API.curandSetGeneratorOffset(generator, offset));
+			SetGeneratorOffset(generator, offset);
 		}
 
 		public void SetGeneratorOrdering(curandOrdering order) {
-			CheckStatus(API.curandSetGeneratorOrdering(generator, order));
+			SetGeneratorOrdering(generator, order);
 		}
 
 		public void SetQuasiRandomGeneratorDimensions(uint num_dimensions) {
-			CheckStatus(API.curandSetQuasiRandomGeneratorDimensions(generator, num_dimensions));
+			SetQuasiRandomGeneratorDimensions(generator, num_dimensions);
 		}
 
 		public void SetStream(cudaStream_t stream) {
-			CheckStatus(API.curandSetStream(generator, stream));
-		}
-
-		IntPtr CreateGenerator(curandRngType type) {
-			IntPtr generator = IntPtr.Zero;
-			CheckStatus(API.curandCreateGenerator(ref generator, type));
-			return generator;
-		}
-
-		IntPtr CreateGeneratorHost(curandRngType type) {
-			IntPtr generator = IntPtr.Zero;
-			CheckStatus(API.curandCreateGeneratorHost(ref generator, type));
-			return generator;
-		}
-
-		void DestroyGenerator(IntPtr generator) {
-			CheckStatus(API.curandDestroyGenerator(generator));
-		}
-
-		void SetPseudoRandomGeneratorSeed(IntPtr generator, ulong seed) {
-			CheckStatus(API.curandSetPseudoRandomGeneratorSeed(generator, seed));
-		}
-
-		void GenerateSeeds(IntPtr generator) {
-			CheckStatus(API.curandGenerateSeeds(generator));
-		}
-
-		public static int GetVersion() {
-			int version = 0;
-			CheckStatus(API.curandGetVersion(ref version));
-			return version;
+			SetStream(generator, stream);
 		}
 
 		static void CheckStatus(curandStatus status) {
