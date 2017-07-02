@@ -54,6 +54,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="cuBLASTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="cuRANDTest.cs" />
   </ItemGroup>

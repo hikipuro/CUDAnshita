@@ -34,7 +34,24 @@ namespace CUDAnshita_Sample {
 		}
 
 		public void Test() {
-			ExecuteGPU(3);
+			//ExecuteGPU(3);
+
+			IntPtr handle = cuBLAS.Create_v2();
+
+			float[] hm1 = new float[4];
+			IntPtr dm1 = Runtime.Malloc(sizeof(float) * 4);
+			cuBLAS.SetVector<float>(hm1, 0, dm1, 0);
+
+			float[] x = new float[10];
+			float result = cuBLAS.Snrm2_v2(handle, 4, dm1, 0);
+			Console.WriteLine("result: {0}", result);
+
+			Runtime.Free(dm1);
+			cuBLAS.Destroy_v2(handle);
+
+			foreach (var i in x) {
+				Console.WriteLine("TEST: {0}", i);
+			}
 		}
 
 		long Benchmark(Action<int> action) {
@@ -87,11 +104,11 @@ namespace CUDAnshita_Sample {
 			IntPtr destB = IntPtr.Zero;
 			IntPtr destC = IntPtr.Zero;
 			cudaError result2;
-			result2 = CudaRT.API.cudaMalloc(ref destA, elemSize * 4);
+			result2 = Runtime.API.cudaMalloc(ref destA, elemSize * 4);
 			CudaException.Check(result2, "デバイスメモリの割り当てに失敗しました。");
-			result2 = CudaRT.API.cudaMalloc(ref destB, elemSize * 4);
+			result2 = Runtime.API.cudaMalloc(ref destB, elemSize * 4);
 			CudaException.Check(result2, "デバイスメモリの割り当てに失敗しました。");
-			result2 = CudaRT.API.cudaMalloc(ref destC, byteSize);
+			result2 = Runtime.API.cudaMalloc(ref destC, byteSize);
 			CudaException.Check(result2, "デバイスメモリの割り当てに失敗しました。");
 
 			Console.WriteLine("cuBLAS Test destA: {0}", destA);
@@ -147,9 +164,9 @@ namespace CUDAnshita_Sample {
 			}
 			*/
 
-			CudaRT.API.cudaFree(destA);
-			CudaRT.API.cudaFree(destB);
-			CudaRT.API.cudaFree(destC);
+			Runtime.API.cudaFree(destA);
+			Runtime.API.cudaFree(destB);
+			Runtime.API.cudaFree(destC);
 
 			// 全てのスレッドが終了するまで待つ
 			//context.Synchronize();
@@ -164,12 +181,12 @@ namespace CUDAnshita_Sample {
 		}
 
 		string Compile(string name, string src) {
-			NVRTC compiler = new NVRTC();
+			RuntimeCompiler compiler = new RuntimeCompiler();
 			compiler.AddOptions(
-				NVRTC.OPTION_TARGET_20,
-				NVRTC.OPTION_FMAD_FALSE,
-				NVRTC.OPTION_LINE_INFO,
-				NVRTC.OPTION_DEVICE_AS_DEFAULT_EXECUTION_SPACE
+				RuntimeCompiler.OPTION_TARGET_20,
+				RuntimeCompiler.OPTION_FMAD_FALSE,
+				RuntimeCompiler.OPTION_LINE_INFO,
+				RuntimeCompiler.OPTION_DEVICE_AS_DEFAULT_EXECUTION_SPACE
 			);
 
 			string ptx = compiler.Compile(name, src);

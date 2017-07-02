@@ -64,6 +64,30 @@ namespace CUDAnshita {
 		~RuntimeCompiler() {
 		}
 
+		public static string OPTION_TARGET(string value) {
+			return "--gpu-architecture=" + value;
+		}
+
+		public static string OPTION_MAX_REG_COUNT(string value) {
+			return OPTION_MAX_REG_COUNT_ + value;
+		}
+
+		public static string OPTION_DEFINE_MACRO(string value) {
+			return OPTION_DEFINE_MACRO_ + value;
+		}
+
+		public static string OPTION_UNDEFINE_MACRO(string value) {
+			return OPTION_UNDEFINE_MACRO_ + value;
+		}
+
+		public static string OPTION_INCLUDE_PATH(string value) {
+			return OPTION_INCLUDE_PATH_ + value;
+		}
+
+		public static string OPTION_PRE_INCLUDE(string value) {
+			return OPTION_PRE_INCLUDE_ + value;
+		}
+
 		public void AddHeader(string name, string path) {
 			headerList.Add(name, path);
 		}

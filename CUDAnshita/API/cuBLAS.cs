@@ -762,21 +762,31 @@ namespace CUDAnshita {
 			public static extern cublasStatus_t cublasSetAtomicsMode(cublasHandle_t handle, cublasAtomicsMode_t mode);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern cublasStatus_t cublasSetVector(int n, int elemSize, IntPtr x,
-													int incx, IntPtr devicePtr, int incy);
+			public static extern cublasStatus_t cublasSetVector(int n, int elemSize,
+													IntPtr x, // [host] const void *
+													int incx,
+													IntPtr y, // [device] void *
+													int incy);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern cublasStatus_t cublasGetVector(int n, int elemSize, IntPtr x,
-													int incx, IntPtr y, int incy);
+			public static extern cublasStatus_t cublasGetVector(int n, int elemSize,
+													IntPtr x, // [device] const void *
+													int incx,
+													IntPtr y, // [host] void *
+													int incy);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSetMatrix(int rows, int cols, int elemSize,
-													IntPtr A, int lda, IntPtr B,
+													IntPtr A, // [host] const void *
+													int lda,
+													IntPtr B, // [device] void *
 													int ldb);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasGetMatrix(int rows, int cols, int elemSize,
-													IntPtr A, int lda, IntPtr B,
+													IntPtr A, // [device] const void *
+													int lda,
+													IntPtr B, // [host] void *
 													int ldb);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
@@ -810,84 +820,91 @@ namespace CUDAnshita {
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasNrm2Ex(cublasHandle_t handle,
 													int n,
-													IntPtr x,
+													IntPtr x, // [device] const void *
 													cudaDataType xType,
 													int incx,
-													IntPtr result,
+													IntPtr result, // [host or device] void *
 													cudaDataType resultType,
-													cudaDataType executionType); // host or device pointer
+													cudaDataType executionType);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSnrm2_v2(cublasHandle_t handle,
 													int n,
-													IntPtr x,
+													IntPtr x, // [device] const float*
 													int incx,
-													ref float result); // host or device pointer
+													ref float result); // host pointer
+
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cublasStatus_t cublasSnrm2_v2(cublasHandle_t handle,
+													int n,
+													IntPtr x, // [device] const float*
+													int incx,
+													IntPtr result); // device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasDnrm2_v2(cublasHandle_t handle,
 													int n,
-													double[] x,
+													IntPtr x, // [device] const double*
 													int incx,
 													ref double result);  // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasScnrm2_v2(cublasHandle_t handle,
 													int n,
-													ref cuComplex x,
+													IntPtr x, // [device] const cuComplex*
 													int incx,
 													ref float result);  // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasDznrm2_v2(cublasHandle_t handle,
 													int n,
-													ref cuDoubleComplex x,
+													IntPtr x, // [device] const cuDoubleComplex*
 													int incx,
 													ref double result);  // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasDotEx(cublasHandle_t handle,
 													int n,
-													IntPtr x,
+													IntPtr x, // [device] const void *
 													cudaDataType xType, 
 													int incx,
-													IntPtr y,
+													IntPtr y, // [device] const void *
 													cudaDataType yType,
 													int incy,
-													IntPtr result,
+													IntPtr result, // [host or device] void *
 													cudaDataType resultType,
 													cudaDataType executionType);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasDotcEx(cublasHandle_t handle,
 													int n,
-													IntPtr x,
+													IntPtr x, // [device] const void *
 													cudaDataType xType, 
 													int incx,
-													IntPtr y,
+													IntPtr y, // [device] const void *
 													cudaDataType yType,
 													int incy,
-													IntPtr result,
+													IntPtr result, // [host or device] void *
 													cudaDataType resultType,
 													cudaDataType executionType);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSdot_v2(cublasHandle_t handle,
 													int n,
-													ref float x,
+													IntPtr x, // [device] const float *
 													int incx,
-													ref float y,
+													IntPtr y, // [device] const float *
 													int incy,
-													ref float result);  // host or device pointer
+													IntPtr result);  // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasDdot_v2(cublasHandle_t handle,
 													int n,
-													ref double x,
+													IntPtr x,
 													int incx,
-													ref double y,
+													IntPtr y,
 													int incy,
-													ref double result);  // host or device pointer
+													IntPtr result);  // host or device pointer
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasCdotu_v2(cublasHandle_t handle,
@@ -3673,18 +3690,70 @@ namespace CUDAnshita {
 			CheckStatus(API.cublasSetAtomicsMode(handle, mode));
 		}
 
-		public static void SetVector(int n, int elemSize, IntPtr x, int incx, IntPtr devicePtr, int incy) {
-			CheckStatus(API.cublasSetVector(n, elemSize, x, incx, devicePtr, incy));
+		/// <summary>
+		/// This function copies n elements from a vector x in host memory space to a vector y in GPU memory space.
+		/// </summary>
+		/// <param name="n">element count</param>
+		/// <param name="elemSize"></param>
+		/// <param name="x">host memory pointer</param>
+		/// <param name="incx"></param>
+		/// <param name="y">device memory pointer</param>
+		/// <param name="incy"></param>
+		public static void SetVector(int n, int elemSize, IntPtr x, int incx, IntPtr y, int incy) {
+			CheckStatus(API.cublasSetVector(n, elemSize, x, incx, y, incy));
 		}
 
+		public static void SetVector<T>(T[] x, int incx, IntPtr y, int incy) {
+			int n = x.Length;
+			int elemSize = Marshal.SizeOf(typeof(T));
+			int byteSize = elemSize * n;
+			IntPtr xPointer = Marshal.AllocHGlobal(byteSize);
+			MarshalUtil.Copy<T>(x, 0, xPointer, x.Length);
+			SetVector(n, elemSize, xPointer, incx, y, incy);
+			Marshal.FreeHGlobal(xPointer);
+		}
+
+		public static void SetVector<T>(T[] x, IntPtr y) {
+			SetVector<T>(x, 1, y, 1);
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="n"></param>
+		/// <param name="elemSize"></param>
+		/// <param name="x">device memory pointer</param>
+		/// <param name="incx"></param>
+		/// <param name="y">host memory pointer</param>
+		/// <param name="incy"></param>
 		public static void GetVector(int n, int elemSize, IntPtr x, int incx, IntPtr y, int incy) {
 			CheckStatus(API.cublasGetVector(n, elemSize, x, incx, y, incy));
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="rows"></param>
+		/// <param name="cols"></param>
+		/// <param name="elemSize"></param>
+		/// <param name="A">host memory pointer</param>
+		/// <param name="lda"></param>
+		/// <param name="B">device memory pointer</param>
+		/// <param name="ldb"></param>
 		public static void SetMatrix(int rows, int cols, int elemSize, IntPtr A, int lda, IntPtr B, int ldb) {
 			CheckStatus(API.cublasSetMatrix(rows, cols, elemSize, A, lda, B, ldb));
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="rows"></param>
+		/// <param name="cols"></param>
+		/// <param name="elemSize"></param>
+		/// <param name="A">device memory pointer</param>
+		/// <param name="lda"></param>
+		/// <param name="B">host memory pointer</param>
+		/// <param name="ldb"></param>
 		public static void GetMatrix(int rows, int cols, int elemSize, IntPtr A, int lda, IntPtr B, int ldb) {
 			CheckStatus(API.cublasGetMatrix(rows, cols, elemSize, A, lda, B, ldb));
 		}
@@ -3709,6 +3778,17 @@ namespace CUDAnshita {
 			API.cublasXerbla(srName, info);
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="handle"></param>
+		/// <param name="n"></param>
+		/// <param name="x">device memory pointer</param>
+		/// <param name="xType"></param>
+		/// <param name="incx"></param>
+		/// <param name="result">host or device</param>
+		/// <param name="resultType"></param>
+		/// <param name="executionType"></param>
 		public static void Nrm2Ex(cublasHandle_t handle, int n, IntPtr x, cudaDataType xType, int incx, IntPtr result, cudaDataType resultType, cudaDataType executionType) {
 			CheckStatus(API.cublasNrm2Ex(handle, n, x, xType, incx, result, resultType, executionType));
 		}
@@ -3719,9 +3799,60 @@ namespace CUDAnshita {
 			return result;
 		}
 
-		public static double Dnrm2_v2(cublasHandle_t handle, int n, double[] x, int incx) {
+		public static void Snrm2_v2(cublasHandle_t handle, int n, IntPtr x, int incx, IntPtr result) {
+			cublasPointerMode mode = GetPointerMode_v2(handle);
+			SetPointerMode_v2(handle, cublasPointerMode.CUBLAS_POINTER_MODE_DEVICE);
+			CheckStatus(API.cublasSnrm2_v2(handle, n, x, incx, result));
+			SetPointerMode_v2(handle, mode);
+		}
+
+		public static double Dnrm2_v2(cublasHandle_t handle, int n, IntPtr x, int incx) {
 			double result = 0f;
 			CheckStatus(API.cublasDnrm2_v2(handle, n, x, incx, ref result));
+			return result;
+		}
+
+		public static float Scnrm2_v2(cublasHandle_t handle, int n, IntPtr x, int incx) {
+			float result = 0f;
+			CheckStatus(API.cublasScnrm2_v2(handle, n, x, incx, ref result));
+			return result;
+		}
+
+		public static double Dznrm2_v2(cublasHandle_t handle, int n, IntPtr x, int incx) {
+			double result = 0f;
+			CheckStatus(API.cublasDznrm2_v2(handle, n, x, incx, ref result));
+			return result;
+		}
+
+		public static IntPtr DotEx(cublasHandle_t handle, int n, IntPtr x, cudaDataType xType, int incx, IntPtr y, cudaDataType yType, int incy, cudaDataType resultType, cudaDataType executionType) {
+			IntPtr result = IntPtr.Zero;
+			CheckStatus(API.cublasDotEx(
+				handle, n, x, xType, incx, y, yType, incy, result, resultType, executionType
+			));
+			return result;
+		}
+
+		public static IntPtr DotcEx(cublasHandle_t handle, int n, IntPtr x, cudaDataType xType, int incx, IntPtr y, cudaDataType yType, int incy, cudaDataType resultType, cudaDataType executionType) {
+			IntPtr result = IntPtr.Zero;
+			CheckStatus(API.cublasDotcEx(
+				handle, n, x, xType, incx, y, yType, incy, result, resultType, executionType
+			));
+			return result;
+		}
+
+		public static IntPtr Sdot_v2(cublasHandle_t handle, int n, IntPtr x, int incx, IntPtr y, int incy) {
+			IntPtr result = IntPtr.Zero;
+			CheckStatus(API.cublasSdot_v2(
+				handle, n, x, incx, y, incy, result
+			));
+			return result;
+		}
+
+		public static IntPtr Ddot_v2(cublasHandle_t handle, int n, IntPtr x, int incx, IntPtr y, int incy) {
+			IntPtr result = IntPtr.Zero;
+			CheckStatus(API.cublasDdot_v2(
+				handle, n, x, incx, y, incy, result
+			));
 			return result;
 		}
 
@@ -3736,17 +3867,6 @@ namespace CUDAnshita {
 				CheckStatus(API.cublasDestroy_v2(handle));
 				handle = IntPtr.Zero;
 			}
-		}
-
-		public void SetVector<T>(T[] x, int incx, IntPtr y, int incy) {
-			int n = x.Length;
-			int elemSize = Marshal.SizeOf(typeof(T));
-			int byteSize = elemSize * n;
-			IntPtr ptr = Marshal.AllocHGlobal(byteSize);
-			MarshalUtil.Copy<T>(x, 0, ptr, x.Length);
-
-			CheckStatus(API.cublasSetVector(n, elemSize, ptr, incx, y, incy));
-			Marshal.FreeHGlobal(ptr);
 		}
 
 		public T[] GetVector<T>(int n, IntPtr x, int incx, int incy) {
@@ -3941,9 +4061,11 @@ namespace CUDAnshita {
 
 	/// <summary>
 	/// The cublasPointerMode_t type indicates whether the scalar values are passed by reference on the host or device.
+	/// </summary>
+	/// <remarks>
 	/// It is important to point out that if several scalar values are present in the function call, all of them must conform to the same single pointer mode.
 	/// The pointer mode can be set and retrieved using cublasSetPointerMode() and cublasGetPointerMode() routines, respectively.
-	/// </summary>
+	/// </remarks>
 	public enum cublasPointerMode {
 		///<summary>the scalars are passed by reference on the host</summary>
 		CUBLAS_POINTER_MODE_HOST = 0,
