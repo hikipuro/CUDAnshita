@@ -3131,13 +3131,13 @@ namespace CUDAnshita {
 													cublasOperation_t transb,
 													int m,
 													int n,
-													ref float alpha, // host or device pointer
-													ref float A,
+													ref float alpha, // [host or device] 
+													IntPtr A, // [device] const float *
 													int lda,
-													ref float beta, // host or device pointer
-													ref float B,
+													ref float beta, // [host or device] 
+													IntPtr B, // [device] const float *
 													int ldb,
-													ref float C,
+													IntPtr C, // [device] float *
 													int ldc);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
@@ -3189,10 +3189,10 @@ namespace CUDAnshita {
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSgetrfBatched(cublasHandle_t handle,
 													int n,
-													ref float[] A,                      // Device pointer
+													IntPtr A, // [device] float *Aarray[]
 													int lda,
-													ref int P,                          // Device Pointer
-													ref int info,                       // Device Pointer
+													IntPtr P,     // [device] int *
+													IntPtr info,  // [device] int *
 													int batchSize);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
@@ -3526,11 +3526,11 @@ namespace CUDAnshita {
 													cublasSideMode_t mode,
 													int m,
 													int n,
-													ref float A,
+													IntPtr A, // [device] const float *
 													int lda,
-													ref float x,
+													IntPtr x, // [device] const float *
 													int incx,
-													ref float C,
+													IntPtr C, // [device] float *
 													int ldc);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
@@ -3770,7 +3770,7 @@ namespace CUDAnshita {
 		}
 
 		public static void SetMatrix<T>(int rows, int cols, T[] A, IntPtr B) {
-			SetMatrix<T>(rows, cols, A, 1, B, 1);
+			SetMatrix<T>(rows, cols, A, rows, B, rows);
 		}
 
 		/// <summary>
@@ -3799,7 +3799,7 @@ namespace CUDAnshita {
 		}
 
 		public T[] GetMatrix<T>(int rows, int cols, IntPtr A) {
-			return GetMatrix<T>(rows, cols, A, 1, 1);
+			return GetMatrix<T>(rows, cols, A, rows, rows);
 		}
 
 		public static void SetVectorAsync(int n, int elemSize, IntPtr hostPtr, int incx, IntPtr devicePtr, int incy, cudaStream_t stream) {
@@ -4203,12 +4203,24 @@ namespace CUDAnshita {
 		// cublasHgemmStridedBatched
 
 
-		// cublasSgeam
+		public static void Sgeam(cublasHandle_t handle, cublasOperation_t transa, cublasOperation_t transb, int m, int n, float alpha, IntPtr A, int lda, float beta, IntPtr B, int ldb, IntPtr C, int ldc) {
+			CheckStatus(API.cublasSgeam(
+				handle, transa, transb,
+				m, n,
+				ref alpha,
+				A, lda,
+				ref beta,
+				B, ldb,
+				C, ldc
+			));
+		}
 		// cublasDgeam
 		// cublasCgeam
 		// cublasZgeam
 
-		// cublasSgetrfBatched
+		public static void SgetrfBatched(cublasHandle_t handle, int n, IntPtr A, int lda, IntPtr P, IntPtr info, int batchSize) {
+			CheckStatus(API.cublasSgetrfBatched(handle, n, A, lda, P, info, batchSize));
+		}
 		// cublasDgetrfBatched
 		// cublasCgetrfBatched
 		// cublasZgetrfBatched
@@ -4243,7 +4255,15 @@ namespace CUDAnshita {
 		// cublasCgelsBatched
 		// cublasZgelsBatched
 
-		// cublasSdgmm
+		public static void Sdgmm(cublasHandle_t handle, cublasSideMode_t mode, int m, int n, IntPtr A, int lda, IntPtr x, int incx, IntPtr C, int ldc) {
+			CheckStatus(API.cublasSdgmm(
+				handle, mode,
+				m, n,
+				A, lda,
+				x, incx,
+				C, ldc
+			));
+		}
 		// cublasDdgmm
 		// cublasCdgmm
 		// cublasZdgmm

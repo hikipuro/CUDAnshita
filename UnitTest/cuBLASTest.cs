@@ -69,6 +69,81 @@ namespace UnitTest {
 			cuBLAS.Destroy_v2(handle);
 		}
 
+		[TestMethod]
+		public void Sgeam() {
+			IntPtr handle = cuBLAS.Create_v2();
+
+			int rows = 5;
+			int cols = 4;
+			int count = rows * cols;
+
+			float[] data = new float[count];
+			for (int i = 0; i < count; i++) {
+				data[i] = 0.01f * i;
+			}
+			IntPtr A = Runtime.Malloc(sizeof(float) * count);
+			IntPtr B = Runtime.Malloc(sizeof(float) * count);
+			IntPtr C = Runtime.Malloc(sizeof(float) * count);
+
+			cuBLAS.SetMatrix<float>(rows, cols, data, A);
+			cuBLAS.SetMatrix<float>(rows, cols, data, B);
+
+			cuBLAS.Sgeam(
+				handle,
+				cublasOperation.CUBLAS_OP_N,
+				cublasOperation.CUBLAS_OP_N,
+				rows, cols,
+				1,
+				A, rows,
+				1,
+				B, rows,
+				C, rows
+			);
+			float[] r = Runtime.MemcpyD2H<float>(C, count);
+			DebugPrintArray(r);
+
+			Runtime.Free(A);
+			Runtime.Free(B);
+			Runtime.Free(C);
+			cuBLAS.Destroy_v2(handle);
+		}
+
+		[TestMethod]
+		public void Sdgmm() {
+			IntPtr handle = cuBLAS.Create_v2();
+
+			int rows = 3;
+			int cols = 3;
+			int count = rows * cols;
+
+			float[] data = new float[count];
+			for (int i = 0; i < count; i++) {
+				data[i] = i;
+			}
+			IntPtr A = Runtime.Malloc(sizeof(float) * count);
+			IntPtr B = Runtime.Malloc(sizeof(float) * count);
+			IntPtr C = Runtime.Malloc(sizeof(float) * count);
+
+			cuBLAS.SetMatrix<float>(rows, cols, data, A);
+			cuBLAS.SetMatrix<float>(rows, cols, data, B);
+
+			cuBLAS.Sdgmm(
+				handle,
+				cublasSideMode.CUBLAS_SIDE_LEFT,
+				rows, cols,
+				A, rows,
+				B, rows,
+				C, rows
+			);
+			float[] r = Runtime.MemcpyD2H<float>(C, count);
+			DebugPrintArray(r);
+
+			Runtime.Free(A);
+			Runtime.Free(B);
+			Runtime.Free(C);
+			cuBLAS.Destroy_v2(handle);
+		}
+
 		private bool IsSameArray<T>(T[] array1, T[] array2) {
 			if (array1 == null || array2 == null) {
 				return false;
@@ -84,6 +159,13 @@ namespace UnitTest {
 				}
 			}
 			return true;
+		}
+
+		private void DebugPrintArray<T>(T[] array) {
+			int length = array.Length;
+			for (int i = 0; i < length; i++) {
+				Console.WriteLine("{0}: {1}", i, array[i]);
+			}
 		}
 	}
 }
