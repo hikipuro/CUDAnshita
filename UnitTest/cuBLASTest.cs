@@ -19,6 +19,28 @@ namespace UnitTest {
 		}
 
 		[TestMethod]
+		public void SetVector() {
+			int count = 10;
+			float[] data = new float[count];
+			for (int i = 0; i < count; i++) {
+				data[i] = 0.01f * i;
+			}
+			IntPtr dm = Runtime.Malloc(sizeof(float) * count);
+
+			cuBLAS.SetVector<float>(data, dm);
+			float[] result = cuBLAS.GetVector<float>(count, dm);
+
+			Assert.IsTrue(IsSameArray(data, result));
+		}
+
+
+		//[TestMethod]
+		//public void Nrm2Ex() {
+		//	IntPtr handle = cuBLAS.Create_v2();
+		//	cuBLAS.Destroy_v2(handle);
+		//}
+
+		[TestMethod]
 		public void Snrm2_v2() {
 			IntPtr handle = cuBLAS.Create_v2();
 
@@ -45,6 +67,23 @@ namespace UnitTest {
 
 			Runtime.Free(dm);
 			cuBLAS.Destroy_v2(handle);
+		}
+
+		private bool IsSameArray<T>(T[] array1, T[] array2) {
+			if (array1 == null || array2 == null) {
+				return false;
+			}
+			if (array1.Length != array2.Length) {
+				return false;
+			}
+
+			int length = array1.Length;
+			for (int i = 0; i < length; i++) {
+				if (array1[i].Equals(array2[i]) == false) {
+					return false;
+				}
+			}
+			return true;
 		}
 	}
 }

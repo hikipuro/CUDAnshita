@@ -125,7 +125,7 @@ DLL の関数を直接呼び出す形式です。
 ```cs
 // 例:
 int version = 0;
-cudaError error = CudaRT.API.cudaRuntimeGetVersion(ref version);
+cudaError error = Runtime.API.cudaRuntimeGetVersion(ref version);
 if (error != cudaError.cudaSuccess) {
 	Console.WriteLine("Error");
 }
@@ -143,7 +143,7 @@ C# 用の薄いラッパー経由で API を呼び出す形式です。
 
 ```cs
 // 例:
-int version = CudaRT.RuntimeGetVersion();
+int version = Runtime.RuntimeGetVersion();
 ```
 
 * クラス名.関数名の形式で呼び出す
