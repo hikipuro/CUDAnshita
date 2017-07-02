@@ -3787,7 +3787,7 @@ namespace CUDAnshita {
 			CheckStatus(API.cublasGetMatrix(rows, cols, elemSize, A, lda, B, ldb));
 		}
 
-		public T[] GetMatrix<T>(int rows, int cols, IntPtr A, int lda, int ldb) {
+		public static T[] GetMatrix<T>(int rows, int cols, IntPtr A, int lda, int ldb) {
 			int elemSize = Marshal.SizeOf(typeof(T));
 			int byteSize = elemSize * rows * cols;
 			IntPtr BPointer = Marshal.AllocHGlobal(byteSize);
@@ -3798,7 +3798,7 @@ namespace CUDAnshita {
 			return result;
 		}
 
-		public T[] GetMatrix<T>(int rows, int cols, IntPtr A) {
+		public static T[] GetMatrix<T>(int rows, int cols, IntPtr A) {
 			return GetMatrix<T>(rows, cols, A, rows, rows);
 		}
 
