@@ -37,6 +37,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="cuBLAS\cuBLAS.cs" />
+    <Compile Include="cuBLAS\CudaMatrixBase.cs" />
+    <Compile Include="cuBLAS\CudaMatrixDouble.cs" />
     <Compile Include="cuBLAS\CudaMatrixFloat.cs" />
     <Compile Include="cuRAND\CudaRandomDevice.cs" />
     <Compile Include="NVRTC\RuntimeCompiler.cs" />

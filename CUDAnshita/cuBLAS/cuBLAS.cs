@@ -2188,12 +2188,12 @@ namespace CUDAnshita {
 													int n,
 													int k,
 													ref float alpha, // [host or device] const float *
-													IntPtr A, // [device] const float*
+													IntPtr A, // [device] const float *
 													int lda,
-													IntPtr B, // [device] const float*
+													IntPtr B, // [device] const float *
 													int ldb,
-													ref float beta, // [host or device] const float*
-													IntPtr C, // [device] float*
+													ref float beta, // [host or device] const float *
+													IntPtr C, // [device] float *
 													int ldc);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
@@ -2203,13 +2203,13 @@ namespace CUDAnshita {
 													int m,
 													int n,
 													int k,
-													ref double alpha, // host or device pointer
-													ref double A,
+													ref double alpha, // host or device] const double *
+													IntPtr A, // [device] const double *
 													int lda,
-													ref double B,
+													IntPtr B, // [device] const double *
 													int ldb,
-													ref double beta, // host or device pointer
-													ref double C,
+													ref double beta, // host or device] const double *
+													IntPtr C, // [device] double *
 													int ldc);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
@@ -3146,13 +3146,13 @@ namespace CUDAnshita {
 													cublasOperation_t transb,
 													int m,
 													int n,
-													ref double alpha, // host or device pointer
-													ref double A,
+													ref double alpha, // [host or device]
+													IntPtr A, // [device] const double *
 													int lda,
-													ref double beta, // host or device pointer
-													ref double B,
+													ref double beta, // [host or device]
+													IntPtr B, // [device] const double *
 													int ldb,
-													ref double C,
+													IntPtr C, // [device] double *
 													int ldc);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
@@ -3538,11 +3538,11 @@ namespace CUDAnshita {
 													cublasSideMode_t mode,
 													int m,
 													int n,
-													ref double A,
+													IntPtr A, // [device] const double *
 													int lda,
-													ref double x,
+													IntPtr x, // [device] const double *
 													int incx,
-													ref double C,
+													IntPtr C, // [device] double *
 													int ldc);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
@@ -4133,7 +4133,17 @@ namespace CUDAnshita {
 				C, ldc
 			));
 		}
-		// cublasDgemm_v2
+		public static void Dgemm_v2(cublasHandle_t handle, cublasOperation_t transa, cublasOperation_t transb, int m, int n, int k, double alpha, IntPtr A, int lda, IntPtr B, int ldb, double beta, IntPtr C, int ldc) {
+			CheckStatus(API.cublasDgemm_v2(
+				handle, transa, transb,
+				m, n, k,
+				ref alpha,
+				A, lda,
+				B, ldb,
+				ref beta,
+				C, ldc
+			));
+		}
 		// cublasCgemm_v2
 		// cublasCgemm3m
 		// cublasCgemm3mEx
@@ -4214,7 +4224,17 @@ namespace CUDAnshita {
 				C, ldc
 			));
 		}
-		// cublasDgeam
+		public static void Dgeam(cublasHandle_t handle, cublasOperation_t transa, cublasOperation_t transb, int m, int n, double alpha, IntPtr A, int lda, double beta, IntPtr B, int ldb, IntPtr C, int ldc) {
+			CheckStatus(API.cublasDgeam(
+				handle, transa, transb,
+				m, n,
+				ref alpha,
+				A, lda,
+				ref beta,
+				B, ldb,
+				C, ldc
+			));
+		}
 		// cublasCgeam
 		// cublasZgeam
 
@@ -4264,7 +4284,15 @@ namespace CUDAnshita {
 				C, ldc
 			));
 		}
-		// cublasDdgmm
+		public static void Ddgmm(cublasHandle_t handle, cublasSideMode_t mode, int m, int n, IntPtr A, int lda, IntPtr x, int incx, IntPtr C, int ldc) {
+			CheckStatus(API.cublasDdgmm(
+				handle, mode,
+				m, n,
+				A, lda,
+				x, incx,
+				C, ldc
+			));
+		}
 		// cublasCdgmm
 		// cublasZdgmm
 
