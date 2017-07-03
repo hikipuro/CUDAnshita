@@ -41,6 +41,98 @@ namespace UnitTest {
 		//}
 
 		[TestMethod]
+		public void Isamax_v2() {
+			IntPtr handle = cuBLAS.Create_v2();
+
+			int rows = 3;
+			int cols = 3;
+			int count = rows * cols;
+
+			float[] data = new float[count];
+			for (int i = 0; i < count; i++) {
+				data[i] = (i + 1) * 2;
+			}
+			IntPtr A = Runtime.Malloc(sizeof(float) * count);
+
+			cuBLAS.SetMatrix<float>(rows, cols, data, A);
+			float index = cuBLAS.Isamax_v2(
+				handle,
+				count,
+				A, 1
+			);
+			//Console.WriteLine(index);
+
+			Runtime.Free(A);
+			cuBLAS.Destroy_v2(handle);
+
+			// 1-based index
+			Assert.AreEqual(count, index);
+		}
+
+		[TestMethod]
+		public void Isamin_v2() {
+			IntPtr handle = cuBLAS.Create_v2();
+
+			int rows = 3;
+			int cols = 3;
+			int count = rows * cols;
+
+			float[] data = new float[count];
+			for (int i = 0; i < count; i++) {
+				data[i] = (i + 1) * 2;
+			}
+			IntPtr A = Runtime.Malloc(sizeof(float) * count);
+
+			cuBLAS.SetMatrix<float>(rows, cols, data, A);
+			float index = cuBLAS.Isamin_v2(
+				handle,
+				count,
+				A, 1
+			);
+			//Console.WriteLine(index);
+
+			Runtime.Free(A);
+			cuBLAS.Destroy_v2(handle);
+
+			// 1-based index
+			Assert.AreEqual(1, index);
+		}
+
+		[TestMethod]
+		public void Sasum_v2() {
+			IntPtr handle = cuBLAS.Create_v2();
+
+			int rows = 3;
+			int cols = 3;
+			int count = rows * cols;
+
+			float[] data = new float[count];
+			for (int i = 0; i < count; i++) {
+				data[i] = i;
+			}
+			IntPtr A = Runtime.Malloc(sizeof(float) * count);
+
+			cuBLAS.SetMatrix<float>(rows, cols, data, A);
+			float result = cuBLAS.Sasum_v2(
+				handle,
+				count,
+				A, 1
+			);
+			//Console.WriteLine(result);
+
+			float test = 0;
+			for (int i = 0; i < count; i++) {
+				test += i;
+			}
+
+			Runtime.Free(A);
+			cuBLAS.Destroy_v2(handle);
+
+			Assert.AreEqual(test, result);
+		}
+
+
+		[TestMethod]
 		public void Snrm2_v2() {
 			IntPtr handle = cuBLAS.Create_v2();
 
@@ -100,7 +192,7 @@ namespace UnitTest {
 				C, rows
 			);
 			float[] r = Runtime.MemcpyD2H<float>(C, count);
-			DebugPrintArray(r);
+			//DebugPrintArray(r);
 
 			Runtime.Free(A);
 			Runtime.Free(B);
@@ -136,7 +228,7 @@ namespace UnitTest {
 				C, rows
 			);
 			float[] r = Runtime.MemcpyD2H<float>(C, count);
-			DebugPrintArray(r);
+			//DebugPrintArray(r);
 
 			Runtime.Free(A);
 			Runtime.Free(B);

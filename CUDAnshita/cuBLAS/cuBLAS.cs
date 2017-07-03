@@ -1173,7 +1173,7 @@ namespace CUDAnshita {
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasDasum_v2(cublasHandle_t handle,
 													int n,
-													ref double x,
+													IntPtr x, // [device] const double *
 													int incx,
 													ref double result); // host or device pointer
 
@@ -2187,12 +2187,27 @@ namespace CUDAnshita {
 													int m,
 													int n,
 													int k,
-													ref float alpha, // [host or device] const float *
+													ref float alpha, // [host] const float *
 													IntPtr A, // [device] const float *
 													int lda,
 													IntPtr B, // [device] const float *
 													int ldb,
-													ref float beta, // [host or device] const float *
+													ref float beta, // [host] const float *
+													IntPtr C, // [device] float *
+													int ldc);
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cublasStatus_t cublasSgemm_v2(cublasHandle_t handle,
+													cublasOperation_t transa,
+													cublasOperation_t transb,
+													int m,
+													int n,
+													int k,
+													IntPtr alpha, // [device] const float *
+													IntPtr A, // [device] const float *
+													int lda,
+													IntPtr B, // [device] const float *
+													int ldb,
+													IntPtr beta, // [device] const float *
 													IntPtr C, // [device] float *
 													int ldc);
 
@@ -2203,12 +2218,27 @@ namespace CUDAnshita {
 													int m,
 													int n,
 													int k,
-													ref double alpha, // host or device] const double *
+													ref double alpha, // [host] const double *
 													IntPtr A, // [device] const double *
 													int lda,
 													IntPtr B, // [device] const double *
 													int ldb,
-													ref double beta, // host or device] const double *
+													ref double beta, // [host] const double *
+													IntPtr C, // [device] double *
+													int ldc);
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cublasStatus_t cublasDgemm_v2(cublasHandle_t handle,
+													cublasOperation_t transa,
+													cublasOperation_t transb,
+													int m,
+													int n,
+													int k,
+													IntPtr alpha, // [device] const double *
+													IntPtr A, // [device] const double *
+													int lda,
+													IntPtr B, // [device] const double *
+													int ldb,
+													IntPtr beta, // [device] const double *
 													IntPtr C, // [device] double *
 													int ldc);
 
@@ -3971,7 +4001,11 @@ namespace CUDAnshita {
 			CheckStatus(API.cublasSasum_v2(handle, n, x, incx, ref result));
 			return result;
 		}
-		// cublasDasum_v2
+		public static double Dasum_v2(cublasHandle_t handle, int n, IntPtr x, int incx) {
+			double result = 0;
+			CheckStatus(API.cublasDasum_v2(handle, n, x, incx, ref result));
+			return result;
+		}
 		// cublasScasum_v2
 		// cublasDzasum_v2
 

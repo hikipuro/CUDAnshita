@@ -1279,6 +1279,15 @@ namespace CUDAnshita {
 			return result;
 		}
 
+		public static void MemcpyH2D<T>(IntPtr dst, T[] src, size_t count) {
+			int byteSize = Marshal.SizeOf(typeof(T)) * (int)count;
+			IntPtr srcPointer = Marshal.AllocHGlobal(byteSize);
+			MarshalUtil.Copy<T>(src, 0, srcPointer, (int)count);
+
+			Memcpy(dst, srcPointer, byteSize, cudaMemcpyKind.cudaMemcpyHostToDevice);
+			Marshal.FreeHGlobal(srcPointer);
+		}
+
 		public static void Memcpy2D(IntPtr dst, size_t dpitch, IntPtr src, size_t spitch, size_t width, size_t height, cudaMemcpyKind kind) {
 			CheckStatus(API.cudaMemcpy2D(dst, dpitch, src, spitch, width, height, kind));
 		}
