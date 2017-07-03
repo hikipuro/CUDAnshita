@@ -42,6 +42,7 @@
     <Compile Include="cuBLAS\CudaMatrixFloat.cs" />
     <Compile Include="cuRAND\CudaRandomDevice.cs" />
     <Compile Include="NVRTC\RuntimeCompiler.cs" />
+    <Compile Include="Runtime\RuntimeDeviceMemory.cs" />
     <Compile Include="Runtime\Runtime.cs" />
     <Compile Include="Runtime\RuntimeData.cs" />
     <Compile Include="API\cuDNN.cs" />

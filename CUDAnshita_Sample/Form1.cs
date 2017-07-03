@@ -18,6 +18,7 @@ extern ""C"" __global__ void addKernel(int *c, const int *a, const int *b) {
 
 		public Form1() {
 			InitializeComponent();
+			Runtime.DeviceReset();
 		}
 
 		private void buttonTest_Click(object sender, EventArgs e) {
@@ -68,7 +69,7 @@ extern ""C"" __global__ void addKernel(int *c, const int *a, const int *b) {
 			Console.WriteLine(device.Name);
 			Console.WriteLine(device.PCIBusId);
 			Console.WriteLine(device.TotalMem);
-			Console.WriteLine(device.GetProperties().name);
+			//Console.WriteLine(device.GetProperties());
 			Console.WriteLine(context.ApiVersion);
 			//return;
 
@@ -145,12 +146,10 @@ extern ""C"" __global__ void addKernel(int *c, const int *a, const int *b) {
 			cuBLASTest.Test();
 		}
 
-		MatrixTest matrixTest;
 		private void TestMatrix() {
-			if (matrixTest == null) {
-				matrixTest = new MatrixTest();
-			}
+			MatrixTest matrixTest = new MatrixTest();
 			matrixTest.Test();
+			matrixTest.Dispose();
 		}
 
 		private void TestCuDNN() {

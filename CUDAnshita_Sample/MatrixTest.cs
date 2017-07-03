@@ -38,12 +38,12 @@ extern ""C"" {
 		Module module;
 
 		public MatrixTest() {
-			device = new Device(0);
-			context = device.CreateContext();
-			module = new Module();
 		}
 
 		~MatrixTest() {
+		}
+
+		public void Dispose() {
 			if (module != null) {
 				module.Dispose();
 				module = null;
@@ -62,17 +62,15 @@ extern ""C"" {
 			int loopCount = 2;
 			int size = 300;
 
+			ExecuteCPU(2);
 			long timeCpu = Benchmark((t) => {
 				for (int i = 0; i < loopCount; i++) {
 					ExecuteCPU(size);
 				}
 			});
 
-			if (ptx == null) {
-				ptx = Compile("matrixAdd.cu", matrixProgram);
-				module = new Module();
-				module.LoadData(ptx);
-			}
+			InitGPU();
+			ExecuteGPU(2);
 			long timeGpu = Benchmark((t) => {
 				for (int i = 0; i < loopCount; i++) {
 					ExecuteGPU(size);
@@ -91,6 +89,34 @@ extern ""C"" {
 					throw new Exception();
 				}
 			}
+			Dispose();
+
+			// cuBLAS で実行
+			ExecuteCuBLASFloat(2);
+			long timeCuBLASFloat = Benchmark((t) => {
+				for (int i = 0; i < loopCount; i++) {
+					ExecuteCuBLASFloat(size);
+				}
+			});
+
+			ExecuteCuBLASDouble(2);
+			long timeCuBLASDouble = Benchmark((t) => {
+				for (int i = 0; i < loopCount; i++) {
+					ExecuteCuBLASDouble(size);
+				}
+			});
+
+			// 値のチェック
+			double[] cuBLASResult = ExecuteCuBLASDouble(size);
+			for (int i = 0; i < size * size; i++) {
+				//Console.WriteLine("result[{0}]: {1}", i, cpuResult[i]);
+				if (cpuResult[i] != cuBLASResult[i]) {
+					throw new Exception();
+				}
+			}
+
+			Console.WriteLine("time cuBLAS Float: {0}", timeCuBLASFloat);
+			Console.WriteLine("time cuBLAS Double: {0}", timeCuBLASDouble);
 		}
 
 		long Benchmark(Action<int> action) {
@@ -110,6 +136,18 @@ extern ""C"" {
 			}
 			matrix1 = matrix1.Dot(matrix2);
 			return matrix1.Data;
+		}
+
+		void InitGPU() {
+			device = new Device(0);
+			context = device.CreateContext();
+			module = new Module();
+
+			if (ptx == null) {
+				ptx = Compile("matrixAdd.cu", matrixProgram);
+				module = new Module();
+				module.LoadData(ptx);
+			}
 		}
 
 		double[] ExecuteGPU(int size) {
@@ -150,13 +188,35 @@ extern ""C"" {
 			return result;
 		}
 
+		float[] ExecuteCuBLASFloat(int size) {
+			var matrix1 = new CudaMatrixFloat(size, size);
+			var matrix2 = new CudaMatrixFloat(size, size);
+			for (var i = 0; i < size * size; i++) {
+				matrix1[i] = i + 1;
+				matrix2[i] = (i + 1) * 10;
+			}
+			matrix1 = matrix1.Dot(matrix2);
+			return matrix1.Data;
+		}
+
+		double[] ExecuteCuBLASDouble(int size) {
+			var matrix1 = new CudaMatrixDouble(size, size);
+			var matrix2 = new CudaMatrixDouble(size, size);
+			for (var i = 0; i < size * size; i++) {
+				matrix1[i] = i + 1;
+				matrix2[i] = (i + 1) * 10;
+			}
+			matrix1 = matrix1.Dot(matrix2);
+			return matrix1.Data;
+		}
+
 		string Compile(string name, string src) {
 			RuntimeCompiler compiler = new RuntimeCompiler();
 			compiler.AddOptions(
-				RuntimeCompiler.OPTION_TARGET_20,
-				RuntimeCompiler.OPTION_FMAD_FALSE,
-				RuntimeCompiler.OPTION_LINE_INFO,
-				RuntimeCompiler.OPTION_DEVICE_AS_DEFAULT_EXECUTION_SPACE
+				RuntimeCompiler.OPTION_TARGET_20
+				//RuntimeCompiler.OPTION_FMAD_FALSE,
+				//RuntimeCompiler.OPTION_LINE_INFO,
+				//RuntimeCompiler.OPTION_DEVICE_AS_DEFAULT_EXECUTION_SPACE
 			);
 
 			string ptx = compiler.Compile(name, src);
@@ -170,7 +230,7 @@ extern ""C"" {
 		}
 
 		void CallMethod(string name, int width, int height, params object[] args) {
-			int threadX = 64;
+			int threadX = 128;
 			int threadY = 2;
 			int blockX = divRoundUp(width, threadX);
 			int blockY = divRoundUp(height, threadY);

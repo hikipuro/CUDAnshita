@@ -42,8 +42,8 @@ namespace CUDAnshita {
 			return Driver.DeviceGetAttribute(attrib, device);
 		}
 
-		public cudaDeviceProp GetProperties() {
-			return Runtime.GetDeviceProperties(device);
-		}
+		//public CUdevprop GetProperties() {
+		//	return Driver.DeviceGetProperties(device);
+		//}
 	}
 }
