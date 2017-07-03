@@ -55,7 +55,7 @@ namespace UnitTest {
 			IntPtr A = Runtime.Malloc(sizeof(float) * count);
 
 			cuBLAS.SetMatrix<float>(rows, cols, data, A);
-			float index = cuBLAS.Isamax_v2(
+			int index = cuBLAS.Isamax_v2(
 				handle,
 				count,
 				A, 1
@@ -84,7 +84,7 @@ namespace UnitTest {
 			IntPtr A = Runtime.Malloc(sizeof(float) * count);
 
 			cuBLAS.SetMatrix<float>(rows, cols, data, A);
-			float index = cuBLAS.Isamin_v2(
+			int index = cuBLAS.Isamin_v2(
 				handle,
 				count,
 				A, 1
@@ -193,6 +193,20 @@ namespace UnitTest {
 			);
 			float[] r = Runtime.MemcpyD2H<float>(C, count);
 			//DebugPrintArray(r);
+
+			cuBLAS.Sgeam(
+				handle,
+				cublasOperation.CUBLAS_OP_N,
+				cublasOperation.CUBLAS_OP_N,
+				rows, cols,
+				1f / 2f,
+				A, rows,
+				0,
+				IntPtr.Zero, rows,
+				C, rows
+			);
+			r = Runtime.MemcpyD2H<float>(C, count);
+			DebugPrintArray(r);
 
 			Runtime.Free(A);
 			Runtime.Free(B);

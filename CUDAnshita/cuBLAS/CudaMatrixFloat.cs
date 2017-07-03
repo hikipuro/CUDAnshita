@@ -36,6 +36,7 @@ namespace CUDAnshita {
 				_Host = new float[Count];
 			}
 			_Device = Runtime.Malloc(ItemSize * Count);
+			Runtime.Memset(_Device, 0, ItemSize * Count);
 		}
 
 		public static CudaMatrixFloat FromByteArray(byte[] bytes) {
@@ -146,7 +147,6 @@ namespace CUDAnshita {
 
 		public CudaMatrixFloat Dot(CudaMatrixFloat matrix) {
 			CudaMatrixFloat result = new CudaMatrixFloat(_Rows, matrix._Cols);
-
 			UpdateDeviceMemory();
 			matrix.UpdateDeviceMemory();
 
@@ -168,6 +168,64 @@ namespace CUDAnshita {
 			return result;
 		}
 
+		public CudaMatrixFloat Mul(float value) {
+			CudaMatrixFloat result = new CudaMatrixFloat(_Rows, _Cols);
+			UpdateDeviceMemory();
+
+			IntPtr handle = cuBLAS.Create_v2();
+			cuBLAS.Sgeam(
+				handle,
+				cublasOperation.CUBLAS_OP_N,
+				cublasOperation.CUBLAS_OP_N,
+				_Rows, _Cols,
+				value,
+				_Device, _Rows,
+				0f,
+				IntPtr.Zero, _Rows,
+				result._Device, _Rows
+			);
+			cuBLAS.Destroy_v2(handle);
+
+			result.UpdateHostMemory();
+			return result;
+		}
+
+		public float Sum() {
+			UpdateDeviceMemory();
+			IntPtr handle = cuBLAS.Create_v2();
+			float result = cuBLAS.Sasum_v2(
+				handle,
+				Count,
+				_Device, 1
+			);
+			cuBLAS.Destroy_v2(handle);
+			return result;
+		}
+
+		public int MaxIndex() {
+			UpdateDeviceMemory();
+			IntPtr handle = cuBLAS.Create_v2();
+			int index = cuBLAS.Isamax_v2(
+				handle,
+				Count,
+				_Device, 1
+			);
+			cuBLAS.Destroy_v2(handle);
+			return index - 1;
+		}
+
+		public int MinIndex() {
+			UpdateDeviceMemory();
+			IntPtr handle = cuBLAS.Create_v2();
+			int index = cuBLAS.Isamin_v2(
+				handle,
+				Count,
+				_Device, 1
+			);
+			cuBLAS.Destroy_v2(handle);
+			return index - 1;
+		}
+
 		public void ForEach(ForEachAction<int, int, float> action) {
 			for (int y = 0; y < _Rows; y++) {
 				for (int x = 0; x < _Cols; x++) {
@@ -177,6 +235,7 @@ namespace CUDAnshita {
 		}
 
 		void UpdateHostMemory() {
+			//Runtime.DeviceSynchronize();
 			_Host = cuBLAS.GetMatrix<float>(_Rows, _Cols, _Device);
 		}
 
@@ -184,8 +243,8 @@ namespace CUDAnshita {
 			if (_Dirty == false) {
 				return;
 			}
-			_Dirty = false;
 			cuBLAS.SetMatrix<float>(_Rows, _Cols, _Host, _Device);
+			_Dirty = false;
 		}
 	}
 }

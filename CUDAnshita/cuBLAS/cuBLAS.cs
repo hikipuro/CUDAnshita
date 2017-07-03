@@ -1117,7 +1117,7 @@ namespace CUDAnshita {
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasIdamax_v2(cublasHandle_t handle,
 													int n,
-													ref double x,
+													IntPtr x, // [device] const double *
 													int incx,
 													ref int result); // host or device pointer
 
@@ -1145,7 +1145,7 @@ namespace CUDAnshita {
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasIdamin_v2(cublasHandle_t handle,
 													int n,
-													ref double x,
+													IntPtr x, // [device] const double *
 													int incx,
 													ref int result); // host or device pointer
 
@@ -3983,7 +3983,11 @@ namespace CUDAnshita {
 			CheckStatus(API.cublasIsamax_v2(handle, n, x, incx, ref result));
 			return result;
 		}
-		// cublasIdamax_v2
+		public static int Idamax_v2(cublasHandle_t handle, int n, IntPtr x, int incx) {
+			int result = 0;
+			CheckStatus(API.cublasIdamax_v2(handle, n, x, incx, ref result));
+			return result;
+		}
 		// cublasIcamax_v2
 		// cublasIzamax_v2
 
@@ -3992,7 +3996,11 @@ namespace CUDAnshita {
 			CheckStatus(API.cublasIsamin_v2(handle, n, x, incx, ref result));
 			return result;
 		}
-		// cublasIdamin_v2
+		public static int Idamin_v2(cublasHandle_t handle, int n, IntPtr x, int incx) {
+			int result = 0;
+			CheckStatus(API.cublasIdamin_v2(handle, n, x, incx, ref result));
+			return result;
+		}
 		// cublasIcamin_v2
 		// cublasIzamin_v2
 

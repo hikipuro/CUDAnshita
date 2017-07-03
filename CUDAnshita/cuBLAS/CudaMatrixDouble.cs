@@ -36,6 +36,7 @@ namespace CUDAnshita {
 				_Host = new double[Count];
 			}
 			_Device = Runtime.Malloc(ItemSize * Count);
+			Runtime.Memset(_Device, 0, ItemSize * Count);
 		}
 
 		public static CudaMatrixDouble FromByteArray(byte[] bytes) {
@@ -166,6 +167,64 @@ namespace CUDAnshita {
 
 			result.UpdateHostMemory();
 			return result;
+		}
+
+		public CudaMatrixDouble Mul(double value) {
+			CudaMatrixDouble result = new CudaMatrixDouble(_Rows, _Cols);
+			UpdateDeviceMemory();
+
+			IntPtr handle = cuBLAS.Create_v2();
+			cuBLAS.Dgeam(
+				handle,
+				cublasOperation.CUBLAS_OP_N,
+				cublasOperation.CUBLAS_OP_N,
+				_Rows, _Cols,
+				value,
+				_Device, _Rows,
+				0f,
+				IntPtr.Zero, _Rows,
+				result._Device, _Rows
+			);
+			cuBLAS.Destroy_v2(handle);
+
+			result.UpdateHostMemory();
+			return result;
+		}
+
+		public double Sum() {
+			UpdateDeviceMemory();
+			IntPtr handle = cuBLAS.Create_v2();
+			double result = cuBLAS.Dasum_v2(
+				handle,
+				Count,
+				_Device, 1
+			);
+			cuBLAS.Destroy_v2(handle);
+			return result;
+		}
+
+		public int MaxIndex() {
+			UpdateDeviceMemory();
+			IntPtr handle = cuBLAS.Create_v2();
+			int index = cuBLAS.Idamax_v2(
+				handle,
+				Count,
+				_Device, 1
+			);
+			cuBLAS.Destroy_v2(handle);
+			return index - 1;
+		}
+
+		public int MinIndex() {
+			UpdateDeviceMemory();
+			IntPtr handle = cuBLAS.Create_v2();
+			int index = cuBLAS.Idamin_v2(
+				handle,
+				Count,
+				_Device, 1
+			);
+			cuBLAS.Destroy_v2(handle);
+			return index - 1;
 		}
 
 		public void ForEach(ForEachAction<int, int, double> action) {
