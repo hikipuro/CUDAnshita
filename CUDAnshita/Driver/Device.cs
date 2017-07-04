@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace CUDAnshita {
-	public class Device : IDisposable {
+	public class Device {
 		static bool initialized = false;
 
 		int device = 0;
@@ -30,12 +30,12 @@ namespace CUDAnshita {
 			device = Driver.DeviceGet(deviceNumber);
 		}
 
-		public void Dispose() {
-			
-		}
-
 		public Context CreateContext() {
 			return new Context(device);
+		}
+
+		public Context GetCurrentContext() {
+			return new Context(Driver.CtxGetCurrent());
 		}
 
 		public int GetAttribute(CUdevice_attribute attrib) {

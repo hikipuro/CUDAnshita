@@ -103,7 +103,6 @@ for (int i = 0; i < arraySize; i++) {
 memory.Dispose();
 module.Dispose();
 context.Dispose();
-device.Dispose();
 ```
 
 ### トラブルシューティング

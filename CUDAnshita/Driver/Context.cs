@@ -25,6 +25,10 @@ namespace CUDAnshita {
 			context = Driver.CtxCreate(0, deviceHandle);
 		}
 
+		internal Context(IntPtr context) {
+			this.context = context;
+		}
+
 		public void Dispose() {
 			if (context != IntPtr.Zero) {
 				Driver.CtxDestroy(context);

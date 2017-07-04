@@ -3,6 +3,7 @@
 namespace CUDAnshita {
 	public class CudaMatrixBase {
 		public delegate void ForEachAction<T1, T2, T3>(T1 arg1, T2 arg2, T3 arg3);
+		public delegate TResult EveryFunc<in T1, out TResult>(T1 arg1);
 
 		protected int _Cols;
 		protected int _Rows;

@@ -27,10 +27,6 @@ namespace CUDAnshita_Sample {
 				context.Dispose();
 				context = null;
 			}
-			if (device != null) {
-				device.Dispose();
-				device = null;
-			}
 		}
 
 		public void Test() {

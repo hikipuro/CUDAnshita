@@ -28,6 +28,9 @@ extern ""C"" __global__ void addKernel(int *c, const int *a, const int *b) {
 			//TestCuBLAS();
 			//TestMatrix();
 			//TestCuDNN();
+
+			var m = new CudaMatrixFloat(2, 3);
+			Console.WriteLine((m + 1) / 2);
 		}
 
 		private void TestCompile() {
@@ -117,7 +120,6 @@ extern ""C"" __global__ void addKernel(int *c, const int *a, const int *b) {
 			memory.Dispose();
 			module.Dispose();
 			context.Dispose();
-			device.Dispose();
 		}
 
 		private void TestCudaRT() {

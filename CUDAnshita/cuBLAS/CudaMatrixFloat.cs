@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace CUDAnshita {
 	public class CudaMatrixFloat : CudaMatrixBase {
@@ -18,11 +19,72 @@ namespace CUDAnshita {
 		}
 
 		public float this[int x, int y] {
-			get { return _Host[y * _Cols + x]; }
+			get { return _Host[GetIndex(x, y)]; }
 			set {
 				_Dirty = true;
-				_Host[y * _Cols + x] = value;
+				_Host[GetIndex(x, y)] = value;
 			}
+		}
+
+		public static CudaMatrixFloat operator -(CudaMatrixFloat matrix) {
+			return matrix.Mul(-1f);
+		}
+
+		public static CudaMatrixFloat operator +(CudaMatrixFloat matrix, float value) {
+			return matrix.Add(value);
+		}
+
+		public static CudaMatrixFloat operator +(float value, CudaMatrixFloat matrix) {
+			return matrix.Add(value);
+		}
+
+		public static CudaMatrixFloat operator -(CudaMatrixFloat matrix, float value) {
+			return matrix.Sub(value);
+		}
+
+		public static CudaMatrixFloat operator -(float value, CudaMatrixFloat matrix) {
+			CudaMatrixFloat result = new CudaMatrixFloat(matrix._Rows, matrix._Cols);
+			result.ForEach((x, y, item) => {
+				int i = result.GetIndex(x, y);
+				result._Host[i] = value - matrix[x, y];
+			});
+			result._Dirty = true;
+			result.UpdateDeviceMemory();
+			return result;
+		}
+
+		public static CudaMatrixFloat operator *(CudaMatrixFloat matrix, float value) {
+			return matrix.Mul(value);
+		}
+
+		public static CudaMatrixFloat operator *(float value, CudaMatrixFloat matrix) {
+			return matrix.Mul(value);
+		}
+
+		public static CudaMatrixFloat operator /(CudaMatrixFloat matrix, float value) {
+			return matrix.Div(value);
+		}
+
+		public static CudaMatrixFloat operator /(float value, CudaMatrixFloat matrix) {
+			CudaMatrixFloat result = new CudaMatrixFloat(matrix._Rows, matrix._Cols);
+			result.ForEach((x, y, item) => {
+				int i = result.GetIndex(x, y);
+				result._Host[i] = value / matrix[x, y];
+			});
+			result._Dirty = true;
+			result.UpdateDeviceMemory();
+			return result;
+		}
+
+		public static CudaMatrixFloat operator %(CudaMatrixFloat matrix, float value) {
+			CudaMatrixFloat result = new CudaMatrixFloat(matrix._Rows, matrix._Cols);
+			result.ForEach((x, y, item) => {
+				int i = result.GetIndex(x, y);
+				result._Host[i] = matrix[x, y] % value;
+			});
+			result._Dirty = true;
+			result.UpdateDeviceMemory();
+			return result;
 		}
 
 		public CudaMatrixFloat(int rows, int cols) : this(rows, cols, true) {
@@ -168,6 +230,28 @@ namespace CUDAnshita {
 			return result;
 		}
 
+		public CudaMatrixFloat Add(float value) {
+			CudaMatrixFloat result = new CudaMatrixFloat(_Rows, _Cols);
+			ForEach((x, y, item) => {
+				int i = GetIndex(x, y);
+				result._Host[i] = item + value;
+			});
+			result._Dirty = true;
+			result.UpdateDeviceMemory();
+			return result;
+		}
+
+		public CudaMatrixFloat Sub(float value) {
+			CudaMatrixFloat result = new CudaMatrixFloat(_Rows, _Cols);
+			ForEach((x, y, item) => {
+				int i = GetIndex(x, y);
+				result._Host[i] = item - value;
+			});
+			result._Dirty = true;
+			result.UpdateDeviceMemory();
+			return result;
+		}
+
 		public CudaMatrixFloat Mul(float value) {
 			CudaMatrixFloat result = new CudaMatrixFloat(_Rows, _Cols);
 			UpdateDeviceMemory();
@@ -187,6 +271,17 @@ namespace CUDAnshita {
 			cuBLAS.Destroy_v2(handle);
 
 			result.UpdateHostMemory();
+			return result;
+		}
+
+		public CudaMatrixFloat Div(float value) {
+			CudaMatrixFloat result = new CudaMatrixFloat(_Rows, _Cols);
+			ForEach((x, y, item) => {
+				int i = GetIndex(x, y);
+				result._Host[i] = item / value;
+			});
+			result._Dirty = true;
+			result.UpdateDeviceMemory();
 			return result;
 		}
 
@@ -234,17 +329,59 @@ namespace CUDAnshita {
 			}
 		}
 
-		void UpdateHostMemory() {
+		public CudaMatrixFloat Every(EveryFunc<float, float> func) {
+			var result = new CudaMatrixFloat(_Rows, _Cols);
+			for (int y = 0; y < _Rows; y++) {
+				for (int x = 0; x < _Cols; x++) {
+					result[x, y] = func(this[x, y]);
+				}
+			}
+			return result;
+		}
+
+		public void UpdateHostMemory() {
 			//Runtime.DeviceSynchronize();
 			_Host = cuBLAS.GetMatrix<float>(_Rows, _Cols, _Device);
 		}
 
-		void UpdateDeviceMemory() {
+		public void UpdateDeviceMemory() {
 			if (_Dirty == false) {
 				return;
 			}
 			cuBLAS.SetMatrix<float>(_Rows, _Cols, _Host, _Device);
 			_Dirty = false;
+		}
+
+		public override string ToString() {
+			var text = new StringBuilder();
+			text.Append("[");
+
+			int width = _Cols;
+			int height = _Rows;
+			for (var y = 0; y < height; y++) {
+				if (height > 1) {
+					text.AppendLine();
+					text.Append("\t[");
+				}
+				for (var x = 0; x < width; x++) {
+					text.Append(this[x, y].ToString());
+					if (x + 1 != _Cols) {
+						text.Append(", ");
+					}
+				}
+				if (height > 1) {
+					text.Append("]");
+				}
+			}
+			if (height > 1) {
+				text.AppendLine();
+			}
+			text.Append("]");
+			return text.ToString();
+		}
+
+		int GetIndex(int x, int y) {
+			return y *_Cols + x;
 		}
 	}
 }
