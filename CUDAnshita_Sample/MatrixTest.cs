@@ -188,11 +188,11 @@ extern ""C"" {
 			var matrix1 = new CudaMatrixFloat(size, size);
 			var matrix2 = new CudaMatrixFloat(size, size);
 			for (var i = 0; i < size * size; i++) {
-				matrix1[i] = i + 1;
-				matrix2[i] = (i + 1) * 10;
+				//matrix1[i] = i + 1;
+				//matrix2[i] = (i + 1) * 10;
 			}
-			matrix1 = matrix1.Dot(matrix2);
-			return matrix1.Data;
+			//matrix1 = matrix1.GPU_Dot(matrix2);
+			return matrix1.GetData();
 		}
 
 		double[] ExecuteCuBLASDouble(int size) {

@@ -12,7 +12,7 @@ namespace CUDAnshita {
 		public double this[int i] {
 			get { return _Host[i]; }
 			set {
-				_Dirty = true;
+				_DirtyDevice = true;
 				_Host[i] = value;
 			}
 		}
@@ -20,7 +20,7 @@ namespace CUDAnshita {
 		public double this[int x, int y] {
 			get { return _Host[y * _Cols + x]; }
 			set {
-				_Dirty = true;
+				_DirtyDevice = true;
 				_Host[y * _Cols + x] = value;
 			}
 		}
@@ -55,7 +55,7 @@ namespace CUDAnshita {
 			int cols = matrixSize[1];
 			CudaMatrixDouble matrix = new CudaMatrixDouble(rows, cols, false);
 			matrix._Host = data;
-			matrix._Dirty = true;
+			matrix._DirtyDevice = true;
 			matrix.UpdateDeviceMemory();
 			return matrix;
 		}
@@ -240,10 +240,10 @@ namespace CUDAnshita {
 		}
 
 		void UpdateDeviceMemory() {
-			if (_Dirty == false) {
+			if (_DirtyDevice == false) {
 				return;
 			}
-			_Dirty = false;
+			_DirtyDevice = false;
 			cuBLAS.SetMatrix<double>(_Rows, _Cols, _Host, _Device);
 		}
 	}

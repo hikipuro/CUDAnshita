@@ -28,9 +28,6 @@ extern ""C"" __global__ void addKernel(int *c, const int *a, const int *b) {
 			//TestCuBLAS();
 			//TestMatrix();
 			//TestCuDNN();
-
-			var m = new CudaMatrixFloat(2, 3);
-			Console.WriteLine((m + 1) / 2);
 		}
 
 		private void TestCompile() {
@@ -141,7 +138,7 @@ extern ""C"" __global__ void addKernel(int *c, const int *a, const int *b) {
 
 		cuBLASTest cuBLASTest;
 		private void TestCuBLAS() {
-			Console.WriteLine("cuBLAS: {0}", cuBLAS.GetVersion());
+			//Console.WriteLine("cuBLAS: {0}", cuBLAS.GetVersion_v2());
 			if (cuBLASTest == null) {
 				cuBLASTest = new cuBLASTest();
 			}

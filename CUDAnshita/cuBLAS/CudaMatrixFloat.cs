@@ -2,104 +2,181 @@
 using System.Text;
 
 namespace CUDAnshita {
-	public class CudaMatrixFloat : CudaMatrixBase {
+	public class CudaMatrixFloat {
 		const int ItemSize = sizeof(float);
-		float[] _Host;
 
-		public float[] Data {
-			get { return _Host; }
+		protected int _Cols;
+		protected int _Rows;
+		protected IntPtr _DevicePointer;
+
+		public int Cols {
+			get { return _Cols; }
 		}
 
-		public float this[int i] {
-			get { return _Host[i]; }
-			set {
-				_Dirty = true;
-				_Host[i] = value;
+		public int Rows {
+			get { return _Rows; }
+		}
+
+		public int Count {
+			get { return _Cols * _Rows; }
+		}
+
+		public CudaMatrixFloat(int rows, int cols) {
+			if (rows < 1) {
+				rows = 1;
 			}
-		}
-
-		public float this[int x, int y] {
-			get { return _Host[GetIndex(x, y)]; }
-			set {
-				_Dirty = true;
-				_Host[GetIndex(x, y)] = value;
+			if (cols < 1) {
+				cols = 1;
 			}
-		}
-
-		public static CudaMatrixFloat operator -(CudaMatrixFloat matrix) {
-			return matrix.Mul(-1f);
-		}
-
-		public static CudaMatrixFloat operator +(CudaMatrixFloat matrix, float value) {
-			return matrix.Add(value);
-		}
-
-		public static CudaMatrixFloat operator +(float value, CudaMatrixFloat matrix) {
-			return matrix.Add(value);
-		}
-
-		public static CudaMatrixFloat operator -(CudaMatrixFloat matrix, float value) {
-			return matrix.Sub(value);
-		}
-
-		public static CudaMatrixFloat operator -(float value, CudaMatrixFloat matrix) {
-			CudaMatrixFloat result = new CudaMatrixFloat(matrix._Rows, matrix._Cols);
-			result.ForEach((x, y, item) => {
-				int i = result.GetIndex(x, y);
-				result._Host[i] = value - matrix[x, y];
-			});
-			result._Dirty = true;
-			result.UpdateDeviceMemory();
-			return result;
-		}
-
-		public static CudaMatrixFloat operator *(CudaMatrixFloat matrix, float value) {
-			return matrix.Mul(value);
-		}
-
-		public static CudaMatrixFloat operator *(float value, CudaMatrixFloat matrix) {
-			return matrix.Mul(value);
-		}
-
-		public static CudaMatrixFloat operator /(CudaMatrixFloat matrix, float value) {
-			return matrix.Div(value);
-		}
-
-		public static CudaMatrixFloat operator /(float value, CudaMatrixFloat matrix) {
-			CudaMatrixFloat result = new CudaMatrixFloat(matrix._Rows, matrix._Cols);
-			result.ForEach((x, y, item) => {
-				int i = result.GetIndex(x, y);
-				result._Host[i] = value / matrix[x, y];
-			});
-			result._Dirty = true;
-			result.UpdateDeviceMemory();
-			return result;
-		}
-
-		public static CudaMatrixFloat operator %(CudaMatrixFloat matrix, float value) {
-			CudaMatrixFloat result = new CudaMatrixFloat(matrix._Rows, matrix._Cols);
-			result.ForEach((x, y, item) => {
-				int i = result.GetIndex(x, y);
-				result._Host[i] = matrix[x, y] % value;
-			});
-			result._Dirty = true;
-			result.UpdateDeviceMemory();
-			return result;
-		}
-
-		public CudaMatrixFloat(int rows, int cols) : this(rows, cols, true) {
-		}
-
-		public CudaMatrixFloat(int rows, int cols, bool hostAlloc) {
 			_Rows = rows;
 			_Cols = cols;
-
-			if (hostAlloc) {
-				_Host = new float[Count];
-			}
-			_Device = Runtime.Malloc(ItemSize * Count);
-			Runtime.Memset(_Device, 0, ItemSize * Count);
+			_DevicePointer = MallocDeviceMemory(Count);
 		}
+
+		public CudaMatrixFloat(int rows, int cols, float[] data) : this(rows, cols) {
+			if (data == null) {
+				throw new ArgumentNullException();
+			}
+			if (rows * cols < data.Length) {
+				throw new ArgumentException();
+			}
+			SetDeviceMemory(_DevicePointer, data);
+		}
+
+		public float[] GetData() {
+			return GetDeviceMemory(_DevicePointer, Count);
+		}
+
+		public void Add(CudaMatrixFloat matrix, CudaMatrixFloat result) {
+			if (matrix == null || result == null) {
+				return;
+			}
+
+			IntPtr handle = cuBLAS.Create_v2();
+			cuBLAS.Sgeam(
+				handle,
+				cublasOperation.CUBLAS_OP_N,
+				cublasOperation.CUBLAS_OP_N,
+				_Rows, _Cols,
+				1f,
+				_DevicePointer, _Rows,
+				1f,
+				matrix._DevicePointer, _Rows,
+				result._DevicePointer, _Rows
+			);
+			cuBLAS.Destroy_v2(handle);
+		}
+
+		public void Sub(CudaMatrixFloat matrix, CudaMatrixFloat result) {
+			if (matrix == null || result == null) {
+				return;
+			}
+
+			IntPtr handle = cuBLAS.Create_v2();
+			cuBLAS.Sgeam(
+				handle,
+				cublasOperation.CUBLAS_OP_N,
+				cublasOperation.CUBLAS_OP_N,
+				_Rows, _Cols,
+				1f,
+				_DevicePointer, _Rows,
+				-1f,
+				matrix._DevicePointer, _Rows,
+				result._DevicePointer, _Rows
+			);
+			cuBLAS.Destroy_v2(handle);
+		}
+
+		public void Mul(float value, CudaMatrixFloat result) {
+			if (result == null) {
+				return;
+			}
+
+			IntPtr handle = cuBLAS.Create_v2();
+			cuBLAS.Sgeam(
+				handle,
+				cublasOperation.CUBLAS_OP_N,
+				cublasOperation.CUBLAS_OP_N,
+				_Rows, _Cols,
+				value,
+				_DevicePointer, _Rows,
+				0f,
+				IntPtr.Zero, _Rows,
+				result._DevicePointer, _Rows
+			);
+			cuBLAS.Destroy_v2(handle);
+		}
+
+		public void Mul(CudaMatrixFloat matrix, CudaMatrixFloat result) {
+			if (matrix == null || result == null) {
+				return;
+			}
+
+			IntPtr handle = cuBLAS.Create_v2();
+			cuBLAS.Sdgmm(
+				handle,
+				cublasSideMode.CUBLAS_SIDE_LEFT,
+				_Rows, _Cols,
+				_DevicePointer, _Rows,
+				matrix._DevicePointer, _Rows,
+				result._DevicePointer, _Rows
+			);
+			cuBLAS.Destroy_v2(handle);
+		}
+
+		public void Dot(CudaMatrixFloat matrix, CudaMatrixFloat result) {
+			if (matrix == null || result == null) {
+				return;
+			}
+
+			IntPtr handle = cuBLAS.Create_v2();
+			cuBLAS.Sgemm_v2(
+				handle,
+				cublasOperation.CUBLAS_OP_N,
+				cublasOperation.CUBLAS_OP_N,
+				_Rows, matrix._Cols, _Cols,
+				1f,
+				_DevicePointer, _Rows,
+				matrix._DevicePointer, matrix._Rows,
+				1f,
+				result._DevicePointer, _Rows
+			);
+			cuBLAS.Destroy_v2(handle);
+		}
+
+		public float Sum() {
+			IntPtr handle = cuBLAS.Create_v2();
+			float result = cuBLAS.Sasum_v2(
+				handle,
+				Count,
+				_DevicePointer, 1
+			);
+			cuBLAS.Destroy_v2(handle);
+			return result;
+		}
+
+		public int MaxIndex() {
+			IntPtr handle = cuBLAS.Create_v2();
+			int index = cuBLAS.Isamax_v2(
+				handle,
+				Count,
+				_DevicePointer, 1
+			);
+			cuBLAS.Destroy_v2(handle);
+			return index - 1;
+		}
+
+		public int MinIndex() {
+			IntPtr handle = cuBLAS.Create_v2();
+			int index = cuBLAS.Isamin_v2(
+				handle,
+				Count,
+				_DevicePointer, 1
+			);
+			cuBLAS.Destroy_v2(handle);
+			return index - 1;
+		}
+
 
 		public static CudaMatrixFloat FromByteArray(byte[] bytes) {
 			if (bytes == null || bytes.Length < 12) {
@@ -115,256 +192,36 @@ namespace CUDAnshita {
 
 			int rows = matrixSize[0];
 			int cols = matrixSize[1];
-			CudaMatrixFloat matrix = new CudaMatrixFloat(rows, cols, false);
-			matrix._Host = data;
-			matrix._Dirty = true;
-			matrix.UpdateDeviceMemory();
+			CudaMatrixFloat matrix = new CudaMatrixFloat(rows, cols);
+			matrix.SetDeviceMemory(matrix._DevicePointer, data);
 			return matrix;
 		}
 
 		public byte[] ToByteArray() {
+			float[] data = GetData();
 			int intSize = sizeof(int);
 			int intSize2 = intSize * 2;
-			int size = intSize2 + _Host.Length * ItemSize;
+			int size = intSize2 + data.Length * ItemSize;
 			byte[] bytes = new byte[size];
 			Buffer.BlockCopy(new int[] { _Rows, _Cols }, 0, bytes, 0, intSize2);
-			Buffer.BlockCopy(_Host, 0, bytes, intSize2, bytes.Length - intSize2);
+			Buffer.BlockCopy(data, 0, bytes, intSize2, bytes.Length - intSize2);
 			return bytes;
 		}
 
-		public CudaMatrixFloat Add(CudaMatrixFloat matrix) {
-			int rows = Math.Max(_Rows, matrix._Rows);
-			int cols = Math.Max(_Cols, matrix._Cols);
-			CudaMatrixFloat result = new CudaMatrixFloat(rows, cols);
-
-			UpdateDeviceMemory();
-			matrix.UpdateDeviceMemory();
-
-			IntPtr handle = cuBLAS.Create_v2();
-			cuBLAS.Sgeam(
-				handle,
-				cublasOperation.CUBLAS_OP_N,
-				cublasOperation.CUBLAS_OP_N,
-				_Rows, _Cols,
-				1f,
-				_Device, _Rows,
-				1f,
-				matrix._Device, _Rows,
-				result._Device, _Rows
-			);
-			cuBLAS.Destroy_v2(handle);
-
-			result.UpdateHostMemory();
-			return result;
-		}
-
-		public CudaMatrixFloat Sub(CudaMatrixFloat matrix) {
-			int rows = Math.Max(_Rows, matrix._Rows);
-			int cols = Math.Max(_Cols, matrix._Cols);
-			CudaMatrixFloat result = new CudaMatrixFloat(rows, cols);
-
-			UpdateDeviceMemory();
-			matrix.UpdateDeviceMemory();
-
-			IntPtr handle = cuBLAS.Create_v2();
-			cuBLAS.Sgeam(
-				handle,
-				cublasOperation.CUBLAS_OP_N,
-				cublasOperation.CUBLAS_OP_N,
-				_Rows, _Cols,
-				1f,
-				_Device, _Rows,
-				-1f,
-				matrix._Device, _Rows,
-				result._Device, _Rows
-			);
-			cuBLAS.Destroy_v2(handle);
-
-			result.UpdateHostMemory();
-			return result;
-		}
-
-		public CudaMatrixFloat Mul(CudaMatrixFloat matrix) {
-			int rows = Math.Max(_Rows, matrix._Rows);
-			int cols = Math.Max(_Cols, matrix._Cols);
-			CudaMatrixFloat result = new CudaMatrixFloat(_Rows, matrix._Cols);
-
-			UpdateDeviceMemory();
-			matrix.UpdateDeviceMemory();
-
-			IntPtr handle = cuBLAS.Create_v2();
-			cuBLAS.Sdgmm(
-				handle,
-				cublasSideMode.CUBLAS_SIDE_LEFT,
-				_Rows, _Cols,
-				_Device, _Rows,
-				matrix._Device, _Rows,
-				result._Device, _Rows
-			);
-			cuBLAS.Destroy_v2(handle);
-
-			result.UpdateHostMemory();
-			return result;
-		}
-
-		public CudaMatrixFloat Dot(CudaMatrixFloat matrix) {
-			CudaMatrixFloat result = new CudaMatrixFloat(_Rows, matrix._Cols);
-			UpdateDeviceMemory();
-			matrix.UpdateDeviceMemory();
-
-			IntPtr handle = cuBLAS.Create_v2();
-			cuBLAS.Sgemm_v2(
-				handle,
-				cublasOperation.CUBLAS_OP_N,
-				cublasOperation.CUBLAS_OP_N,
-				_Rows, matrix._Cols, _Cols,
-				1f,
-				_Device, _Rows,
-				matrix._Device, matrix._Rows,
-				1f,
-				result._Device, _Rows
-			);
-			cuBLAS.Destroy_v2(handle);
-
-			result.UpdateHostMemory();
-			return result;
-		}
-
-		public CudaMatrixFloat Add(float value) {
-			CudaMatrixFloat result = new CudaMatrixFloat(_Rows, _Cols);
-			ForEach((x, y, item) => {
-				int i = GetIndex(x, y);
-				result._Host[i] = item + value;
-			});
-			result._Dirty = true;
-			result.UpdateDeviceMemory();
-			return result;
-		}
-
-		public CudaMatrixFloat Sub(float value) {
-			CudaMatrixFloat result = new CudaMatrixFloat(_Rows, _Cols);
-			ForEach((x, y, item) => {
-				int i = GetIndex(x, y);
-				result._Host[i] = item - value;
-			});
-			result._Dirty = true;
-			result.UpdateDeviceMemory();
-			return result;
-		}
-
-		public CudaMatrixFloat Mul(float value) {
-			CudaMatrixFloat result = new CudaMatrixFloat(_Rows, _Cols);
-			UpdateDeviceMemory();
-
-			IntPtr handle = cuBLAS.Create_v2();
-			cuBLAS.Sgeam(
-				handle,
-				cublasOperation.CUBLAS_OP_N,
-				cublasOperation.CUBLAS_OP_N,
-				_Rows, _Cols,
-				value,
-				_Device, _Rows,
-				0f,
-				IntPtr.Zero, _Rows,
-				result._Device, _Rows
-			);
-			cuBLAS.Destroy_v2(handle);
-
-			result.UpdateHostMemory();
-			return result;
-		}
-
-		public CudaMatrixFloat Div(float value) {
-			CudaMatrixFloat result = new CudaMatrixFloat(_Rows, _Cols);
-			ForEach((x, y, item) => {
-				int i = GetIndex(x, y);
-				result._Host[i] = item / value;
-			});
-			result._Dirty = true;
-			result.UpdateDeviceMemory();
-			return result;
-		}
-
-		public float Sum() {
-			UpdateDeviceMemory();
-			IntPtr handle = cuBLAS.Create_v2();
-			float result = cuBLAS.Sasum_v2(
-				handle,
-				Count,
-				_Device, 1
-			);
-			cuBLAS.Destroy_v2(handle);
-			return result;
-		}
-
-		public int MaxIndex() {
-			UpdateDeviceMemory();
-			IntPtr handle = cuBLAS.Create_v2();
-			int index = cuBLAS.Isamax_v2(
-				handle,
-				Count,
-				_Device, 1
-			);
-			cuBLAS.Destroy_v2(handle);
-			return index - 1;
-		}
-
-		public int MinIndex() {
-			UpdateDeviceMemory();
-			IntPtr handle = cuBLAS.Create_v2();
-			int index = cuBLAS.Isamin_v2(
-				handle,
-				Count,
-				_Device, 1
-			);
-			cuBLAS.Destroy_v2(handle);
-			return index - 1;
-		}
-
-		public void ForEach(ForEachAction<int, int, float> action) {
-			for (int y = 0; y < _Rows; y++) {
-				for (int x = 0; x < _Cols; x++) {
-					action(x, y, this[x, y]);
-				}
-			}
-		}
-
-		public CudaMatrixFloat Every(EveryFunc<float, float> func) {
-			var result = new CudaMatrixFloat(_Rows, _Cols);
-			for (int y = 0; y < _Rows; y++) {
-				for (int x = 0; x < _Cols; x++) {
-					result[x, y] = func(this[x, y]);
-				}
-			}
-			return result;
-		}
-
-		public void UpdateHostMemory() {
-			//Runtime.DeviceSynchronize();
-			_Host = cuBLAS.GetMatrix<float>(_Rows, _Cols, _Device);
-		}
-
-		public void UpdateDeviceMemory() {
-			if (_Dirty == false) {
-				return;
-			}
-			cuBLAS.SetMatrix<float>(_Rows, _Cols, _Host, _Device);
-			_Dirty = false;
-		}
-
 		public override string ToString() {
-			var text = new StringBuilder();
+			float[] data = GetData();
+			StringBuilder text = new StringBuilder();
 			text.Append("[");
 
 			int width = _Cols;
 			int height = _Rows;
-			for (var y = 0; y < height; y++) {
+			for (int y = 0; y < height; y++) {
 				if (height > 1) {
 					text.AppendLine();
 					text.Append("\t[");
 				}
-				for (var x = 0; x < width; x++) {
-					text.Append(this[x, y].ToString());
+				for (int x = 0; x < width; x++) {
+					text.Append(data[x + y * _Cols].ToString());
 					if (x + 1 != _Cols) {
 						text.Append(", ");
 					}
@@ -380,8 +237,18 @@ namespace CUDAnshita {
 			return text.ToString();
 		}
 
-		int GetIndex(int x, int y) {
-			return y *_Cols + x;
+		protected IntPtr MallocDeviceMemory(int count) {
+			IntPtr devicePointer = Runtime.Malloc(ItemSize * count);
+			Runtime.Memset(devicePointer, 0, ItemSize * count);
+			return devicePointer;
+		}
+
+		protected void SetDeviceMemory(IntPtr devicePointer, float[] data) {
+			Runtime.MemcpyH2D(devicePointer, data);
+		}
+
+		protected float[] GetDeviceMemory(IntPtr devicePointer, int count) {
+			return Runtime.MemcpyD2H(devicePointer, count);
 		}
 	}
 }
