@@ -1297,7 +1297,7 @@ namespace CUDAnshita {
 			return result;
 		}
 
-		unsafe public static float[] MemcpyD2HFloat(IntPtr src, int count) {
+		unsafe public static float[] MemcpyD2H(IntPtr src, int count) {
 			float[] result = new float[count];
 			int byteSize = Marshal.SizeOf(typeof(float)) * count;
 			fixed (float* dst = result) {
