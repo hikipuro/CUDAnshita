@@ -832,14 +832,14 @@ namespace CUDAnshita {
 													int n,
 													IntPtr x, // [device] const float*
 													int incx,
-													ref float result); // host pointer
+													ref float result); // [host] 
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSnrm2_v2(cublasHandle_t handle,
 													int n,
 													IntPtr x, // [device] const float*
 													int incx,
-													IntPtr result); // device pointer
+													IntPtr result); // [device] 
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasDnrm2_v2(cublasHandle_t handle,
@@ -2834,10 +2834,10 @@ namespace CUDAnshita {
 													cublasDiagType_t diag,
 													int m,
 													int n,
-													ref float alpha, // [host or device] 
-													ref float A,
+													ref float alpha, // [host or device] const float *
+													IntPtr A, // [device] const float *
 													int lda,
-													ref float B,
+													IntPtr B, // [device] float *
 													int ldb);
 
 
@@ -2849,10 +2849,10 @@ namespace CUDAnshita {
 													cublasDiagType_t diag,
 													int m,
 													int n,
-													ref double alpha, // [host or device] 
-													ref double A,
+													ref double alpha, // [host or device] const double *
+													IntPtr A, // [device] const double *
 													int lda,
-													ref double B,
+													IntPtr B, // [device] double *
 													int ldb);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
@@ -2863,11 +2863,11 @@ namespace CUDAnshita {
 													cublasDiagType_t diag,
 													int m,
 													int n,
-													ref cuComplex alpha, // [host or device] 
-													ref cuComplex A,
+													ref cuComplex alpha, // [host or device] const cuComplex *
+													IntPtr A, // [device] const cuComplex *
 													int lda,
-													ref cuComplex B,
-                                                    int ldb);
+													IntPtr B, // [device] cuComplex *
+													int ldb);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasZtrsm_v2(cublasHandle_t handle,
@@ -2877,11 +2877,11 @@ namespace CUDAnshita {
 													cublasDiagType_t diag,
 													int m,
 													int n,
-													ref cuDoubleComplex alpha, // [host or device] 
-													ref cuDoubleComplex A,
+													ref cuDoubleComplex alpha, // [host or device] const cuDoubleComplex *
+													IntPtr A, // [device] const cuDoubleComplex *
 													int lda,
-													ref cuDoubleComplex B,
-                                                    int ldb);
+													IntPtr B, // [device] cuDoubleComplex *
+													int ldb);
 
 			// TRMM
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
@@ -2892,12 +2892,12 @@ namespace CUDAnshita {
 													cublasDiagType_t diag,
 													int m,
 													int n,
-													ref float alpha, // [host or device] 
-													ref float A,
+													ref float alpha, // [host or device] const float *
+													IntPtr A, // [device] const float *
 													int lda,
-													ref float B,
+													IntPtr B, // [device] const float *
 													int ldb,
-													ref float C,
+													IntPtr C, // [device] float *
 													int ldc);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
@@ -2908,12 +2908,12 @@ namespace CUDAnshita {
 													cublasDiagType_t diag,
 													int m,
 													int n,
-													ref double alpha, // [host or device] 
-													ref double A,
+													ref double alpha, // [host or device] const double *
+													IntPtr A, // [device] const double *
 													int lda,
-													ref double B,
+													IntPtr B, // [device] const double *
 													int ldb,
-													ref double C,
+													IntPtr C, // [device] double *
 													int ldc);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
@@ -2924,13 +2924,13 @@ namespace CUDAnshita {
 													cublasDiagType_t diag,
 													int m,
 													int n,
-													ref cuComplex alpha, // [host or device] 
-													ref cuComplex A,
+													ref cuComplex alpha, // [host or device] const cuComplex *
+													IntPtr A, // [device] const cuComplex *
 													int lda,
-													ref cuComplex B,
+													IntPtr B, // [device] const cuComplex *
 													int ldb,
-													ref cuComplex C,
-                                                    int ldc);
+													IntPtr C, // [device] cuComplex *
+													int ldc);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasZtrmm_v2(cublasHandle_t handle, cublasSideMode_t side,
@@ -2939,13 +2939,13 @@ namespace CUDAnshita {
 													cublasDiagType_t diag,
 													int m,
 													int n,
-													ref cuDoubleComplex alpha, // [host or device] 
-													ref cuDoubleComplex A,
+													ref cuDoubleComplex alpha, // [host or device] const cuDoubleComplex *
+													IntPtr A, // [device] const cuDoubleComplex *
 													int lda,
-													ref cuDoubleComplex B,
+													IntPtr B, // [device] const cuDoubleComplex *
 													int ldb,
-													ref cuDoubleComplex C,
-                                                    int ldc);
+													IntPtr C, // [device] cuDoubleComplex *
+													int ldc);
 
 			// BATCH GEMM
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
@@ -2955,13 +2955,13 @@ namespace CUDAnshita {
 													int m,
 													int n,
 													int k,
-													ref float alpha,  // [host or device] 
-													ref float[] Aarray,
+													ref float alpha,  // [host or device] const float *
+													IntPtr Aarray, // [device] const float *Aarray[]
 													int lda,
-													ref float[] Barray,
+													IntPtr Barray, // [device] const float *Barray[]
 													int ldb,
-													ref float beta,   // [host or device] 
-													ref float[] Carray,
+													ref float beta,   // [host or device] const float *
+													IntPtr Carray, // [device] float *Carray[]
 													int ldc,
 													int batchCount);
 
@@ -2972,13 +2972,13 @@ namespace CUDAnshita {
 													int m,
 													int n,
 													int k,
-													ref double alpha,  // [host or device] 
-													ref double[] Aarray,
+													ref double alpha,  // [host or device] const double *
+													IntPtr Aarray, // [device] const double *Aarray[]
 													int lda,
-													ref double[] Barray,
+													IntPtr Barray, // [device] const double *Barray[]
 													int ldb,
-													ref double beta,  // [host or device] 
-													ref double[] Carray,
+													ref double beta,  // [host or device] const double *
+													IntPtr Carray, // [device] double *Carray[]
 													int ldc,
 													int batchCount);
 
@@ -2989,14 +2989,14 @@ namespace CUDAnshita {
 													int m,
 													int n,
 													int k,
-													ref cuComplex alpha, // [host or device] 
-													ref cuComplex[] Aarray,
+													ref cuComplex alpha, // [host or device] const cuComplex *
+													IntPtr Aarray, // [device] const cuComplex *Aarray[]
 													int lda,
-													ref cuComplex[] Barray,
+													IntPtr Barray, // [device] const cuComplex *Barray[]
 													int ldb,
-													ref cuComplex beta, // [host or device] 
-													ref cuComplex[] Carray,
-                                                    int ldc,
+													ref cuComplex beta, // [host or device] const cuComplex *
+													IntPtr Carray, // [device] cuComplex *Carray[]
+													int ldc,
 													int batchCount);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
@@ -3006,14 +3006,14 @@ namespace CUDAnshita {
 													int m,
 													int n,
 													int k,
-													ref cuComplex alpha, // [host or device] 
-													ref cuComplex[] Aarray,
+													ref cuComplex alpha, // [host or device] const cuComplex *
+													IntPtr Aarray, // [device] const cuComplex *Aarray[]
 													int lda,
-													ref cuComplex[] Barray,
+													IntPtr Barray, // [device] const cuComplex *Barray[]
 													int ldb,
-													ref cuComplex beta, // [host or device] 
-													ref cuComplex[] Carray,
-                                                    int ldc,
+													ref cuComplex beta, // [host or device] const cuComplex *
+													IntPtr Carray, // [device] cuComplex *Carray[]
+													int ldc,
 													int batchCount);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
@@ -3023,14 +3023,14 @@ namespace CUDAnshita {
 													int m,
 													int n,
 													int k,
-													ref cuDoubleComplex alpha, // [host or device] 
-													ref cuDoubleComplex[] Aarray,
+													ref cuDoubleComplex alpha, // [host or device] const cuDoubleComplex *
+													IntPtr Aarray, // [device] const cuDoubleComplex *Aarray[]
 													int lda,
-													ref cuDoubleComplex[] Barray,
+													IntPtr Barray, // [device] const cuDoubleComplex *Barray[]
 													int ldb,
-													ref cuDoubleComplex beta, // [host or device] 
-													ref cuDoubleComplex[] Carray,
-                                                    int ldc,
+													ref cuDoubleComplex beta, // [host or device] const cuDoubleComplex *
+													IntPtr Carray, // [device] cuDoubleComplex *Carray[]
+													int ldc,
 													int batchCount);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
@@ -3040,15 +3040,15 @@ namespace CUDAnshita {
 													int m,
 													int n,
 													int k,
-													ref float alpha,  // [host or device] 
-													ref float A,
+													ref float alpha,  // [host or device] const float *
+													IntPtr A, // [device] const float *
 													int lda,
 													long strideA,   // purposely signed
-													ref float B,
+													IntPtr B, // [device] const float *
 													int ldb,
 													long strideB,
-													ref float beta,   // [host or device] 
-													ref float C,
+													ref float beta,   // [host or device] const float *
+													IntPtr C, // [device] float *
 													int ldc,
 													long strideC,
 													int batchCount);
@@ -3060,15 +3060,15 @@ namespace CUDAnshita {
 													int m,
 													int n,
 													int k,
-													ref double alpha,  // [host or device] 
-													ref double A,
+													ref double alpha,  // [host or device] const double *
+													IntPtr A, // [device] const double *
 													int lda,
 													long strideA,   // purposely signed
-													ref double B,
+													IntPtr B, // [device] const double *
 													int ldb,
 													long strideB,
-													ref double beta,   // [host or device] 
-													ref double C,
+													ref double beta,   // [host or device] const double *
+													IntPtr C, // [device] double *
 													int ldc,
 													long strideC,
 													int batchCount);
@@ -3080,16 +3080,16 @@ namespace CUDAnshita {
 													int m,
 													int n,
 													int k,
-													ref cuComplex alpha,  // [host or device] 
-													ref cuComplex A,
+													ref cuComplex alpha,  // [host or device] const cuComplex *
+													IntPtr A, // [device] const cuComplex *
 													int lda,
 													long strideA,   // purposely signed
-													ref cuComplex B,
+													IntPtr B, // [device] const cuComplex *
 													int ldb,
 													long strideB,
-													ref cuComplex beta,   // [host or device] 
-													ref cuComplex C,
-                                                    int ldc,
+													ref cuComplex beta,   // [host or device] const cuComplex *
+													IntPtr C, // [device] cuComplex *
+													int ldc,
 													long strideC,
 													int batchCount);
 
@@ -3100,16 +3100,16 @@ namespace CUDAnshita {
 													int m,
 													int n,
 													int k,
-													ref cuComplex alpha,  // [host or device] 
-													ref cuComplex A,
+													ref cuComplex alpha,  // [host or device] const cuComplex *
+													IntPtr A, // [device] const cuComplex *
 													int lda,
 													long strideA,   // purposely signed
-													ref cuComplex B,
+													IntPtr B, // [device] const cuComplex *
 													int ldb,
 													long strideB,
-													ref cuComplex beta,   // [host or device] 
-													ref cuComplex C,
-                                                    int ldc,
+													ref cuComplex beta,   // [host or device] const cuComplex *
+													IntPtr C, // [device] cuComplex *
+													int ldc,
 													long strideC,
 													int batchCount);
 
@@ -3121,16 +3121,16 @@ namespace CUDAnshita {
 													int m,
 													int n,
 													int k,
-													ref cuDoubleComplex alpha,  // [host or device] 
-													ref cuDoubleComplex A,
+													ref cuDoubleComplex alpha,  // [host or device] const cuDoubleComplex *
+													IntPtr A, // [device] const cuDoubleComplex *
 													int lda,
 													long strideA,   // purposely signed
-													ref cuDoubleComplex B,
+													IntPtr B, // [device] const cuDoubleComplex *
 													int ldb,
 													long strideB,
-													ref cuDoubleComplex beta,   // host or device poi
-													ref cuDoubleComplex C,
-                                                    int ldc,
+													ref cuDoubleComplex beta,   // [host or device] const cuDoubleComplex *
+													IntPtr C, // [device] cuDoubleComplex *
+													int ldc,
 													long strideC,
 													int batchCount);
 
@@ -3141,16 +3141,16 @@ namespace CUDAnshita {
 													int m,
 													int n,
 													int k,
-													ref __half alpha,  // [host or device] 
-													ref __half A,
+													ref __half alpha,  // [host or device] const __half *
+													IntPtr A, // [device] const __half *
 													int lda,
 													long strideA,   // purposely signed
-													ref __half B,
+													IntPtr B, // [device] const __half *
 													int ldb,
 													long strideB,
-													ref __half beta,   // [host or device] 
-													ref __half C,
-                                                    int ldc,
+													ref __half beta,   // [host or device] const __half *
+													IntPtr C, // [device] __half *
+													int ldc,
 													long strideC,
 													int batchCount);
 
@@ -3162,10 +3162,10 @@ namespace CUDAnshita {
 													cublasOperation_t transb,
 													int m,
 													int n,
-													ref float alpha, // [host or device] 
+													ref float alpha, // [host or device] const float *
 													IntPtr A, // [device] const float *
 													int lda,
-													ref float beta, // [host or device] 
+													ref float beta, // [host or device] const float *
 													IntPtr B, // [device] const float *
 													int ldb,
 													IntPtr C, // [device] float *
@@ -3177,10 +3177,10 @@ namespace CUDAnshita {
 													cublasOperation_t transb,
 													int m,
 													int n,
-													ref double alpha, // [host or device]
+													ref double alpha, // [host or device] const double *
 													IntPtr A, // [device] const double *
 													int lda,
-													ref double beta, // [host or device]
+													ref double beta, // [host or device] const double *
 													IntPtr B, // [device] const double *
 													int ldb,
 													IntPtr C, // [device] double *
@@ -3192,13 +3192,13 @@ namespace CUDAnshita {
 													cublasOperation_t transb,
 													int m,
 													int n,
-													ref cuComplex alpha, // [host or device] 
-													ref cuComplex A,
+													ref cuComplex alpha, // [host or device] const cuComplex *
+													IntPtr A, // [device] const cuComplex *
 													int lda,
-													ref cuComplex beta, // [host or device] 
-													ref cuComplex B,
+													ref cuComplex beta, // [host or device] const cuComplex *
+													IntPtr B, // [device] const cuComplex *
 													int ldb,
-													ref cuComplex C, 
+													IntPtr C, // [device] cuComplex *
 													int ldc);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
@@ -3207,13 +3207,13 @@ namespace CUDAnshita {
 													cublasOperation_t transb,
 													int m,
 													int n,
-													ref cuDoubleComplex alpha, // [host or device] 
-													ref cuDoubleComplex A,
+													ref cuDoubleComplex alpha, // [host or device] const cuDoubleComplex *
+													IntPtr A, // [device] const cuDoubleComplex *
 													int lda,
-													ref cuDoubleComplex beta, // [host or device] 
-													ref cuDoubleComplex B,
+													ref cuDoubleComplex beta, // [host or device] const cuDoubleComplex *
+													IntPtr B, // [device] const cuDoubleComplex *
 													int ldb,
-													ref cuDoubleComplex C, 
+													IntPtr C, // [device] cuDoubleComplex *
 													int ldc);
 
 			// Batched LU - GETRF
@@ -3229,73 +3229,73 @@ namespace CUDAnshita {
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasDgetrfBatched(cublasHandle_t handle,
 													int n,
-													ref double[] A,                     // Device pointer
+													IntPtr A, // [device] double *Aarray[]
 													int lda,
-													ref int P,                          // Device Pointer
-													ref int info,                       // Device Pointer
+													IntPtr P, // [device] int *
+													IntPtr info, // [device] int *
 													int batchSize);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasCgetrfBatched(cublasHandle_t handle,
 													int n,
-													ref cuComplex[] A,                 // Device pointer
+													IntPtr A, // [device] cuComplex *Aarray[]
 													int lda,
-													ref int P,                         // Device Pointer
-													ref int info,                      // Device Pointer
+													IntPtr P, // [device] int *
+													IntPtr info, // [device] int *
 													int batchSize);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasZgetrfBatched(cublasHandle_t handle,
 													int n,
-													ref cuDoubleComplex[] A,           // Device pointer
+													IntPtr A, // [device] cuDoubleComplex *Aarray[]
 													int lda,
-													ref int P,                         // Device Pointer
-													ref int info,                      // Device Pointer
+													IntPtr P, // [device] int *
+													IntPtr info, // [device] int *
 													int batchSize);
 
 			// Batched inversion based on LU factorization from getrf
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSgetriBatched(cublasHandle_t handle,
 													int n,
-													ref float[] A,               // Device pointer
+													IntPtr A, // [device] float *Aarray[]
 													int lda,
-													ref int P,                   // Device pointer
-													ref float[] C,                     // Device pointer
+													IntPtr P, // [device] int *
+													IntPtr C, // [device] float *Carray[]
 													int ldc,
-													ref int info,
+													IntPtr info, // [device] int *
 													int batchSize);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasDgetriBatched(cublasHandle_t handle,
 													int n,
-													ref double[] A,              // Device pointer
+													IntPtr A, // [device] double *Aarray[]
 													int lda,
-													ref int P,                   // Device pointer
-													ref double[] C,                    // Device pointer
+													IntPtr P, // [device] int *
+													IntPtr C, // [device] double *Carray[]
 													int ldc,
-													ref int info,
+													IntPtr info, // [device] int *
 													int batchSize);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasCgetriBatched(cublasHandle_t handle,
 													int n,
-													ref cuComplex[] A,            // Device pointer
+													IntPtr A, // [device] cuComplex *Aarray[]
 													int lda,
-													ref int P,                   // Device pointer
-													ref cuComplex[] C,                 // Device pointer
+													IntPtr P, // [device] int *
+													IntPtr C, // [device] cuComplex *Carray[]
 													int ldc,
-													ref int info,
+													IntPtr info, // [device] int *
 													int batchSize);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasZgetriBatched(cublasHandle_t handle,
 													int n,
-													ref cuDoubleComplex[] A,     // Device pointer
+													IntPtr A, // [device] cuDoubleComplex *Aarray[]
 													int lda,
-													ref int P,                   // Device pointer
-													ref cuDoubleComplex[] C,           // Device pointer
+													IntPtr P, // [device] int *
+													IntPtr C, // [device] cuDoubleComplex *Carray[]
 													int ldc,
-													ref int info,
+													IntPtr info, // [device] int *
 													int batchSize);
 
 			// Batched solver based on LU factorization from getrf
@@ -3305,12 +3305,12 @@ namespace CUDAnshita {
 													cublasOperation_t trans,
 													int n,
 													int nrhs,
-													ref float[] Aarray,
+													IntPtr Aarray, // [device] const float *Aarray[]
 													int lda,
-													ref int devIpiv,
-													ref float[] Barray,
+													IntPtr devIpiv, // [device] const int *
+													IntPtr Barray, // [device] float *Barray[]
 													int ldb,
-													ref int info,
+													IntPtr info, // [host] int *
 													int batchSize);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
@@ -3318,12 +3318,12 @@ namespace CUDAnshita {
 													cublasOperation_t trans,
 													int n,
 													int nrhs,
-													ref double[] Aarray,
+													IntPtr Aarray, // [device] const double *Aarray[]
 													int lda,
-													ref int devIpiv,
-													ref double[] Barray,
+													IntPtr devIpiv, // [device] const int *
+													IntPtr Barray, // [device] double *Barray[]
 													int ldb,
-													ref int info,
+													IntPtr info, // [host] int *
 													int batchSize);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
@@ -3331,12 +3331,12 @@ namespace CUDAnshita {
 													cublasOperation_t trans,
 													int n,
 													int nrhs,
-													ref cuComplex[] Aarray,
+													IntPtr Aarray, // [device] const cuComplex *Aarray[]
 													int lda,
-													ref int devIpiv,
-													ref cuComplex[] Barray, 
-                                                    int ldb,
-													ref int info,
+													IntPtr devIpiv, // [device] const int *
+													IntPtr Barray,  // [device] cuComplex *Barray[]
+													int ldb,
+													IntPtr info, // [host] int *
 													int batchSize);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
@@ -3344,12 +3344,12 @@ namespace CUDAnshita {
 													cublasOperation_t trans,
 													int n,
 													int nrhs,
-													ref cuDoubleComplex[] Aarray,
+													IntPtr Aarray, // [device] const cuDoubleComplex *Aarray[]
 													int lda,
-													ref int devIpiv,
-													ref cuDoubleComplex[] Barray, 
-                                                    int ldb,
-													ref int info,
+													IntPtr devIpiv, // [device] const int *
+													IntPtr Barray,  // [device] cuDoubleComplex *Barray[]
+													int ldb,
+													IntPtr info, // [host] int *
 													int batchSize);
 
 			// TRSM - Batched Triangular Solver
@@ -3361,10 +3361,10 @@ namespace CUDAnshita {
 													cublasDiagType_t diag,
 													int m,
 													int n,
-													ref float alpha,           // [host or device] 
-													ref float[] A,
+													ref float alpha, // [host or device] const float *
+													IntPtr A, // [device] float *A[]
 													int lda,
-													ref float[] B,
+													IntPtr B, // [device] float *B[]
 													int ldb,
 													int batchCount);
 
@@ -3376,10 +3376,10 @@ namespace CUDAnshita {
 													cublasDiagType_t diag,
 													int m,
 													int n,
-													ref double alpha,          // [host or device] 
-													ref double[] A,
+													ref double alpha, // [host or device] const double *
+													IntPtr A, // [device] double *A[]
 													int lda,
-													ref double[] B,
+													IntPtr B, // [device] double *B[]
 													int ldb,
 													int batchCount);
 
@@ -3391,11 +3391,11 @@ namespace CUDAnshita {
 													cublasDiagType_t diag,
 													int m,
 													int n,
-													ref cuComplex alpha,       // [host or device] 
-													ref cuComplex[] A,
+													ref cuComplex alpha, // [host or device] const cuComplex *
+													IntPtr A, // [device] cuComplex *A[]
 													int lda,
-													ref cuComplex[] B, 
-                                                    int ldb,
+													IntPtr B, // [device] cuComplex *B[]
+													int ldb,
 													int batchCount);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
@@ -3406,52 +3406,52 @@ namespace CUDAnshita {
 													cublasDiagType_t diag,
 													int m,
 													int n,
-													ref cuDoubleComplex alpha, // [host or device] 
-													ref cuDoubleComplex[] A,
+													ref cuDoubleComplex alpha, // [host or device] const cuDoubleComplex *
+													IntPtr A, // [device] cuDoubleComplex *A[]
 													int lda,
-													ref cuDoubleComplex[] B, 
-                                                    int ldb,
+													IntPtr B, // [device] cuDoubleComplex *B[]
+													int ldb,
 													int batchCount);
 
 			// Batched - MATINV
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSmatinvBatched(cublasHandle_t handle,
 													int n,
-													ref float[] A,                  // Device pointer
+													IntPtr A, // [device] const float *A[]
 													int lda,
-													ref float[] Ainv,               // Device pointer
+													IntPtr Ainv, // [device] float *Ainv[]
 													int lda_inv,
-													ref int info,                   // Device Pointer
+													IntPtr info, // [device] int *
 													int batchSize);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasDmatinvBatched(cublasHandle_t handle,
 													int n,
-													ref double[] A,                 // Device pointer
+													IntPtr A, // [device] const double *A[]
 													int lda,
-													ref double[] Ainv,              // Device pointer
+													IntPtr Ainv, // [device] double *Ainv[]
 													int lda_inv,
-													ref int info,                   // Device Pointer
+													IntPtr info, // [device] int *
 													int batchSize);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasCmatinvBatched(cublasHandle_t handle,
 													int n,
-													ref cuComplex[] A,              // Device pointer
+													IntPtr A, // [device] const cuComplex *A[]
 													int lda,
-													ref cuComplex[] Ainv,           // Device pointer
-                                                    int lda_inv,
-													ref int info,                   // Device Pointer
+													IntPtr Ainv, // [device] cuComplex *Ainv[]
+													int lda_inv,
+													IntPtr info, // [device] int *
 													int batchSize);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasZmatinvBatched(cublasHandle_t handle,
 													int n,
-													ref cuDoubleComplex[] A,        // Device pointer
+													IntPtr A, // [device] const cuDoubleComplex *A[]
 													int lda,
-													ref cuDoubleComplex[] Ainv,     // Device pointer
-                                                    int lda_inv,
-													ref int info,                   // Device Pointer
+													IntPtr Ainv, // [device] cuDoubleComplex *Ainv[]
+													int lda_inv,
+													IntPtr info, // [device] int *
 													int batchSize);
 
 			// Batch QR Factorization
@@ -3459,40 +3459,40 @@ namespace CUDAnshita {
 			public static extern cublasStatus_t cublasSgeqrfBatched(cublasHandle_t handle,
 													int m,
 													int n,
-													ref float[] Aarray,           // Device pointer
+													IntPtr Aarray, // [device] float *Aarray[]
 													int lda,
-													ref float[] TauArray,        // Device pointer
-													ref int info,
+													IntPtr TauArray, // [device] float *TauArray[]
+													ref int info, // [host] int *
 													int batchSize);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasDgeqrfBatched(cublasHandle_t handle,
 													int m,
 													int n,
-													ref double[] Aarray,           // Device pointer
+													IntPtr Aarray, // [device] double *Aarray[]
 													int lda,
-													ref double[] TauArray,        // Device pointer
-													ref int info,
+													IntPtr TauArray, // [device] double *TauArray[]
+													ref int info, // [host] int *
 													int batchSize);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasCgeqrfBatched(cublasHandle_t handle,
 													int m,
 													int n,
-													ref cuComplex[] Aarray,           // Device pointer
+													IntPtr Aarray, // [device] cuComplex *Aarray[]
 													int lda,
-													ref cuComplex[] TauArray,        // Device pointer
-													ref int info,
+													IntPtr TauArray, // [device] cuComplex *TauArray[]
+													ref int info, // [host] int *
 													int batchSize);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasZgeqrfBatched(cublasHandle_t handle,
 													int m,
 													int n,
-													ref cuDoubleComplex[] Aarray,           // Device pointer
+													IntPtr Aarray, // [device] cuDoubleComplex *Aarray[]
 													int lda,
-													ref cuDoubleComplex[] TauArray,        // Device pointer
-													ref int info,
+													IntPtr TauArray, // [device] cuDoubleComplex *TauArray[]
+													ref int info, // [host] int *
 													int batchSize);
 
 			// Least Square Min only m >= n and Non-transpose supported
@@ -3502,12 +3502,12 @@ namespace CUDAnshita {
 													int m,
 													int n,
 													int nrhs,
-													ref float[] Aarray, // Device pointer
+													IntPtr Aarray, // [device] float *Aarray[]
 													int lda,
-													ref float[] Carray, // Device pointer
+													IntPtr Carray, // [device] float *Carray[]
 													int ldc,
-													ref int info,
-													ref int devInfoArray, // Device pointer
+													ref int info, // [host] int *
+													IntPtr devInfoArray, // [device] int *
 													int batchSize);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
@@ -3516,12 +3516,12 @@ namespace CUDAnshita {
 													int m,
 													int n,
 													int nrhs,
-													ref double[] Aarray, // Device pointer
+													IntPtr Aarray, // [device] double *Aarray[]
 													int lda,
-													ref double[] Carray, // Device pointer
+													IntPtr Carray, // [device] double *Carray[]
 													int ldc,
-													ref int info,
-													ref int devInfoArray, // Device pointer
+													ref int info, // [host] int *
+													IntPtr devInfoArray, // [device] int *
 													int batchSize);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
@@ -3530,12 +3530,12 @@ namespace CUDAnshita {
 													int m,
 													int n,
 													int nrhs,
-													ref cuComplex[] Aarray, // Device pointer
+													IntPtr Aarray, // [device] cuComplex *Aarray[]
 													int lda,
-													ref cuComplex[] Carray, // Device pointer
+													IntPtr Carray, // [device] cuComplex *Carray[]
 													int ldc,
-													ref int info,
-													ref int devInfoArray,
+													ref int info, // [host] int *
+													IntPtr devInfoArray, // [device] int *
 													int batchSize);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
@@ -3544,12 +3544,12 @@ namespace CUDAnshita {
 													int m,
 													int n,
 													int nrhs,
-													ref cuDoubleComplex[] Aarray, // Device pointer
+													IntPtr Aarray, // [device] cuComplex *Aarray[]
 													int lda,
-													ref cuDoubleComplex[] Carray, // Device pointer
+													IntPtr Carray, // [device] cuComplex *Carray[]
 													int ldc,
-													ref int info,
-													ref int devInfoArray,
+													ref int info, // [host] int *
+													IntPtr devInfoArray, // [device] int *
 													int batchSize);
 			// DGMM
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
@@ -3581,11 +3581,11 @@ namespace CUDAnshita {
 													cublasSideMode_t mode,
 													int m,
 													int n,
-													ref cuComplex A,
+													IntPtr A, // [device] const cuComplex *
 													int lda,
-													ref cuComplex x,
+													IntPtr x, // [device] const cuComplex *
 													int incx,
-													ref cuComplex C, 
+													IntPtr C, // [device] cuComplex *
 													int ldc);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
@@ -3593,11 +3593,11 @@ namespace CUDAnshita {
 													cublasSideMode_t mode,
 													int m,
 													int n,
-													ref cuDoubleComplex A,
+													IntPtr A, // [device] const cuDoubleComplex *
 													int lda,
-													ref cuDoubleComplex x,
+													IntPtr x, // [device] const cuDoubleComplex *
 													int incx,
-													ref cuDoubleComplex C, 
+													IntPtr C, // [device] cuDoubleComplex *
 													int ldc);
 
 			// TPTTR : Triangular Pack format to Triangular format
@@ -3605,66 +3605,66 @@ namespace CUDAnshita {
 			public static extern cublasStatus_t cublasStpttr(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													int n,
-													ref float AP,
-													ref float A,
+													IntPtr AP, // [device] const float *
+													IntPtr A, // [device] float *
 													int lda );
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasDtpttr(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													int n,
-													ref double AP,
-													ref double A,
+													IntPtr AP, // [device] const double *
+													IntPtr A, // [device] double *
 													int lda );
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasCtpttr(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													int n,
-													ref cuComplex AP,
-													ref cuComplex A,  
-                                                    int lda );
+													IntPtr AP, // [device] const cuComplex *
+													IntPtr A, // [device] cuComplex *
+													int lda );
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasZtpttr(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													int n,
-													ref cuDoubleComplex AP,
-													ref cuDoubleComplex A,  
-                                                    int lda );
+													IntPtr AP, // [device] const cuDoubleComplex *
+													IntPtr A, // [device] cuDoubleComplex *
+													int lda );
 
 			// TRTTP : Triangular format to Triangular Pack format
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasStrttp(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													int n,
-													ref float A,
+													IntPtr A, // [device] const float *
 													int lda,
-													ref float AP );
+													IntPtr AP ); // [device] float *
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasDtrttp(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													int n,
-													ref double A,
+													IntPtr A, // [device] const double *
 													int lda,
-													ref double AP);
+													IntPtr AP); // [device] double *
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasCtrttp(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													int n,
-													ref cuComplex A,
+													IntPtr A, // [device] const cuComplex *
 													int lda,
-													ref cuComplex AP );
+													IntPtr AP ); // [device] cuComplex *
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasZtrttp(cublasHandle_t handle,
 													cublasFillMode_t uplo,
 													int n,
-													ref cuDoubleComplex A,
+													IntPtr A, // [device] const cuDoubleComplex *
 													int lda,
-													ref cuDoubleComplex AP );     
+													IntPtr AP ); // [device] cuDoubleComplex *    
 		}
 
 		// ----- C# Interface
@@ -4629,29 +4629,165 @@ namespace CUDAnshita {
 			CheckStatus(API.cublasZhemm_v2(handle, side, uplo, m, n, ref alpha, A, lda, B, ldb, ref beta, C, ldc));
 		}
 
-		// cublasStrsm_v2
-		// cublasDtrsm_v2
-		// cublasCtrsm_v2
-		// cublasZtrsm_v2
+		public static void Strsm_v2(cublasHandle_t handle, cublasSideMode_t side, cublasFillMode_t uplo, cublasOperation_t trans, cublasDiagType_t diag, int m, int n, float alpha, IntPtr A, int lda, IntPtr B, int ldb) {
+			CheckStatus(API.cublasStrsm_v2(handle, side, uplo, trans, diag, m, n, ref alpha, A, lda, B, ldb));
+		}
+		public static void Dtrsm_v2(cublasHandle_t handle, cublasSideMode_t side, cublasFillMode_t uplo, cublasOperation_t trans, cublasDiagType_t diag, int m, int n, double alpha, IntPtr A, int lda, IntPtr B, int ldb) {
+			CheckStatus(API.cublasDtrsm_v2(handle, side, uplo, trans, diag, m, n, ref alpha, A, lda, B, ldb));
+		}
+		public static void Ctrsm_v2(cublasHandle_t handle, cublasSideMode_t side, cublasFillMode_t uplo, cublasOperation_t trans, cublasDiagType_t diag, int m, int n, cuComplex alpha, IntPtr A, int lda, IntPtr B, int ldb) {
+			CheckStatus(API.cublasCtrsm_v2(handle, side, uplo, trans, diag, m, n, ref alpha, A, lda, B, ldb));
+		}
+		public static void Ztrsm_v2(cublasHandle_t handle, cublasSideMode_t side, cublasFillMode_t uplo, cublasOperation_t trans, cublasDiagType_t diag, int m, int n, cuDoubleComplex alpha, IntPtr A, int lda, IntPtr B, int ldb) {
+			CheckStatus(API.cublasZtrsm_v2(handle, side, uplo, trans, diag, m, n, ref alpha, A, lda, B, ldb));
+		}
 
-		// cublasStrmm_v2
-		// cublasDtrmm_v2
-		// cublasCtrmm_v2
-		// cublasZtrmm_v2
+		public static void Strmm_v2(cublasHandle_t handle, cublasSideMode_t side, cublasFillMode_t uplo, cublasOperation_t trans, cublasDiagType_t diag, int m, int n, float alpha, IntPtr A, int lda, IntPtr B, int ldb, IntPtr C, int ldc) {
+			CheckStatus(API.cublasStrmm_v2(handle, side, uplo, trans, diag, m, n, ref alpha, A, lda, B, ldb, C, ldc));
+		}
+		public static void Dtrmm_v2(cublasHandle_t handle, cublasSideMode_t side, cublasFillMode_t uplo, cublasOperation_t trans, cublasDiagType_t diag, int m, int n, double alpha, IntPtr A, int lda, IntPtr B, int ldb, IntPtr C, int ldc) {
+			CheckStatus(API.cublasDtrmm_v2(handle, side, uplo, trans, diag, m, n, ref alpha, A, lda, B, ldb, C, ldc));
+		}
+		public static void Ctrmm_v2(cublasHandle_t handle, cublasSideMode_t side, cublasFillMode_t uplo, cublasOperation_t trans, cublasDiagType_t diag, int m, int n, cuComplex alpha, IntPtr A, int lda, IntPtr B, int ldb, IntPtr C, int ldc) {
+			CheckStatus(API.cublasCtrmm_v2(handle, side, uplo, trans, diag, m, n, ref alpha, A, lda, B, ldb, C, ldc));
+		}
+		public static void Ztrmm_v2(cublasHandle_t handle, cublasSideMode_t side, cublasFillMode_t uplo, cublasOperation_t trans, cublasDiagType_t diag, int m, int n, cuDoubleComplex alpha, IntPtr A, int lda, IntPtr B, int ldb, IntPtr C, int ldc) {
+			CheckStatus(API.cublasZtrmm_v2(handle, side, uplo, trans, diag, m, n, ref alpha, A, lda, B, ldb, C, ldc));
+		}
 
-		// cublasSgemmBatched
-		// cublasDgemmBatched
-		// cublasCgemmBatched
-		// cublasCgemm3mBatched
-		// cublasZgemmBatched
+		public static void SgemmBatched(cublasHandle_t handle, cublasOperation_t transa, cublasOperation_t transb, int m, int n, int k, float alpha, IntPtr Aarray, int lda, IntPtr Barray, int ldb, float beta, IntPtr Carray, int ldc, int batchCount) {
+			CheckStatus(API.cublasSgemmBatched(
+				handle, transa, transb,
+				m, n, k,
+				ref alpha,
+				Aarray, lda,
+				Barray, ldb,
+				ref beta,
+				Carray, ldc,
+				batchCount
+			));
+		}
+		public static void DgemmBatched(cublasHandle_t handle, cublasOperation_t transa, cublasOperation_t transb, int m, int n, int k, double alpha, IntPtr Aarray, int lda, IntPtr Barray, int ldb, double beta, IntPtr Carray, int ldc, int batchCount) {
+			CheckStatus(API.cublasDgemmBatched(
+				handle, transa, transb,
+				m, n, k,
+				ref alpha,
+				Aarray, lda,
+				Barray, ldb,
+				ref beta,
+				Carray, ldc,
+				batchCount
+			));
+		}
+		public static void CgemmBatched(cublasHandle_t handle, cublasOperation_t transa, cublasOperation_t transb, int m, int n, int k, cuComplex alpha, IntPtr Aarray, int lda, IntPtr Barray, int ldb, cuComplex beta, IntPtr Carray, int ldc, int batchCount) {
+			CheckStatus(API.cublasCgemmBatched(
+				handle, transa, transb,
+				m, n, k,
+				ref alpha,
+				Aarray, lda,
+				Barray, ldb,
+				ref beta,
+				Carray, ldc,
+				batchCount
+			));
+		}
+		public static void Cgemm3mBatched(cublasHandle_t handle, cublasOperation_t transa, cublasOperation_t transb, int m, int n, int k, cuComplex alpha, IntPtr Aarray, int lda, IntPtr Barray, int ldb, cuComplex beta, IntPtr Carray, int ldc, int batchCount) {
+			CheckStatus(API.cublasCgemm3mBatched(
+				handle, transa, transb,
+				m, n, k,
+				ref alpha,
+				Aarray, lda,
+				Barray, ldb,
+				ref beta,
+				Carray, ldc,
+				batchCount
+			));
+		}
+		public static void ZgemmBatched(cublasHandle_t handle, cublasOperation_t transa, cublasOperation_t transb, int m, int n, int k, cuDoubleComplex alpha, IntPtr Aarray, int lda, IntPtr Barray, int ldb, cuDoubleComplex beta, IntPtr Carray, int ldc, int batchCount) {
+			CheckStatus(API.cublasZgemmBatched(
+				handle, transa, transb,
+				m, n, k,
+				ref alpha,
+				Aarray, lda,
+				Barray, ldb,
+				ref beta,
+				Carray, ldc,
+				batchCount
+			));
+		}
 
-		// cublasSgemmStridedBatched
-		// cublasDgemmStridedBatched
-		// cublasCgemmStridedBatched
-		// cublasCgemm3mStridedBatched
-		// cublasZgemmStridedBatched
-		// cublasHgemmStridedBatched
-
+		public static void SgemmStridedBatched(cublasHandle_t handle, cublasOperation_t transa, cublasOperation_t transb, int m, int n, int k, float alpha, IntPtr A, int lda, long strideA, IntPtr B, int ldb, long strideB, float beta, IntPtr C, int ldc, long strideC, int batchCount) {
+			CheckStatus(API.cublasSgemmStridedBatched(
+				handle, transa, transb,
+				m, n, k,
+				ref alpha,
+				A, lda, strideA,
+				B, ldb, strideB,
+				ref beta,
+				C, ldc, strideC,
+				batchCount
+			));
+		}
+		public static void DgemmStridedBatched(cublasHandle_t handle, cublasOperation_t transa, cublasOperation_t transb, int m, int n, int k, double alpha, IntPtr A, int lda, long strideA, IntPtr B, int ldb, long strideB, double beta, IntPtr C, int ldc, long strideC, int batchCount) {
+			CheckStatus(API.cublasDgemmStridedBatched(
+				handle, transa, transb,
+				m, n, k,
+				ref alpha,
+				A, lda, strideA,
+				B, ldb, strideB,
+				ref beta,
+				C, ldc, strideC,
+				batchCount
+			));
+		}
+		public static void CgemmStridedBatched(cublasHandle_t handle, cublasOperation_t transa, cublasOperation_t transb, int m, int n, int k, cuComplex alpha, IntPtr A, int lda, long strideA, IntPtr B, int ldb, long strideB, cuComplex beta, IntPtr C, int ldc, long strideC, int batchCount) {
+			CheckStatus(API.cublasCgemmStridedBatched(
+				handle, transa, transb,
+				m, n, k,
+				ref alpha,
+				A, lda, strideA,
+				B, ldb, strideB,
+				ref beta,
+				C, ldc, strideC,
+				batchCount
+			));
+		}
+		public static void Cgemm3mStridedBatched(cublasHandle_t handle, cublasOperation_t transa, cublasOperation_t transb, int m, int n, int k, cuComplex alpha, IntPtr A, int lda, long strideA, IntPtr B, int ldb, long strideB, cuComplex beta, IntPtr C, int ldc, long strideC, int batchCount) {
+			CheckStatus(API.cublasCgemm3mStridedBatched(
+				handle, transa, transb,
+				m, n, k,
+				ref alpha,
+				A, lda, strideA,
+				B, ldb, strideB,
+				ref beta,
+				C, ldc, strideC,
+				batchCount
+			));
+		}
+		public static void ZgemmStridedBatched(cublasHandle_t handle, cublasOperation_t transa, cublasOperation_t transb, int m, int n, int k, cuDoubleComplex alpha, IntPtr A, int lda, long strideA, IntPtr B, int ldb, long strideB, cuDoubleComplex beta, IntPtr C, int ldc, long strideC, int batchCount) {
+			CheckStatus(API.cublasZgemmStridedBatched(
+				handle, transa, transb,
+				m, n, k,
+				ref alpha,
+				A, lda, strideA,
+				B, ldb, strideB,
+				ref beta,
+				C, ldc, strideC,
+				batchCount
+			));
+		}
+		public static void HgemmStridedBatched(cublasHandle_t handle, cublasOperation_t transa, cublasOperation_t transb, int m, int n, int k, __half alpha, IntPtr A, int lda, long strideA, IntPtr B, int ldb, long strideB, __half beta, IntPtr C, int ldc, long strideC, int batchCount) {
+			CheckStatus(API.cublasHgemmStridedBatched(
+				handle, transa, transb,
+				m, n, k,
+				ref alpha,
+				A, lda, strideA,
+				B, ldb, strideB,
+				ref beta,
+				C, ldc, strideC,
+				batchCount
+			));
+		}
 
 		public static void Sgeam(cublasHandle_t handle, cublasOperation_t transa, cublasOperation_t transb, int m, int n, float alpha, IntPtr A, int lda, float beta, IntPtr B, int ldb, IntPtr C, int ldc) {
 			CheckStatus(API.cublasSgeam(
@@ -4675,45 +4811,231 @@ namespace CUDAnshita {
 				C, ldc
 			));
 		}
-		// cublasCgeam
-		// cublasZgeam
+		public static void Cgeam(cublasHandle_t handle, cublasOperation_t transa, cublasOperation_t transb, int m, int n, cuComplex alpha, IntPtr A, int lda, cuComplex beta, IntPtr B, int ldb, IntPtr C, int ldc) {
+			CheckStatus(API.cublasCgeam(
+				handle, transa, transb,
+				m, n,
+				ref alpha,
+				A, lda,
+				ref beta,
+				B, ldb,
+				C, ldc
+			));
+		}
+		public static void Zgeam(cublasHandle_t handle, cublasOperation_t transa, cublasOperation_t transb, int m, int n, cuDoubleComplex alpha, IntPtr A, int lda, cuDoubleComplex beta, IntPtr B, int ldb, IntPtr C, int ldc) {
+			CheckStatus(API.cublasZgeam(
+				handle, transa, transb,
+				m, n,
+				ref alpha,
+				A, lda,
+				ref beta,
+				B, ldb,
+				C, ldc
+			));
+		}
 
 		public static void SgetrfBatched(cublasHandle_t handle, int n, IntPtr A, int lda, IntPtr P, IntPtr info, int batchSize) {
 			CheckStatus(API.cublasSgetrfBatched(handle, n, A, lda, P, info, batchSize));
 		}
-		// cublasDgetrfBatched
-		// cublasCgetrfBatched
-		// cublasZgetrfBatched
+		public static void DgetrfBatched(cublasHandle_t handle, int n, IntPtr A, int lda, IntPtr P, IntPtr info, int batchSize) {
+			CheckStatus(API.cublasDgetrfBatched(handle, n, A, lda, P, info, batchSize));
+		}
+		public static void CgetrfBatched(cublasHandle_t handle, int n, IntPtr A, int lda, IntPtr P, IntPtr info, int batchSize) {
+			CheckStatus(API.cublasCgetrfBatched(handle, n, A, lda, P, info, batchSize));
+		}
+		public static void ZgetrfBatched(cublasHandle_t handle, int n, IntPtr A, int lda, IntPtr P, IntPtr info, int batchSize) {
+			CheckStatus(API.cublasZgetrfBatched(handle, n, A, lda, P, info, batchSize));
+		}
 
-		// cublasSgetriBatched
-		// cublasDgetriBatched
-		// cublasCgetriBatched
-		// cublasZgetriBatched
+		public static void SgetriBatched(cublasHandle_t handle, int n, IntPtr A, int lda, IntPtr P, IntPtr C, int ldc, IntPtr info, int batchSize) {
+			CheckStatus(API.cublasSgetriBatched(handle, n, A, lda, P, C, ldc, info, batchSize));
+		}
+		public static void DgetriBatched(cublasHandle_t handle, int n, IntPtr A, int lda, IntPtr P, IntPtr C, int ldc, IntPtr info, int batchSize) {
+			CheckStatus(API.cublasDgetriBatched(handle, n, A, lda, P, C, ldc, info, batchSize));
+		}
+		public static void CgetriBatched(cublasHandle_t handle, int n, IntPtr A, int lda, IntPtr P, IntPtr C, int ldc, IntPtr info, int batchSize) {
+			CheckStatus(API.cublasCgetriBatched(handle, n, A, lda, P, C, ldc, info, batchSize));
+		}
+		public static void ZgetriBatched(cublasHandle_t handle, int n, IntPtr A, int lda, IntPtr P, IntPtr C, int ldc, IntPtr info, int batchSize) {
+			CheckStatus(API.cublasZgetriBatched(handle, n, A, lda, P, C, ldc, info, batchSize));
+		}
 
-		// cublasSgetrsBatched
-		// cublasDgetrsBatched
-		// cublasCgetrsBatched
-		// cublasZgetrsBatched
+		public static void SgetrsBatched(cublasHandle_t handle, cublasOperation_t trans, int n, int nrhs, IntPtr Aarray, int lda, IntPtr devIpiv, IntPtr Barray, int ldb, IntPtr info, int batchSize) {
+			CheckStatus(API.cublasSgetrsBatched(handle, trans, n, nrhs, Aarray, lda, devIpiv, Barray, ldb, info, batchSize));
+		}
+		public static void DgetrsBatched(cublasHandle_t handle, cublasOperation_t trans, int n, int nrhs, IntPtr Aarray, int lda, IntPtr devIpiv, IntPtr Barray, int ldb, IntPtr info, int batchSize) {
+			CheckStatus(API.cublasDgetrsBatched(handle, trans, n, nrhs, Aarray, lda, devIpiv, Barray, ldb, info, batchSize));
+		}
+		public static void CgetrsBatched(cublasHandle_t handle, cublasOperation_t trans, int n, int nrhs, IntPtr Aarray, int lda, IntPtr devIpiv, IntPtr Barray, int ldb, IntPtr info, int batchSize) {
+			CheckStatus(API.cublasCgetrsBatched(handle, trans, n, nrhs, Aarray, lda, devIpiv, Barray, ldb, info, batchSize));
+		}
+		public static void ZgetrsBatched(cublasHandle_t handle, cublasOperation_t trans, int n, int nrhs, IntPtr Aarray, int lda, IntPtr devIpiv, IntPtr Barray, int ldb, IntPtr info, int batchSize) {
+			CheckStatus(API.cublasZgetrsBatched(handle, trans, n, nrhs, Aarray, lda, devIpiv, Barray, ldb, info, batchSize));
+		}
 
-		// cublasStrsmBatched
-		// cublasDtrsmBatched
-		// cublasCtrsmBatched
-		// cublasZtrsmBatched
+		public static void StrsmBatched(cublasHandle_t handle, cublasSideMode_t side, cublasFillMode_t uplo, cublasOperation_t trans, cublasDiagType_t diag, int m, int n, float alpha, IntPtr A, int lda, IntPtr B, int ldb, int batchCount) {
+			CheckStatus(API.cublasStrsmBatched(
+				handle, side, uplo, trans, diag,
+				m, n,
+				ref alpha,
+				A, lda,
+				B, ldb,
+				batchCount
+			));
+		}
+		public static void DtrsmBatched(cublasHandle_t handle, cublasSideMode_t side, cublasFillMode_t uplo, cublasOperation_t trans, cublasDiagType_t diag, int m, int n, double alpha, IntPtr A, int lda, IntPtr B, int ldb, int batchCount) {
+			CheckStatus(API.cublasDtrsmBatched(
+				handle, side, uplo, trans, diag,
+				m, n,
+				ref alpha,
+				A, lda,
+				B, ldb,
+				batchCount
+			));
+		}
+		public static void CtrsmBatched(cublasHandle_t handle, cublasSideMode_t side, cublasFillMode_t uplo, cublasOperation_t trans, cublasDiagType_t diag, int m, int n, cuComplex alpha, IntPtr A, int lda, IntPtr B, int ldb, int batchCount) {
+			CheckStatus(API.cublasCtrsmBatched(
+				handle, side, uplo, trans, diag,
+				m, n,
+				ref alpha,
+				A, lda,
+				B, ldb,
+				batchCount
+			));
+		}
+		public static void ZtrsmBatched(cublasHandle_t handle, cublasSideMode_t side, cublasFillMode_t uplo, cublasOperation_t trans, cublasDiagType_t diag, int m, int n, cuDoubleComplex alpha, IntPtr A, int lda, IntPtr B, int ldb, int batchCount) {
+			CheckStatus(API.cublasZtrsmBatched(
+				handle, side, uplo, trans, diag,
+				m, n,
+				ref alpha,
+				A, lda,
+				B, ldb,
+				batchCount
+			));
+		}
 
-		// cublasSmatinvBatched
-		// cublasDmatinvBatched
-		// cublasCmatinvBatched
-		// cublasZmatinvBatched
+		public static void SmatinvBatched(cublasHandle_t handle, int n, IntPtr A, int lda, IntPtr Ainv, int lda_inv, IntPtr info, int batchSize) {
+			CheckStatus(API.cublasSmatinvBatched(
+				handle, n,
+				A, lda,
+				Ainv, lda_inv,
+				info,
+				batchSize
+			));
+		}
+		public static void DmatinvBatched(cublasHandle_t handle, int n, IntPtr A, int lda, IntPtr Ainv, int lda_inv, IntPtr info, int batchSize) {
+			CheckStatus(API.cublasDmatinvBatched(
+				handle, n,
+				A, lda,
+				Ainv, lda_inv,
+				info,
+				batchSize
+			));
+		}
+		public static void CmatinvBatched(cublasHandle_t handle, int n, IntPtr A, int lda, IntPtr Ainv, int lda_inv, IntPtr info, int batchSize) {
+			CheckStatus(API.cublasCmatinvBatched(
+				handle, n,
+				A, lda,
+				Ainv, lda_inv,
+				info,
+				batchSize
+			));
+		}
+		public static void ZmatinvBatched(cublasHandle_t handle, int n, IntPtr A, int lda, IntPtr Ainv, int lda_inv, IntPtr info, int batchSize) {
+			CheckStatus(API.cublasZmatinvBatched(
+				handle, n,
+				A, lda,
+				Ainv, lda_inv,
+				info,
+				batchSize
+			));
+		}
 
-		// cublasSgeqrfBatched
-		// cublasDgeqrfBatched
-		// cublasCgeqrfBatched
-		// cublasZgeqrfBatched
+		public static void SgeqrfBatched(cublasHandle_t handle, int m, int n, IntPtr Aarray, int lda, IntPtr TauArray, int info, int batchSize) {
+			CheckStatus(API.cublasSgeqrfBatched(
+				handle,
+				m, n,
+				Aarray, lda,
+				TauArray,
+				ref info,
+				batchSize
+			));
+		}
+		public static void DgeqrfBatched(cublasHandle_t handle, int m, int n, IntPtr Aarray, int lda, IntPtr TauArray, int info, int batchSize) {
+			CheckStatus(API.cublasDgeqrfBatched(
+				handle,
+				m, n,
+				Aarray, lda,
+				TauArray,
+				ref info,
+				batchSize
+			));
+		}
+		public static void CgeqrfBatched(cublasHandle_t handle, int m, int n, IntPtr Aarray, int lda, IntPtr TauArray, int info, int batchSize) {
+			CheckStatus(API.cublasCgeqrfBatched(
+				handle,
+				m, n,
+				Aarray, lda,
+				TauArray,
+				ref info,
+				batchSize
+			));
+		}
+		public static void ZgeqrfBatched(cublasHandle_t handle, int m, int n, IntPtr Aarray, int lda, IntPtr TauArray, int info, int batchSize) {
+			CheckStatus(API.cublasZgeqrfBatched(
+				handle,
+				m, n,
+				Aarray, lda,
+				TauArray,
+				ref info,
+				batchSize
+			));
+		}
 
-		// cublasSgelsBatched
-		// cublasDgelsBatched
-		// cublasCgelsBatched
-		// cublasZgelsBatched
+		public static void SgelsBatched(cublasHandle_t handle, cublasOperation_t trans, int m, int n, int nrhs, IntPtr Aarray, int lda, IntPtr Carray, int ldc, int info, IntPtr devInfoArray, int batchSize) {
+			CheckStatus(API.cublasSgelsBatched(
+				handle, trans,
+				m, n, nrhs,
+				Aarray, lda,
+				Carray, ldc,
+				ref info,
+				devInfoArray,
+				batchSize
+			));
+		}
+		public static void DgelsBatched(cublasHandle_t handle, cublasOperation_t trans, int m, int n, int nrhs, IntPtr Aarray, int lda, IntPtr Carray, int ldc, int info, IntPtr devInfoArray, int batchSize) {
+			CheckStatus(API.cublasDgelsBatched(
+				handle, trans,
+				m, n, nrhs,
+				Aarray, lda,
+				Carray, ldc,
+				ref info,
+				devInfoArray,
+				batchSize
+			));
+		}
+		public static void CgelsBatched(cublasHandle_t handle, cublasOperation_t trans, int m, int n, int nrhs, IntPtr Aarray, int lda, IntPtr Carray, int ldc, int info, IntPtr devInfoArray, int batchSize) {
+			CheckStatus(API.cublasCgelsBatched(
+				handle, trans,
+				m, n, nrhs,
+				Aarray, lda,
+				Carray, ldc,
+				ref info,
+				devInfoArray,
+				batchSize
+			));
+		}
+		public static void ZgelsBatched(cublasHandle_t handle, cublasOperation_t trans, int m, int n, int nrhs, IntPtr Aarray, int lda, IntPtr Carray, int ldc, int info, IntPtr devInfoArray, int batchSize) {
+			CheckStatus(API.cublasZgelsBatched(
+				handle, trans,
+				m, n, nrhs,
+				Aarray, lda,
+				Carray, ldc,
+				ref info,
+				devInfoArray,
+				batchSize
+			));
+		}
 
 		public static void Sdgmm(cublasHandle_t handle, cublasSideMode_t mode, int m, int n, IntPtr A, int lda, IntPtr x, int incx, IntPtr C, int ldc) {
 			CheckStatus(API.cublasSdgmm(
@@ -4733,77 +5055,49 @@ namespace CUDAnshita {
 				C, ldc
 			));
 		}
-		// cublasCdgmm
-		// cublasZdgmm
-
-		// cublasStpttr
-		// cublasDtpttr
-		// cublasCtpttr
-		// cublasZtpttr
-
-		// cublasStrttp
-		// cublasDtrttp
-		// cublasCtrttp
-		// cublasZtrttp
-
-
-		IntPtr handle = IntPtr.Zero;
-
-		public cuBLAS() {
-			//CheckStatus(API.cublasCreate_v2(ref handle));
+		public static void Cdgmm(cublasHandle_t handle, cublasSideMode_t mode, int m, int n, IntPtr A, int lda, IntPtr x, int incx, IntPtr C, int ldc) {
+			CheckStatus(API.cublasCdgmm(
+				handle, mode,
+				m, n,
+				A, lda,
+				x, incx,
+				C, ldc
+			));
+		}
+		public static void Zdgmm(cublasHandle_t handle, cublasSideMode_t mode, int m, int n, IntPtr A, int lda, IntPtr x, int incx, IntPtr C, int ldc) {
+			CheckStatus(API.cublasZdgmm(
+				handle, mode,
+				m, n,
+				A, lda,
+				x, incx,
+				C, ldc
+			));
 		}
 
-		~cuBLAS() {
-			if (handle != IntPtr.Zero) {
-				CheckStatus(API.cublasDestroy_v2(handle));
-				handle = IntPtr.Zero;
-			}
+		public static void Stpttr(cublasHandle_t handle, cublasFillMode_t uplo, int n, IntPtr AP, IntPtr A, int lda) {
+			CheckStatus(API.cublasStpttr(handle, uplo, n, AP, A, lda));
+		}
+		public static void Dtpttr(cublasHandle_t handle, cublasFillMode_t uplo, int n, IntPtr AP, IntPtr A, int lda) {
+			CheckStatus(API.cublasDtpttr(handle, uplo, n, AP, A, lda));
+		}
+		public static void Ctpttr(cublasHandle_t handle, cublasFillMode_t uplo, int n, IntPtr AP, IntPtr A, int lda) {
+			CheckStatus(API.cublasCtpttr(handle, uplo, n, AP, A, lda));
+		}
+		public static void Ztpttr(cublasHandle_t handle, cublasFillMode_t uplo, int n, IntPtr AP, IntPtr A, int lda) {
+			CheckStatus(API.cublasZtpttr(handle, uplo, n, AP, A, lda));
 		}
 
-		/*
-		public float Sdot(int n, IntPtr x, int incx, IntPtr y, int incy) {
-			float result = 0;
-			CheckStatus(API.cublasSdot_v2(handle, n, x, incx, y, incy, ref result));
-			return result;
+		public static void Strttp(cublasHandle_t handle, cublasFillMode_t uplo, int n, IntPtr A, int lda, IntPtr AP) {
+			CheckStatus(API.cublasStrttp(handle, uplo, n, A, lda, AP));
 		}
-
-		public void Dgemm(cublasOperation transa, cublasOperation transb, int m, int n, int k, double alpha, IntPtr A, int lda, IntPtr B, int ldb, double beta, IntPtr C, int ldc) {
-			IntPtr handle = CreateHandle();
-			CheckStatus(API.cublasDgemm_v2(handle, transa, transb, m, n, k, ref alpha, A, lda, B, ldb, ref beta, C, ldc));
-			FreeHandle(handle);
+		public static void Dtrttp(cublasHandle_t handle, cublasFillMode_t uplo, int n, IntPtr A, int lda, IntPtr AP) {
+			CheckStatus(API.cublasDtrttp(handle, uplo, n, A, lda, AP));
 		}
-
-		public void Dsymm(cublasSideMode side, cublasFillMode uplo, int m, int n, double alpha, IntPtr A, int lda, IntPtr B, int ldb, double beta, IntPtr C, int ldc) {
-			IntPtr handle = CreateHandle();
-			CheckStatus(API.cublasDsymm_v2(handle, side, uplo, m, n, ref alpha, A, lda, B, ldb, ref beta, C, ldc));
-			FreeHandle(handle);
+		public static void Ctrttp(cublasHandle_t handle, cublasFillMode_t uplo, int n, IntPtr A, int lda, IntPtr AP) {
+			CheckStatus(API.cublasCtrttp(handle, uplo, n, A, lda, AP));
 		}
-
-		public void Dtrmm(cublasSideMode side, cublasFillMode uplo, cublasOperation trans, cublasDiagType diag, int m, int n, double alpha, IntPtr A, int lda, IntPtr B, int ldb, IntPtr C, int ldc) {
-			IntPtr handle = CreateHandle();
-			CheckStatus(API.cublasDtrmm_v2(handle, side, uplo, trans, diag, m, n, ref alpha, A, lda, B, ldb, C, ldc));
-			FreeHandle(handle);
-		}
-		*/
-
-
-		IntPtr CreateHandle() {
-			IntPtr handle = IntPtr.Zero;
-			CheckStatus(API.cublasCreate_v2(ref handle));
-			return handle;
-		}
-
-		void FreeHandle(IntPtr handle) {
-			CheckStatus(API.cublasDestroy_v2(handle));
-		}
-
-		public static int GetVersion() {
-			IntPtr handle = IntPtr.Zero;
-			int version = 0;
-			CheckStatus(API.cublasCreate_v2(ref handle));
-			CheckStatus(API.cublasGetVersion_v2(handle, ref version));
-			CheckStatus(API.cublasDestroy_v2(handle));
-			return version;
+		public static void Ztrttp(cublasHandle_t handle, cublasFillMode_t uplo, int n, IntPtr A, int lda, IntPtr AP) {
+			CheckStatus(API.cublasZtrttp(handle, uplo, n, A, lda, AP));
 		}
 
 		static void CheckStatus(cublasStatus status) {
