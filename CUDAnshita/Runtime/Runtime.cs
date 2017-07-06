@@ -333,6 +333,12 @@ namespace CUDAnshita {
 			public static extern cudaError_t cudaMemcpy(IntPtr dst, IntPtr src, size_t count, cudaMemcpyKind kind);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			unsafe public static extern cudaError_t cudaMemcpy(IntPtr dst, void* src, size_t count, cudaMemcpyKind kind);
+
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			unsafe public static extern cudaError_t cudaMemcpy(void* dst, IntPtr src, size_t count, cudaMemcpyKind kind);
+
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMemcpy2D(IntPtr dst, size_t dpitch, IntPtr src, size_t spitch, size_t width, size_t height, cudaMemcpyKind kind);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
@@ -1267,25 +1273,62 @@ namespace CUDAnshita {
 			CheckStatus(API.cudaMemcpy(dst, src, count, kind));
 		}
 
-		public static T[] MemcpyD2H<T>(IntPtr src, size_t count) {
-			int byteSize = Marshal.SizeOf(typeof(T)) * (int)count;
+		public static T MemcpyD2H<T>(IntPtr src) {
+			int byteSize = Marshal.SizeOf(typeof(T));
+			IntPtr dst = Marshal.AllocHGlobal(byteSize);
+
+			Memcpy(dst, src, byteSize, cudaMemcpyKind.cudaMemcpyDeviceToHost);
+
+			T[] result = new T[1];
+			MarshalUtil.Copy<T>(dst, result, 0, 1);
+			Marshal.FreeHGlobal(dst);
+			return result[0];
+		}
+
+		public static T[] MemcpyD2H<T>(IntPtr src, int count) {
+			int byteSize = Marshal.SizeOf(typeof(T)) * count;
 			IntPtr dst = Marshal.AllocHGlobal(byteSize);
 
 			Memcpy(dst, src, byteSize, cudaMemcpyKind.cudaMemcpyDeviceToHost);
 
 			T[] result = new T[count];
-			MarshalUtil.Copy<T>(dst, result, 0, (int)count);
+			MarshalUtil.Copy<T>(dst, result, 0, count);
 			Marshal.FreeHGlobal(dst);
 			return result;
 		}
 
-		public static void MemcpyH2D<T>(IntPtr dst, T[] src, size_t count) {
-			int byteSize = Marshal.SizeOf(typeof(T)) * (int)count;
+		unsafe public static float[] MemcpyD2HFloat(IntPtr src, int count) {
+			float[] result = new float[count];
+			int byteSize = Marshal.SizeOf(typeof(float)) * count;
+			fixed (float* dst = result) {
+				CheckStatus(API.cudaMemcpy(dst, src, byteSize, cudaMemcpyKind.cudaMemcpyDeviceToHost));
+			}
+			return result;
+		}
+
+		public static void MemcpyH2D<T>(IntPtr dst, T src) {
+			int byteSize = Marshal.SizeOf(typeof(T));
 			IntPtr srcPointer = Marshal.AllocHGlobal(byteSize);
-			MarshalUtil.Copy<T>(src, 0, srcPointer, (int)count);
+			MarshalUtil.Copy<T>(new T[] { src }, 0, srcPointer, 1);
 
 			Memcpy(dst, srcPointer, byteSize, cudaMemcpyKind.cudaMemcpyHostToDevice);
 			Marshal.FreeHGlobal(srcPointer);
+		}
+
+		public static void MemcpyH2D<T>(IntPtr dst, T[] src, int count) {
+			int byteSize = Marshal.SizeOf(typeof(T)) * count;
+			IntPtr srcPointer = Marshal.AllocHGlobal(byteSize);
+			MarshalUtil.Copy<T>(src, 0, srcPointer, count);
+
+			Memcpy(dst, srcPointer, byteSize, cudaMemcpyKind.cudaMemcpyHostToDevice);
+			Marshal.FreeHGlobal(srcPointer);
+		}
+
+		unsafe public static void MemcpyH2D(IntPtr dst, float[] src) {
+			int byteSize = Marshal.SizeOf(typeof(float)) * src.Length;
+			fixed (float* s = src) {
+				CheckStatus(API.cudaMemcpy(dst, s, byteSize, cudaMemcpyKind.cudaMemcpyHostToDevice));
+			}
 		}
 
 		public static void Memcpy2D(IntPtr dst, size_t dpitch, IntPtr src, size_t spitch, size_t width, size_t height, cudaMemcpyKind kind) {
