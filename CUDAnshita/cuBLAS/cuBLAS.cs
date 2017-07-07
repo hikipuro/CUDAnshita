@@ -955,42 +955,42 @@ namespace CUDAnshita {
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSscal_v2(cublasHandle_t handle,
 													int n,
-													float[] alpha, // [host or device] const float *
+													ref float alpha, // [host or device] const float *
 													IntPtr x,     // [device] float *
 													int incx);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasDscal_v2(cublasHandle_t handle,
 													int n,
-													double[] alpha,  // [host or device] const double *
+													ref double alpha,  // [host or device] const double *
 													IntPtr x, // [device] double *
 													int incx);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasCscal_v2(cublasHandle_t handle,
 													int n,
-													cuComplex[] alpha, // [host or device] const cuComplex *
+													ref cuComplex alpha, // [host or device] const cuComplex *
 													IntPtr x,  // [device] cuComplex *
 													int incx);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasCsscal_v2(cublasHandle_t handle,
 													int n,
-													float[] alpha, // [host or device] const float *
+													ref float alpha, // [host or device] const float *
 													IntPtr x, // [device] cuComplex *
 													int incx);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasZscal_v2(cublasHandle_t handle,
 													int n,
-													cuDoubleComplex[] alpha, // [host or device] const cuDoubleComplex *
+													ref cuDoubleComplex alpha, // [host or device] const cuDoubleComplex *
 													IntPtr x,  // [device] cuDoubleComplex *
 													int incx);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasZdscal_v2(cublasHandle_t handle,
 													int n,
-													double[] alpha, // [host or device] const double *
+													ref double alpha, // [host or device] const double *
 													IntPtr x, // [device] cuDoubleComplex *
 													int incx);
 
@@ -1010,7 +1010,7 @@ namespace CUDAnshita {
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasSaxpy_v2(cublasHandle_t handle,
 													int n,
-													float[] alpha, // [host or device] const float *
+													ref float alpha, // [host or device] const float *
 													IntPtr x, // [device] const float *
 													int incx,
 													IntPtr y, // [device] float *
@@ -1019,7 +1019,7 @@ namespace CUDAnshita {
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasDaxpy_v2(cublasHandle_t handle,
 													int n,
-													double[] alpha, // [host or device] const double *
+													ref double alpha, // [host or device] const double *
 													IntPtr x, // [device] const double *
 													int incx,
 													IntPtr y, // [device] double *
@@ -1028,7 +1028,7 @@ namespace CUDAnshita {
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasCaxpy_v2(cublasHandle_t handle,
 													int n,
-													cuComplex[] alpha, // [host or device] const cuComplex *
+													ref cuComplex alpha, // [host or device] const cuComplex *
 													IntPtr x, // [device] const cuComplex *
 													int incx,
 													IntPtr y, // [device] cuComplex *
@@ -1037,7 +1037,7 @@ namespace CUDAnshita {
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cublasStatus_t cublasZaxpy_v2(cublasHandle_t handle,
 													int n,
-													cuDoubleComplex[] alpha, // [host or device] const cuDoubleComplex *
+													ref cuDoubleComplex alpha, // [host or device] const cuDoubleComplex *
 													IntPtr x, // [device] const cuDoubleComplex *
 													int incx,
 													IntPtr y, // [device] cuDoubleComplex *
@@ -3966,23 +3966,23 @@ namespace CUDAnshita {
 			));
 		}
 
-		public static void Sscal_v2(cublasHandle_t handle, int n, float[] alpha, IntPtr x, int incx) {
-			CheckStatus(API.cublasSscal_v2(handle, n, alpha, x, incx));
+		public static void Sscal_v2(cublasHandle_t handle, int n, float alpha, IntPtr x, int incx) {
+			CheckStatus(API.cublasSscal_v2(handle, n, ref alpha, x, incx));
 		}
-		public static void Dscal_v2(cublasHandle_t handle, int n, double[] alpha, IntPtr x, int incx) {
-			CheckStatus(API.cublasDscal_v2(handle, n, alpha, x, incx));
+		public static void Dscal_v2(cublasHandle_t handle, int n, double alpha, IntPtr x, int incx) {
+			CheckStatus(API.cublasDscal_v2(handle, n, ref alpha, x, incx));
 		}
-		public static void Cscal_v2(cublasHandle_t handle, int n, cuComplex[] alpha, IntPtr x, int incx) {
-			CheckStatus(API.cublasCscal_v2(handle, n, alpha, x, incx));
+		public static void Cscal_v2(cublasHandle_t handle, int n, cuComplex alpha, IntPtr x, int incx) {
+			CheckStatus(API.cublasCscal_v2(handle, n, ref alpha, x, incx));
 		}
-		public static void Csscal_v2(cublasHandle_t handle, int n, float[] alpha, IntPtr x, int incx) {
-			CheckStatus(API.cublasCsscal_v2(handle, n, alpha, x, incx));
+		public static void Csscal_v2(cublasHandle_t handle, int n, float alpha, IntPtr x, int incx) {
+			CheckStatus(API.cublasCsscal_v2(handle, n, ref alpha, x, incx));
 		}
-		public static void Zscal_v2(cublasHandle_t handle, int n, cuDoubleComplex[] alpha, IntPtr x, int incx) {
-			CheckStatus(API.cublasZscal_v2(handle, n, alpha, x, incx));
+		public static void Zscal_v2(cublasHandle_t handle, int n, cuDoubleComplex alpha, IntPtr x, int incx) {
+			CheckStatus(API.cublasZscal_v2(handle, n, ref alpha, x, incx));
 		}
-		public static void Zdscal_v2(cublasHandle_t handle, int n, double[] alpha, IntPtr x, int incx) {
-			CheckStatus(API.cublasZdscal_v2(handle, n, alpha, x, incx));
+		public static void Zdscal_v2(cublasHandle_t handle, int n, double alpha, IntPtr x, int incx) {
+			CheckStatus(API.cublasZdscal_v2(handle, n, ref alpha, x, incx));
 		}
 
 		public static void AxpyEx(cublasHandle_t handle, int n, IntPtr alpha, cudaDataType alphaType, IntPtr x, cudaDataType xType, int incx, IntPtr y, cudaDataType yType, int incy, cudaDataType executiontype) {
@@ -4001,17 +4001,17 @@ namespace CUDAnshita {
 			));
 		}
 
-		public static void Saxpy_v2(cublasHandle_t handle, int n, float[] alpha, IntPtr x, int incx, IntPtr y, int incy) {
-			CheckStatus(API.cublasSaxpy_v2(handle, n, alpha, x, incx, y, incy));
+		public static void Saxpy_v2(cublasHandle_t handle, int n, float alpha, IntPtr x, int incx, IntPtr y, int incy) {
+			CheckStatus(API.cublasSaxpy_v2(handle, n, ref alpha, x, incx, y, incy));
 		}
-		public static void Daxpy_v2(cublasHandle_t handle, int n, double[] alpha, IntPtr x, int incx, IntPtr y, int incy) {
-			CheckStatus(API.cublasDaxpy_v2(handle, n, alpha, x, incx, y, incy));
+		public static void Daxpy_v2(cublasHandle_t handle, int n, double alpha, IntPtr x, int incx, IntPtr y, int incy) {
+			CheckStatus(API.cublasDaxpy_v2(handle, n, ref alpha, x, incx, y, incy));
 		}
-		public static void Caxpy_v2(cublasHandle_t handle, int n, cuComplex[] alpha, IntPtr x, int incx, IntPtr y, int incy) {
-			CheckStatus(API.cublasCaxpy_v2(handle, n, alpha, x, incx, y, incy));
+		public static void Caxpy_v2(cublasHandle_t handle, int n, cuComplex alpha, IntPtr x, int incx, IntPtr y, int incy) {
+			CheckStatus(API.cublasCaxpy_v2(handle, n, ref alpha, x, incx, y, incy));
 		}
-		public static void Zaxpy_v2(cublasHandle_t handle, int n, cuDoubleComplex[] alpha, IntPtr x, int incx, IntPtr y, int incy) {
-			CheckStatus(API.cublasZaxpy_v2(handle, n, alpha, x, incx, y, incy));
+		public static void Zaxpy_v2(cublasHandle_t handle, int n, cuDoubleComplex alpha, IntPtr x, int incx, IntPtr y, int incy) {
+			CheckStatus(API.cublasZaxpy_v2(handle, n, ref alpha, x, incx, y, incy));
 		}
 
 		public static void Scopy_v2(cublasHandle_t handle, int n, IntPtr x, int incx, IntPtr y, int incy) {

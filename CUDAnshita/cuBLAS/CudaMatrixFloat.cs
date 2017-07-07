@@ -9,6 +9,65 @@ namespace CUDAnshita {
 		protected int _Rows;
 		protected IntPtr _DevicePointer;
 
+		const string MatrixProgram = @"
+extern ""C"" {
+	__global__ void matrixAdd(float *a, float *b, float c, int width, int height) {
+		int x = blockDim.x * blockIdx.x + threadIdx.x;
+		int y = blockDim.y * blockIdx.y + threadIdx.y;
+		if (x >= width || y >= height) {
+			return;
+		}
+		int index = y * width + x;
+		b[index] = a[index] + c;
+	}
+}
+";
+		protected static Module _Module;
+
+		string Compile(string name, string src) {
+			RuntimeCompiler compiler = new RuntimeCompiler();
+			compiler.AddOptions(
+				RuntimeCompiler.OPTION_TARGET_20
+				//RuntimeCompiler.OPTION_FMAD_FALSE,
+				//RuntimeCompiler.OPTION_LINE_INFO,
+				//RuntimeCompiler.OPTION_DEVICE_AS_DEFAULT_EXECUTION_SPACE
+			);
+
+			string ptx = compiler.Compile(name, src);
+			if (ptx == null) {
+				Console.WriteLine("Compile Error:");
+				Console.WriteLine();
+				Console.WriteLine(compiler.Log);
+				return null;
+			}
+			return ptx;
+		}
+
+		void CallMethod(Module module, string name, int width, int height, params object[] args) {
+			int threadX = 128;
+			int threadY = 2;
+			int blockX = divRoundUp(width, threadX);
+			int blockY = divRoundUp(height, threadY);
+
+			module.SetBlockCount(blockX, blockY, 1);
+			module.SetThreadCount(threadX, threadY, 1);
+			module.Excecute(name, args);
+		}
+
+		int divRoundUp(int value, int radix) {
+			return (value + radix - 1) / radix;
+		}
+
+		Module CreateModule(string ptx) {
+			if (ptx == null) {
+				return null;
+			}
+			Module module = new Module();
+			module.LoadData(ptx);
+			return module;
+		}
+
+
 		public int Cols {
 			get { return _Cols; }
 		}
@@ -31,6 +90,11 @@ namespace CUDAnshita {
 			_Rows = rows;
 			_Cols = cols;
 			_DevicePointer = MallocDeviceMemory(Count);
+
+			if (_Module == null) {
+				string ptx = Compile("CudaMatrixFloat.cu", MatrixProgram);
+				_Module = CreateModule(ptx);
+			}
 		}
 
 		public CudaMatrixFloat(int rows, int cols, float[] data) : this(rows, cols) {
@@ -45,6 +109,42 @@ namespace CUDAnshita {
 
 		public float[] GetData() {
 			return GetDeviceMemory(_DevicePointer, Count);
+		}
+
+		public void Clear() {
+			Runtime.Memset(_DevicePointer, 0, ItemSize * Count);
+		}
+
+		public void CopyTo(CudaMatrixFloat result) {
+			if (result == null) {
+				return;
+			}
+
+			IntPtr handle = cuBLAS.Create_v2();
+			cuBLAS.Scopy_v2(
+				handle, Count,
+				_DevicePointer, 1
+				, result._DevicePointer, 1
+			);
+			cuBLAS.Destroy_v2(handle);
+		}
+
+		public void Add(float value, CudaMatrixFloat result) {
+			if (result == null) {
+				return;
+			}
+			if (_Module == null) {
+				throw new CudaException("module is not initialized.");
+			}
+
+			CallMethod(
+				_Module, "matrixAdd",
+				_Cols, _Rows,
+				_DevicePointer,
+				result._DevicePointer,
+				value,
+				_Cols, _Rows
+			);
 		}
 
 		public void Add(CudaMatrixFloat matrix, CudaMatrixFloat result) {
@@ -93,16 +193,12 @@ namespace CUDAnshita {
 			}
 
 			IntPtr handle = cuBLAS.Create_v2();
-			cuBLAS.Sgeam(
+			cuBLAS.Sscal_v2(
 				handle,
-				cublasOperation.CUBLAS_OP_N,
-				cublasOperation.CUBLAS_OP_N,
-				_Rows, _Cols,
+				_Rows * _Cols,
 				value,
-				_DevicePointer, _Rows,
-				0f,
-				IntPtr.Zero, _Rows,
-				result._DevicePointer, _Rows
+				_DevicePointer,
+				1
 			);
 			cuBLAS.Destroy_v2(handle);
 		}

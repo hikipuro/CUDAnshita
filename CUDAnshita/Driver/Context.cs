@@ -21,6 +21,14 @@ namespace CUDAnshita {
 			get { return Driver.CtxGetFlags(); }
 		}
 
+		public static Context GetCurrent() {
+			IntPtr context = Driver.CtxGetCurrent();
+			if (context == IntPtr.Zero) {
+				throw new CudaException("Context is null.");
+			}
+			return new Context(context);
+		}
+
 		internal Context(int deviceHandle) {
 			context = Driver.CtxCreate(0, deviceHandle);
 		}
@@ -38,6 +46,10 @@ namespace CUDAnshita {
 
 		public void Synchronize() {
 			Driver.CtxSynchronize();
+		}
+
+		public void SetCurrent() {
+			Driver.CtxSetCurrent(context);
 		}
 
 		public void Push() {

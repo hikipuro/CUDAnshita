@@ -34,10 +34,6 @@ namespace CUDAnshita {
 			return new Context(device);
 		}
 
-		public Context GetCurrentContext() {
-			return new Context(Driver.CtxGetCurrent());
-		}
-
 		public int GetAttribute(CUdevice_attribute attrib) {
 			return Driver.DeviceGetAttribute(attrib, device);
 		}

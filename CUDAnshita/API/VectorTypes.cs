@@ -280,5 +280,11 @@ namespace CUDAnshita {
 	[StructLayout(LayoutKind.Sequential)]
 	public struct dim3 {
 		public uint x, y, z;
+
+		public dim3(uint x = 1, uint y = 1, uint z = 1) {
+			this.x = x;
+			this.y = y;
+			this.z = z;
+		}
 	}
 }
