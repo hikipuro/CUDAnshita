@@ -23,7 +23,8 @@ namespace CUDAnshita {
 	/// </remarks>
 	public class cuBLAS {
 		public class API {
-			const string DLL_PATH = "cublas64_80.dll";
+			//const string DLL_PATH = "cublas64_80.dll";
+			const string DLL_PATH = "cublas64_10.dll";
 			const CallingConvention CALLING_CONVENTION = CallingConvention.Cdecl;
 			const CharSet CHAR_SET = CharSet.Ansi;
 

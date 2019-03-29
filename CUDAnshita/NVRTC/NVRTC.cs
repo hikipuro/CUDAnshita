@@ -13,7 +13,8 @@ namespace CUDAnshita {
 	/// </remarks>
 	public class NVRTC {
 		public class API {
-			const string DLL_PATH = "nvrtc64_80.dll";
+			//const string DLL_PATH = "nvrtc64_80.dll";
+			const string DLL_PATH = "nvrtc64_101_0.dll";
 			const CallingConvention CALLING_CONVENTION = CallingConvention.Cdecl;
 			const CharSet CHAR_SET = CharSet.Ansi;
 

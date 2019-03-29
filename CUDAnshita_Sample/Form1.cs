@@ -35,7 +35,7 @@ extern ""C"" __global__ void addKernel(int *c, const int *a, const int *b) {
 			RuntimeCompiler compiler = new RuntimeCompiler();
 			//compiler.AddHeader("curand_kernel.h", @"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\curand_kernel.h");
 			compiler.AddOptions(
-				RuntimeCompiler.OPTION_TARGET_20,
+				RuntimeCompiler.OPTION_TARGET_30,
 				RuntimeCompiler.OPTION_FMAD_FALSE,
 				RuntimeCompiler.OPTION_LINE_INFO,
 				RuntimeCompiler.OPTION_DEVICE_AS_DEFAULT_EXECUTION_SPACE

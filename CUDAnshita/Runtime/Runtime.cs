@@ -25,7 +25,8 @@ namespace CUDAnshita {
 	/// </remarks>
 	public class Runtime {
 		public class API {
-			const string DLL_PATH = "cudart64_80.dll";
+			//const string DLL_PATH = "cudart64_80.dll";
+			const string DLL_PATH = "cudart64_101.dll";
 			const CallingConvention CALLING_CONVENTION = CallingConvention.Cdecl;
 			const CharSet CHAR_SET = CharSet.Ansi;
 

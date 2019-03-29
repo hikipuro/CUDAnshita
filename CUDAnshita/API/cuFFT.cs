@@ -18,7 +18,8 @@ namespace CUDAnshita {
 	/// </remarks>
 	public class cuFFT {
 		public class API {
-			const string DLL_PATH = "cufft64_80.dll";
+			//const string DLL_PATH = "cufft64_80.dll";
+			const string DLL_PATH = "cufft64_10.dll";
 			const CallingConvention CALLING_CONVENTION = CallingConvention.Cdecl;
 			const CharSet CHAR_SET = CharSet.Ansi;
 

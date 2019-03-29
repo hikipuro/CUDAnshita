@@ -20,7 +20,8 @@ namespace CUDAnshita {
 	/// </remarks>
 	public class cuRAND {
 		public class API {
-			const string DLL_PATH = "curand64_80.dll";
+			//const string DLL_PATH = "curand64_80.dll";
+			const string DLL_PATH = "curand64_10.dll";
 			const CallingConvention CALLING_CONVENTION = CallingConvention.Cdecl;
 			const CharSet CHAR_SET = CharSet.Ansi;
 
