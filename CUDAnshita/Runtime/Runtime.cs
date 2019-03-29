@@ -5,10 +5,12 @@ using System.Text;
 namespace CUDAnshita {
 	using cudaError_t = cudaError;
 	using cudaEvent_t = IntPtr;
+	using cudaExternalMemory_t = IntPtr;
 	using cudaIpcEventHandle_t = cudaIpcEventHandle;
 	using cudaIpcMemHandle_t = cudaIpcMemHandle;
 	using cudaStream_t = IntPtr;
 	using cudaStreamCallback_t = IntPtr;
+	using cudaGraph_t = IntPtr;
 	using cudaArray_t = IntPtr;
 	using cudaArray_const_t = IntPtr;
 	using cudaMipmappedArray_t = IntPtr;
@@ -32,207 +34,671 @@ namespace CUDAnshita {
 
 			// ----- Device Management
 
+			/// <summary>
+			/// Select compute-device which best matches criteria.
+			/// </summary>
+			/// <param name="device">Device with best match.</param>
+			/// <param name="prop">Desired device properties.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidValue</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaChooseDevice(ref int device, ref cudaDeviceProp prop);
 
+			/// <summary>
+			/// Returns information about the device.
+			/// </summary>
+			/// <param name="value">Returned device attribute value.</param>
+			/// <param name="attr">Device attribute to query.</param>
+			/// <param name="device">Device number to query.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidDevice, cudaErrorInvalidValue</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaDeviceGetAttribute(ref int value, cudaDeviceAttr attr, int device);
 
+			/// <summary>
+			/// Returns a handle to a compute device.
+			/// </summary>
+			/// <param name="device">Returned device ordinal.</param>
+			/// <param name="pciBusId">String in one of the following forms:
+			/// [domain]:[bus]:[device].[function] [domain]:[bus]:[device] [bus]:[device].[function] 
+			/// where domain, bus, device, and function are all hexadecimal values</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidValue, cudaErrorInvalidDevice</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaDeviceGetByPCIBusId(ref int device, string pciBusId);
 
+			/// <summary>
+			/// Returns the preferred cache configuration for the current device.
+			/// </summary>
+			/// <param name="pCacheConfig">Returned cache configuration.</param>
+			/// <returns>cudaSuccess</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaDeviceGetCacheConfig(ref cudaFuncCache pCacheConfig);
 
+			/// <summary>
+			/// Returns resource limits.
+			/// </summary>
+			/// <param name="pValue">Returned size of the limit.</param>
+			/// <param name="limit">Limit to query.</param>
+			/// <returns>cudaSuccess, cudaErrorUnsupportedLimit, cudaErrorInvalidValue</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaDeviceGetLimit(ref size_t pValue, cudaLimit limit);
 
+			/// <summary>
+			/// Queries attributes of the link between two devices.
+			/// </summary>
+			/// <param name="value">Returned value of the requested attribute.</param>
+			/// <param name="attr">The source device of the target link.</param>
+			/// <param name="srcDevice">The source device of the target link.</param>
+			/// <param name="dstDevice">The destination device of the target link.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidDevice, cudaErrorInvalidValue</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaDeviceGetP2PAttribute(ref int value, cudaDeviceP2PAttr attr, int srcDevice, int dstDevice);
 
+			/// <summary>
+			/// Returns a PCI Bus Id string for the device.
+			/// </summary>
+			/// <param name="pciBusId">Returned identifier string for the device in the following format 
+			/// [domain]:[bus]:[device].[function] where domain, bus, device, 
+			/// and function are all hexadecimal values. pciBusId should be 
+			/// large enough to store 13 characters including the NULL-terminator.</param>
+			/// <param name="len">Maximum length of string to store in name.</param>
+			/// <param name="device">Device to get identifier string for.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidValue, cudaErrorInvalidDevice</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaDeviceGetPCIBusId(StringBuilder pciBusId, int len, int device);
 
+			/// <summary>
+			/// Returns the shared memory configuration for the current device.
+			/// </summary>
+			/// <param name="pConfig">Returned cache configuration.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidValue</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaDeviceGetSharedMemConfig(ref cudaSharedMemConfig pConfig);
 
+			/// <summary>
+			/// Returns numerical values that correspond to the least and greatest stream priorities.
+			/// </summary>
+			/// <param name="leastPriority">Pointer to an int in which the numerical value for least stream priority is returned.</param>
+			/// <param name="greatestPriority">Pointer to an int in which the numerical value for greatest stream priority is returned.</param>
+			/// <returns>cudaSuccess</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaDeviceGetStreamPriorityRange(ref int leastPriority, ref int greatestPriority);
 
+			/// <summary>
+			/// Destroy all allocations and reset all state on the current device in the current process.
+			/// </summary>
+			/// <returns>cudaSuccess</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaDeviceReset();
 
+			/// <summary>
+			/// Sets the preferred cache configuration for the current device.
+			/// </summary>
+			/// <param name="cacheConfig">Requested cache configuration.</param>
+			/// <returns>cudaSuccess</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaDeviceSetCacheConfig(cudaFuncCache cacheConfig);
 
+			/// <summary>
+			/// Set resource limits.
+			/// </summary>
+			/// <param name="limit">Limit to set.</param>
+			/// <param name="value">Size of limit.</param>
+			/// <returns>cudaSuccess, cudaErrorUnsupportedLimit, cudaErrorInvalidValue, cudaErrorMemoryAllocation</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaDeviceSetLimit(cudaLimit limit, size_t value);
 
+			/// <summary>
+			/// Sets the shared memory configuration for the current device.
+			/// </summary>
+			/// <param name="config">Requested cache configuration.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidValue</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaDeviceSetSharedMemConfig(cudaSharedMemConfig config);
 
+			/// <summary>
+			/// Wait for compute device to finish.
+			/// </summary>
+			/// <returns>cudaSuccess</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaDeviceSynchronize();
 
+			/// <summary>
+			/// Returns which device is currently being used.
+			/// </summary>
+			/// <param name="device">Returns the device on which the active host thread executes the device code.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidValue</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaGetDevice(ref int device);
 
+			/// <summary>
+			/// Returns the number of compute-capable devices.
+			/// </summary>
+			/// <param name="count">Returns the number of devices with compute capability greater or equal to 2.0</param>
+			/// <returns>cudaSuccess</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaGetDeviceCount(ref int count);
 
+			/// <summary>
+			/// Gets the flags for the current device.
+			/// </summary>
+			/// <param name="flags">Pointer to store the device flags.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidDevice</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaGetDeviceFlags(ref uint flags);
 
+			/// <summary>
+			/// Returns information about the compute-device.
+			/// </summary>
+			/// <param name="prop">Properties for the specified device.</param>
+			/// <param name="device">Device number to get properties for.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidDevice</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaGetDeviceProperties(ref cudaDeviceProp prop, int device);
 
+			/// <summary>
+			/// Close memory mapped with cudaIpcOpenMemHandle.
+			/// </summary>
+			/// <param name="devPtr">Device pointer returned by cudaIpcOpenMemHandle.</param>
+			/// <returns>cudaSuccess, cudaErrorMapBufferObjectFailed, cudaErrorInvalidResourceHandle, cudaErrorNotSupported</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaIpcCloseMemHandle(IntPtr devPtr);
 
+			/// <summary>
+			/// Gets an interprocess handle for a previously allocated event.
+			/// </summary>
+			/// <param name="handle">Pointer to a user allocated cudaIpcEventHandle in which to return the opaque event handle.</param>
+			/// <param name="cudaEvent">Event allocated with cudaEventInterprocess and cudaEventDisableTiming flags.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidResourceHandle, cudaErrorMemoryAllocation, cudaErrorMapBufferObjectFailed, cudaErrorNotSupported</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaIpcGetEventHandle(ref cudaIpcEventHandle_t handle, cudaEvent_t cudaEvent);
 
+			/// <summary>
+			/// Gets an interprocess memory handle for an existing device memory allocation.
+			/// </summary>
+			/// <param name="handle">Pointer to user allocated cudaIpcMemHandle to return the handle in.</param>
+			/// <param name="devPtr">Base pointer to previously allocated device memory.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidResourceHandle, cudaErrorMemoryAllocation, cudaErrorMapBufferObjectFailed, cudaErrorNotSupported</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaIpcGetMemHandle(ref cudaIpcMemHandle_t handle, IntPtr devPtr);
 
+			/// <summary>
+			/// Opens an interprocess event handle for use in the current process.
+			/// </summary>
+			/// <param name="cudaEvent">Returns the imported event.</param>
+			/// <param name="handle">Interprocess handle to open.</param>
+			/// <returns>cudaSuccess, cudaErrorMapBufferObjectFailed, cudaErrorInvalidResourceHandle, cudaErrorNotSupported</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaIpcOpenEventHandle(ref cudaEvent_t cudaEvent, cudaIpcEventHandle_t handle);
 
+			/// <summary>
+			/// Opens an interprocess memory handle exported from another process and returns a device pointer usable in the local process.
+			/// </summary>
+			/// <param name="devPtr">Returned device pointer.</param>
+			/// <param name="handle">cudaIpcMemHandle to open.</param>
+			/// <param name="flags">Flags for this operation. Must be specified as cudaIpcMemLazyEnablePeerAccess.</param>
+			/// <returns>cudaSuccess, cudaErrorMapBufferObjectFailed, cudaErrorInvalidResourceHandle, cudaErrorTooManyPeers, cudaErrorNotSupported</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaIpcOpenMemHandle(ref IntPtr devPtr, cudaIpcMemHandle_t handle, uint flags);
 
+			/// <summary>
+			/// Set device to be used for GPU executions.
+			/// </summary>
+			/// <param name="device">Device on which the active host thread should execute the device code.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidDevice, cudaErrorDeviceAlreadyInUse</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaSetDevice(int device);
 
+			/// <summary>
+			/// Sets flags to be used for device executions.
+			/// </summary>
+			/// <param name="flags">Parameters for device operation.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidValue, cudaErrorSetOnActiveProcess</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaSetDeviceFlags(uint flags);
 
+			/// <summary>
+			/// Set a list of devices that can be used for CUDA.
+			/// </summary>
+			/// <param name="device_arr">List of devices to try.</param>
+			/// <param name="len">Number of devices in specified list.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidValue, cudaErrorInvalidDevice</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaSetValidDevices(int[] device_arr, int len);
 
 			// ----- Thread Management [DEPRECATED]
 
+			/// <summary>
+			/// Exit and clean up from CUDA launches.
+			/// </summary>
+			/// <returns>cudaSuccess</returns>
 			[Obsolete]
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaThreadExit();
 
+			/// <summary>
+			/// Returns the preferred cache configuration for the current device.
+			/// </summary>
+			/// <param name="pCacheConfig">Returned cache configuration.</param>
+			/// <returns>cudaSuccess</returns>
 			[Obsolete]
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaThreadGetCacheConfig(ref cudaFuncCache pCacheConfig);
 
+			/// <summary>
+			/// Returns resource limits.
+			/// </summary>
+			/// <param name="pValue">Returned size in bytes of limit.</param>
+			/// <param name="limit">Limit to query.</param>
+			/// <returns>cudaSuccess, cudaErrorUnsupportedLimit, cudaErrorInvalidValue</returns>
 			[Obsolete]
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaThreadGetLimit(ref size_t pValue, cudaLimit limit);
 
+			/// <summary>
+			/// Sets the preferred cache configuration for the current device.
+			/// </summary>
+			/// <param name="cacheConfig">Requested cache configuration.</param>
+			/// <returns>cudaSuccess</returns>
 			[Obsolete]
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaThreadSetCacheConfig(cudaFuncCache cacheConfig);
 
+			/// <summary>
+			/// Set resource limits.
+			/// </summary>
+			/// <param name="limit">Limit to set.</param>
+			/// <param name="value">Size in bytes of limit.</param>
+			/// <returns>cudaSuccess, cudaErrorUnsupportedLimit, cudaErrorInvalidValue</returns>
 			[Obsolete]
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaThreadSetLimit(cudaLimit limit, size_t value);
 
+			/// <summary>
+			/// Wait for compute device to finish.
+			/// </summary>
+			/// <returns>cudaSuccess</returns>
 			[Obsolete]
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaThreadSynchronize();
 
 			// ----- Error Handling
 
+			/// <summary>
+			/// Returns the string representation of an error code enum name.
+			/// </summary>
+			/// <param name="error">Error code to convert to string.</param>
+			/// <returns>char* pointer to a NULL-terminated string.</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern IntPtr cudaGetErrorName(cudaError_t error);
 
+			/// <summary>
+			/// Returns the description string for an error code.
+			/// </summary>
+			/// <param name="error">Error code to convert to string.</param>
+			/// <returns>char* pointer to a NULL-terminated string.</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern IntPtr cudaGetErrorString(cudaError_t error);
 
+			/// <summary>
+			/// Returns the last error from a runtime call.
+			/// </summary>
+			/// <returns>
+			/// cudaSuccess, cudaErrorMissingConfiguration, cudaErrorMemoryAllocation,
+			/// cudaErrorInitializationError, cudaErrorLaunchFailure, cudaErrorLaunchTimeout,
+			/// cudaErrorLaunchOutOfResources, cudaErrorInvalidDeviceFunction, cudaErrorInvalidConfiguration,
+			/// cudaErrorInvalidDevice, cudaErrorInvalidValue, cudaErrorInvalidPitchValue, cudaErrorInvalidSymbol,
+			/// cudaErrorUnmapBufferObjectFailed, cudaErrorInvalidDevicePointer, cudaErrorInvalidTexture,
+			/// cudaErrorInvalidTextureBinding, cudaErrorInvalidChannelDescriptor, cudaErrorInvalidMemcpyDirection,
+			/// cudaErrorInvalidFilterSetting, cudaErrorInvalidNormSetting, cudaErrorUnknown,
+			/// cudaErrorInvalidResourceHandle, cudaErrorInsufficientDriver, cudaErrorNoDevice,
+			/// cudaErrorSetOnActiveProcess, cudaErrorStartupFailure, cudaErrorInvalidPtx,
+			/// cudaErrorNoKernelImageForDevice, cudaErrorJitCompilerNotFound
+			/// </returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaGetLastError();
 
+			/// <summary>
+			/// Returns the last error from a runtime call.
+			/// </summary>
+			/// <returns>
+			/// cudaSuccess, cudaErrorMissingConfiguration, cudaErrorMemoryAllocation,
+			/// cudaErrorInitializationError, cudaErrorLaunchFailure, cudaErrorLaunchTimeout,
+			/// cudaErrorLaunchOutOfResources, cudaErrorInvalidDeviceFunction, cudaErrorInvalidConfiguration,
+			/// cudaErrorInvalidDevice, cudaErrorInvalidValue, cudaErrorInvalidPitchValue, cudaErrorInvalidSymbol,
+			/// cudaErrorUnmapBufferObjectFailed, cudaErrorInvalidDevicePointer, cudaErrorInvalidTexture,
+			/// cudaErrorInvalidTextureBinding, cudaErrorInvalidChannelDescriptor, cudaErrorInvalidMemcpyDirection,
+			/// cudaErrorInvalidFilterSetting, cudaErrorInvalidNormSetting, cudaErrorUnknown,
+			/// cudaErrorInvalidResourceHandle, cudaErrorInsufficientDriver, cudaErrorNoDevice,
+			/// cudaErrorSetOnActiveProcess, cudaErrorStartupFailure, cudaErrorInvalidPtx,
+			/// cudaErrorNoKernelImageForDevice, cudaErrorJitCompilerNotFound
+			/// </returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaPeekAtLastError();
 
 			// ----- Stream Management
 
+			/// <summary>
+			/// Add a callback to a compute stream.
+			/// </summary>
+			/// <param name="stream">Stream to add callback to.</param>
+			/// <param name="callback">The function to call once preceding stream operations are complete.</param>
+			/// <param name="userData">User specified data to be passed to the callback function.</param>
+			/// <param name="flags">Reserved for future use, must be 0.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidResourceHandle, cudaErrorInvalidValue, cudaErrorNotSupported</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaStreamAddCallback(cudaStream_t stream, cudaStreamCallback_t callback, IntPtr userData, uint flags);
 
+			/// <summary>
+			/// Attach memory to a stream asynchronously.
+			/// </summary>
+			/// <param name="stream"></param>
+			/// <param name="devPtr"></param>
+			/// <param name="length"></param>
+			/// <param name="flags"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaStreamAttachMemAsync(cudaStream_t stream, IntPtr devPtr, size_t length = 0, uint flags = Defines.cudaMemAttachSingle);
 
+			/// <summary>
+			/// Begins graph capture on a stream.
+			/// </summary>
+			/// <param name="stream"></param>
+			/// <param name="mode"></param>
+			/// <returns></returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaStreamBeginCapture(cudaStream_t stream, cudaStreamCaptureMode mode);
+			
+			/// <summary>
+			/// Create an asynchronous stream.
+			/// </summary>
+			/// <param name="pStream"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaStreamCreate(ref cudaStream_t pStream);
 
+			/// <summary>
+			/// Create an asynchronous stream.
+			/// </summary>
+			/// <param name="pStream"></param>
+			/// <param name="flags"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaStreamCreateWithFlags(ref cudaStream_t pStream, uint flags);
 
+			/// <summary>
+			/// Create an asynchronous stream with the specified priority.
+			/// </summary>
+			/// <param name="pStream"></param>
+			/// <param name="flags"></param>
+			/// <param name="priority"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaStreamCreateWithPriority(ref cudaStream_t pStream, uint flags, int priority);
 
+			/// <summary>
+			/// Destroys and cleans up an asynchronous stream.
+			/// </summary>
+			/// <param name="stream"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaStreamDestroy(cudaStream_t stream);
 
+			/// <summary>
+			/// Ends capture on a stream, returning the captured graph.
+			/// </summary>
+			/// <param name="stream"></param>
+			/// <param name="pGraph"></param>
+			/// <returns></returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaStreamEndCapture(cudaStream_t stream, ref cudaGraph_t pGraph);
+
+			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			//public static extern cudaError_t cudaStreamGetCaptureInfo(cudaStream_t stream, cudaStreamCaptureStatus** pCaptureStatus, unsigned long long* pId);
+
+			/// <summary>
+			/// Query the flags of a stream.
+			/// </summary>
+			/// <param name="hStream"></param>
+			/// <param name="flags"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaStreamGetFlags(cudaStream_t hStream, ref uint flags);
 
+			/// <summary>
+			/// Query the priority of a stream.
+			/// </summary>
+			/// <param name="hStream"></param>
+			/// <param name="priority"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaStreamGetPriority(cudaStream_t hStream, ref int priority);
 
+			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			//public static extern cudaError_t cudaStreamIsCapturing(cudaStream_t stream, cudaStreamCaptureStatus** pCaptureStatus);
+
+			/// <summary>
+			/// Queries an asynchronous stream for completion status.
+			/// </summary>
+			/// <param name="stream"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaStreamQuery(cudaStream_t stream);
 
+			/// <summary>
+			/// Waits for stream tasks to complete.
+			/// </summary>
+			/// <param name="stream"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaStreamSynchronize(cudaStream_t stream);
 
+			/// <summary>
+			/// Make a compute stream wait on an event.
+			/// </summary>
+			/// <param name="stream"></param>
+			/// <param name="cudaEvent"></param>
+			/// <param name="flags"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaStreamWaitEvent(cudaStream_t stream, cudaEvent_t cudaEvent, uint flags);
 
+			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			//public static extern cudaError_t cudaThreadExchangeStreamCaptureMode(cudaStreamCaptureMode** mode);
+
 			// ----- Event Management
 
+			/// <summary>
+			/// Creates an event object.
+			/// </summary>
+			/// <param name="cudaEvent"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaEventCreate(ref cudaEvent_t cudaEvent);
 
+			/// <summary>
+			/// Creates an event object with the specified flags.
+			/// </summary>
+			/// <param name="cudaEvent"></param>
+			/// <param name="flags"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaEventCreateWithFlags(ref cudaEvent_t cudaEvent, uint flags);
 
+			/// <summary>
+			/// Destroys an event object.
+			/// </summary>
+			/// <param name="cudaEvent"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaEventDestroy(cudaEvent_t cudaEvent);
 
+			/// <summary>
+			/// Computes the elapsed time between events.
+			/// </summary>
+			/// <param name="ms"></param>
+			/// <param name="start"></param>
+			/// <param name="end"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaEventElapsedTime(ref float ms, cudaEvent_t start, cudaEvent_t end);
 
+			/// <summary>
+			/// Queries an event's status.
+			/// </summary>
+			/// <param name="cudaEvent"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaEventQuery(cudaEvent_t cudaEvent);
 
+			/// <summary>
+			/// Records an event.
+			/// </summary>
+			/// <param name="cudaEvent"></param>
+			/// <param name="stream"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaEventRecord(cudaEvent_t cudaEvent, cudaStream_t stream);
 
+			/// <summary>
+			/// Waits for an event to complete.
+			/// </summary>
+			/// <param name="cudaEvent"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaEventSynchronize(cudaEvent_t cudaEvent);
 
+			// ----- External Resource Interoperability
+
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaDestroyExternalMemory(cudaExternalMemory_t extMem);
+
+			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			//public static extern cudaError_t cudaDestroyExternalSemaphore(cudaExternalSemaphore_t extSem);
+
+			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			//public static extern cudaError_t cudaExternalMemoryGetMappedBuffer(void** devPtr, cudaExternalMemory_t extMem, const cudaExternalMemoryBufferDesc* bufferDesc );
+
+			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			//public static extern cudaError_t cudaExternalMemoryGetMappedMipmappedArray(cudaMipmappedArray_t* mipmap, cudaExternalMemory_t extMem, const cudaExternalMemoryMipmappedArrayDesc* mipmapDesc );
+
+			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			//public static extern cudaError_t cudaImportExternalMemory(cudaExternalMemory_t* extMem_out, const cudaExternalMemoryHandleDesc* memHandleDesc );
+
+			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			//public static extern cudaError_t cudaImportExternalSemaphore(cudaExternalSemaphore_t* extSem_out, const cudaExternalSemaphoreHandleDesc* semHandleDesc );
+
+			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			//public static extern cudaError_t cudaSignalExternalSemaphoresAsync( const cudaExternalSemaphore_t* extSemArray, const cudaExternalSemaphoreSignalParams* paramsArray, unsigned int numExtSems, cudaStream_t stream = 0 );
+
+			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			//public static extern cudaError_t cudaWaitExternalSemaphoresAsync( const cudaExternalSemaphore_t* extSemArray, const cudaExternalSemaphoreWaitParams* paramsArray, unsigned int numExtSems, cudaStream_t stream = 0 );
+
 			// ----- Execution Control
 
+			/// <summary>
+			/// Find out attributes for a given function.
+			/// </summary>
+			/// <param name="attr">Return pointer to function's attributes.</param>
+			/// <param name="func">Device function symbol.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidDeviceFunction</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaFuncGetAttributes(ref cudaFuncAttributes attr, IntPtr func);
 
+			/// <summary>
+			/// Set attributes for a given function.
+			/// </summary>
+			/// <param name="func">Function to get attributes of.</param>
+			/// <param name="attr">Attribute to set.</param>
+			/// <param name="value">Value to set.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidDeviceFunction, cudaErrorInvalidValue</returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaFuncSetAttribute(IntPtr func, ref cudaFuncAttribute attr, int value);
+
+			/// <summary>
+			/// Sets the preferred cache configuration for a device function.
+			/// </summary>
+			/// <param name="func"></param>
+			/// <param name="cacheConfig"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaFuncSetCacheConfig(IntPtr func, cudaFuncCache cacheConfig);
 
+			/// <summary>
+			/// Sets the shared memory configuration for a device function.
+			/// </summary>
+			/// <param name="func">Device function symbol.</param>
+			/// <param name="config">Requested shared memory configuration.</param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaFuncSetSharedMemConfig(IntPtr func, cudaSharedMemConfig config);
 
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern IntPtr cudaGetParameterBuffer(size_t alignment, size_t size);
+
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern IntPtr cudaGetParameterBufferV2(IntPtr func, dim3 gridDimension, dim3 blockDimension, uint sharedMemSize);
+
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaLaunchCooperativeKernel(IntPtr func, dim3 gridDim, dim3 blockDim, IntPtr args, size_t sharedMem, cudaStream_t stream);
+
+			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			//public static extern cudaError_t cudaLaunchCooperativeKernelMultiDevice(cudaLaunchParams* launchParamsList, uint numDevices, uint flags = 0);
+
+			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			//public static extern cudaError_t cudaLaunchHostFunc(cudaStream_t stream, cudaHostFn_t fn, IntPtr userData);
+
+			/// <summary>
+			/// Launches a device function.
+			/// </summary>
+			/// <param name="func">Device function symbol.</param>
+			/// <param name="gridDim">Grid dimentions.</param>
+			/// <param name="blockDim">Block dimentions.</param>
+			/// <param name="args">Arguments.</param>
+			/// <param name="sharedMem">Shared memory.</param>
+			/// <param name="stream">Stream identifier.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidDeviceFunction, cudaErrorInvalidConfiguration, cudaErrorLaunchFailure, cudaErrorLaunchTimeout, cudaErrorLaunchOutOfResources, cudaErrorSharedObjectInitFailed, cudaErrorInvalidPtx, cudaErrorNoKernelImageForDevice, cudaErrorJitCompilerNotFound</returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaLaunchKernel(IntPtr func, dim3 gridDim, dim3 blockDim, ref IntPtr args, size_t sharedMem, cudaStream_t stream);
 
+			/// <summary>
+			/// Converts a double argument to be executed on a device.
+			/// </summary>
+			/// <param name="d">Double to convert.</param>
+			/// <returns>cudaSuccess</returns>
+			[Obsolete("This function is deprecated as of CUDA 7.5")]
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaSetDoubleForDevice(ref double d);
 
+			/// <summary>
+			/// Converts a double argument after execution on a device.
+			/// </summary>
+			/// <param name="d">Double to convert.</param>
+			/// <returns>cudaSuccess</returns>
+			[Obsolete("This function is deprecated as of CUDA 7.5")]
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaSetDoubleForHost(ref double d);
 
 			// ----- Occupancy
 
+			/// <summary>
+			/// Returns occupancy for a device function.
+			/// </summary>
+			/// <param name="numBlocks">Returned occupancy.</param>
+			/// <param name="func">Kernel function for which occupancy is calculated.</param>
+			/// <param name="blockSize">Block size the kernel is intended to be launched with.</param>
+			/// <param name="dynamicSMemSize">Per-block dynamic shared memory usage intended, in bytes.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidDevice, cudaErrorInvalidDeviceFunction, cudaErrorInvalidValue, cudaErrorUnknown</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaOccupancyMaxActiveBlocksPerMultiprocessor(ref int numBlocks, IntPtr func, int blockSize, size_t dynamicSMemSize);
 
+			/// <summary>
+			/// Returns occupancy for a device function with the specified flags.
+			/// </summary>
+			/// <param name="numBlocks">Returned occupancy.</param>
+			/// <param name="func">Kernel function for which occupancy is calculated.</param>
+			/// <param name="blockSize">Block size the kernel is intended to be launched with.</param>
+			/// <param name="dynamicSMemSize">Per-block dynamic shared memory usage intended, in bytes.</param>
+			/// <param name="flags">Requested behavior for the occupancy calculator.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidDevice, cudaErrorInvalidDeviceFunction, cudaErrorInvalidValue, cudaErrorUnknown</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaOccupancyMaxActiveBlocksPerMultiprocessorWithFlags(ref int numBlocks, IntPtr func, int blockSize, size_t dynamicSMemSize, uint flags);
 
@@ -252,6 +718,14 @@ namespace CUDAnshita {
 
 			// ----- Memory Management
 
+			/// <summary>
+			/// Gets info about the specified cudaArray.
+			/// </summary>
+			/// <param name="desc"></param>
+			/// <param name="extent"></param>
+			/// <param name="flags"></param>
+			/// <param name="array"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaArrayGetInfo(ref cudaChannelFormatDesc desc, ref cudaExtent extent, ref uint flags, cudaArray_t array);
 
@@ -776,72 +1250,150 @@ namespace CUDAnshita {
 
 			// ----- Version Management
 
+			/// <summary>
+			/// Returns the latest version of CUDA supported by the driver.
+			/// </summary>
+			/// <param name="driverVersion">Returns the CUDA driver version.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidValue</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaDriverGetVersion(ref int driverVersion);
 
+			/// <summary>
+			/// Returns the CUDA Runtime version.
+			/// </summary>
+			/// <param name="runtimeVersion">Returns the CUDA Runtime version.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidValue</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaRuntimeGetVersion(ref int runtimeVersion);
 
 			// ----- Profiler Control
 
+			/// <summary>
+			/// Initialize the CUDA profiler.
+			/// </summary>
+			/// <param name="configFile">Name of the config file that lists the counters/options for profiling.</param>
+			/// <param name="outputFile">Name of the outputFile where the profiling results will be stored.</param>
+			/// <param name="outputMode">outputMode, can be cudaKeyValuePair OR cudaCSV.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidValue, cudaErrorProfilerDisabled</returns>
+			[Obsolete]
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaProfilerInitialize(string configFile, string outputFile, cudaOutputMode outputMode);
 
+			/// <summary>
+			/// Enable profiling.
+			/// </summary>
+			/// <returns>cudaSuccess</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaProfilerStart();
 
+			/// <summary>
+			/// Disable profiling.
+			/// </summary>
+			/// <returns>cudaSuccess</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaProfilerStop();
 		}
 
+		/// <summary>
+		/// Select compute-device which best matches criteria.
+		/// </summary>
+		/// <param name="prop">Desired device properties.</param>
+		/// <returns>Device with best match.</returns>
 		public static int ChooseDevice(cudaDeviceProp prop) {
 			int device = 0;
 			CheckStatus(API.cudaChooseDevice(ref device, ref prop));
 			return device;
 		}
 
+		/// <summary>
+		/// Returns information about the device.
+		/// </summary>
+		/// <param name="attr">Device attribute to query.</param>
+		/// <param name="device">Device number to query.</param>
+		/// <returns>Device attribute value.</returns>
 		public static int DeviceGetAttribute(cudaDeviceAttr attr, int device) {
 			int value = 0;
 			CheckStatus(API.cudaDeviceGetAttribute(ref value, attr, device));
 			return value;
 		}
 
+		/// <summary>
+		/// Returns a handle to a compute device.
+		/// </summary>
+		/// <param name="pciBusId">String in one of the following forms: 
+		/// [domain]:[bus]:[device].[function] [domain]:[bus]:[device] [bus]:[device].[function]
+		/// where domain, bus, device, and function are all hexadecimal values</param>
+		/// <returns>Returned device ordinal.</returns>
 		public static int DeviceGetByPCIBusId(string pciBusId) {
 			int device = 0;
 			CheckStatus(API.cudaDeviceGetByPCIBusId(ref device, pciBusId));
 			return device;
 		}
 
+		/// <summary>
+		/// Returns the preferred cache configuration for the current device.
+		/// </summary>
+		/// <returns>Cache configuration.</returns>
 		public static cudaFuncCache DeviceGetCacheConfig() {
 			cudaFuncCache pCacheConfig = cudaFuncCache.cudaFuncCachePreferEqual;
 			CheckStatus(API.cudaDeviceGetCacheConfig(ref pCacheConfig));
 			return pCacheConfig;
 		}
 
+		/// <summary>
+		/// Returns resource limits.
+		/// </summary>
+		/// <param name="limit">Limit to query.</param>
+		/// <returns>Size of the limit.</returns>
 		public static size_t DeviceGetLimit(cudaLimit limit) {
 			size_t pValue = 0;
 			CheckStatus(API.cudaDeviceGetLimit(ref pValue, limit));
 			return pValue;
 		}
 
+		/// <summary>
+		/// Queries attributes of the link between two devices.
+		/// </summary>
+		/// <param name="attr">The source device of the target link.</param>
+		/// <param name="srcDevice">The source device of the target link.</param>
+		/// <param name="dstDevice">The destination device of the target link.</param>
+		/// <returns>Value of the requested attribute.</returns>
 		public static int DeviceGetP2PAttribute(cudaDeviceP2PAttr attr, int srcDevice, int dstDevice) {
 			int value = 0;
 			CheckStatus(API.cudaDeviceGetP2PAttribute(ref value, attr, srcDevice, dstDevice));
 			return value;
 		}
 
+		/// <summary>
+		/// Returns a PCI Bus Id string for the device.
+		/// </summary>
+		/// <param name="device">Device to get identifier string for.</param>
+		/// <returns>
+		/// Returned identifier string for the device in the following format
+		/// [domain]:[bus]:[device].[function] where domain, bus, device,
+		/// and function are all hexadecimal values.
+		/// pciBusId should be large enough to store 13 characters including the NULL-terminator.
+		/// </returns>
 		public static string DeviceGetPCIBusId(int device) {
 			StringBuilder pciBusId = new StringBuilder(32);
 			CheckStatus(API.cudaDeviceGetPCIBusId(pciBusId, 32, device));
 			return pciBusId.ToString();
 		}
 
+		/// <summary>
+		/// Returns the shared memory configuration for the current device.
+		/// </summary>
+		/// <returns>Cache configuration.</returns>
 		public static cudaSharedMemConfig DeviceGetSharedMemConfig() {
 			cudaSharedMemConfig pConfig = new cudaSharedMemConfig();
 			CheckStatus(API.cudaDeviceGetSharedMemConfig(ref pConfig));
 			return pConfig;
 		}
 
+		/// <summary>
+		/// Returns numerical values that correspond to the least and greatest stream priorities.
+		/// </summary>
+		/// <returns></returns>
 		public static int[] DeviceGetStreamPriorityRange() {
 			int leastPriority = 0;
 			int greatestPriority = 0;
@@ -849,95 +1401,175 @@ namespace CUDAnshita {
 			return new int[] { leastPriority, greatestPriority };
 		}
 
+		/// <summary>
+		/// Destroy all allocations and reset all state on the current device in the current process.
+		/// </summary>
 		public static void DeviceReset() {
 			CheckStatus(API.cudaDeviceReset());
 		}
 
+		/// <summary>
+		/// Sets the preferred cache configuration for the current device.
+		/// </summary>
+		/// <param name="cacheConfig">Requested cache configuration.</param>
 		public static void DeviceSetCacheConfig(cudaFuncCache cacheConfig) {
 			CheckStatus(API.cudaDeviceSetCacheConfig(cacheConfig));
 		}
 
+		/// <summary>
+		/// Set resource limits.
+		/// </summary>
+		/// <param name="limit">Limit to set.</param>
+		/// <param name="value">Size of limit.</param>
 		public static void DeviceSetLimit(cudaLimit limit, size_t value) {
 			CheckStatus(API.cudaDeviceSetLimit(limit, value));
 		}
 
+		/// <summary>
+		/// Sets the shared memory configuration for the current device.
+		/// </summary>
+		/// <param name="config">Requested cache configuration.</param>
 		public static void DeviceSetSharedMemConfig(cudaSharedMemConfig config) {
 			CheckStatus(API.cudaDeviceSetSharedMemConfig(config));
 		}
 
+		/// <summary>
+		/// Wait for compute device to finish.
+		/// </summary>
 		public static void DeviceSynchronize() {
 			CheckStatus(API.cudaDeviceSynchronize());
 		}
 
+		/// <summary>
+		/// Returns which device is currently being used.
+		/// </summary>
+		/// <returns>Returns the device on which the active host thread executes the device code.</returns>
 		public static int GetDevice() {
 			int device = 0;
 			CheckStatus(API.cudaGetDevice(ref device));
 			return device;
 		}
 
+		/// <summary>
+		/// Returns the number of compute-capable devices.
+		/// </summary>
+		/// <returns>Returns the number of devices with compute capability greater or equal to 2.0.</returns>
 		public static int GetDeviceCount() {
 			int count = 0;
 			CheckStatus(API.cudaGetDeviceCount(ref count));
 			return count;
 		}
 
+		/// <summary>
+		/// Gets the flags for the current device.
+		/// </summary>
+		/// <returns>Pointer to store the device flags.</returns>
 		public static uint GetDeviceFlags() {
 			uint flags = 0;
 			CheckStatus(API.cudaGetDeviceFlags(ref flags));
 			return flags;
 		}
 
+		/// <summary>
+		/// Returns information about the compute-device.
+		/// </summary>
+		/// <param name="device">Device number to get properties for.</param>
+		/// <returns>Properties for the specified device.</returns>
 		public static cudaDeviceProp GetDeviceProperties(int device) {
 			cudaDeviceProp prop = new cudaDeviceProp();
 			CheckStatus(API.cudaGetDeviceProperties(ref prop, device));
 			return prop;
 		}
 
+		/// <summary>
+		/// Close memory mapped with cudaIpcOpenMemHandle.
+		/// </summary>
+		/// <param name="devPtr">Device pointer returned by cudaIpcOpenMemHandle.</param>
 		public static void IpcCloseMemHandle(IntPtr devPtr) {
 			CheckStatus(API.cudaIpcCloseMemHandle(devPtr));
 		}
 
+		/// <summary>
+		/// Gets an interprocess handle for a previously allocated event.
+		/// </summary>
+		/// <param name="cudaEvent">Event allocated with cudaEventInterprocess and cudaEventDisableTiming flags.</param>
+		/// <returns>Pointer to a user allocated cudaIpcEventHandle in which to return the opaque event handle.</returns>
 		public static cudaIpcEventHandle_t IpcGetEventHandle(cudaEvent_t cudaEvent) {
 			cudaIpcEventHandle_t handle = new cudaIpcEventHandle_t();
 			CheckStatus(API.cudaIpcGetEventHandle(ref handle, cudaEvent));
 			return handle;
 		}
 
+		/// <summary>
+		/// Gets an interprocess memory handle for an existing device memory allocation.
+		/// </summary>
+		/// <param name="devPtr">Base pointer to previously allocated device memory.</param>
+		/// <returns>Pointer to user allocated cudaIpcMemHandle to return the handle in.</returns>
 		public static cudaIpcMemHandle_t IpcGetMemHandle(IntPtr devPtr) {
 			cudaIpcMemHandle_t handle = new cudaIpcMemHandle_t();
 			CheckStatus(API.cudaIpcGetMemHandle(ref handle, devPtr));
 			return handle;
 		}
 
+		/// <summary>
+		/// Opens an interprocess event handle for use in the current process.
+		/// </summary>
+		/// <param name="handle">Interprocess handle to open.</param>
+		/// <returns>Returns the imported event.</returns>
 		public static cudaEvent_t IpcOpenEventHandle(cudaIpcEventHandle_t handle) {
 			cudaEvent_t cudaEvent = IntPtr.Zero;
 			CheckStatus(API.cudaIpcOpenEventHandle(ref cudaEvent, handle));
 			return cudaEvent;
 		}
 
+		/// <summary>
+		/// Opens an interprocess memory handle exported from another process and returns a device pointer usable in the local process.
+		/// </summary>
+		/// <param name="handle">cudaIpcMemHandle to open.</param>
+		/// <param name="flags">Flags for this operation. Must be specified as cudaIpcMemLazyEnablePeerAccess.</param>
+		/// <returns>Returned device pointer.</returns>
 		public static IntPtr IpcOpenMemHandle(cudaIpcMemHandle_t handle, uint flags) {
 			IntPtr devPtr = IntPtr.Zero;
 			CheckStatus(API.cudaIpcOpenMemHandle(ref devPtr, handle, flags));
 			return devPtr;
 		}
 
+		/// <summary>
+		/// Set device to be used for GPU executions.
+		/// </summary>
+		/// <param name="device">Device on which the active host thread should execute the device code.</param>
 		public static void SetDevice(int device) {
 			CheckStatus(API.cudaSetDevice(device));
 		}
 
+		/// <summary>
+		/// Sets flags to be used for device executions.
+		/// </summary>
+		/// <param name="flags">Parameters for device operation.</param>
 		public static void SetDeviceFlags(uint flags) {
 			CheckStatus(API.cudaSetDeviceFlags(flags));
 		}
 
+		/// <summary>
+		/// Set a list of devices that can be used for CUDA.
+		/// </summary>
+		/// <param name="devices">List of devices to try.</param>
 		public static void SetValidDevices(int[] devices) {
 			CheckStatus(API.cudaSetValidDevices(devices, devices.Length));
 		}
 
+		/// <summary>
+		/// Exit and clean up from CUDA launches.
+		/// </summary>
 		[Obsolete]
 		public static void ThreadExit() {
 			CheckStatus(API.cudaThreadExit());
 		}
 
+		/// <summary>
+		/// Returns the preferred cache configuration for the current device.
+		/// </summary>
+		/// <returns>Returned cache configuration.</returns>
 		[Obsolete]
 		public static cudaFuncCache ThreadGetCacheConfig() {
 			cudaFuncCache pCacheConfig = new cudaFuncCache();
@@ -945,6 +1577,11 @@ namespace CUDAnshita {
 			return pCacheConfig;
 		}
 
+		/// <summary>
+		/// Returns resource limits.
+		/// </summary>
+		/// <param name="limit">Limit to query.</param>
+		/// <returns>Returned size in bytes of limit.</returns>
 		[Obsolete]
 		public static size_t ThreadGetLimit(cudaLimit limit) {
 			size_t pValue = 0;
@@ -952,43 +1589,87 @@ namespace CUDAnshita {
 			return pValue;
 		}
 
+		/// <summary>
+		/// Sets the preferred cache configuration for the current device.
+		/// </summary>
+		/// <param name="cacheConfig">Requested cache configuration.</param>
 		[Obsolete]
 		public static void ThreadSetCacheConfig(cudaFuncCache cacheConfig) {
 			CheckStatus(API.cudaThreadSetCacheConfig(cacheConfig));
 		}
 
+		/// <summary>
+		/// Set resource limits.
+		/// </summary>
+		/// <param name="limit">Limit to set.</param>
+		/// <param name="value">Size in bytes of limit.</param>
 		[Obsolete]
 		public static void ThreadSetLimit(cudaLimit limit, size_t value) {
 			CheckStatus(API.cudaThreadSetLimit(limit, value));
 		}
 
+		/// <summary>
+		/// Wait for compute device to finish.
+		/// </summary>
 		[Obsolete]
 		public static void ThreadSynchronize() {
 			CheckStatus(API.cudaThreadSynchronize());
 		}
 
+		/// <summary>
+		/// Returns the string representation of an error code enum name.
+		/// </summary>
+		/// <param name="error">Error code to convert to string.</param>
+		/// <returns>string</returns>
 		public static string GetErrorName(cudaError_t error) {
 			IntPtr ptr = API.cudaGetErrorName(error);
 			return Marshal.PtrToStringAnsi(ptr);
 		}
 
+		/// <summary>
+		/// Returns the description string for an error code.
+		/// </summary>
+		/// <param name="error">Error code to convert to string.</param>
+		/// <returns>string</returns>
 		public static string GetErrorString(cudaError_t error) {
 			IntPtr ptr = API.cudaGetErrorString(error);
 			return Marshal.PtrToStringAnsi(ptr);
 		}
 
+		/// <summary>
+		/// Returns the last error from a runtime call.
+		/// </summary>
+		/// <returns></returns>
 		public static cudaError_t GetLastError() {
 			return API.cudaGetLastError();
 		}
 
+		/// <summary>
+		/// Returns the last error from a runtime call.
+		/// </summary>
+		/// <returns></returns>
 		public static cudaError_t PeekAtLastError() {
 			return API.cudaPeekAtLastError();
 		}
 
+		/// <summary>
+		/// Add a callback to a compute stream.
+		/// </summary>
+		/// <param name="stream"></param>
+		/// <param name="callback"></param>
+		/// <param name="userData"></param>
+		/// <param name="flags"></param>
 		public static void StreamAddCallback(cudaStream_t stream, cudaStreamCallback_t callback, IntPtr userData, uint flags) {
 			CheckStatus(API.cudaStreamAddCallback(stream, callback, userData, flags));
 		}
 
+		/// <summary>
+		/// Attach memory to a stream asynchronously.
+		/// </summary>
+		/// <param name="stream"></param>
+		/// <param name="devPtr"></param>
+		/// <param name="length"></param>
+		/// <param name="flags"></param>
 		public static void StreamAttachMemAsync(cudaStream_t stream, IntPtr devPtr, size_t length = 0, uint flags = Defines.cudaMemAttachSingle) {
 			CheckStatus(API.cudaStreamAttachMemAsync(stream, devPtr, length, flags));
 		}
@@ -1576,26 +2257,47 @@ namespace CUDAnshita {
 			return pResDesc;
 		}
 
+		/// <summary>
+		/// Returns the latest version of CUDA supported by the driver.
+		/// </summary>
+		/// <returns>Returns the CUDA driver version.</returns>
 		public static int DriverGetVersion() {
 			int driverVersion = 0;
 			CheckStatus(API.cudaDriverGetVersion(ref driverVersion));
 			return driverVersion;
 		}
 
+		/// <summary>
+		/// Returns the CUDA Runtime version.
+		/// </summary>
+		/// <returns>Returns the CUDA Runtime version.</returns>
 		public static int RuntimeGetVersion() {
 			int runtimeVersion = 0;
 			CheckStatus(API.cudaRuntimeGetVersion(ref runtimeVersion));
 			return runtimeVersion;
 		}
 
+		/// <summary>
+		/// Initialize the CUDA profiler.
+		/// </summary>
+		/// <param name="configFile">Name of the config file that lists the counters/options for profiling.</param>
+		/// <param name="outputFile">Name of the outputFile where the profiling results will be stored.</param>
+		/// <param name="outputMode">outputMode, can be cudaKeyValuePair OR cudaCSV.</param>
+		[Obsolete]
 		public static void ProfilerInitialize(string configFile, string outputFile, cudaOutputMode outputMode) {
 			CheckStatus(API.cudaProfilerInitialize(configFile, outputFile, outputMode));
 		}
 
+		/// <summary>
+		/// Enable profiling.
+		/// </summary>
 		public static void ProfilerStart() {
 			CheckStatus(API.cudaProfilerStart());
 		}
 
+		/// <summary>
+		/// Disable profiling.
+		/// </summary>
 		public static void ProfilerStop() {
 			CheckStatus(API.cudaProfilerStop());
 		}

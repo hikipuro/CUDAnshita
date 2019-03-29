@@ -2245,6 +2245,21 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
+	/// CUDA function attributes that can be set using cudaFuncSetAttribute
+	/// </summary>
+	public enum cudaFuncAttribute {
+		/// <summary>
+		/// Maximum dynamic shared memory size
+		/// </summary>
+		cudaFuncAttributeMaxDynamicSharedMemorySize = 8,
+		/// <summary>
+		/// Preferred shared memory-L1 cache split
+		/// </summary>
+		cudaFuncAttributePreferredSharedMemoryCarveout = 9
+		// cudaFuncAttributeMax
+	}
+
+	/// <summary>
 	/// CUDA function cache configurations
 	/// </summary>
 	public enum cudaFuncCache {
@@ -2696,6 +2711,16 @@ namespace CUDAnshita {
 		cudaSharedMemBankSizeDefault = 0,
 		cudaSharedMemBankSizeFourByte = 1,
 		cudaSharedMemBankSizeEightByte = 2
+	}
+
+	/// <summary>
+	/// Possible modes for stream capture thread interactions.
+	/// For more details see cudaStreamBeginCapture and cudaThreadExchangeStreamCaptureMode
+	/// </summary>
+	public enum cudaStreamCaptureMode {
+		cudaStreamCaptureModeGlobal = 0,
+		cudaStreamCaptureModeThreadLocal = 1,
+		cudaStreamCaptureModeRelaxed = 2
 	}
 
 	/// <summary>

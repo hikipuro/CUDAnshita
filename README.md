@@ -107,7 +107,7 @@ context.Dispose();
 
 ### トラブルシューティング
 * サンプルの実行時にエラーが発生する場合は、64bitビルドで実行してみてください (使用する DLL が 64bit 環境用のものなので、 32bit exe から呼び出すとエラーが発生します)。
-* DLLが見つからないエラーが発生する場合は、 "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\[Version]\bin" から、 Visual Studio が exe を出力する bin フォルダにコピーすると解決するかもしれません。
+* DLLが見つからないエラーが発生する場合は、 "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\\[Version]\bin" から、 Visual Studio が exe を出力する bin フォルダにコピーすると解決するかもしれません。
 
 ### 注意事項
 * cuBLAS, cuFFT, cuFFTW, cuRAND, cuDNN の機能は全くテストできていませんので、CUDAnshita のコードを底の方から修正する気力のあるかたのみ、ご使用ください。
