@@ -9,10 +9,18 @@ namespace CUDAnshita {
 	public class RuntimeCompiler {
 		public const string OPTION_TARGET_20 = "--gpu-architecture=compute_20";
 		public const string OPTION_TARGET_30 = "--gpu-architecture=compute_30";
+		public const string OPTION_TARGET_32 = "--gpu-architecture=compute_32";
 		public const string OPTION_TARGET_35 = "--gpu-architecture=compute_35";
+		public const string OPTION_TARGET_37 = "--gpu-architecture=compute_37";
 		public const string OPTION_TARGET_50 = "--gpu-architecture=compute_50";
 		public const string OPTION_TARGET_52 = "--gpu-architecture=compute_52";
 		public const string OPTION_TARGET_53 = "--gpu-architecture=compute_53";
+		public const string OPTION_TARGET_60 = "--gpu-architecture=compute_60";
+		public const string OPTION_TARGET_61 = "--gpu-architecture=compute_61";
+		public const string OPTION_TARGET_62 = "--gpu-architecture=compute_62";
+		public const string OPTION_TARGET_70 = "--gpu-architecture=compute_70";
+		public const string OPTION_TARGET_72 = "--gpu-architecture=compute_72";
+		public const string OPTION_TARGET_75 = "--gpu-architecture=compute_75";
 
 		public const string OPTION_DEVICE_C = "--device-c";
 		public const string OPTION_DEVICE_W = "--device-w";

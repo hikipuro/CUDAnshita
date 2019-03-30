@@ -74,12 +74,38 @@ namespace CUDAnshita {
 				curandRngType_t rng_type
 			);
 
+			/// <summary>
+			/// Construct the histogram array for a Poisson distribution.
+			/// </summary>
+			/// <param name="lambda">lambda for the Poisson distribution</param>
+			/// <param name="discrete_distribution">pointer to the histogram in device memory</param>
+			/// <returns>
+			/// <ul>
+			/// <li>CURAND_STATUS_ALLOCATION_FAILED if memory could not be allocated</li>
+			/// <li>CURAND_STATUS_DOUBLE_PRECISION_REQUIRED if the GPU does not support double precision</li>
+			/// <li>CURAND_STATUS_INITIALIZATION_FAILED if there was a problem setting up the GPU</li>
+			/// <li>CURAND_STATUS_NOT_INITIALIZED if the distribution pointer was null</li>
+			/// <li>CURAND_STATUS_PREEXISTING_FAILURE if there was an existing error from a previous kernel launch</li>
+			/// <li>CURAND_STATUS_OUT_OF_RANGE if lambda is non-positive or greater than 400,000</li>
+			/// <li>CURAND_STATUS_SUCCESS if the histogram was generated successfully</li>
+			/// </ul>
+			/// </returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern curandStatus curandCreatePoissonDistribution(
 				double lambda,
 				ref curandDiscreteDistribution_t discrete_distribution
 			);
 
+			/// <summary>
+			/// Destroy the histogram array for a discrete distribution (e.g. Poisson).
+			/// </summary>
+			/// <param name="discrete_distribution">pointer to device memory where the histogram is stored</param>
+			/// <returns>
+			/// <ul>
+			/// <li>CURAND_STATUS_NOT_INITIALIZED if the histogram was never created</li>
+			/// <li>CURAND_STATUS_SUCCESS if the histogram was destroyed successfully</li>
+			/// </ul>
+			/// </returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern curandStatus curandDestroyDistribution(
 				curandDiscreteDistribution_t discrete_distribution
@@ -427,6 +453,10 @@ namespace CUDAnshita {
 			/// Generate uniformly distributed floats.
 			/// </summary>
 			/// <remarks>
+			/// Use generator to generate num float results into the device memory at outputPtr.
+			/// The device memory must have been previously allocated and be large enough to hold all the results.
+			/// Launches are done with the stream set using curandSetStream(), or the null stream if no stream has been set.
+			/// Results are 32-bit floating point values between 0.0f and 1.0f, excluding 0.0f and including 1.0f.
 			/// </remarks>
 			/// <param name="generator">Generator to use</param>
 			/// <param name="outputPtr">Pointer to device memory to store CUDA-generated results, or Pointer to host memory to store CPU-generated results</param>
@@ -464,6 +494,7 @@ namespace CUDAnshita {
 			/// <param name="num">Number of doubles to generate</param>
 			/// <returns>
 			/// <ul>
+			/// <li>CURAND_STATUS_ALLOCATION_FAILED if memory could not be allocated</li>
 			/// <li>CURAND_STATUS_NOT_INITIALIZED if the generator was never created</li>
 			/// <li>CURAND_STATUS_PREEXISTING_FAILURE if there was an existing error from a previous kernel launch</li>
 			/// <li>CURAND_STATUS_LAUNCH_FAILURE if the kernel launch failed for any reason</li>
@@ -486,12 +517,34 @@ namespace CUDAnshita {
 				size_t num
 			);
 
+			/// <summary>
+			/// Get direction vectors for 32-bit quasirandom number generation.
+			/// </summary>
+			/// <param name="vectors">Address of pointer in which to return direction vectors</param>
+			/// <param name="set">Which set of direction vectors to use</param>
+			/// <returns>
+			/// <ul>
+			/// <li>CURAND_STATUS_OUT_OF_RANGE if the choice of set is invalid</li>
+			/// <li>CURAND_STATUS_SUCCESS if the pointer was set successfully</li>
+			/// </ul>
+			/// </returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern curandStatus curandGetDirectionVectors32(
 				ref IntPtr vectors,
 				curandDirectionVectorSet_t set
 			);
 
+			/// <summary>
+			/// Get direction vectors for 64-bit quasirandom number generation.
+			/// </summary>
+			/// <param name="vectors">Address of pointer in which to return direction vectors</param>
+			/// <param name="set">Which set of direction vectors to use</param>
+			/// <returns>
+			/// <ul>
+			/// <li>CURAND_STATUS_OUT_OF_RANGE if the choice of set is invalid</li>
+			/// <li>CURAND_STATUS_SUCCESS if the pointer was set successfully</li>
+			/// </ul>
+			/// </returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern curandStatus curandGetDirectionVectors64(
 				ref IntPtr vectors,
@@ -518,11 +571,21 @@ namespace CUDAnshita {
 				ref int value
 			);
 
+			/// <summary>
+			/// Get scramble constants for 32-bit scrambled Sobol' .
+			/// </summary>
+			/// <param name="constants">Address of pointer in which to return scramble constants</param>
+			/// <returns>CURAND_STATUS_SUCCESS if the pointer was set successfully</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern curandStatus curandGetScrambleConstants32(
 				ref IntPtr constants
 			);
 
+			/// <summary>
+			/// Get scramble constants for 64-bit scrambled Sobol' .
+			/// </summary>
+			/// <param name="constants">Address of pointer in which to return scramble constants</param>
+			/// <returns>CURAND_STATUS_SUCCESS if the pointer was set successfully</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern curandStatus curandGetScrambleConstants64(
 				ref IntPtr constants
@@ -632,6 +695,17 @@ namespace CUDAnshita {
 				uint num_dimensions
 			);
 
+			/// <summary>
+			/// Set the current stream for CURAND kernel launches.
+			/// </summary>
+			/// <param name="generator">Generator to modify</param>
+			/// <param name="stream">Stream to use or NULL for null stream</param>
+			/// <returns>
+			/// <ul>
+			/// <li>CURAND_STATUS_NOT_INITIALIZED if the generator was never created</li>
+			/// <li>CURAND_STATUS_SUCCESS if stream was set successfully</li>
+			/// </ul>
+			/// </returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern curandStatus curandSetStream(
 				curandGenerator_t generator,
@@ -641,32 +715,61 @@ namespace CUDAnshita {
 
 		// ----- C# Interface
 
+		/// <summary>
+		/// Create new random number generator.
+		/// </summary>
+		/// <param name="rng_type">Type of generator to create</param>
+		/// <returns>Pointer to generator</returns>
 		public static curandGenerator_t CreateGenerator(curandRngType_t rng_type) {
 			curandGenerator_t generator = IntPtr.Zero;
 			CheckStatus(API.curandCreateGenerator(ref generator, rng_type));
 			return generator;
 		}
 
+		/// <summary>
+		/// Create new host CPU random number generator.
+		/// </summary>
+		/// <param name="rng_type">Type of generator to create</param>
+		/// <returns>Pointer to generator</returns>
 		public static curandGenerator_t CreateGeneratorHost(curandRngType_t rng_type) {
 			curandGenerator_t generator = IntPtr.Zero;
 			CheckStatus(API.curandCreateGeneratorHost(ref generator, rng_type));
 			return generator;
 		}
 
+		/// <summary>
+		/// Construct the histogram array for a Poisson distribution.
+		/// </summary>
+		/// <param name="lambda">lambda for the Poisson distribution</param>
+		/// <returns>pointer to the histogram in device memory</returns>
 		public static curandDiscreteDistribution_t CreatePoissonDistribution(double lambda) {
 			curandDiscreteDistribution_t discrete_distribution = IntPtr.Zero;
 			CheckStatus(API.curandCreatePoissonDistribution(lambda, ref discrete_distribution));
 			return discrete_distribution;
 		}
 
+		/// <summary>
+		/// Destroy the histogram array for a discrete distribution (e.g. Poisson).
+		/// </summary>
+		/// <param name="discrete_distribution">pointer to device memory where the histogram is stored</param>
 		public static void DestroyDistribution(curandDiscreteDistribution_t discrete_distribution) {
 			CheckStatus(API.curandDestroyDistribution(discrete_distribution));
 		}
 
+		/// <summary>
+		/// Destroy an existing generator.
+		/// </summary>
+		/// <param name="generator">Generator to destroy</param>
 		public static void DestroyGenerator(curandGenerator_t generator) {
 			CheckStatus(API.curandDestroyGenerator(generator));
 		}
 
+		/// <summary>
+		/// Generate 32-bit pseudo or quasirandom numbers.
+		/// </summary>
+		/// <param name="generator">Generator to use</param>
+		/// <param name="num">Number of random 32-bit values to generate</param>
+		/// <returns>Pointer to device memory to store CUDA-generated results, or Pointer to host memory to store CPU-generated results</returns>
 		public static uint[] Generate(curandGenerator_t generator, size_t num) {
 			if (num < 1) {
 				return new uint[0];
@@ -676,6 +779,12 @@ namespace CUDAnshita {
 			return outputPtr;
 		}
 
+		/// <summary>
+		/// Generate 32-bit pseudo or quasirandom numbers.
+		/// </summary>
+		/// <param name="generator">Generator to use</param>
+		/// <param name="outputPtr">Pointer to device memory to store CUDA-generated results, or Pointer to host memory to store CPU-generated results</param>
+		/// <param name="num">Number of random 32-bit values to generate</param>
 		public static void Generate(curandGenerator_t generator, IntPtr outputPtr, size_t num) {
 			if (num < 1) {
 				return;
@@ -683,6 +792,14 @@ namespace CUDAnshita {
 			CheckStatus(API.curandGenerate(generator, outputPtr, num));
 		}
 
+		/// <summary>
+		/// Generate log-normally distributed floats.
+		/// </summary>
+		/// <param name="generator">Generator to use</param>
+		/// <param name="n">Number of floats to generate</param>
+		/// <param name="mean">Mean of associated normal distribution</param>
+		/// <param name="stddev">Standard deviation of associated normal distribution</param>
+		/// <returns>Pointer to device memory to store CUDA-generated results, or Pointer to host memory to store CPU-generated results</returns>
 		public static float[] GenerateLogNormal(curandGenerator_t generator, size_t n, float mean, float stddev) {
 			if (n < 1) {
 				return new float[0];
@@ -692,6 +809,14 @@ namespace CUDAnshita {
 			return outputPtr;
 		}
 
+		/// <summary>
+		/// Generate log-normally distributed floats.
+		/// </summary>
+		/// <param name="generator">Generator to use</param>
+		/// <param name="outputPtr">Pointer to device memory to store CUDA-generated results, or Pointer to host memory to store CPU-generated results</param>
+		/// <param name="n">Number of floats to generate</param>
+		/// <param name="mean">Mean of associated normal distribution</param>
+		/// <param name="stddev">Standard deviation of associated normal distribution</param>
 		public static void GenerateLogNormal(curandGenerator_t generator, IntPtr outputPtr, size_t n, float mean, float stddev) {
 			if (n < 1) {
 				return;
@@ -699,6 +824,14 @@ namespace CUDAnshita {
 			CheckStatus(API.curandGenerateLogNormal(generator, outputPtr, n, mean, stddev));
 		}
 
+		/// <summary>
+		/// Generate log-normally distributed doubles.
+		/// </summary>
+		/// <param name="generator">Generator to use</param>
+		/// <param name="n">Number of doubles to generate</param>
+		/// <param name="mean">Mean of normal distribution</param>
+		/// <param name="stddev">Standard deviation of normal distribution</param>
+		/// <returns>Pointer to device memory to store CUDA-generated results, or Pointer to host memory to store CPU-generated results</returns>
 		public static double[] GenerateLogNormalDouble(curandGenerator_t generator, size_t n, double mean, double stddev) {
 			if (n < 1) {
 				return new double[0];
@@ -708,6 +841,14 @@ namespace CUDAnshita {
 			return outputPtr;
 		}
 
+		/// <summary>
+		/// Generate log-normally distributed doubles.
+		/// </summary>
+		/// <param name="generator">Generator to use</param>
+		/// <param name="outputPtr">Pointer to device memory to store CUDA-generated results, or Pointer to host memory to store CPU-generated results</param>
+		/// <param name="n">Number of doubles to generate</param>
+		/// <param name="mean">Mean of normal distribution</param>
+		/// <param name="stddev">Standard deviation of normal distribution</param>
 		public static void GenerateLogNormalDouble(curandGenerator_t generator, IntPtr outputPtr, size_t n, double mean, double stddev) {
 			if (n < 1) {
 				return;
@@ -715,6 +856,12 @@ namespace CUDAnshita {
 			CheckStatus(API.curandGenerateLogNormalDouble(generator, outputPtr, n, mean, stddev));
 		}
 
+		/// <summary>
+		/// Generate 64-bit quasirandom numbers.
+		/// </summary>
+		/// <param name="generator">Generator to use</param>
+		/// <param name="num">Number of random 64-bit values to generate</param>
+		/// <returns>Pointer to device memory to store CUDA-generated results, or Pointer to host memory to store CPU-generated results</returns>
 		public static ulong[] GenerateLongLong(curandGenerator_t generator, size_t num) {
 			if (num < 1) {
 				return new ulong[0];
@@ -724,6 +871,12 @@ namespace CUDAnshita {
 			return outputPtr;
 		}
 
+		/// <summary>
+		/// Generate 64-bit quasirandom numbers.
+		/// </summary>
+		/// <param name="generator">Generator to use</param>
+		/// <param name="outputPtr">Pointer to device memory to store CUDA-generated results, or Pointer to host memory to store CPU-generated results</param>
+		/// <param name="num">Number of random 64-bit values to generate</param>
 		public static void GenerateLongLong(curandGenerator_t generator, IntPtr outputPtr, size_t num) {
 			if (num < 1) {
 				return;
@@ -731,6 +884,14 @@ namespace CUDAnshita {
 			CheckStatus(API.curandGenerateLongLong(generator, outputPtr, num));
 		}
 
+		/// <summary>
+		/// Generate normally distributed floats.
+		/// </summary>
+		/// <param name="generator">Generator to use</param>
+		/// <param name="n">Number of floats to generate</param>
+		/// <param name="mean">Mean of normal distribution</param>
+		/// <param name="stddev">Standard deviation of normal distribution</param>
+		/// <returns>Pointer to device memory to store CUDA-generated results, or Pointer to host memory to store CPU-generated results</returns>
 		public static float[] GenerateNormal(curandGenerator_t generator, size_t n, float mean, float stddev) {
 			if (n < 1) {
 				return new float[0];
@@ -740,6 +901,14 @@ namespace CUDAnshita {
 			return outputPtr;
 		}
 
+		/// <summary>
+		/// Generate normally distributed floats.
+		/// </summary>
+		/// <param name="generator">Generator to use</param>
+		/// <param name="outputPtr">Pointer to device memory to store CUDA-generated results, or Pointer to host memory to store CPU-generated results</param>
+		/// <param name="n">Number of floats to generate</param>
+		/// <param name="mean">Mean of normal distribution</param>
+		/// <param name="stddev">Standard deviation of normal distribution</param>
 		public static void GenerateNormal(curandGenerator_t generator, IntPtr outputPtr, size_t n, float mean, float stddev) {
 			if (n < 1) {
 				return;
@@ -747,6 +916,14 @@ namespace CUDAnshita {
 			CheckStatus(API.curandGenerateNormal(generator, outputPtr, n, mean, stddev));
 		}
 
+		/// <summary>
+		/// Generate normally distributed doubles.
+		/// </summary>
+		/// <param name="generator">Generator to use</param>
+		/// <param name="n">Number of doubles to generate</param>
+		/// <param name="mean">Mean of normal distribution</param>
+		/// <param name="stddev">Standard deviation of normal distribution</param>
+		/// <returns>Pointer to device memory to store CUDA-generated results, or Pointer to host memory to store CPU-generated results</returns>
 		public static double[] GenerateNormalDouble(curandGenerator_t generator, size_t n, double mean, double stddev) {
 			if (n < 1) {
 				return new double[0];
@@ -756,6 +933,14 @@ namespace CUDAnshita {
 			return outputPtr;
 		}
 
+		/// <summary>
+		/// Generate normally distributed doubles.
+		/// </summary>
+		/// <param name="generator">Generator to use</param>
+		/// <param name="outputPtr">Pointer to device memory to store CUDA-generated results, or Pointer to host memory to store CPU-generated results</param>
+		/// <param name="n">Number of doubles to generate</param>
+		/// <param name="mean">Mean of normal distribution</param>
+		/// <param name="stddev">Standard deviation of normal distribution</param>
 		public static void GenerateNormalDouble(curandGenerator_t generator, IntPtr outputPtr, size_t n, double mean, double stddev) {
 			if (n < 1) {
 				return;
@@ -763,6 +948,13 @@ namespace CUDAnshita {
 			CheckStatus(API.curandGenerateNormalDouble(generator, outputPtr, n, mean, stddev));
 		}
 
+		/// <summary>
+		/// Generate Poisson-distributed unsigned ints.
+		/// </summary>
+		/// <param name="generator">Generator to use</param>
+		/// <param name="n">Number of unsigned ints to generate</param>
+		/// <param name="lambda">lambda for the Poisson distribution</param>
+		/// <returns>Pointer to device memory to store CUDA-generated results, or Pointer to host memory to store CPU-generated results</returns>
 		public static uint[] GeneratePoisson(curandGenerator_t generator, size_t n, double lambda) {
 			if (n < 1) {
 				return new uint[0];
@@ -772,6 +964,13 @@ namespace CUDAnshita {
 			return outputPtr;
 		}
 
+		/// <summary>
+		/// Generate Poisson-distributed unsigned ints.
+		/// </summary>
+		/// <param name="generator">Generator to use</param>
+		/// <param name="outputPtr">Pointer to device memory to store CUDA-generated results, or Pointer to host memory to store CPU-generated results</param>
+		/// <param name="n">Number of unsigned ints to generate</param>
+		/// <param name="lambda">lambda for the Poisson distribution</param>
 		public static void GeneratePoisson(curandGenerator_t generator, IntPtr outputPtr, size_t n, double lambda) {
 			if (n < 1) {
 				return;
@@ -779,10 +978,20 @@ namespace CUDAnshita {
 			CheckStatus(API.curandGeneratePoisson(generator, outputPtr, n, lambda));
 		}
 
+		/// <summary>
+		/// Setup starting states.
+		/// </summary>
+		/// <param name="generator">Generator to update</param>
 		public static void GenerateSeeds(curandGenerator_t generator) {
 			CheckStatus(API.curandGenerateSeeds(generator));
 		}
 
+		/// <summary>
+		/// Generate uniformly distributed floats.
+		/// </summary>
+		/// <param name="generator">Generator to use</param>
+		/// <param name="num">Number of floats to generate</param>
+		/// <returns>Pointer to device memory to store CUDA-generated results, or Pointer to host memory to store CPU-generated results</returns>
 		public static float[] GenerateUniform(curandGenerator_t generator, size_t num) {
 			if (num < 1) {
 				return new float[0];
@@ -792,6 +1001,12 @@ namespace CUDAnshita {
 			return outputPtr;
 		}
 
+		/// <summary>
+		/// Generate uniformly distributed floats.
+		/// </summary>
+		/// <param name="generator">Generator to use</param>
+		/// <param name="outputPtr">Pointer to device memory to store CUDA-generated results, or Pointer to host memory to store CPU-generated results</param>
+		/// <param name="num">Number of floats to generate</param>
 		public static void GenerateUniform(curandGenerator_t generator, IntPtr outputPtr, size_t num) {
 			if (num < 1) {
 				return;
@@ -799,6 +1014,12 @@ namespace CUDAnshita {
 			CheckStatus(API.curandGenerateUniform(generator, outputPtr, num));
 		}
 
+		/// <summary>
+		/// Generate uniformly distributed doubles.
+		/// </summary>
+		/// <param name="generator">Generator to use</param>
+		/// <param name="num">Number of doubles to generate</param>
+		/// <returns>Pointer to device memory to store CUDA-generated results, or Pointer to host memory to store CPU-generated results</returns>
 		public static double[] GenerateUniformDouble(curandGenerator_t generator, size_t num) {
 			if (num < 1) {
 				return new double[0];
@@ -808,6 +1029,12 @@ namespace CUDAnshita {
 			return outputPtr;
 		}
 
+		/// <summary>
+		/// Generate uniformly distributed doubles.
+		/// </summary>
+		/// <param name="generator">Generator to use</param>
+		/// <param name="outputPtr">Pointer to device memory to store CUDA-generated results, or Pointer to host memory to store CPU-generated results</param>
+		/// <param name="num">Number of doubles to generate</param>
 		public static void GenerateUniformDouble(curandGenerator_t generator, IntPtr outputPtr, size_t num) {
 			if (num < 1) {
 				return;
@@ -815,6 +1042,11 @@ namespace CUDAnshita {
 			CheckStatus(API.curandGenerateUniformDouble(generator, outputPtr, num));
 		}
 
+		/// <summary>
+		/// Get direction vectors for 32-bit quasirandom number generation.
+		/// </summary>
+		/// <param name="set">Which set of direction vectors to use</param>
+		/// <returns>Address of pointer in which to return direction vectors</returns>
 		public static int[] GetDirectionVectors32(curandDirectionVectorSet set) {
 			IntPtr vectors = IntPtr.Zero;
 			CheckStatus(API.curandGetDirectionVectors32(ref vectors, set));
@@ -824,6 +1056,11 @@ namespace CUDAnshita {
 			return result;
 		}
 
+		/// <summary>
+		/// Get direction vectors for 64-bit quasirandom number generation.
+		/// </summary>
+		/// <param name="set">Which set of direction vectors to use</param>
+		/// <returns>Address of pointer in which to return direction vectors</returns>
 		public static long[] GetDirectionVectors64(curandDirectionVectorSet set) {
 			IntPtr vectors = IntPtr.Zero;
 			CheckStatus(API.curandGetDirectionVectors64(ref vectors, set));
@@ -833,12 +1070,21 @@ namespace CUDAnshita {
 			return result;
 		}
 
+		/// <summary>
+		/// Return the value of the curand property.
+		/// </summary>
+		/// <param name="type">CUDA library property</param>
+		/// <returns>integer value for the requested property</returns>
 		public static int GetProperty(libraryPropertyType type) {
 			int value = 0;
 			CheckStatus(API.curandGetProperty(type, ref value));
 			return value;
 		}
 
+		/// <summary>
+		/// Get scramble constants for 32-bit scrambled Sobol' .
+		/// </summary>
+		/// <returns>Address of pointer in which to return scramble constants</returns>
 		public static int[] GetScrambleConstants32() {
 			IntPtr constants = IntPtr.Zero;
 			CheckStatus(API.curandGetScrambleConstants32(ref constants));
@@ -848,6 +1094,10 @@ namespace CUDAnshita {
 			return result;
 		}
 
+		/// <summary>
+		/// Get scramble constants for 64-bit scrambled Sobol' .
+		/// </summary>
+		/// <returns>Address of pointer in which to return scramble constants</returns>
 		public static long[] GetScrambleConstants64() {
 			IntPtr constants = IntPtr.Zero;
 			CheckStatus(API.curandGetScrambleConstants64(ref constants));
@@ -857,28 +1107,57 @@ namespace CUDAnshita {
 			return result;
 		}
 
+		/// <summary>
+		/// Return the version number of the library.
+		/// </summary>
+		/// <returns>CURAND library version</returns>
 		public static int GetVersion() {
 			int version = 0;
 			CheckStatus(API.curandGetVersion(ref version));
 			return version;
 		}
 
+		/// <summary>
+		/// Set the absolute offset of the pseudo or quasirandom number generator.
+		/// </summary>
+		/// <param name="generator">Generator to modify</param>
+		/// <param name="offset">Absolute offset position</param>
 		public static void SetGeneratorOffset(curandGenerator_t generator, ulong offset) {
 			CheckStatus(API.curandSetGeneratorOffset(generator, offset));
 		}
 
+		/// <summary>
+		/// Set the ordering of results of the pseudo or quasirandom number generator.
+		/// </summary>
+		/// <param name="generator">Generator to modify</param>
+		/// <param name="order">Ordering of results</param>
 		public static void SetGeneratorOrdering(curandGenerator_t generator, curandOrdering order) {
 			CheckStatus(API.curandSetGeneratorOrdering(generator, order));
 		}
 
+		/// <summary>
+		/// Set the seed value of the pseudo-random number generator.
+		/// </summary>
+		/// <param name="generator">Generator to modify</param>
+		/// <param name="seed">Seed value</param>
 		public static void SetPseudoRandomGeneratorSeed(curandGenerator_t generator, ulong seed) {
 			CheckStatus(API.curandSetPseudoRandomGeneratorSeed(generator, seed));
 		}
 
+		/// <summary>
+		/// Set the number of dimensions.
+		/// </summary>
+		/// <param name="generator">Generator to modify</param>
+		/// <param name="num_dimensions">Number of dimensions</param>
 		public static void SetQuasiRandomGeneratorDimensions(curandGenerator_t generator, uint num_dimensions) {
 			CheckStatus(API.curandSetQuasiRandomGeneratorDimensions(generator, num_dimensions));
 		}
 
+		/// <summary>
+		/// Set the current stream for CURAND kernel launches.
+		/// </summary>
+		/// <param name="generator">Generator to modify</param>
+		/// <param name="stream">Stream to use or NULL for null stream</param>
 		public static void SetStream(curandGenerator_t generator, cudaStream_t stream) {
 			CheckStatus(API.curandSetStream(generator, stream));
 		}
