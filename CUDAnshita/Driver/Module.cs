@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace CUDAnshita {
+	/// <summary>
+	/// (Driver API) 
+	/// </summary>
 	public class Module : IDisposable {
 		class Args : IDisposable {
 			IntPtr ptr = IntPtr.Zero;

@@ -19,6 +19,9 @@ namespace CUDAnshita {
 	/// <a href="http://docs.nvidia.com/cuda/curand/">http://docs.nvidia.com/cuda/curand/</a>
 	/// </remarks>
 	public class cuRAND {
+		/// <summary>
+		/// cuRAND DLL functions.
+		/// </summary>
 		public class API {
 			//const string DLL_PATH = "curand64_80.dll";
 			const string DLL_PATH = "curand64_10.dll";
@@ -1169,12 +1172,18 @@ namespace CUDAnshita {
 		}
 	}
 
+	/// <summary>
+	/// (cuRAND) 
+	/// </summary>
 	[StructLayout(LayoutKind.Sequential, Size = 32 * 4)]
 	public struct curandDirectionVectors32 {
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
 		public uint[] data;
 	}
 
+	/// <summary>
+	/// (cuRAND) 
+	/// </summary>
 	[StructLayout(LayoutKind.Sequential, Size = 64 * 8)]
 	public struct curandDirectionVectors64 {
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)]
@@ -1182,7 +1191,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CURAND choice of direction vector set
+	/// (cuRAND) CURAND choice of direction vector set.
 	/// </summary>
 	public enum curandDirectionVectorSet {
 		///<summary>Specific set of 32-bit direction vectors generated from polynomials recommended by S. Joe and F. Y. Kuo, for up to 20,000 dimensions.</summary>
@@ -1196,7 +1205,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CURAND ordering of results in memory
+	/// (cuRAND) CURAND ordering of results in memory.
 	/// </summary>
 	public enum curandOrdering {
 		///<summary>Best ordering for pseudorandom results.</summary>
@@ -1210,7 +1219,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CURAND generator types
+	/// (cuRAND) CURAND generator types.
 	/// </summary>
 	public enum curandRngType {
 		CURAND_RNG_TEST = 0,
@@ -1239,7 +1248,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CURAND function call status types
+	/// (cuRAND) CURAND function call status types.
 	/// </summary>
 	public enum curandStatus {
 		///<summary>No errors.</summary>

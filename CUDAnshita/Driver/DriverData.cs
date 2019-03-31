@@ -13,12 +13,12 @@ namespace CUDAnshita {
 
 	public partial class Defines {
 		/// <summary>
-		/// CUDA IPC handle size 
+		/// (Driver API) CUDA IPC handle size.
 		/// </summary>
 		public const int CU_IPC_HANDLE_SIZE = 64;
 
 		/// <summary>
-		/// Legacy stream handle
+		/// (Driver API) Legacy stream handle.
 		/// 
 		/// Stream handle that can be passed as a CUstream to use an implicit stream
 		/// with legacy synchronization behavior.
@@ -28,7 +28,7 @@ namespace CUDAnshita {
 		public readonly CUstream CU_STREAM_LEGACY = new CUstream(0x1);
 
 		/// <summary>
-		/// Per-thread stream handle
+		/// (Driver API) Per-thread stream handle.
 		/// 
 		/// Stream handle that can be passed as a CUstream to use an implicit stream
 		/// with per-thread synchronization behavior.
@@ -38,39 +38,39 @@ namespace CUDAnshita {
 		public readonly CUstream CU_STREAM_PER_THREAD = new CUstream(0x2);
 
 		/// <summary>
-		/// If set, host memory is portable between CUDA contexts.
+		/// (Driver API) If set, host memory is portable between CUDA contexts.
 		/// Flag for ::cuMemHostAlloc()
 		/// </summary>
 		public const int CU_MEMHOSTALLOC_PORTABLE = 0x01;
 
 		/// <summary>
-		/// If set, host memory is mapped into CUDA address space and
+		/// (Driver API) If set, host memory is mapped into CUDA address space and
 		/// ::cuMemHostGetDevicePointer() may be called on the host pointer.
 		/// Flag for ::cuMemHostAlloc()
 		/// </summary>
 		public const int CU_MEMHOSTALLOC_DEVICEMAP = 0x02;
 
 		/// <summary>
-		/// If set, host memory is portable between CUDA contexts.
+		/// (Driver API) If set, host memory is portable between CUDA contexts.
 		/// Flag for ::cuMemHostRegister()
 		/// </summary>
 		public const int CU_MEMHOSTALLOC_WRITECOMBINED = 0x04;
 
 		/// <summary>
-		/// If set, host memory is portable between CUDA contexts.
+		/// (Driver API) If set, host memory is portable between CUDA contexts.
 		/// Flag for ::cuMemHostRegister()
 		/// </summary>
 		public const int CU_MEMHOSTREGISTER_PORTABLE = 0x01;
 
 		/// <summary>
-		/// If set, host memory is mapped into CUDA address space and
+		/// (Driver API) If set, host memory is mapped into CUDA address space and
 		/// ::cuMemHostGetDevicePointer() may be called on the host pointer.
 		/// Flag for ::cuMemHostRegister()
 		/// </summary>
 		public const int CU_MEMHOSTREGISTER_DEVICEMAP = 0x02;
 
 		/// <summary>
-		/// If set, the passed memory pointer is treated as pointing to some
+		/// (Driver API) If set, the passed memory pointer is treated as pointing to some
 		/// memory-mapped I/O space, e.g.belonging to a third-party PCIe device.
 		///
 		/// On Windows the flag is a no-op.
@@ -86,26 +86,26 @@ namespace CUDAnshita {
 		public const int CU_MEMHOSTREGISTER_IOMEMORY = 0x04;
 
 		/// <summary>
-		/// If set, the CUDA array is a collection of layers, where each layer is either a 1D
+		/// (Driver API) If set, the CUDA array is a collection of layers, where each layer is either a 1D
 		/// or a 2D array and the Depth member of CUDA_ARRAY3D_DESCRIPTOR specifies the number 
 		/// of layers, not the depth of a 3D array.
 		/// </summary>
 		public const int CUDA_ARRAY3D_LAYERED = 0x01;
 
 		/// <summary>
-		/// Deprecated, use CUDA_ARRAY3D_LAYERED
+		/// (Driver API) Deprecated, use CUDA_ARRAY3D_LAYERED
 		/// </summary>
 		[Obsolete("use CUDA_ARRAY3D_LAYERED")]
 		public const int CUDA_ARRAY3D_2DARRAY = 0x01;
 
 		/// <summary>
-		/// This flag must be set in order to bind a surface reference
+		/// (Driver API) This flag must be set in order to bind a surface reference
 		/// to the CUDA array
 		/// </summary>
 		public const int CUDA_ARRAY3D_SURFACE_LDST = 0x02;
 
 		/// <summary>
-		/// If set, the CUDA array is a collection of six 2D arrays, representing faces of a cube.The
+		/// (Driver API) If set, the CUDA array is a collection of six 2D arrays, representing faces of a cube.The
 		/// width of such a CUDA array must be equal to its height, and Depth must be six.
 		/// If ::CUDA_ARRAY3D_LAYERED flag is also set, then the CUDA array is a collection of cubemaps
 		/// and Depth must be a multiple of six.
@@ -113,50 +113,50 @@ namespace CUDAnshita {
 		public const int CUDA_ARRAY3D_CUBEMAP = 0x04;
 
 		/// <summary>
-		/// This flag must be set in order to perform texture gather operations
+		/// (Driver API) This flag must be set in order to perform texture gather operations
 		/// on a CUDA array.
 		/// </summary>
 		public const int CUDA_ARRAY3D_TEXTURE_GATHER = 0x08;
 
 		/// <summary>
-		/// This flag if set indicates that the CUDA
+		/// (Driver API) This flag if set indicates that the CUDA
 		/// array is a DEPTH_TEXTURE.
 		/// </summary>
 		public const int CUDA_ARRAY3D_DEPTH_TEXTURE = 0x10;
 
 		/// <summary>
-		/// Override the texref format with a format inferred from the array.
+		/// (Driver API) Override the texref format with a format inferred from the array.
 		/// Flag for ::cuTexRefSetArray()
 		/// </summary>
 		public const int CU_TRSA_OVERRIDE_FORMAT = 0x01;
 
 		/// <summary>
-		/// Read the texture as integers rather than promoting the values to floats
+		/// (Driver API) Read the texture as integers rather than promoting the values to floats
 		/// in the range[0, 1].
 		/// Flag for ::cuTexRefSetFlags()
 		/// </summary>
 		public const int CU_TRSF_READ_AS_INTEGER = 0x01;
 
 		/// <summary>
-		/// Use normalized texture coordinates in the range[0, 1) instead of[0, dim).
+		/// (Driver API) Use normalized texture coordinates in the range[0, 1) instead of[0, dim).
 		/// Flag for ::cuTexRefSetFlags()
 		/// </summary>
 		public const int CU_TRSF_NORMALIZED_COORDINATES = 0x02;
 
 		/// <summary>
-		/// Perform sRGB->linear conversion during texture read.
+		/// (Driver API) Perform sRGB->linear conversion during texture read.
 		/// Flag for ::cuTexRefSetFlags()
 		/// </summary>
 		public const int CU_TRSF_SRGB = 0x10;
 
 		/// <summary>
-		/// End of array terminator for the \p extra parameter to
+		/// (Driver API) End of array terminator for the \p extra parameter to
 		/// ::cuLaunchKernel
 		/// </summary>
 		public readonly IntPtr CU_LAUNCH_PARAM_END = IntPtr.Zero;
 
 		/// <summary>
-		/// Indicator that the next value in the \p extra parameter to
+		/// (Driver API) Indicator that the next value in the \p extra parameter to
 		/// ::cuLaunchKernel will be a pointer to a buffer containing all kernel
 		/// parameters used for launching kernel \p f.This buffer needs to
 		/// honor all alignment/padding requirements of the individual parameters.
@@ -167,7 +167,7 @@ namespace CUDAnshita {
 		public readonly IntPtr CU_LAUNCH_PARAM_BUFFER_POINTER = new IntPtr(0x01);
 
 		/// <summary>
-		/// Indicator that the next value in the \p extra parameter to
+		/// (Driver API) Indicator that the next value in the \p extra parameter to
 		/// ::cuLaunchKernel will be a pointer to a size_t which contains the
 		/// size of the buffer specified with::CU_LAUNCH_PARAM_BUFFER_POINTER.
 		/// It is required that ::CU_LAUNCH_PARAM_BUFFER_POINTER also be specified
@@ -177,24 +177,24 @@ namespace CUDAnshita {
 		public readonly IntPtr CU_LAUNCH_PARAM_BUFFER_SIZE = new IntPtr(0x02);
 
 		/// <summary>
-		/// For texture references loaded into the module, use default texunit from
+		/// (Driver API) For texture references loaded into the module, use default texunit from
 		/// texture reference.
 		/// </summary>
 		public int CU_PARAM_TR_DEFAULT = -1;
 
 		/// <summary>
-		/// Device that represents the CPU
+		/// (Driver API) Device that represents the CPU.
 		/// </summary>
 		public const CUdevice CU_DEVICE_CPU = -1;
 
 		/// <summary>
-		/// Device that represents an invalid device
+		/// (Driver API) Device that represents an invalid device.
 		/// </summary>
 		public const CUdevice CU_DEVICE_INVALID = -2;
 	}
 
 	/// <summary>
-	/// CUDA IPC event handle
+	/// (Driver API) CUDA IPC event handle.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct CUipcEventHandle {
@@ -203,7 +203,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA IPC mem handle
+	/// (Driver API) CUDA IPC mem handle.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct CUipcMemHandle {
@@ -212,7 +212,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA Ipc Mem Flags
+	/// (Driver API) CUDA Ipc Mem Flags.
 	/// </summary>
 	public enum CUipcMem_flags {
 		/// <summary>
@@ -222,7 +222,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA Mem Attach Flags
+	/// (Driver API) CUDA Mem Attach Flags.
 	/// </summary>
 	public enum CUmemAttach_flags {
 		/// <summary>
@@ -242,7 +242,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// Context creation flags
+	/// (Driver API) Context creation flags.
 	/// </summary>
 	public enum CUctx_flags {
 		/// <summary>
@@ -289,7 +289,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// Stream creation flags
+	/// (Driver API) Stream creation flags.
 	/// </summary>
 	public enum CUstream_flags {
 		/// <summary>
@@ -304,7 +304,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// Event creation flags
+	/// (Driver API) Event creation flags.
 	/// </summary>
 	public enum CUevent_flags {
 		/// <summary>
@@ -329,7 +329,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// Flags for ::cuStreamWaitValue32
+	/// (Driver API) Flags for ::cuStreamWaitValue32.
 	/// </summary>
 	public enum CUstreamWaitValue_flags {
 		/// <summary>
@@ -361,7 +361,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// Flags for ::cuStreamWriteValue32
+	/// (Driver API) Flags for ::cuStreamWriteValue32.
 	/// </summary>
 	public enum CUstreamWriteValue_flags {
 		/// <summary>
@@ -381,7 +381,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// Operations for ::cuStreamBatchMemOp
+	/// (Driver API) Operations for ::cuStreamBatchMemOp.
 	/// </summary>
 	public enum CUstreamBatchMemOpType {
 		/// <summary>
@@ -400,6 +400,9 @@ namespace CUDAnshita {
 		CU_STREAM_MEM_OP_FLUSH_REMOTE_WRITES = 3
 	}
 
+	/// <summary>
+	/// (Driver API) 
+	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct CUstreamMemOpWaitValueParams_st {
 		public CUstreamBatchMemOpType operation;
@@ -409,6 +412,9 @@ namespace CUDAnshita {
 		public CUdeviceptr alias;
 	}
 
+	/// <summary>
+	/// (Driver API) 
+	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct CUstreamMemOpWriteValueParams_st {
 		public CUstreamBatchMemOpType operation;
@@ -418,6 +424,9 @@ namespace CUDAnshita {
 		public CUdeviceptr alias;
 	}
 
+	/// <summary>
+	/// (Driver API) 
+	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct CUstreamMemOpFlushRemoteWritesParams_st {
 		public CUstreamBatchMemOpType operation;
@@ -425,7 +434,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// Per-operation parameters for ::cuStreamBatchMemOp
+	/// (Driver API) Per-operation parameters for ::cuStreamBatchMemOp.
 	/// </summary>
 	[StructLayout(LayoutKind.Explicit)]
 	public struct CUstreamBatchMemOpParams {
@@ -447,7 +456,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// Occupancy calculator flag
+	/// (Driver API) Occupancy calculator flag.
 	/// </summary>
 	public enum CUoccupancy_flags {
 		/// <summary>
@@ -462,7 +471,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// Array formats
+	/// (Driver API) Array formats.
 	/// </summary>
 	public enum CUarray_format {
 		/// <summary>
@@ -507,7 +516,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// Texture reference addressing modes
+	/// (Driver API) Texture reference addressing modes.
 	/// </summary>
 	public enum CUaddress_mode {
 		/// <summary>
@@ -529,7 +538,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// Texture reference filtering modes
+	/// (Driver API) Texture reference filtering modes.
 	/// </summary>
 	public enum CUfilter_mode {
 		/// <summary>
@@ -543,7 +552,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// Device properties
+	/// (Driver API) Device properties.
 	/// </summary>
 	public enum CUdevice_attribute {
 		/// <summary>
@@ -941,7 +950,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// Legacy device properties
+	/// (Driver API) Legacy device properties.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct CUdevprop {
@@ -999,7 +1008,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// Pointer information
+	/// (Driver API) Pointer information.
 	/// </summary>
 	public enum CUpointer_attribute {
 		/// <summary>
@@ -1037,7 +1046,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// Function properties
+	/// (Driver API) Function properties.
 	/// </summary>
 	public enum CUfunction_attribute {
 		/// <summary>
@@ -1098,7 +1107,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// Function cache configurations
+	/// (Driver API) Function cache configurations.
 	/// </summary>
 	public enum CUfunc_cache {
 		/// <summary>
@@ -1120,7 +1129,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// Shared memory configurations
+	/// (Driver API) Shared memory configurations.
 	/// </summary>
 	public enum CUsharedconfig {
 		/// <summary>
@@ -1140,7 +1149,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// Memory types
+	/// (Driver API) Memory types.
 	/// </summary>
 	public enum CUmemorytype {
 		/// <summary>
@@ -1162,7 +1171,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// Compute Modes
+	/// (Driver API) Compute Modes.
 	/// </summary>
 	public enum CUcomputemode {
 		/// <summary>
@@ -1181,7 +1190,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// Memory advise values
+	/// (Driver API) Memory advise values.
 	/// </summary>
 	public enum CUmem_advise {
 		/// <summary>
@@ -1211,7 +1220,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// 
+	/// (Driver API) 
 	/// </summary>
 	public enum CUmem_range_attribute {
 		/// <summary>
@@ -1233,7 +1242,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// Online compiler and linker options
+	/// (Driver API) Online compiler and linker options.
 	/// </summary>
 	public enum CUjit_option {
 		/// <summary>
@@ -1375,7 +1384,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// Online compilation targets
+	/// (Driver API) Online compilation targets.
 	/// </summary>
 	public enum CUjit_target {
 		/// <summary>
@@ -1445,7 +1454,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// Cubin matching fallback strategies
+	/// (Driver API) Cubin matching fallback strategies.
 	/// </summary>
 	public enum CUjit_fallback {
 		/// <summary>
@@ -1459,7 +1468,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// Caching modes for dlcm 
+	/// (Driver API) Caching modes for dlcm.
 	/// </summary>
 	public enum CUjit_cacheMode {
 		/// <summary>
@@ -1477,7 +1486,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// Device code formats
+	/// (Driver API) Device code formats.
 	/// </summary>
 	public enum CUjitInputType {
 		/// <summary>
@@ -1514,7 +1523,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// Flags to register a graphics resource
+	/// (Driver API) Flags to register a graphics resource.
 	/// </summary>
 	public enum CUgraphicsRegisterFlags {
 		CU_GRAPHICS_REGISTER_FLAGS_NONE = 0x00,
@@ -1525,7 +1534,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// Flags for mapping and unmapping interop resources
+	/// (Driver API) Flags for mapping and unmapping interop resources.
 	/// </summary>
 	public enum CUgraphicsMapResourceFlags {
 		CU_GRAPHICS_MAP_RESOURCE_FLAGS_NONE = 0x00,
@@ -1534,7 +1543,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// Array indices for cube faces
+	/// (Driver API) Array indices for cube faces.
 	/// </summary>
 	public enum CUarray_cubemap_face {
 		/// <summary>
@@ -1569,7 +1578,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// Limits
+	/// (Driver API) Limits.
 	/// </summary>
 	public enum CUlimit {
 		/// <summary>
@@ -1601,7 +1610,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// Resource types
+	/// (Driver API) Resource types.
 	/// </summary>
 	public enum CUresourcetype {
 		/// <summary>
@@ -1626,7 +1635,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// Error codes
+	/// (Driver API) Error codes.
 	/// </summary>
 	public enum CUresult {
 		/// <summary>
@@ -2030,7 +2039,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// P2P Attributes
+	/// (Driver API) P2P Attributes.
 	/// </summary>
 	public enum CUdevice_P2PAttribute {
 		/// <summary>
@@ -2050,7 +2059,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// 2D memory copy parameters
+	/// (Driver API) 2D memory copy parameters.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct CUDA_MEMCPY2D {
@@ -2136,7 +2145,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// 3D memory copy parameters
+	/// (Driver API) 3D memory copy parameters.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct CUDA_MEMCPY3D {
@@ -2267,7 +2276,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// 3D memory cross-context copy parameters
+	/// (Driver API) 3D memory cross-context copy parameters.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct CUDA_MEMCPY3D_PEER {
@@ -2398,7 +2407,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// Array descriptor
+	/// (Driver API) Array descriptor.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct CUDA_ARRAY_DESCRIPTOR {
@@ -2424,7 +2433,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// 3D array descriptor
+	/// (Driver API) 3D array descriptor.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct CUDA_ARRAY3D_DESCRIPTOR {
@@ -2460,7 +2469,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// Resource view format
+	/// (Driver API) Resource view format.
 	/// </summary>
 	public enum CUresourceViewFormat {
 		/// <summary>
@@ -2606,7 +2615,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// Profiler Output Modes
+	/// (Driver API) Profiler Output Modes.
 	/// </summary>
 	public enum CUoutput_mode {
 		/// <summary>

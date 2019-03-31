@@ -8,70 +8,77 @@ namespace CUDAnshita {
 	using size_t = Int64;
 
 	public partial class Defines {
+		/// <summary>
+		/// (Runtime API) 
+		/// </summary>
 		public const int CUDA_EGL_MAX_PLANES = 3;
+
+		/// <summary>
+		/// (Runtime API) 
+		/// </summary>
 		public const int CUDA_IPC_HANDLE_SIZE = 64;
 
 		//public const int cudaDevicePropDontCare;
 
 		/// <summary>
-		/// Default page-locked allocation flag
+		/// (Runtime API) Default page-locked allocation flag.
 		/// </summary>
 		public const int cudaHostAllocDefault = 0x00;
 
 		/// <summary>
-		/// Pinned memory accessible by all CUDA contexts
+		/// (Runtime API) Pinned memory accessible by all CUDA contexts.
 		/// </summary>
 		public const int cudaHostAllocPortable = 0x01;
 
 		/// <summary>
-		/// Map allocation into device space
+		/// (Runtime API) Map allocation into device space.
 		/// </summary>
 		public const int cudaHostAllocMapped = 0x02;
 
 		/// <summary>
-		/// Write-combined memory
+		/// (Runtime API) Write-combined memory.
 		/// </summary>
 		public const int cudaHostAllocWriteCombined = 0x04;
 
 
 		/// <summary>
-		/// Default host memory registration flag
+		/// (Runtime API) Default host memory registration flag.
 		/// </summary>
 		public const int cudaHostRegisterDefault = 0x00;
 
 		/// <summary>
-		/// Pinned memory accessible by all CUDA contexts
+		/// (Runtime API) Pinned memory accessible by all CUDA contexts.
 		/// </summary>
 		public const int cudaHostRegisterPortable = 0x01;
 
 		/// <summary>
-		/// Map registered memory into device space
+		/// (Runtime API) Map registered memory into device space.
 		/// </summary>
 		public const int cudaHostRegisterMapped = 0x02;
 
 		/// <summary>
-		/// Memory-mapped I/O space
+		/// (Runtime API) Memory-mapped I/O space.
 		/// </summary>
 		public const int cudaHostRegisterIoMemory = 0x04;
 
 
 		/// <summary>
-		/// Default peer addressing enable flag
+		/// (Runtime API) Default peer addressing enable flag.
 		/// </summary>
 		public const int cudaPeerAccessDefault = 0x00;
 
 		/// <summary>
-		/// Default stream flag
+		/// (Runtime API) Default stream flag.
 		/// </summary>
 		public const int cudaStreamDefault = 0x00;
 
 		/// <summary>
-		/// Stream does not synchronize with stream 0 (the NULL stream)
+		/// (Runtime API) Stream does not synchronize with stream 0 (the NULL stream).
 		/// </summary>
 		public const int cudaStreamNonBlocking = 0x01;
 
 		/// <summary>
-		/// Legacy stream handle
+		/// (Runtime API) Legacy stream handle.
 		/// </summary>
 		/// <remarks>
 		/// Stream handle that can be passed as a cudaStream_t to use an implicit stream
@@ -82,7 +89,7 @@ namespace CUDAnshita {
 		public readonly cudaStream_t cudaStreamLegacy = new IntPtr(0x1);
 
 		/// <summary>
-		/// Per-thread stream handle
+		/// (Runtime API) Per-thread stream handle.
 		/// </summary>
 		/// <remarks>
 		/// Stream handle that can be passed as a cudaStream_t to use an implicit stream
@@ -94,48 +101,48 @@ namespace CUDAnshita {
 
 
 		/// <summary>
-		/// Default event flag
+		/// (Runtime API) Default event flag.
 		/// </summary>
 		public const int cudaEventDefault = 0x00;
 
 		/// <summary>
-		/// Event uses blocking synchronization
+		/// (Runtime API) Event uses blocking synchronization.
 		/// </summary>
 		public const int cudaEventBlockingSync = 0x01;
 
 		/// <summary>
-		/// Event will not record timing data
+		/// (Runtime API) Event will not record timing data.
 		/// </summary>
 		public const int cudaEventDisableTiming = 0x02;
 
 		/// <summary>
-		/// Event is suitable for interprocess use. cudaEventDisableTiming must be set
+		/// (Runtime API) Event is suitable for interprocess use. cudaEventDisableTiming must be set.
 		/// </summary>
 		public const int cudaEventInterprocess = 0x04;
 
 
 		/// <summary>
-		/// Device flag - Automatic scheduling
+		/// (Runtime API) Device flag - Automatic scheduling.
 		/// </summary>
 		public const int cudaDeviceScheduleAuto = 0x00;
 
 		/// <summary>
-		/// Device flag - Spin default scheduling
+		/// (Runtime API) Device flag - Spin default scheduling.
 		/// </summary>
 		public const int cudaDeviceScheduleSpin = 0x01;
 
 		/// <summary>
-		/// Device flag - Yield default scheduling
+		/// (Runtime API) Device flag - Yield default scheduling.
 		/// </summary>
 		public const int cudaDeviceScheduleYield = 0x02;
 
 		/// <summary>
-		/// Device flag - Use blocking synchronization
+		/// (Runtime API) Device flag - Use blocking synchronization.
 		/// </summary>
 		public const int cudaDeviceScheduleBlockingSync = 0x04;
 
 		/// <summary>
-		/// Device flag - Use blocking synchronization
+		/// (Runtime API) Device flag - Use blocking synchronization
 		/// \deprecated This flag was deprecated as of CUDA 4.0 and
 		/// replaced with ::cudaDeviceScheduleBlockingSync.
 		/// </summary>
@@ -143,98 +150,99 @@ namespace CUDAnshita {
 		public const int cudaDeviceBlockingSync = 0x04;
 
 		/// <summary>
-		/// Device schedule flags mask
+		/// (Runtime API) Device schedule flags mask.
 		/// </summary>
 		public const int cudaDeviceScheduleMask = 0x07;
 
 		/// <summary>
-		/// Device flag - Support mapped pinned allocations
+		/// (Runtime API) Device flag - Support mapped pinned allocations.
 		/// </summary>
 		public const int cudaDeviceMapHost = 0x08;
 
 		/// <summary>
-		/// Device flag - Keep local memory allocation after launch
+		/// (Runtime API) Device flag - Keep local memory allocation after launch.
 		/// </summary>
 		public const int cudaDeviceLmemResizeToMax = 0x10;
 
 		/// <summary>
-		/// Device flags mask
+		/// (Runtime API) Device flags mask.
 		/// </summary>
 		public const int cudaDeviceMask = 0x1f;
 
 
 		/// <summary>
-		/// Default CUDA array allocation flag
+		/// (Runtime API) Default CUDA array allocation flag.
 		/// </summary>
 		public const int cudaArrayDefault = 0x00;
 
 		/// <summary>
-		/// Must be set in cudaMalloc3DArray to create a layered CUDA array
+		/// (Runtime API) Must be set in cudaMalloc3DArray to create a layered CUDA array.
 		/// </summary>
 		public const int cudaArrayLayered = 0x01;
 
 		/// <summary>
-		/// Must be set in cudaMallocArray or cudaMalloc3DArray in order to bind surfaces to the CUDA array
+		/// (Runtime API) Must be set in cudaMallocArray or cudaMalloc3DArray in order to bind surfaces to the CUDA array.
 		/// </summary>
 		public const int cudaArraySurfaceLoadStore = 0x02;
 
 		/// <summary>
-		/// Must be set in cudaMalloc3DArray to create a cubemap CUDA array
+		/// (Runtime API) Must be set in cudaMalloc3DArray to create a cubemap CUDA array.
 		/// </summary>
 		public const int cudaArrayCubemap = 0x04;
 
 		/// <summary>
-		/// Must be set in cudaMallocArray or cudaMalloc3DArray in order to perform texture gather operations on the CUDA array
+		/// (Runtime API) Must be set in cudaMallocArray or cudaMalloc3DArray in order to
+		/// perform texture gather operations on the CUDA array.
 		/// </summary>
 		public const int cudaArrayTextureGather = 0x08;
 
 
 		/// <summary>
-		/// Automatically enable peer access between remote devices as needed
+		/// (Runtime API) Automatically enable peer access between remote devices as needed.
 		/// </summary>
 		public const int cudaIpcMemLazyEnablePeerAccess = 0x01;
 
 
 		/// <summary>
-		/// Memory can be accessed by any stream on any device
+		/// (Runtime API) Memory can be accessed by any stream on any device.
 		/// </summary>
 		public const int cudaMemAttachGlobal = 0x01;
 
 		/// <summary>
-		/// Memory cannot be accessed by any stream on any device
+		/// (Runtime API) Memory cannot be accessed by any stream on any device.
 		/// </summary>
 		public const int cudaMemAttachHost = 0x02;
 
 		/// <summary>
-		/// Memory can only be accessed by a single stream on the associated device
+		/// (Runtime API) Memory can only be accessed by a single stream on the associated device.
 		/// </summary>
 		public const int cudaMemAttachSingle = 0x04;
 
 
 		/// <summary>
-		/// Default behavior
+		/// (Runtime API) Default behavior.
 		/// </summary>
 		public const int cudaOccupancyDefault = 0x00;
 
 		/// <summary>
-		/// Assume global caching is enabled and cannot be automatically turned off
+		/// (Runtime API) Assume global caching is enabled and cannot be automatically turned off.
 		/// </summary>
 		public const int cudaOccupancyDisableCachingOverride = 0x01;
 
 
 		/// <summary>
-		/// Device id that represents the CPU
+		/// (Runtime API) Device id that represents the CPU.
 		/// </summary>
 		public const int cudaCpuDeviceId = ((int)-1);
 
 		/// <summary>
-		/// Device id that represents an invalid device
+		/// (Runtime API) Device id that represents an invalid device.
 		/// </summary>
 		public const int cudaInvalidDeviceId = ((int)-2);
 	}
 
 	/// <summary>
-	/// CUDA Channel format descriptor
+	/// (Runtime API) CUDA Channel format descriptor.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct cudaChannelFormatDesc {
@@ -251,7 +259,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA device properties
+	/// (Runtime API) CUDA device properties.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 	public struct cudaDeviceProp {
@@ -603,16 +611,22 @@ namespace CUDAnshita {
 		public int concurrentManagedAccess;
 	}
 
+	/// <summary>
+	/// (Runtime API) 
+	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct cudaEglFrame {
 	}
 
+	/// <summary>
+	/// (Runtime API) 
+	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct cudaEglPlaneDesc {
 	}
 
 	/// <summary>
-	/// CUDA function attributes
+	/// (Runtime API) CUDA function attributes.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct cudaFuncAttributes {
@@ -668,7 +682,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA IPC event handle
+	/// (Runtime API) CUDA IPC event handle.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct cudaIpcEventHandle {
@@ -677,7 +691,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA IPC memory handle
+	/// (Runtime API) CUDA IPC memory handle.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct cudaIpcMemHandle {
@@ -686,7 +700,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA 3D memory copying parameters
+	/// (Runtime API) CUDA 3D memory copying parameters.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct cudaMemcpy3DParms {
@@ -732,7 +746,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA 3D cross-device memory copying parameters
+	/// (Runtime API) CUDA 3D cross-device memory copying parameters.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct cudaMemcpy3DPeerParms {
@@ -783,7 +797,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA pointer attributes
+	/// (Runtime API) CUDA pointer attributes.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct cudaPointerAttributes {
@@ -823,7 +837,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA Pitched memory pointer
+	/// (Runtime API) CUDA Pitched memory pointer.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct cudaPitchedPtr {
@@ -846,7 +860,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA extent
+	/// (Runtime API) CUDA extent.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct cudaExtent {
@@ -865,7 +879,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA 3D position
+	/// (Runtime API) CUDA 3D position.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct cudaPos {
@@ -878,7 +892,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA resource descriptor
+	/// (Runtime API) CUDA resource descriptor.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct cudaResourceDesc {
@@ -887,6 +901,9 @@ namespace CUDAnshita {
 		/// </summary>
 		public cudaResourceType resType;
 
+		/// <summary>
+		/// (Runtime API) CUDA resource descriptor.
+		/// </summary>
 		[StructLayout(LayoutKind.Explicit)]
 		public struct Resource {
 			[FieldOffset(0)]
@@ -935,7 +952,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA resource view descriptor
+	/// (Runtime API) CUDA resource view descriptor.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct cudaResourceViewDesc {
@@ -981,7 +998,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA texture reference
+	/// (Runtime API) CUDA texture reference.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct textureReference {
@@ -1041,7 +1058,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA texture descriptor
+	/// (Runtime API) CUDA texture descriptor.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct cudaTextureDesc {
@@ -1104,7 +1121,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA Surface reference
+	/// (Runtime API) CUDA Surface reference.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct surfaceReference {
@@ -1116,7 +1133,7 @@ namespace CUDAnshita {
 
 
 	/// <summary>
-	/// Channel format kind
+	/// (Runtime API) Channel format kind.
 	/// </summary>
 	public enum cudaChannelFormatKind {
 		/// <summary>
@@ -1141,7 +1158,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA device compute modes
+	/// (Runtime API) CUDA device compute modes.
 	/// </summary>
 	public enum cudaComputeMode {
 		/// <summary>
@@ -1166,7 +1183,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA device attributes
+	/// (Runtime API) CUDA device attributes.
 	/// </summary>
 	public enum cudaDeviceAttr {
 		/// <summary>
@@ -1621,7 +1638,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA device P2P attributes
+	/// (Runtime API) CUDA device P2P attributes.
 	/// </summary>
 	public enum cudaDeviceP2PAttr {
 		/// <summary>
@@ -1641,7 +1658,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA EGL Color Format - The different planar and multiplanar formats currently supported for CUDA_EGL interops.
+	/// (Runtime API) CUDA EGL Color Format - The different planar and multiplanar formats currently supported for CUDA_EGL interops.
 	/// </summary>
 	public enum cudaEglColorFormat {
 		/// <summary>
@@ -1716,7 +1733,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA EglFrame type - array or pointer
+	/// (Runtime API) CUDA EglFrame type - array or pointer.
 	/// </summary>
 	public enum cudaEglFrameType {
 		/// <summary>
@@ -1731,7 +1748,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// Resource location flags- sysmem or vidmem
+	/// (Runtime API) Resource location flags- sysmem or vidmem.
 	/// </summary>
 	public enum cudaEglResourceLocationFlags {
 		/// <summary>
@@ -1746,7 +1763,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA error types
+	/// (Runtime API) CUDA error types.
 	/// </summary>
 	public enum cudaError {
 		/// <summary>
@@ -2245,7 +2262,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA function attributes that can be set using cudaFuncSetAttribute
+	/// (Runtime API) CUDA function attributes that can be set using cudaFuncSetAttribute.
 	/// </summary>
 	public enum cudaFuncAttribute {
 		/// <summary>
@@ -2260,7 +2277,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA function cache configurations
+	/// (Runtime API) CUDA function cache configurations.
 	/// </summary>
 	public enum cudaFuncCache {
 		/// <summary>
@@ -2285,7 +2302,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA graphics interop array indices for cube maps
+	/// (Runtime API) CUDA graphics interop array indices for cube maps.
 	/// </summary>
 	public enum cudaGraphicsCubeFace {
 		/// <summary>
@@ -2320,7 +2337,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA graphics interop register flags
+	/// (Runtime API) CUDA graphics interop register flags.
 	/// </summary>
 	public enum cudaGraphicsMapFlags {
 		/// <summary>
@@ -2350,7 +2367,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA Limits
+	/// (Runtime API) CUDA Limits.
 	/// </summary>
 	public enum cudaLimit {
 		/// <summary>
@@ -2380,7 +2397,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA range attributes
+	/// (Runtime API) CUDA range attributes.
 	/// </summary>
 	public enum cudaMemRangeAttribute {
 		/// <summary>
@@ -2405,7 +2422,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA memory copy types
+	/// (Runtime API) CUDA memory copy types.
 	/// </summary>
 	public enum cudaMemcpyKind {
 		/// <summary>
@@ -2435,7 +2452,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA Memory Advise values
+	/// (Runtime API) CUDA Memory Advise values.
 	/// </summary>
 	public enum cudaMemoryAdvise {
 		/// <summary>
@@ -2470,7 +2487,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA memory types
+	/// (Runtime API) CUDA memory types.
 	/// </summary>
 	public enum cudaMemoryType {
 		/// <summary>
@@ -2485,7 +2502,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA Profiler Output modes
+	/// (Runtime API) CUDA Profiler Output modes.
 	/// </summary>
 	public enum cudaOutputMode {
 		/// <summary>
@@ -2500,7 +2517,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA resource types
+	/// (Runtime API) CUDA resource types.
 	/// </summary>
 	public enum cudaResourceType {
 		/// <summary>
@@ -2525,7 +2542,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA texture resource view formats
+	/// (Runtime API) CUDA texture resource view formats.
 	/// </summary>
 	public enum cudaResourceViewFormat {
 		/// <summary>
@@ -2705,7 +2722,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA shared memory configuration
+	/// (Runtime API) CUDA shared memory configuration.
 	/// </summary>
 	public enum cudaSharedMemConfig {
 		cudaSharedMemBankSizeDefault = 0,
@@ -2714,7 +2731,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// Possible modes for stream capture thread interactions.
+	/// (Runtime API) Possible modes for stream capture thread interactions.
 	/// For more details see cudaStreamBeginCapture and cudaThreadExchangeStreamCaptureMode
 	/// </summary>
 	public enum cudaStreamCaptureMode {
@@ -2724,7 +2741,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA Surface boundary modes
+	/// (Runtime API) CUDA Surface boundary modes.
 	/// </summary>
 	public enum cudaSurfaceBoundaryMode {
 		/// <summary>
@@ -2744,7 +2761,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA Surface format modes
+	/// (Runtime API) CUDA Surface format modes.
 	/// </summary>
 	public enum cudaSurfaceFormatMode {
 		/// <summary>
@@ -2759,7 +2776,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA texture address modes
+	/// (Runtime API) CUDA texture address modes.
 	/// </summary>
 	public enum cudaTextureAddressMode {
 		/// <summary>
@@ -2784,7 +2801,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA texture filter modes
+	/// (Runtime API) CUDA texture filter modes.
 	/// </summary>
 	public enum cudaTextureFilterMode {
 		/// <summary>
@@ -2799,7 +2816,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDA texture read modes
+	/// (Runtime API) CUDA texture read modes.
 	/// </summary>
 	public enum cudaTextureReadMode {
 		/// <summary>

@@ -18,6 +18,9 @@ namespace CUDAnshita {
 	/// <a href="http://docs.nvidia.com/cuda/cufft/">http://docs.nvidia.com/cuda/cufft/</a>
 	/// </remarks>
 	public class cuFFT {
+		/// <summary>
+		/// FFT library DLL functions.
+		/// </summary>
 		public class API {
 			//const string DLL_PATH = "cufft64_80.dll";
 			const string DLL_PATH = "cufft64_10.dll";
@@ -1395,7 +1398,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUFFT API function return values
+	/// (cuFFT) CUFFT API function return values.
 	/// </summary>
 	public enum cufftResult {
 		/// <summary>
@@ -1469,7 +1472,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUFFT supports the following transform types
+	/// (cuFFT) CUFFT supports the following transform types.
 	/// </summary>
 	public enum cufftType {
 		/// <summary>
@@ -1504,7 +1507,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUFFT supports the following data layouts
+	/// (cuFFT) CUFFT supports the following data layouts.
 	/// </summary>
 	public enum cufftCompatibility {
 		/// <summary>
@@ -1514,7 +1517,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// Transform direction
+	/// (cuFFT) Transform direction.
 	/// </summary>
 	public enum cufftDirection {
 		CUFFT_FORWARD = -1,
@@ -1522,7 +1525,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// The cuFFT library supports callback funtions for all combinations of single or double precision,
+	/// (cuFFT) The cuFFT library supports callback funtions for all combinations of single or double precision,
 	/// real or complex data, load or store. These are enumerated in the parameter cufftXtCallbackType.
 	/// </summary>
 	public enum cufftXtCallbackType {
@@ -1538,7 +1541,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// cufftXtSubFormat_t is an enumerated type that indicates if the buffer will be used
+	/// (cuFFT) cufftXtSubFormat_t is an enumerated type that indicates if the buffer will be used
 	/// for input or output and the ordering of the data.
 	/// </summary>
 	public enum cufftXtSubFormat {
@@ -1562,7 +1565,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// cufftXtCopyType_t is an enumerated type for multiple GPU functions that specifies the type of copy for cufftXtMemcpy().
+	/// (cuFFT) cufftXtCopyType_t is an enumerated type for multiple GPU functions that specifies the type of copy for cufftXtMemcpy().
 	/// </summary>
 	public enum cufftXtCopyType {
 		/// <summary>
@@ -1588,7 +1591,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// A descriptor type used in multiple GPU routines that contains information about the GPUs and their memory locations.
+	/// (cuFFT) A descriptor type used in multiple GPU routines that contains information about the GPUs and their memory locations.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct cudaXtDesc {
@@ -1622,7 +1625,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// A descriptor type used in multiple GPU routines that contains information about the library used.
+	/// (cuFFT) A descriptor type used in multiple GPU routines that contains information about the library used.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct cudaLibXtDesc {

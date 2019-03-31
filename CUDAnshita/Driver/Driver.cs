@@ -29,12 +29,15 @@ namespace CUDAnshita {
 	//using CUresult = cudaError;
 
 	/// <summary>
-	/// NVIDIA CUDA Driver API
+	/// NVIDIA CUDA Driver API.
 	/// </summary>
 	/// <remarks>
 	/// <a href="http://docs.nvidia.com/cuda/cuda-driver-api/">http://docs.nvidia.com/cuda/cuda-driver-api/</a>
 	/// </remarks>
 	public class Driver {
+		/// <summary>
+		/// Driver API DLL functions.
+		/// </summary>
 		public class API {
 			const string DLL_PATH = "nvcuda.dll";
 			const CallingConvention CALLING_CONVENTION = CallingConvention.Cdecl;

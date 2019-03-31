@@ -4,7 +4,7 @@ namespace CUDAnshita {
 	using cudaStream_t = IntPtr;
 
 	/// <summary>
-	/// cuRAND Host API.
+	/// (cuRAND) cuRAND Host API.
 	/// </summary>
 	public class CudaRandomHost : IDisposable {
 		IntPtr generator = IntPtr.Zero;

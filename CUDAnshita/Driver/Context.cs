@@ -1,6 +1,9 @@
 ﻿using System;
 
 namespace CUDAnshita {
+	/// <summary>
+	/// (Driver API) 
+	/// </summary>
 	public class Context : IDisposable {
 		IntPtr context = IntPtr.Zero;
 

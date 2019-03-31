@@ -22,6 +22,9 @@ namespace CUDAnshita {
 	/// <a href="http://docs.nvidia.com/cuda/cublas/">http://docs.nvidia.com/cuda/cublas/</a> 
 	/// </remarks>
 	public class cuBLAS {
+		/// <summary>
+		/// cuBLAS DLL functions.
+		/// </summary>
 		public class API {
 			//const string DLL_PATH = "cublas64_80.dll";
 			const string DLL_PATH = "cublas64_10.dll";
@@ -5109,7 +5112,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// The type is used for function status returns.
+	/// (cuBLAS) The type is used for function status returns.
 	/// All cuBLAS library functions return their status.
 	/// </summary>
 	public enum cublasStatus {
@@ -5136,7 +5139,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// The cublasOperation_t type indicates which operation needs to be performed with the dense matrix.
+	/// (cuBLAS) The cublasOperation_t type indicates which operation needs to be performed with the dense matrix.
 	/// Its values correspond to Fortran characters ‘N’ or ‘n’ (non-transpose), ‘T’ or ‘t’ (transpose) and ‘C’ or ‘c’ (conjugate transpose) that are often used as parameters to legacy BLAS implementations.
 	/// </summary>
 	public enum cublasOperation {
@@ -5149,7 +5152,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// The type indicates which part (lower or upper) of the dense matrix was filled and consequently should be used by the function.
+	/// (cuBLAS) The type indicates which part (lower or upper) of the dense matrix was filled and consequently should be used by the function.
 	/// Its values correspond to Fortran characters ‘L’ or ‘l’ (lower) and ‘U’ or ‘u’ (upper) that are often used as parameters to legacy BLAS implementations.
 	/// </summary>
 	public enum cublasFillMode {
@@ -5160,7 +5163,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// The type indicates whether the main diagonal of the dense matrix is unity and consequently should not be touched or modified by the function.
+	/// (cuBLAS) The type indicates whether the main diagonal of the dense matrix is unity and consequently should not be touched or modified by the function.
 	/// Its values correspond to Fortran characters ‘N’ or ‘n’ (non-unit) and ‘U’ or ‘u’ (unit) that are often used as parameters to legacy BLAS implementations.
 	/// </summary>
 	public enum cublasDiagType {
@@ -5171,7 +5174,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// The type indicates whether the dense matrix is on the left or right side in the matrix equation solved by a particular function.
+	/// (cuBLAS) The type indicates whether the dense matrix is on the left or right side in the matrix equation solved by a particular function.
 	/// Its values correspond to Fortran characters ‘L’ or ‘l’ (left) and ‘R’ or ‘r’ (right) that are often used as parameters to legacy BLAS implementations.
 	/// </summary>
 	public enum cublasSideMode {
@@ -5182,7 +5185,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// The cublasPointerMode_t type indicates whether the scalar values are passed by reference on the host or device.
+	/// (cuBLAS) The cublasPointerMode_t type indicates whether the scalar values are passed by reference on the host or device.
 	/// </summary>
 	/// <remarks>
 	/// It is important to point out that if several scalar values are present in the function call, all of them must conform to the same single pointer mode.
@@ -5196,7 +5199,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// The type indicates whether cuBLAS routines which has an alternate implementation using atomics can be used.
+	/// (cuBLAS) The type indicates whether cuBLAS routines which has an alternate implementation using atomics can be used.
 	/// The atomics mode can be set and queried using and routines, respectively.
 	/// </summary>
 	public enum cublasAtomicsMode {
@@ -5207,7 +5210,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// cublasGemmAlgo_t type is an enumerant to specify the algorithm for matrix-matrix multiplication.
+	/// (cuBLAS) cublasGemmAlgo_t type is an enumerant to specify the algorithm for matrix-matrix multiplication.
 	/// It is used to run cublasGemmEx routine with specific algorithm. CUBLAS has the following algorithm options.
 	/// </summary>
 	public enum cublasGemmAlgo {

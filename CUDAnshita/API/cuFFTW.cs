@@ -16,6 +16,9 @@ namespace CUDAnshita {
 	/// <a href="http://docs.nvidia.com/cuda/cufft/">http://docs.nvidia.com/cuda/cufft/</a>
 	/// </remarks>
 	public class cuFFTW {
+		/// <summary>
+		/// cuFFTW DLL functions.
+		/// </summary>
 		public class API {
 			//const string DLL_PATH = "cufftw64_80.dll";
 			const string DLL_PATH = "cufftw64_10.dll";
@@ -340,31 +343,45 @@ namespace CUDAnshita {
 
 		}
 
-		// transform direction
+		/// <summary>(cuFFTW) transform direction.</summary>
 		public const int FFTW_FORWARD = -1;
+		/// <summary>(cuFFTW) transform direction.</summary>
 		public const int FFTW_INVERSE = 1;
+		/// <summary>(cuFFTW) transform direction.</summary>
 		public const int FFTW_BACKWARD = 1;
 
-		// Planner flags
+		/// <summary>(cuFFTW) Planner flags.</summary>
 		public const int FFTW_ESTIMATE = 0x01;
+		/// <summary>(cuFFTW) Planner flags.</summary>
 		public const int FFTW_MEASURE = 0x02;
+		/// <summary>(cuFFTW) Planner flags.</summary>
 		public const int FFTW_PATIENT = 0x03;
+		/// <summary>(cuFFTW) Planner flags.</summary>
 		public const int FFTW_EXHAUSTIVE = 0x04;
+		/// <summary>(cuFFTW) Planner flags.</summary>
 		public const int FFTW_WISDOM_ONLY = 0x05;
 
-		// Algorithm restriction flags
+		/// <summary>(cuFFTW) Algorithm restriction flags.</summary>
 		public const int FFTW_DESTROY_INPUT = 0x08;
+		/// <summary>(cuFFTW) Algorithm restriction flags.</summary>
 		public const int FFTW_PRESERVE_INPUT = 0x0C;
+		/// <summary>(cuFFTW) Algorithm restriction flags.</summary>
 		public const int FFTW_UNALIGNED = 0x10;
 
 	}
 
+	/// <summary>
+	/// (cuFFTW) 
+	/// </summary>
 	public struct fftw_iodim {
 		public int n;
 		public int _is;
 		public int os;
 	}
 
+	/// <summary>
+	/// (cuFFTW) 
+	/// </summary>
 	public struct fftw_iodim64 {
 		public int n;
 		public size_t _is;

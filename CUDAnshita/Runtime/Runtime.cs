@@ -20,12 +20,15 @@ namespace CUDAnshita {
 	using size_t = Int64;
 
 	/// <summary>
-	/// NVIDIA CUDA Runtime API
+	/// NVIDIA CUDA Runtime API.
 	/// </summary>
 	/// <remarks>
 	/// <a href="http://docs.nvidia.com/cuda/cuda-runtime-api/">http://docs.nvidia.com/cuda/cuda-runtime-api/</a>
 	/// </remarks>
 	public class Runtime {
+		/// <summary>
+		/// Runtime API DLL functions.
+		/// </summary>
 		public class API {
 			//const string DLL_PATH = "cudart64_80.dll";
 			const string DLL_PATH = "cudart64_101.dll";

@@ -1,6 +1,9 @@
 ﻿using System;
 
 namespace CUDAnshita {
+	/// <summary>
+	/// C# interface exception.
+	/// </summary>
 	public class CudaException : Exception {
 		public CudaException() {
 		}

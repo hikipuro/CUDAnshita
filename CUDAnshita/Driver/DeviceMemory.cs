@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace CUDAnshita {
+	/// <summary>
+	/// (Driver API) 
+	/// </summary>
 	public class DeviceMemory : IDisposable {
 		Dictionary<string, IntPtr> list;
 

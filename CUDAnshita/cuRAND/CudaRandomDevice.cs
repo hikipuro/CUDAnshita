@@ -5,7 +5,7 @@ namespace CUDAnshita {
 	using cudaStream_t = IntPtr;
 
 	/// <summary>
-	/// cuRAND Device API.
+	/// (cuRAND) cuRAND Device API.
 	/// </summary>
 	public class CudaRandomDevice : IDisposable {
 		IntPtr generator = IntPtr.Zero;

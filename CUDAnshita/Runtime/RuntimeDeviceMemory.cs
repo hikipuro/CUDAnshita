@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace CUDAnshita {
+	/// <summary>
+	/// (Runtime API) 
+	/// </summary>
 	public class RuntimeDeviceMemory : IDisposable {
 		Dictionary<string, IntPtr> list;
 

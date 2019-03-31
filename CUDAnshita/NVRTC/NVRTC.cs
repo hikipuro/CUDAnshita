@@ -10,6 +10,9 @@ namespace CUDAnshita {
 	/// <a href="http://docs.nvidia.com/cuda/nvrtc/">http://docs.nvidia.com/cuda/nvrtc/</a>
 	/// </remarks>
 	public class NVRTC {
+		/// <summary>
+		/// NVRTC DLL functions.
+		/// </summary>
 		public class API {
 			//const string DLL_PATH = "nvrtc64_80.dll";
 			const string DLL_PATH = "nvrtc64_101_0.dll";

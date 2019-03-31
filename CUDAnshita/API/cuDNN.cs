@@ -50,12 +50,15 @@ namespace CUDAnshita {
 	using System.Text;
 
 	/// <summary>
-	/// Neural Networks Library
+	/// Neural Networks Library.
 	/// </summary>
 	/// <remarks>
 	/// <a href="https://developer.nvidia.com/cudnn">https://developer.nvidia.com/cudnn</a>
 	/// </remarks>
 	public class cuDNN6 : IDisposable {
+		/// <summary>
+		/// cuDNN6 DLL functions.
+		/// </summary>
 		public class API {
 			const string DLL_PATH = "cudnn64_6.dll";
 			const CallingConvention CALLING_CONVENTION = CallingConvention.Cdecl;
@@ -2068,7 +2071,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDNN return codes
+	/// (cuDNN) CUDNN return codes.
 	/// </summary>
 	public enum cudnnStatus {
 		CUDNN_STATUS_SUCCESS = 0,
@@ -2086,7 +2089,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDNN data type
+	///(cuDNN) CUDNN data type.
 	/// </summary>
 	public enum cudnnDataType {
 		CUDNN_DATA_FLOAT = 0,
@@ -2098,7 +2101,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDNN propagate Nan
+	/// (cuDNN) CUDNN propagate Nan.
 	/// </summary>
 	public enum cudnnNanPropagation {
 		CUDNN_NOT_PROPAGATE_NAN = 0,
@@ -2106,13 +2109,16 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDNN Determinism
+	/// (cuDNN) CUDNN Determinism.
 	/// </summary>
 	public enum cudnnDeterminism {
 		CUDNN_NON_DETERMINISTIC = 0,
 		CUDNN_DETERMINISTIC = 1,
 	}
 
+	/// <summary>
+	/// (cuDNN) 
+	/// </summary>
 	public enum cudnnTensorFormat {
 		/// <summary>
 		/// row major (wStride = 1, hStride = w)
@@ -2131,7 +2137,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDNN OpTensor op type
+	/// (cuDNN) CUDNN OpTensor op type.
 	/// </summary>
 	public enum cudnnOpTensorOp {
 		CUDNN_OP_TENSOR_ADD = 0,
@@ -2142,7 +2148,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDNN ReduceTensor op type
+	/// (cuDNN) CUDNN ReduceTensor op type.
 	/// </summary>
 	public enum cudnnReduceTensorOp {
 		CUDNN_REDUCE_TENSOR_ADD = 0,
@@ -2156,7 +2162,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDNN ReduceTensor indices type
+	/// (cuDNN) CUDNN ReduceTensor indices type.
 	/// </summary>
 	public enum cudnnReduceTensorIndices {
 		CUDNN_REDUCE_TENSOR_NO_INDICES = 0,
@@ -2164,7 +2170,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// CUDNN tensor indices type size(all unsigned)
+	/// (cuDNN) CUDNN tensor indices type size(all unsigned)
 	/// Currently not supported, default is 32 bit unsigned.
 	/// </summary>
 	public enum cudnnIndicesType {
@@ -2175,19 +2181,25 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// convolution mode
+	/// (cuDNN) convolution mode.
 	/// </summary>
 	public enum cudnnConvolutionMode {
 		CUDNN_CONVOLUTION = 0,
 		CUDNN_CROSS_CORRELATION = 1
 	}
 
+	/// <summary>
+	/// (cuDNN) 
+	/// </summary>
 	public enum cudnnConvolutionFwdPreference {
 		CUDNN_CONVOLUTION_FWD_NO_WORKSPACE = 0,
 		CUDNN_CONVOLUTION_FWD_PREFER_FASTEST = 1,
 		CUDNN_CONVOLUTION_FWD_SPECIFY_WORKSPACE_LIMIT = 2,
 	}
 
+	/// <summary>
+	/// (cuDNN) 
+	/// </summary>
 	public enum cudnnConvolutionFwdAlgo {
 		CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_GEMM = 0,
 		CUDNN_CONVOLUTION_FWD_ALGO_IMPLICIT_PRECOMP_GEMM = 1,
@@ -2200,6 +2212,9 @@ namespace CUDAnshita {
 		CUDNN_CONVOLUTION_FWD_ALGO_COUNT = 8,
 	}
 
+	/// <summary>
+	/// (cuDNN) 
+	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct cudnnConvolutionFwdAlgoPerf {
 		public cudnnConvolutionFwdAlgo algo;
@@ -2211,12 +2226,18 @@ namespace CUDAnshita {
 		public int[] reserved;
 	}
 
+	/// <summary>
+	/// (cuDNN) 
+	/// </summary>
 	public enum cudnnConvolutionBwdFilterPreference {
 		CUDNN_CONVOLUTION_BWD_FILTER_NO_WORKSPACE = 0,
 		CUDNN_CONVOLUTION_BWD_FILTER_PREFER_FASTEST = 1,
 		CUDNN_CONVOLUTION_BWD_FILTER_SPECIFY_WORKSPACE_LIMIT = 2,
 	}
 
+	/// <summary>
+	/// (cuDNN) 
+	/// </summary>
 	public enum cudnnConvolutionBwdFilterAlgo {
 		/// <summary>
 		/// non-deterministic
@@ -2237,6 +2258,9 @@ namespace CUDAnshita {
 		CUDNN_CONVOLUTION_BWD_FILTER_ALGO_COUNT = 7,
 	}
 
+	/// <summary>
+	/// (cuDNN) 
+	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct cudnnConvolutionBwdFilterAlgoPerf {
 		public cudnnConvolutionBwdFilterAlgo algo;
@@ -2248,12 +2272,18 @@ namespace CUDAnshita {
 		public int[] reserved;
 	}
 
+	/// <summary>
+	/// (cuDNN) 
+	/// </summary>
 	public enum cudnnConvolutionBwdDataPreference {
 		CUDNN_CONVOLUTION_BWD_DATA_NO_WORKSPACE = 0,
 		CUDNN_CONVOLUTION_BWD_DATA_PREFER_FASTEST = 1,
 		CUDNN_CONVOLUTION_BWD_DATA_SPECIFY_WORKSPACE_LIMIT = 2,
 	}
 
+	/// <summary>
+	/// (cuDNN) 
+	/// </summary>
 	public enum cudnnConvolutionBwdDataAlgo {
 		/// <summary>
 		///  non-deterministic
@@ -2267,6 +2297,9 @@ namespace CUDAnshita {
 		CUDNN_CONVOLUTION_BWD_DATA_ALGO_COUNT = 6,
 	}
 
+	/// <summary>
+	/// (cuDNN) 
+	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct cudnnConvolutionBwdDataAlgoPerf {
 		public cudnnConvolutionBwdDataAlgo algo;
@@ -2278,6 +2311,9 @@ namespace CUDAnshita {
 		public int[] reserved;
 	}
 
+	/// <summary>
+	/// (cuDNN) 
+	/// </summary>
 	public enum cudnnSoftmaxAlgorithm {
 		/// <summary>
 		/// straightforward implementation
@@ -2290,6 +2326,9 @@ namespace CUDAnshita {
 		CUDNN_SOFTMAX_LOG = 2
 	}
 
+	/// <summary>
+	/// (cuDNN) 
+	/// </summary>
 	public enum cudnnSoftmaxMode {
 		/// <summary>
 		/// compute the softmax over all C, H, W for each N
@@ -2301,6 +2340,9 @@ namespace CUDAnshita {
 		CUDNN_SOFTMAX_MODE_CHANNEL = 1
 	}
 
+	/// <summary>
+	/// (cuDNN) 
+	/// </summary>
 	public enum cudnnPoolingMode {
 		CUDNN_POOLING_MAX = 0,
 		/// <summary>
@@ -2314,6 +2356,9 @@ namespace CUDAnshita {
 		CUDNN_POOLING_MAX_DETERMINISTIC = 3
 	}
 
+	/// <summary>
+	/// (cuDNN) 
+	/// </summary>
 	public enum cudnnActivationMode {
 		CUDNN_ACTIVATION_SIGMOID = 0,
 		CUDNN_ACTIVATION_RELU = 1,
@@ -2323,7 +2368,7 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// LRN layer mode
+	/// (cuDNN) LRN layer mode
 	/// </summary>
 	public enum cudnnLRNMode {
 		/// <summary>
@@ -2332,10 +2377,16 @@ namespace CUDAnshita {
 		CUDNN_LRN_CROSS_CHANNEL_DIM1 = 0
 	}
 
+	/// <summary>
+	/// (cuDNN) 
+	/// </summary>
 	public enum cudnnDivNormMode {
 		CUDNN_DIVNORM_PRECOMPUTED_MEANS = 0
 	}
 
+	/// <summary>
+	/// (cuDNN) 
+	/// </summary>
 	public enum cudnnBatchNormMode {
 		/// <summary>
 		/// bnScale, bnBias tensor dims are 1xCxHxWx.. (one value per CHW...-slice, normalized over N slice)
@@ -2349,12 +2400,15 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// APIs for spatial transformer network
+	/// (cuDNN) APIs for spatial transformer network
 	/// </summary>
 	public enum cudnnSamplerType {
 		CUDNN_SAMPLER_BILINEAR = 0
 	}
 
+	/// <summary>
+	/// (cuDNN) 
+	/// </summary>
 	public enum cudnnRNNMode {
 		/// <summary>
 		/// Stock RNN with ReLu activation
@@ -2374,6 +2428,9 @@ namespace CUDAnshita {
 		CUDNN_GRU = 3
 	}
 
+	/// <summary>
+	/// (cuDNN) 
+	/// </summary>
 	public enum cudnnDirectionMode {
 		CUDNN_UNIDIRECTIONAL = 0,
 		/// <summary>
@@ -2382,11 +2439,17 @@ namespace CUDAnshita {
 		CUDNN_BIDIRECTIONAL = 1
 	}
 
+	/// <summary>
+	/// (cuDNN) 
+	/// </summary>
 	public enum cudnnRNNInputMode {
 		CUDNN_LINEAR_INPUT = 0,
 		CUDNN_SKIP_INPUT = 1
 	}
 
+	/// <summary>
+	/// (cuDNN) 
+	/// </summary>
 	public enum cudnnRNNAlgo {
 		CUDNN_RNN_ALGO_STANDARD = 0,
 		CUDNN_RNN_ALGO_PERSIST_STATIC = 1,

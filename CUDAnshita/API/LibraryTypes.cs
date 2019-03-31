@@ -1,4 +1,7 @@
 ﻿namespace CUDAnshita {
+	/// <summary>
+	/// (library types) 
+	/// </summary>
 	public enum cudaDataType {
 		///<summary>real as a half</summary>
 		CUDA_R_16F = 2,
@@ -30,6 +33,9 @@
 		CUDA_C_32U = 13
 	}
 
+	/// <summary>
+	/// (library types) 
+	/// </summary>
 	public enum libraryPropertyType {
 		///<summary>enumerant to query the major version</summary>
 		MAJOR_VERSION,
