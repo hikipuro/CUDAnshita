@@ -879,6 +879,154 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
+	/// (Runtime API) External memory buffer descriptor.
+	/// </summary>
+	[StructLayout(LayoutKind.Sequential)]
+	public struct cudaExternalMemoryBufferDesc {
+		/// <summary>
+		/// Offset into the memory object where the buffer's base is.
+		/// </summary>
+		public UInt64 offset;
+		/// <summary>
+		/// Size of the buffer.
+		/// </summary>
+		public UInt64 size;
+		/// <summary>
+		/// Flags reserved for future use. Must be zero.
+		/// </summary>
+		public uint flags;
+	}
+
+	/// <summary>
+	/// (Runtime API) External memory handle descriptor.
+	/// </summary>
+	[StructLayout(LayoutKind.Sequential)]
+	public struct cudaExternalMemoryHandleDesc {
+		/// <summary>
+		/// Type of the handle.
+		/// </summary>
+		cudaExternalMemoryHandleType type;
+		/// <summary>
+		/// (Runtime API) External memory handle descriptor.
+		/// </summary>
+		[StructLayout(LayoutKind.Explicit, CharSet = CharSet.Ansi)]
+		public struct Handle {
+			/// <summary>
+			/// File descriptor referencing the memory object.
+			/// Valid when type is cudaExternalMemoryHandleTypeOpaqueFd.
+			/// </summary>
+			[FieldOffset(0)]
+			public int fd;
+			/// <summary>
+			/// Valid NT handle.
+			/// Must be NULL if 'name' is non-NULL.
+			/// </summary>
+			[FieldOffset(0)]
+			public IntPtr handle;
+			/// <summary>
+			/// Name of a valid memory object.
+			/// Must be NULL if 'handle' is non-NULL.
+			/// </summary>
+			[FieldOffset(8)]
+			[MarshalAs(UnmanagedType.LPStr)]
+			public string name;
+		}
+		public Handle handle;
+		/// <summary>
+		/// Size of the memory allocation.
+		/// </summary>
+		public UInt64 size;
+		/// <summary>
+		/// Flags must either be zero or cudaExternalMemoryDedicated.
+		/// </summary>
+		public uint flags;
+	}
+
+	/// <summary>
+	/// (Runtime API) External memory mipmap descriptor.
+	/// </summary>
+	[StructLayout(LayoutKind.Sequential)]
+	public struct cudaExternalMemoryMipmappedArrayDesc {
+		/// <summary>
+		/// Offset into the memory object where the base level of the mipmap chain is.
+		/// </summary>
+		public UInt64 offset;
+		/// <summary>
+		/// Format of base level of the mipmap chain.
+		/// </summary>
+		public cudaChannelFormatDesc formatDesc;
+		/// <summary>
+		/// Dimensions of base level of the mipmap chain.
+		/// </summary>
+		public cudaExtent extent;
+		/// <summary>
+		/// Flags associated with CUDA mipmapped arrays. See cudaMallocMipmappedArray.
+		/// </summary>
+		public uint flags;
+		/// <summary>
+		/// Total number of levels in the mipmap chain.
+		/// </summary>
+		public uint numLevels;
+	}
+
+	/// <summary>
+	/// (Runtime API) External semaphore handle descriptor.
+	/// </summary>
+	[StructLayout(LayoutKind.Sequential)]
+	public struct cudaExternalSemaphoreHandleDesc {
+		/// <summary>
+		/// Type of the handle.
+		/// </summary>
+		cudaExternalSemaphoreHandleType type;
+		/// <summary>
+		/// (Runtime API) External memory handle descriptor.
+		/// </summary>
+		[StructLayout(LayoutKind.Explicit, CharSet = CharSet.Ansi)]
+		public struct Handle {
+			/// <summary>
+			/// File descriptor referencing the semaphore object.
+			/// Valid when type is cudaExternalSemaphoreHandleTypeOpaqueFd.
+			/// </summary>
+			[FieldOffset(0)]
+			public int fd;
+			/// <summary>
+			/// Valid NT handle.
+			/// Must be NULL if 'name' is non-NULL.
+			/// </summary>
+			[FieldOffset(0)]
+			public IntPtr handle;
+			/// <summary>
+			/// Name of a valid synchronization primitive.
+			/// Must be NULL if 'handle' is non-NULL.
+			/// </summary>
+			[FieldOffset(8)]
+			[MarshalAs(UnmanagedType.LPStr)]
+			public string name;
+		}
+		public Handle handle;
+		/// <summary>
+		/// Flags reserved for the future. Must be zero.
+		/// </summary>
+		public uint flags;
+	}
+
+	/// <summary>
+	/// (Runtime API) External semaphore signal parameters.
+	/// </summary>
+	[StructLayout(LayoutKind.Sequential)]
+	public struct cudaExternalSemaphoreSignalParams {
+
+	}
+
+	/// <summary>
+	/// (Runtime API) External semaphore wait parameters.
+	/// </summary>
+	[StructLayout(LayoutKind.Sequential)]
+	public struct cudaExternalSemaphoreWaitParams {
+
+	}
+
+	/// <summary>
 	/// (Runtime API) CUDA 3D position.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
@@ -1133,26 +1281,46 @@ namespace CUDAnshita {
 
 
 	/// <summary>
+	/// (Runtime API) CUDA cooperative group scope.
+	/// </summary>
+	public enum cudaCGScope {
+		/// <summary>
+		/// Invalid cooperative group scope.
+		/// </summary>
+		cudaCGScopeInvalid = 0,
+
+		/// <summary>
+		/// Scope represented by a grid_group.
+		/// </summary>
+		cudaCGScopeGrid = 1,
+
+		/// <summary>
+		/// Scope represented by a multi_grid_group.
+		/// </summary>
+		cudaCGScopeMultiGrid = 2
+	}
+
+	/// <summary>
 	/// (Runtime API) Channel format kind.
 	/// </summary>
 	public enum cudaChannelFormatKind {
 		/// <summary>
-		/// Signed channel format
+		/// Signed channel format.
 		/// </summary>
 		cudaChannelFormatKindSigned = 0,
 
 		/// <summary>
-		/// Unsigned channel format
+		/// Unsigned channel format.
 		/// </summary>
 		cudaChannelFormatKindUnsigned = 1,
 
 		/// <summary>
-		/// Float channel format
+		/// Float channel format.
 		/// </summary>
 		cudaChannelFormatKindFloat = 2,
 
 		/// <summary>
-		/// No channel format
+		/// No channel format.
 		/// </summary>
 		cudaChannelFormatKindNone = 3
 	}
@@ -1634,7 +1802,46 @@ namespace CUDAnshita {
 		/// <summary>
 		/// Device can access host registered memory at the same virtual address as the CPU
 		/// </summary>
-		cudaDevAttrCanUseHostPointerForRegisteredMem = 91
+		cudaDevAttrCanUseHostPointerForRegisteredMem = 91,
+
+		cudaDevAttrReserved92 = 92,
+		cudaDevAttrReserved93 = 93,
+		cudaDevAttrReserved94 = 94,
+
+		/// <summary>
+		/// Device supports launching cooperative kernels via cudaLaunchCooperativeKernel
+		/// </summary>
+		cudaDevAttrCooperativeLaunch = 95,
+
+		/// <summary>
+		/// Device can participate in cooperative kernels launched via cudaLaunchCooperativeKernelMultiDevice
+		/// </summary>
+		cudaDevAttrCooperativeMultiDeviceLaunch = 96,
+
+		/// <summary>
+		/// The maximum optin shared memory per block. This value may vary by chip. See cudaFuncSetAttribute
+		/// </summary>
+		cudaDevAttrMaxSharedMemoryPerBlockOptin = 97,
+
+		/// <summary>
+		/// Device supports flushing of outstanding remote writes.
+		/// </summary>
+		cudaDevAttrCanFlushRemoteWrites = 98,
+
+		/// <summary>
+		/// Device supports host memory registration via cudaHostRegister.
+		/// </summary>
+		cudaDevAttrHostRegisterSupported = 99,
+
+		/// <summary>
+		/// Device accesses pageable memory via the host's page tables.
+		/// </summary>
+		cudaDevAttrPageableMemoryAccessUsesHostPageTables = 100,
+
+		/// <summary>
+		/// Host can directly access managed memory on the device without migration.
+		/// </summary>
+		cudaDevAttrDirectManagedMemAccessFromHost = 101
 	}
 
 	/// <summary>
@@ -1654,7 +1861,12 @@ namespace CUDAnshita {
 		/// <summary>
 		/// Native atomic operation over the link supported
 		/// </summary>
-		cudaDevP2PAttrNativeAtomicSupported = 3
+		cudaDevP2PAttrNativeAtomicSupported = 3,
+
+		/// <summary>
+		/// Accessing CUDA arrays over the link supported
+		/// </summary>
+		cudaDevP2PAttrCudaArrayAccessSupported = 4
 	}
 
 	/// <summary>
@@ -1729,7 +1941,297 @@ namespace CUDAnshita {
 		/// <summary>
 		/// Y, U, V in one surface, interleaved as UYVY.
 		/// </summary>
-		cudaEglColorFormatUYVY422 = 13
+		cudaEglColorFormatUYVY422 = 13,
+
+		/// <summary>
+		/// R/G/B/A four channels in one surface with RGBA byte ordering.
+		/// </summary>
+		cudaEglColorFormatABGR = 14,
+
+		/// <summary>
+		/// R/G/B/A four channels in one surface with ARGB byte ordering.
+		/// </summary>
+		cudaEglColorFormatBGRA = 15,
+
+		/// <summary>
+		/// Alpha color format - one channel in one surface.
+		/// </summary>
+		cudaEglColorFormatA = 16,
+
+		/// <summary>
+		/// R/G color format - two channels in one surface with GR byte ordering.
+		/// </summary>
+		cudaEglColorFormatRG = 17,
+
+		/// <summary>
+		/// Y, U, V, A four channels in one surface, interleaved as VUYA.
+		/// </summary>
+		cudaEglColorFormatAYUV = 18,
+
+		/// <summary>
+		/// Y, VU in two surfaces (VU as one surface) with UV byte ordering, U/V width = Y width, U/V height = Y height.
+		/// </summary>
+		cudaEglColorFormatYVU444SemiPlanar = 19,
+
+		/// <summary>
+		/// Y, VU in two surfaces (VU as one surface) with UV byte ordering, U/V width = 1/2 Y width, U/V height = Y height.
+		/// </summary>
+		cudaEglColorFormatYVU422SemiPlanar = 20,
+
+		/// <summary>
+		/// Y, VU in two surfaces (VU as one surface) with UV byte ordering, U/V width = 1/2 Y width, U/V height = 1/2 Y height.
+		/// </summary>
+		cudaEglColorFormatYVU420SemiPlanar = 21,
+
+		/// <summary>
+		/// Y10, V10U10 in two surfaces (VU as one surface) with UV byte ordering, U/V width = Y width, U/V height = Y height.
+		/// </summary>
+		cudaEglColorFormatY10V10U10_444SemiPlanar = 22,
+
+		/// <summary>
+		/// Y10, V10U10 in two surfaces (VU as one surface) with UV byte ordering, U/V width = 1/2 Y width, U/V height = 1/2 Y height.
+		/// </summary>
+		cudaEglColorFormatY10V10U10_420SemiPlanar = 23,
+
+		/// <summary>
+		/// Y12, V12U12 in two surfaces (VU as one surface) with UV byte ordering, U/V width = Y width, U/V height = Y height.
+		/// </summary>
+		cudaEglColorFormatY12V12U12_444SemiPlanar = 24,
+
+		/// <summary>
+		/// Y12, V12U12 in two surfaces (VU as one surface) with UV byte ordering, U/V width = 1/2 Y width, U/V height = 1/2 Y height.
+		/// </summary>
+		cudaEglColorFormatY12V12U12_420SemiPlanar = 25,
+
+		/// <summary>
+		/// Extended Range Y, U, V in one surface, interleaved as YVYU.
+		/// </summary>
+		cudaEglColorFormatVYUY_ER = 26,
+
+		/// <summary>
+		/// Extended Range Y, U, V in one surface, interleaved as YUYV.
+		/// </summary>
+		cudaEglColorFormatUYVY_ER = 27,
+
+		/// <summary>
+		/// Extended Range Y, U, V in one surface, interleaved as UYVY.
+		/// </summary>
+		cudaEglColorFormatYUYV_ER = 28,
+
+		/// <summary>
+		/// Extended Range Y, U, V in one surface, interleaved as VYUY.
+		/// </summary>
+		cudaEglColorFormatYVYU_ER = 29,
+
+		/// <summary>
+		/// Extended Range Y, U, V three channels in one surface, interleaved as VUY. Only pitch linear format supported.
+		/// </summary>
+		cudaEglColorFormatYUV_ER = 30,
+
+		/// <summary>
+		/// Extended Range Y, U, V, A four channels in one surface, interleaved as AVUY.
+		/// </summary>
+		cudaEglColorFormatYUVA_ER = 31,
+
+		/// <summary>
+		/// Extended Range Y, U, V, A four channels in one surface, interleaved as VUYA.
+		/// </summary>
+		cudaEglColorFormatAYUV_ER = 32,
+
+		/// <summary>
+		/// Extended Range Y, U, V in three surfaces, U/V width = Y width, U/V height = Y height.
+		/// </summary>
+		cudaEglColorFormatYUV444Planar_ER = 33,
+
+		/// <summary>
+		/// Extended Range Y, U, V in three surfaces, U/V width = 1/2 Y width, U/V height = Y height.
+		/// </summary>
+		cudaEglColorFormatYUV422Planar_ER = 34,
+
+		/// <summary>
+		/// Extended Range Y, U, V in three surfaces, U/V width = 1/2 Y width, U/V height = 1/2 Y height.
+		/// </summary>
+		cudaEglColorFormatYUV420Planar_ER = 35,
+
+		/// <summary>
+		/// Extended Range Y, UV in two surfaces (UV as one surface) with VU byte ordering, U/V width = Y width, U/V height = Y height.
+		/// </summary>
+		cudaEglColorFormatYUV444SemiPlanar_ER = 36,
+
+		/// <summary>
+		/// Extended Range Y, UV in two surfaces (UV as one surface) with VU byte ordering, U/V width = 1/2 Y width, U/V height = Y height.
+		/// </summary>
+		cudaEglColorFormatYUV422SemiPlanar_ER = 37,
+
+		/// <summary>
+		/// Extended Range Y, UV in two surfaces (UV as one surface) with VU byte ordering, U/V width = 1/2 Y width, U/V height = 1/2 Y height.
+		/// </summary>
+		cudaEglColorFormatYUV420SemiPlanar_ER = 38,
+
+		/// <summary>
+		/// Extended Range Y, V, U in three surfaces, U/V width = Y width, U/V height = Y height.
+		/// </summary>
+		cudaEglColorFormatYVU444Planar_ER = 39,
+
+		/// <summary>
+		/// Extended Range Y, V, U in three surfaces, U/V width = 1/2 Y width, U/V height = Y height.
+		/// </summary>
+		cudaEglColorFormatYVU422Planar_ER = 40,
+
+		/// <summary>
+		/// Extended Range Y, V, U in three surfaces, U/V width = 1/2 Y width, U/V height = 1/2 Y height.
+		/// </summary>
+		cudaEglColorFormatYVU420Planar_ER = 41,
+
+		/// <summary>
+		/// Extended Range Y, VU in two surfaces (VU as one surface) with UV byte ordering, U/V width = Y width, U/V height = Y height.
+		/// </summary>
+		cudaEglColorFormatYVU444SemiPlanar_ER = 42,
+
+		/// <summary>
+		/// Extended Range Y, VU in two surfaces (VU as one surface) with UV byte ordering, U/V width = 1/2 Y width, U/V height = Y height.
+		/// </summary>
+		cudaEglColorFormatYVU422SemiPlanar_ER = 43,
+
+		/// <summary>
+		/// Extended Range Y, VU in two surfaces (VU as one surface) with UV byte ordering, U/V width = 1/2 Y width, U/V height = 1/2 Y height.
+		/// </summary>
+		cudaEglColorFormatYVU420SemiPlanar_ER = 44,
+
+		/// <summary>
+		/// Bayer format - one channel in one surface with interleaved RGGB ordering.
+		/// </summary>
+		cudaEglColorFormatBayerRGGB = 45,
+
+		/// <summary>
+		/// Bayer format - one channel in one surface with interleaved BGGR ordering.
+		/// </summary>
+		cudaEglColorFormatBayerBGGR = 46,
+
+		/// <summary>
+		/// Bayer format - one channel in one surface with interleaved GRBG ordering.
+		/// </summary>
+		cudaEglColorFormatBayerGRBG = 47,
+
+		/// <summary>
+		/// Bayer format - one channel in one surface with interleaved GBRG ordering.
+		/// </summary>
+		cudaEglColorFormatBayerGBRG = 48,
+
+		/// <summary>
+		/// Bayer10 format - one channel in one surface with interleaved RGGB ordering. Out of 16 bits, 10 bits used 6 bits No-op.
+		/// </summary>
+		cudaEglColorFormatBayer10RGGB = 49,
+
+		/// <summary>
+		/// Bayer10 format - one channel in one surface with interleaved BGGR ordering. Out of 16 bits, 10 bits used 6 bits No-op.
+		/// </summary>
+		cudaEglColorFormatBayer10BGGR = 50,
+
+		/// <summary>
+		/// Bayer10 format - one channel in one surface with interleaved GRBG ordering. Out of 16 bits, 10 bits used 6 bits No-op.
+		/// </summary>
+		cudaEglColorFormatBayer10GRBG = 51,
+
+		/// <summary>
+		/// Bayer10 format - one channel in one surface with interleaved GBRG ordering. Out of 16 bits, 10 bits used 6 bits No-op.
+		/// </summary>
+		cudaEglColorFormatBayer10GBRG = 52,
+
+		/// <summary>
+		/// Bayer12 format - one channel in one surface with interleaved RGGB ordering. Out of 16 bits, 12 bits used 4 bits No-op.
+		/// </summary>
+		cudaEglColorFormatBayer12RGGB = 53,
+
+		/// <summary>
+		/// Bayer12 format - one channel in one surface with interleaved BGGR ordering. Out of 16 bits, 12 bits used 4 bits No-op.
+		/// </summary>
+		cudaEglColorFormatBayer12BGGR = 54,
+
+		/// <summary>
+		/// Bayer12 format - one channel in one surface with interleaved GRBG ordering. Out of 16 bits, 12 bits used 4 bits No-op.
+		/// </summary>
+		cudaEglColorFormatBayer12GRBG = 55,
+
+		/// <summary>
+		/// Bayer12 format - one channel in one surface with interleaved GBRG ordering. Out of 16 bits, 12 bits used 4 bits No-op.
+		/// </summary>
+		cudaEglColorFormatBayer12GBRG = 56,
+
+		/// <summary>
+		/// Bayer14 format - one channel in one surface with interleaved RGGB ordering. Out of 16 bits, 14 bits used 2 bits No-op.
+		/// </summary>
+		cudaEglColorFormatBayer14RGGB = 57,
+
+		/// <summary>
+		/// Bayer14 format - one channel in one surface with interleaved BGGR ordering. Out of 16 bits, 14 bits used 2 bits No-op.
+		/// </summary>
+		cudaEglColorFormatBayer14BGGR = 58,
+
+		/// <summary>
+		/// Bayer14 format - one channel in one surface with interleaved GRBG ordering. Out of 16 bits, 14 bits used 2 bits No-op.
+		/// </summary>
+		cudaEglColorFormatBayer14GRBG = 59,
+
+		/// <summary>
+		/// Bayer14 format - one channel in one surface with interleaved GBRG ordering. Out of 16 bits, 14 bits used 2 bits No-op.
+		/// </summary>
+		cudaEglColorFormatBayer14GBRG = 60,
+
+		/// <summary>
+		/// Bayer20 format - one channel in one surface with interleaved RGGB ordering. Out of 32 bits, 20 bits used 12 bits No-op.
+		/// </summary>
+		cudaEglColorFormatBayer20RGGB = 61,
+
+		/// <summary>
+		/// Bayer20 format - one channel in one surface with interleaved BGGR ordering. Out of 32 bits, 20 bits used 12 bits No-op.
+		/// </summary>
+		cudaEglColorFormatBayer20BGGR = 62,
+
+		/// <summary>
+		/// Bayer20 format - one channel in one surface with interleaved GRBG ordering. Out of 32 bits, 20 bits used 12 bits No-op.
+		/// </summary>
+		cudaEglColorFormatBayer20GRBG = 63,
+
+		/// <summary>
+		/// Bayer20 format - one channel in one surface with interleaved GBRG ordering. Out of 32 bits, 20 bits used 12 bits No-op.
+		/// </summary>
+		cudaEglColorFormatBayer20GBRG = 64,
+
+		/// <summary>
+		/// Y, V, U in three surfaces, each in a separate surface, U/V width = Y width, U/V height = Y height.
+		/// </summary>
+		cudaEglColorFormatYVU444Planar = 65,
+
+		/// <summary>
+		/// Y, V, U in three surfaces, each in a separate surface, U/V width = 1/2 Y width, U/V height = Y height.
+		/// </summary>
+		cudaEglColorFormatYVU422Planar = 66,
+
+		/// <summary>
+		/// Y, V, U in three surfaces, each in a separate surface, U/V width = 1/2 Y width, U/V height = 1/2 Y height.
+		/// </summary>
+		cudaEglColorFormatYVU420Planar = 67,
+
+		/// <summary>
+		/// Nvidia proprietary Bayer ISP format - one channel in one surface with interleaved RGGB ordering and mapped to opaque integer datatype.
+		/// </summary>
+		cudaEglColorFormatBayerIspRGGB = 68,
+
+		/// <summary>
+		/// Nvidia proprietary Bayer ISP format - one channel in one surface with interleaved BGGR ordering and mapped to opaque integer datatype.
+		/// </summary>
+		cudaEglColorFormatBayerIspBGGR = 69,
+
+		/// <summary>
+		/// Nvidia proprietary Bayer ISP format - one channel in one surface with interleaved GRBG ordering and mapped to opaque integer datatype.
+		/// </summary>
+		cudaEglColorFormatBayerIspGRBG = 70,
+
+		/// <summary>
+		/// Nvidia proprietary Bayer ISP format - one channel in one surface with interleaved GBRG ordering and mapped to opaque integer datatype.
+		/// </summary>
+		cudaEglColorFormatBayerIspGBRG = 71
 	}
 
 	/// <summary>
@@ -2257,8 +2759,60 @@ namespace CUDAnshita {
 		/// </summary>
 		cudaErrorStartupFailure = 0x7f,
 
+		/// <summary>
+		/// Any unhandled CUDA driver error is added to this value and returned via the runtime.
+		/// Production releases of CUDA should not return such errors.
+		/// </summary>
 		[Obsolete("This error return is deprecated as of CUDA 4.1")]
 		cudaErrorApiFailureBase = 10000
+	}
+
+	/// <summary>
+	/// (Runtime API) External memory handle types.
+	/// </summary>
+	public enum cudaExternalMemoryHandleType {
+		/// <summary>
+		/// Handle is an opaque file descriptor.
+		/// </summary>
+		cudaExternalMemoryHandleTypeOpaqueFd = 1,
+		/// <summary>
+		/// Handle is an opaque shared NT handle.
+		/// </summary>
+		cudaExternalMemoryHandleTypeOpaqueWin32 = 2,
+		/// <summary>
+		/// Handle is an opaque, globally shared handle.
+		/// </summary>
+		cudaExternalMemoryHandleTypeOpaqueWin32Kmt = 3,
+		/// <summary>
+		/// Handle is a D3D12 heap object.
+		/// </summary>
+		cudaExternalMemoryHandleTypeD3D12Heap = 4,
+		/// <summary>
+		/// Handle is a D3D12 committed resource.
+		/// </summary>
+		cudaExternalMemoryHandleTypeD3D12Resource = 5
+	}
+
+	/// <summary>
+	/// (Runtime API) External semaphore handle types.
+	/// </summary>
+	public enum cudaExternalSemaphoreHandleType {
+		/// <summary>
+		/// Handle is an opaque file descriptor.
+		/// </summary>
+		cudaExternalSemaphoreHandleTypeOpaqueFd = 1,
+		/// <summary>
+		/// Handle is an opaque shared NT handle.
+		/// </summary>
+		cudaExternalSemaphoreHandleTypeOpaqueWin32 = 2,
+		/// <summary>
+		/// Handle is an opaque, globally shared handle.
+		/// </summary>
+		cudaExternalSemaphoreHandleTypeOpaqueWin32Kmt = 3,
+		/// <summary>
+		/// Handle is a shared NT handle referencing a D3D12 fence object.
+		/// </summary>
+		cudaExternalSemaphoreHandleTypeD3D12Fence = 4
 	}
 
 	/// <summary>
@@ -2272,8 +2826,8 @@ namespace CUDAnshita {
 		/// <summary>
 		/// Preferred shared memory-L1 cache split
 		/// </summary>
-		cudaFuncAttributePreferredSharedMemoryCarveout = 9
-		// cudaFuncAttributeMax
+		cudaFuncAttributePreferredSharedMemoryCarveout = 9,
+		cudaFuncAttributeMax
 	}
 
 	/// <summary>
@@ -2299,6 +2853,42 @@ namespace CUDAnshita {
 		/// Prefer equal size L1 cache and shared memory
 		/// </summary>
 		cudaFuncCachePreferEqual = 3
+	}
+
+	/// <summary>
+	/// (Runtime API) CUDA Graph node types.
+	/// </summary>
+	public enum cudaGraphNodeType {
+		/// <summary>
+		/// GPU kernel node
+		/// </summary>
+		cudaGraphNodeTypeKernel = 0x00,
+
+		/// <summary>
+		/// Memcpy node
+		/// </summary>
+		cudaGraphNodeTypeMemcpy = 0x01,
+
+		/// <summary>
+		/// Memset node
+		/// </summary>
+		cudaGraphNodeTypeMemset = 0x02,
+
+		/// <summary>
+		/// Host (executable) node
+		/// </summary>
+		cudaGraphNodeTypeHost = 0x03,
+
+		/// <summary>
+		/// Node which executes an embedded graph
+		/// </summary>
+		cudaGraphNodeTypeGraph = 0x04,
+
+		/// <summary>
+		/// Empty (no-op) node
+		/// </summary>
+		cudaGraphNodeTypeEmpty = 0x05,
+		cudaGraphNodeTypeCount
 	}
 
 	/// <summary>
@@ -2337,9 +2927,29 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
-	/// (Runtime API) CUDA graphics interop register flags.
+	/// (Runtime API) CUDA graphics interop map flags.
 	/// </summary>
 	public enum cudaGraphicsMapFlags {
+		/// <summary>
+		/// Default; Assume resource can be read/written
+		/// </summary>
+		cudaGraphicsMapFlagsNone = 0,
+
+		/// <summary>
+		/// CUDA will not write to this resource
+		/// </summary>
+		cudaGraphicsMapFlagsReadOnly = 1,
+
+		/// <summary>
+		/// CUDA will only write to and will not read from this resource
+		/// </summary>
+		cudaGraphicsMapFlagsWriteDiscard = 2
+	}
+
+	/// <summary>
+	/// (Runtime API) CUDA graphics interop register flags.
+	/// </summary>
+	public enum cudaGraphicsRegisterFlags {
 		/// <summary>
 		/// Default
 		/// </summary>
@@ -2393,7 +3003,12 @@ namespace CUDAnshita {
 		/// <summary>
 		/// GPU device runtime pending launch count
 		/// </summary>
-		cudaLimitDevRuntimePendingLaunchCount = 0x04
+		cudaLimitDevRuntimePendingLaunchCount = 0x04,
+
+		/// <summary>
+		/// A value between 0 and 128 that indicates the maximum fetch granularity of L2 (in Bytes). This is a hint.
+		/// </summary>
+		cudaLimitMaxL2FetchGranularity = 0x05
 	}
 
 	/// <summary>
@@ -2491,6 +3106,11 @@ namespace CUDAnshita {
 	/// </summary>
 	public enum cudaMemoryType {
 		/// <summary>
+		/// Unregistered memory
+		/// </summary>
+		cudaMemoryTypeUnregistered = 0,
+
+		/// <summary>
 		/// Host memory
 		/// </summary>
 		cudaMemoryTypeHost = 1,
@@ -2498,7 +3118,12 @@ namespace CUDAnshita {
 		/// <summary>
 		/// Device memory
 		/// </summary>
-		cudaMemoryTypeDevice = 2
+		cudaMemoryTypeDevice = 2,
+
+		/// <summary>
+		/// Managed memory
+		/// </summary>
+		cudaMemoryTypeManaged = 3
 	}
 
 	/// <summary>
@@ -2722,6 +3347,27 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
+	/// (Runtime API) Shared memory carveout configurations.
+	/// These may be passed to cudaFuncSetAttribute.
+	/// </summary>
+	public enum cudaSharedCarveout {
+		/// <summary>
+		/// No preference for shared memory or L1 (default)
+		/// </summary>
+		cudaSharedmemCarveoutDefault = -1,
+
+		/// <summary>
+		/// Prefer maximum available shared memory, minimum L1 cache
+		/// </summary>
+		cudaSharedmemCarveoutMaxShared = 100,
+
+		/// <summary>
+		/// Prefer maximum available L1 cache, minimum shared memory
+		/// </summary>
+		cudaSharedmemCarveoutMaxL1 = 0
+	}
+
+	/// <summary>
 	/// (Runtime API) CUDA shared memory configuration.
 	/// </summary>
 	public enum cudaSharedMemConfig {
@@ -2738,6 +3384,26 @@ namespace CUDAnshita {
 		cudaStreamCaptureModeGlobal = 0,
 		cudaStreamCaptureModeThreadLocal = 1,
 		cudaStreamCaptureModeRelaxed = 2
+	}
+
+	/// <summary>
+	/// (Runtime API) Possible stream capture statuses returned by cudaStreamIsCapturing.
+	/// </summary>
+	public enum cudaStreamCaptureStatus {
+		/// <summary>
+		/// Stream is not capturing
+		/// </summary>
+		cudaStreamCaptureStatusNone = 0,
+
+		/// <summary>
+		/// Stream is actively capturing
+		/// </summary>
+		cudaStreamCaptureStatusActive = 1,
+
+		/// <summary>
+		/// Stream is part of a capture sequence that has been invalidated, but not terminated
+		/// </summary>
+		cudaStreamCaptureStatusInvalidated = 2
 	}
 
 	/// <summary>
@@ -2828,5 +3494,41 @@ namespace CUDAnshita {
 		/// Read texture as normalized float
 		/// </summary>
 		cudaReadModeNormalizedFloat = 1
+	}
+
+	/// <summary>
+	/// (Runtime API) CUDA devices corresponding to the current OpenGL context.
+	/// </summary>
+	public enum cudaGLDeviceList {
+		/// <summary>
+		/// The CUDA devices for all GPUs used by the current OpenGL context.
+		/// </summary>
+		cudaGLDeviceListAll = 1,
+		/// <summary>
+		/// The CUDA devices for the GPUs used by the current OpenGL context in its currently rendering frame.
+		/// </summary>
+		cudaGLDeviceListCurrentFrame = 2,
+		/// <summary>
+		/// The CUDA devices for the GPUs to be used by the current OpenGL context in the next frame.
+		/// </summary>
+		cudaGLDeviceListNextFrame = 3
+	}
+
+	/// <summary>
+	/// (Runtime API) CUDA devices corresponding to a D3D9 device.
+	/// </summary>
+	public enum cudaD3D9DeviceList {
+		/// <summary>
+		/// The CUDA devices for all GPUs used by a D3D9 device.
+		/// </summary>
+		cudaD3D9DeviceListAll = 1,
+		/// <summary>
+		/// The CUDA devices for the GPUs used by a D3D9 device in its currently rendering frame.
+		/// </summary>
+		cudaD3D9DeviceListCurrentFrame = 2,
+		/// <summary>
+		/// The CUDA devices for the GPUs to be used by a D3D9 device in the next frame.
+		/// </summary>
+		cudaD3D9DeviceListNextFrame = 3
 	}
 }

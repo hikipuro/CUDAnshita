@@ -6,6 +6,7 @@ namespace CUDAnshita {
 	using cudaError_t = cudaError;
 	using cudaEvent_t = IntPtr;
 	using cudaExternalMemory_t = IntPtr;
+	using cudaExternalSemaphore_t = IntPtr;
 	using cudaIpcEventHandle_t = cudaIpcEventHandle;
 	using cudaIpcMemHandle_t = cudaIpcMemHandle;
 	using cudaStream_t = IntPtr;
@@ -44,7 +45,7 @@ namespace CUDAnshita {
 			/// <param name="prop">Desired device properties.</param>
 			/// <returns>cudaSuccess, cudaErrorInvalidValue</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern cudaError_t cudaChooseDevice(ref int device, ref cudaDeviceProp prop);
+			public static extern cudaError_t cudaChooseDevice(ref int device, [In] ref cudaDeviceProp prop);
 
 			/// <summary>
 			/// Returns information about the device.
@@ -65,7 +66,7 @@ namespace CUDAnshita {
 			/// where domain, bus, device, and function are all hexadecimal values</param>
 			/// <returns>cudaSuccess, cudaErrorInvalidValue, cudaErrorInvalidDevice</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern cudaError_t cudaDeviceGetByPCIBusId(ref int device, string pciBusId);
+			public static extern cudaError_t cudaDeviceGetByPCIBusId(ref int device, [In] string pciBusId);
 
 			/// <summary>
 			/// Returns the preferred cache configuration for the current device.
@@ -273,7 +274,7 @@ namespace CUDAnshita {
 			/// Exit and clean up from CUDA launches.
 			/// </summary>
 			/// <returns>cudaSuccess</returns>
-			[Obsolete]
+			[Obsolete("Note that this function is deprecated because its name does not reflect its behavior. Its functionality is identical to the non-deprecated function cudaDeviceReset(), which should be used instead.")]
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaThreadExit();
 
@@ -409,7 +410,7 @@ namespace CUDAnshita {
 			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaStreamBeginCapture(cudaStream_t stream, cudaStreamCaptureMode mode);
-			
+
 			/// <summary>
 			/// Create an asynchronous stream.
 			/// </summary>
@@ -512,88 +513,158 @@ namespace CUDAnshita {
 			/// <summary>
 			/// Creates an event object.
 			/// </summary>
-			/// <param name="cudaEvent"></param>
-			/// <returns></returns>
+			/// <param name="cudaEvent">Newly created event.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidValue, cudaErrorLaunchFailure, cudaErrorMemoryAllocation</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaEventCreate(ref cudaEvent_t cudaEvent);
 
 			/// <summary>
 			/// Creates an event object with the specified flags.
 			/// </summary>
-			/// <param name="cudaEvent"></param>
-			/// <param name="flags"></param>
-			/// <returns></returns>
+			/// <param name="cudaEvent">Newly created event.</param>
+			/// <param name="flags">Flags for new event.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidValue, cudaErrorLaunchFailure, cudaErrorMemoryAllocation</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaEventCreateWithFlags(ref cudaEvent_t cudaEvent, uint flags);
 
 			/// <summary>
 			/// Destroys an event object.
 			/// </summary>
-			/// <param name="cudaEvent"></param>
-			/// <returns></returns>
+			/// <param name="cudaEvent">Event to destroy.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidValue, cudaErrorLaunchFailure</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaEventDestroy(cudaEvent_t cudaEvent);
 
 			/// <summary>
 			/// Computes the elapsed time between events.
 			/// </summary>
-			/// <param name="ms"></param>
-			/// <param name="start"></param>
-			/// <param name="end"></param>
-			/// <returns></returns>
+			/// <param name="ms">Time between start and end in ms.</param>
+			/// <param name="start">Starting event.</param>
+			/// <param name="end">Ending event.</param>
+			/// <returns>cudaSuccess, cudaErrorNotReady, cudaErrorInvalidValue, cudaErrorInvalidResourceHandle, cudaErrorLaunchFailure</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaEventElapsedTime(ref float ms, cudaEvent_t start, cudaEvent_t end);
 
 			/// <summary>
 			/// Queries an event's status.
 			/// </summary>
-			/// <param name="cudaEvent"></param>
-			/// <returns></returns>
+			/// <param name="cudaEvent">Event to query.</param>
+			/// <returns>cudaSuccess, cudaErrorNotReady, cudaErrorInvalidValue, cudaErrorInvalidResourceHandle, cudaErrorLaunchFailure</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaEventQuery(cudaEvent_t cudaEvent);
 
 			/// <summary>
 			/// Records an event.
 			/// </summary>
-			/// <param name="cudaEvent"></param>
-			/// <param name="stream"></param>
-			/// <returns></returns>
+			/// <param name="cudaEvent">Event to record.</param>
+			/// <param name="stream">Stream in which to record event.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidValue, cudaErrorInvalidResourceHandle, cudaErrorLaunchFailure</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaEventRecord(cudaEvent_t cudaEvent, cudaStream_t stream);
 
 			/// <summary>
 			/// Waits for an event to complete.
 			/// </summary>
-			/// <param name="cudaEvent"></param>
-			/// <returns></returns>
+			/// <param name="cudaEvent">Event to wait for.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidValue, cudaErrorInvalidResourceHandle, cudaErrorLaunchFailure</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaEventSynchronize(cudaEvent_t cudaEvent);
 
 			// ----- External Resource Interoperability
 
+			/// <summary>
+			/// Destroys an external memory object.
+			/// </summary>
+			/// <param name="extMem">External memory object to be destroyed.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidResourceHandle</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaDestroyExternalMemory(cudaExternalMemory_t extMem);
 
-			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			//public static extern cudaError_t cudaDestroyExternalSemaphore(cudaExternalSemaphore_t extSem);
+			/// <summary>
+			/// Destroys an external semaphore.
+			/// </summary>
+			/// <param name="extSem">External semaphore to be destroyed.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidResourceHandle</returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaDestroyExternalSemaphore(cudaExternalSemaphore_t extSem);
 
-			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			//public static extern cudaError_t cudaExternalMemoryGetMappedBuffer(void** devPtr, cudaExternalMemory_t extMem, const cudaExternalMemoryBufferDesc* bufferDesc );
+			/// <summary>
+			/// Maps a buffer onto an imported memory object.
+			/// </summary>
+			/// <param name="devPtr">Returned device pointer to buffer.</param>
+			/// <param name="extMem">Handle to external memory object.</param>
+			/// <param name="bufferDesc">Buffer descriptor.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidResourceHandle</returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaExternalMemoryGetMappedBuffer(
+													IntPtr devPtr, // void**
+													cudaExternalMemory_t extMem,
+													ref cudaExternalMemoryBufferDesc bufferDesc); // const cudaExternalMemoryBufferDesc*
 
-			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			//public static extern cudaError_t cudaExternalMemoryGetMappedMipmappedArray(cudaMipmappedArray_t* mipmap, cudaExternalMemory_t extMem, const cudaExternalMemoryMipmappedArrayDesc* mipmapDesc );
+			/// <summary>
+			/// Maps a CUDA mipmapped array onto an external memory object.
+			/// </summary>
+			/// <param name="mipmap">Returned CUDA mipmapped array.</param>
+			/// <param name="extMem">Handle to external memory object.</param>
+			/// <param name="mipmapDesc">CUDA array descriptor.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidResourceHandle</returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaExternalMemoryGetMappedMipmappedArray(
+													cudaMipmappedArray_t mipmap, // cudaMipmappedArray_t*
+													cudaExternalMemory_t extMem,
+													ref cudaExternalMemoryMipmappedArrayDesc mipmapDesc); // const cudaExternalMemoryMipmappedArrayDesc*
 
-			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			//public static extern cudaError_t cudaImportExternalMemory(cudaExternalMemory_t* extMem_out, const cudaExternalMemoryHandleDesc* memHandleDesc );
+			/// <summary>
+			/// Imports an external memory object.
+			/// </summary>
+			/// <param name="extMem_out">Returned handle to an external memory object.</param>
+			/// <param name="memHandleDesc">Memory import handle descriptor.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidResourceHandle</returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaImportExternalMemory(
+													cudaExternalMemory_t extMem_out, // cudaExternalMemory_t*
+													ref cudaExternalMemoryHandleDesc memHandleDesc); // const cudaExternalMemoryHandleDesc*
 
-			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			//public static extern cudaError_t cudaImportExternalSemaphore(cudaExternalSemaphore_t* extSem_out, const cudaExternalSemaphoreHandleDesc* semHandleDesc );
+			/// <summary>
+			/// Imports an external semaphore.
+			/// </summary>
+			/// <param name="extSem_out">Returned handle to an external semaphore.</param>
+			/// <param name="semHandleDesc">Semaphore import handle descriptor.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidResourceHandle</returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaImportExternalSemaphore(
+													cudaExternalSemaphore_t extSem_out, // cudaExternalSemaphore_t*
+													[In] ref cudaExternalSemaphoreHandleDesc semHandleDesc); // const cudaExternalSemaphoreHandleDesc*
 
-			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			//public static extern cudaError_t cudaSignalExternalSemaphoresAsync( const cudaExternalSemaphore_t* extSemArray, const cudaExternalSemaphoreSignalParams* paramsArray, unsigned int numExtSems, cudaStream_t stream = 0 );
+			/// <summary>
+			/// Signals a set of external semaphore objects.
+			/// </summary>
+			/// <param name="extSemArray">Set of external semaphores to be signaled.</param>
+			/// <param name="paramsArray">Array of semaphore parameters.</param>
+			/// <param name="numExtSems">Number of semaphores to signal.</param>
+			/// <param name="stream">Stream to enqueue the signal operations in.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidResourceHandle</returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaSignalExternalSemaphoresAsync(
+													[In] ref cudaExternalSemaphore_t extSemArray, // const cudaExternalSemaphore_t*
+													[In] ref cudaExternalSemaphoreSignalParams paramsArray, // const cudaExternalSemaphoreSignalParams*
+													uint numExtSems,
+													cudaStream_t stream = default(IntPtr));
 
-			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			//public static extern cudaError_t cudaWaitExternalSemaphoresAsync( const cudaExternalSemaphore_t* extSemArray, const cudaExternalSemaphoreWaitParams* paramsArray, unsigned int numExtSems, cudaStream_t stream = 0 );
+			/// <summary>
+			/// Waits on a set of external semaphore objects.
+			/// </summary>
+			/// <param name="extSemArray">External semaphores to be waited on.</param>
+			/// <param name="paramsArray">Array of semaphore parameters.</param>
+			/// <param name="numExtSems">Number of semaphores to wait on.</param>
+			/// <param name="stream">Stream to enqueue the wait operations in.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidResourceHandle</returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaWaitExternalSemaphoresAsync(
+													[In] ref cudaExternalSemaphore_t extSemArray, // const cudaExternalSemaphore_t*
+													[In] ref cudaExternalSemaphoreWaitParams paramsArray, // const cudaExternalSemaphoreWaitParams*
+													uint numExtSems,
+													cudaStream_t stream = default(IntPtr));
 
 			// ----- Execution Control
 
@@ -614,7 +685,7 @@ namespace CUDAnshita {
 			/// <param name="value">Value to set.</param>
 			/// <returns>cudaSuccess, cudaErrorInvalidDeviceFunction, cudaErrorInvalidValue</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern cudaError_t cudaFuncSetAttribute(IntPtr func, ref cudaFuncAttribute attr, int value);
+			public static extern cudaError_t cudaFuncSetAttribute([In] IntPtr func, ref cudaFuncAttribute attr, int value);
 
 			/// <summary>
 			/// Sets the preferred cache configuration for a device function.
@@ -623,7 +694,7 @@ namespace CUDAnshita {
 			/// <param name="cacheConfig"></param>
 			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern cudaError_t cudaFuncSetCacheConfig(IntPtr func, cudaFuncCache cacheConfig);
+			public static extern cudaError_t cudaFuncSetCacheConfig([In] IntPtr func, cudaFuncCache cacheConfig);
 
 			/// <summary>
 			/// Sets the shared memory configuration for a device function.
@@ -732,206 +803,741 @@ namespace CUDAnshita {
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaArrayGetInfo(ref cudaChannelFormatDesc desc, ref cudaExtent extent, ref uint flags, cudaArray_t array);
 
+			/// <summary>
+			/// Frees memory on the device.
+			/// </summary>
+			/// <param name="devPtr">Device pointer to memory to free.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidValue</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaFree(IntPtr devPtr);
 
+			/// <summary>
+			/// Frees an array on the device.
+			/// </summary>
+			/// <param name="array"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaFreeArray(cudaArray_t array);
 
+			/// <summary>
+			/// Frees page-locked memory.
+			/// </summary>
+			/// <param name="ptr"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaFreeHost(IntPtr ptr);
 
+			/// <summary>
+			/// Frees a mipmapped array on the device.
+			/// </summary>
+			/// <param name="mipmappedArray"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaFreeMipmappedArray(cudaMipmappedArray_t mipmappedArray);
 
+			/// <summary>
+			/// Gets a mipmap level of a CUDA mipmapped array.
+			/// </summary>
+			/// <param name="levelArray"></param>
+			/// <param name="mipmappedArray"></param>
+			/// <param name="level"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaGetMipmappedArrayLevel(ref cudaArray_t levelArray, cudaMipmappedArray_const_t mipmappedArray, uint level);
 
+			/// <summary>
+			/// Finds the address associated with a CUDA symbol.
+			/// </summary>
+			/// <param name="devPtr"></param>
+			/// <param name="symbol"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaGetSymbolAddress(ref IntPtr devPtr, IntPtr symbol);
 
+			/// <summary>
+			/// Finds the size of the object associated with a CUDA symbol.
+			/// </summary>
+			/// <param name="size"></param>
+			/// <param name="symbol"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaGetSymbolSize(ref size_t size, IntPtr symbol);
 
+			/// <summary>
+			/// Allocates page-locked memory on the host.
+			/// </summary>
+			/// <param name="pHost"></param>
+			/// <param name="size"></param>
+			/// <param name="flags"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaHostAlloc(ref IntPtr pHost, size_t size, uint flags);
 
+			/// <summary>
+			/// Passes back device pointer of mapped host memory allocated by cudaHostAlloc or registered by cudaHostRegister.
+			/// </summary>
+			/// <param name="pDevice"></param>
+			/// <param name="pHost"></param>
+			/// <param name="flags"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaHostGetDevicePointer(ref IntPtr pDevice, IntPtr pHost, uint flags);
 
+			/// <summary>
+			/// Passes back flags used to allocate pinned host memory allocated by cudaHostAlloc.
+			/// </summary>
+			/// <param name="pFlags"></param>
+			/// <param name="pHost"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaHostGetFlags(ref uint pFlags, IntPtr pHost);
 
+			/// <summary>
+			/// Registers an existing host memory range for use by CUDA.
+			/// </summary>
+			/// <param name="ptr"></param>
+			/// <param name="size"></param>
+			/// <param name="flags"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaHostRegister(IntPtr ptr, size_t size, uint flags);
 
+			/// <summary>
+			/// Unregisters a memory range that was registered with cudaHostRegister.
+			/// </summary>
+			/// <param name="ptr"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaHostUnregister(IntPtr ptr);
 
+			/// <summary>
+			/// Allocate memory on the device.
+			/// </summary>
+			/// <param name="devPtr"></param>
+			/// <param name="size"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMalloc(ref IntPtr devPtr, size_t size);
 
+			/// <summary>
+			/// Allocates logical 1D, 2D, or 3D memory objects on the device.
+			/// </summary>
+			/// <param name="pitchedDevPtr"></param>
+			/// <param name="extent"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMalloc3D(ref cudaPitchedPtr pitchedDevPtr, cudaExtent extent);
 
+			/// <summary>
+			/// Allocate an array on the device.
+			/// </summary>
+			/// <param name="array"></param>
+			/// <param name="desc"></param>
+			/// <param name="extent"></param>
+			/// <param name="flags"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMalloc3DArray(ref cudaArray_t array, ref cudaChannelFormatDesc desc, cudaExtent extent, uint flags = 0);
 
+			/// <summary>
+			/// Allocate an array on the device.
+			/// </summary>
+			/// <param name="array"></param>
+			/// <param name="desc"></param>
+			/// <param name="width"></param>
+			/// <param name="height"></param>
+			/// <param name="flags"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMallocArray(ref cudaArray_t array, ref cudaChannelFormatDesc desc, size_t width, size_t height = 0, uint flags = 0);
 
+			/// <summary>
+			/// Allocates page-locked memory on the host.
+			/// </summary>
+			/// <param name="ptr"></param>
+			/// <param name="size"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMallocHost(ref IntPtr ptr, size_t size);
 
+			/// <summary>
+			/// Allocates memory that will be automatically managed by the Unified Memory system.
+			/// </summary>
+			/// <param name="devPtr"></param>
+			/// <param name="size"></param>
+			/// <param name="flags"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMallocManaged(ref IntPtr devPtr, size_t size, uint flags = Defines.cudaMemAttachGlobal);
 
+			/// <summary>
+			/// Allocate a mipmapped array on the device.
+			/// </summary>
+			/// <param name="mipmappedArray"></param>
+			/// <param name="desc"></param>
+			/// <param name="extent"></param>
+			/// <param name="numLevels"></param>
+			/// <param name="flags"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMallocMipmappedArray(ref cudaMipmappedArray_t mipmappedArray, ref cudaChannelFormatDesc desc, cudaExtent extent, uint numLevels, uint flags = 0);
 
+			/// <summary>
+			/// Allocates pitched memory on the device.
+			/// </summary>
+			/// <param name="devPtr"></param>
+			/// <param name="pitch"></param>
+			/// <param name="width"></param>
+			/// <param name="height"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMallocPitch(ref IntPtr devPtr, ref size_t pitch, size_t width, size_t height);
 
+			/// <summary>
+			/// Advise about the usage of a given memory range.
+			/// </summary>
+			/// <param name="devPtr"></param>
+			/// <param name="count"></param>
+			/// <param name="advice"></param>
+			/// <param name="device"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMemAdvise(IntPtr devPtr, size_t count, cudaMemoryAdvise advice, int device);
 
+			/// <summary>
+			/// Gets free and total device memory.
+			/// </summary>
+			/// <param name="free"></param>
+			/// <param name="total"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMemGetInfo(ref size_t free, ref size_t total);
 
+			/// <summary>
+			/// Prefetches memory to the specified destination device.
+			/// </summary>
+			/// <param name="devPtr"></param>
+			/// <param name="count"></param>
+			/// <param name="dstDevice"></param>
+			/// <param name="stream"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMemPrefetchAsync(IntPtr devPtr, size_t count, int dstDevice, cudaStream_t stream);
 
+			/// <summary>
+			/// Query an attribute of a given memory range.
+			/// </summary>
+			/// <param name="data"></param>
+			/// <param name="dataSize"></param>
+			/// <param name="attribute"></param>
+			/// <param name="devPtr"></param>
+			/// <param name="count"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMemRangeGetAttribute(IntPtr data, size_t dataSize, cudaMemRangeAttribute attribute, IntPtr devPtr, size_t count);
 
+			/// <summary>
+			/// Query attributes of a given memory range.
+			/// </summary>
+			/// <param name="data"></param>
+			/// <param name="dataSizes"></param>
+			/// <param name="attributes"></param>
+			/// <param name="numAttributes"></param>
+			/// <param name="devPtr"></param>
+			/// <param name="count"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMemRangeGetAttributes(ref IntPtr data, ref size_t dataSizes, ref cudaMemRangeAttribute[] attributes, size_t numAttributes, IntPtr devPtr, size_t count);
 
+			/// <summary>
+			/// Copies data between host and device.
+			/// </summary>
+			/// <param name="dst"></param>
+			/// <param name="src"></param>
+			/// <param name="count"></param>
+			/// <param name="kind"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMemcpy(IntPtr dst, IntPtr src, size_t count, cudaMemcpyKind kind);
 
+			/// <summary>
+			/// Copies data between host and device.
+			/// </summary>
+			/// <param name="dst"></param>
+			/// <param name="src"></param>
+			/// <param name="count"></param>
+			/// <param name="kind"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			unsafe public static extern cudaError_t cudaMemcpy(IntPtr dst, void* src, size_t count, cudaMemcpyKind kind);
 
+			/// <summary>
+			/// Copies data between host and device.
+			/// </summary>
+			/// <param name="dst"></param>
+			/// <param name="src"></param>
+			/// <param name="count"></param>
+			/// <param name="kind"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			unsafe public static extern cudaError_t cudaMemcpy(void* dst, IntPtr src, size_t count, cudaMemcpyKind kind);
 
+			/// <summary>
+			/// Copies data between host and device.
+			/// </summary>
+			/// <param name="dst"></param>
+			/// <param name="dpitch"></param>
+			/// <param name="src"></param>
+			/// <param name="spitch"></param>
+			/// <param name="width"></param>
+			/// <param name="height"></param>
+			/// <param name="kind"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMemcpy2D(IntPtr dst, size_t dpitch, IntPtr src, size_t spitch, size_t width, size_t height, cudaMemcpyKind kind);
 
+			/// <summary>
+			/// Copies data between host and device.
+			/// </summary>
+			/// <param name="dst"></param>
+			/// <param name="wOffsetDst"></param>
+			/// <param name="hOffsetDst"></param>
+			/// <param name="src"></param>
+			/// <param name="wOffsetSrc"></param>
+			/// <param name="hOffsetSrc"></param>
+			/// <param name="width"></param>
+			/// <param name="height"></param>
+			/// <param name="kind"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMemcpy2DArrayToArray(cudaArray_t dst, size_t wOffsetDst, size_t hOffsetDst, cudaArray_const_t src, size_t wOffsetSrc, size_t hOffsetSrc, size_t width, size_t height, cudaMemcpyKind kind = cudaMemcpyKind.cudaMemcpyDeviceToDevice);
 
+			/// <summary>
+			/// Copies data between host and device.
+			/// </summary>
+			/// <param name="dst"></param>
+			/// <param name="dpitch"></param>
+			/// <param name="src"></param>
+			/// <param name="spitch"></param>
+			/// <param name="width"></param>
+			/// <param name="height"></param>
+			/// <param name="kind"></param>
+			/// <param name="stream"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMemcpy2DAsync(IntPtr dst, size_t dpitch, IntPtr src, size_t spitch, size_t width, size_t height, cudaMemcpyKind kind, cudaStream_t stream);
 
+			/// <summary>
+			/// Copies data between host and device.
+			/// </summary>
+			/// <param name="dst"></param>
+			/// <param name="dpitch"></param>
+			/// <param name="src"></param>
+			/// <param name="wOffset"></param>
+			/// <param name="hOffset"></param>
+			/// <param name="width"></param>
+			/// <param name="height"></param>
+			/// <param name="kind"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMemcpy2DFromArray(IntPtr dst, size_t dpitch, cudaArray_const_t src, size_t wOffset, size_t hOffset, size_t width, size_t height, cudaMemcpyKind kind);
 
+			/// <summary>
+			/// Copies data between host and device.
+			/// </summary>
+			/// <param name="dst"></param>
+			/// <param name="dpitch"></param>
+			/// <param name="src"></param>
+			/// <param name="wOffset"></param>
+			/// <param name="hOffset"></param>
+			/// <param name="width"></param>
+			/// <param name="height"></param>
+			/// <param name="kind"></param>
+			/// <param name="stream"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMemcpy2DFromArrayAsync(IntPtr dst, size_t dpitch, cudaArray_const_t src, size_t wOffset, size_t hOffset, size_t width, size_t height, cudaMemcpyKind kind, cudaStream_t stream);
 
+			/// <summary>
+			/// Copies data between host and device.
+			/// </summary>
+			/// <param name="dst"></param>
+			/// <param name="wOffset"></param>
+			/// <param name="hOffset"></param>
+			/// <param name="src"></param>
+			/// <param name="spitch"></param>
+			/// <param name="width"></param>
+			/// <param name="height"></param>
+			/// <param name="kind"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMemcpy2DToArray(cudaArray_t dst, size_t wOffset, size_t hOffset, IntPtr src, size_t spitch, size_t width, size_t height, cudaMemcpyKind kind);
 
+			/// <summary>
+			/// Copies data between host and device.
+			/// </summary>
+			/// <param name="dst"></param>
+			/// <param name="wOffset"></param>
+			/// <param name="hOffset"></param>
+			/// <param name="src"></param>
+			/// <param name="spitch"></param>
+			/// <param name="width"></param>
+			/// <param name="height"></param>
+			/// <param name="kind"></param>
+			/// <param name="stream"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMemcpy2DToArrayAsync(cudaArray_t dst, size_t wOffset, size_t hOffset, IntPtr src, size_t spitch, size_t width, size_t height, cudaMemcpyKind kind, cudaStream_t stream);
 
+			/// <summary>
+			/// Copies data between 3D objects.
+			/// </summary>
+			/// <param name="p"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMemcpy3D(ref cudaMemcpy3DParms p);
 
+			/// <summary>
+			/// Copies data between 3D objects.
+			/// </summary>
+			/// <param name="p"></param>
+			/// <param name="stream"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMemcpy3DAsync(ref cudaMemcpy3DParms p, cudaStream_t stream);
 
+			/// <summary>
+			/// Copies memory between devices.
+			/// </summary>
+			/// <param name="p"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMemcpy3DPeer(ref cudaMemcpy3DPeerParms p);
 
+			/// <summary>
+			/// Copies memory between devices asynchronously.
+			/// </summary>
+			/// <param name="p"></param>
+			/// <param name="stream"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMemcpy3DPeerAsync(ref cudaMemcpy3DPeerParms p, cudaStream_t stream);
 
+			/// <summary>
+			/// Copies data between host and device.
+			/// </summary>
+			/// <param name="dst"></param>
+			/// <param name="wOffsetDst"></param>
+			/// <param name="hOffsetDst"></param>
+			/// <param name="src"></param>
+			/// <param name="wOffsetSrc"></param>
+			/// <param name="hOffsetSrc"></param>
+			/// <param name="count"></param>
+			/// <param name="kind"></param>
+			/// <returns></returns>
+			[Obsolete]
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMemcpyArrayToArray(cudaArray_t dst, size_t wOffsetDst, size_t hOffsetDst, cudaArray_const_t src, size_t wOffsetSrc, size_t hOffsetSrc, size_t count, cudaMemcpyKind kind = cudaMemcpyKind.cudaMemcpyDeviceToDevice);
 
+			/// <summary>
+			/// Copies data between host and device.
+			/// </summary>
+			/// <param name="dst"></param>
+			/// <param name="src"></param>
+			/// <param name="count"></param>
+			/// <param name="kind"></param>
+			/// <param name="stream"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMemcpyAsync(IntPtr dst, IntPtr src, size_t count, cudaMemcpyKind kind, cudaStream_t stream);
 
+			/// <summary>
+			/// Copies data between host and device.
+			/// </summary>
+			/// <param name="dst"></param>
+			/// <param name="src"></param>
+			/// <param name="wOffset"></param>
+			/// <param name="hOffset"></param>
+			/// <param name="count"></param>
+			/// <param name="kind"></param>
+			/// <returns></returns>
+			[Obsolete]
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMemcpyFromArray(IntPtr dst, cudaArray_const_t src, size_t wOffset, size_t hOffset, size_t count, cudaMemcpyKind kind);
 
+			/// <summary>
+			/// Copies data between host and device.
+			/// </summary>
+			/// <param name="dst"></param>
+			/// <param name="src"></param>
+			/// <param name="wOffset"></param>
+			/// <param name="hOffset"></param>
+			/// <param name="count"></param>
+			/// <param name="kind"></param>
+			/// <param name="stream"></param>
+			/// <returns></returns>
+			[Obsolete]
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMemcpyFromArrayAsync(IntPtr dst, cudaArray_const_t src, size_t wOffset, size_t hOffset, size_t count, cudaMemcpyKind kind, cudaStream_t stream);
 
+			/// <summary>
+			/// Copies data from the given symbol on the device.
+			/// </summary>
+			/// <param name="dst"></param>
+			/// <param name="symbol"></param>
+			/// <param name="count"></param>
+			/// <param name="offset"></param>
+			/// <param name="kind"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMemcpyFromSymbol(IntPtr dst, IntPtr symbol, size_t count, size_t offset = 0, cudaMemcpyKind kind = cudaMemcpyKind.cudaMemcpyDeviceToHost);
 
+			/// <summary>
+			/// Copies data from the given symbol on the device.
+			/// </summary>
+			/// <param name="dst"></param>
+			/// <param name="symbol"></param>
+			/// <param name="count"></param>
+			/// <param name="offset"></param>
+			/// <param name="kind"></param>
+			/// <param name="stream"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMemcpyFromSymbolAsync(IntPtr dst, IntPtr symbol, size_t count, size_t offset, cudaMemcpyKind kind, cudaStream_t stream);
 
+			/// <summary>
+			/// Copies memory between two devices.
+			/// </summary>
+			/// <param name="dst"></param>
+			/// <param name="dstDevice"></param>
+			/// <param name="src"></param>
+			/// <param name="srcDevice"></param>
+			/// <param name="count"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMemcpyPeer(IntPtr dst, int dstDevice, IntPtr src, int srcDevice, size_t count);
 
+			/// <summary>
+			/// Copies memory between two devices asynchronously.
+			/// </summary>
+			/// <param name="dst"></param>
+			/// <param name="dstDevice"></param>
+			/// <param name="src"></param>
+			/// <param name="srcDevice"></param>
+			/// <param name="count"></param>
+			/// <param name="stream"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMemcpyPeerAsync(IntPtr dst, int dstDevice, IntPtr src, int srcDevice, size_t count, cudaStream_t stream);
 
+			/// <summary>
+			/// Copies data between host and device.
+			/// </summary>
+			/// <param name="dst"></param>
+			/// <param name="wOffset"></param>
+			/// <param name="hOffset"></param>
+			/// <param name="src"></param>
+			/// <param name="count"></param>
+			/// <param name="kind"></param>
+			/// <returns></returns>
+			[Obsolete]
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMemcpyToArray(cudaArray_t dst, size_t wOffset, size_t hOffset, IntPtr src, size_t count, cudaMemcpyKind kind);
 
+			/// <summary>
+			/// Copies data between host and device.
+			/// </summary>
+			/// <param name="dst"></param>
+			/// <param name="wOffset"></param>
+			/// <param name="hOffset"></param>
+			/// <param name="src"></param>
+			/// <param name="count"></param>
+			/// <param name="kind"></param>
+			/// <param name="stream"></param>
+			/// <returns></returns>
+			[Obsolete]
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMemcpyToArrayAsync(cudaArray_t dst, size_t wOffset, size_t hOffset, IntPtr src, size_t count, cudaMemcpyKind kind, cudaStream_t stream);
 
+			/// <summary>
+			/// Copies data to the given symbol on the device.
+			/// </summary>
+			/// <param name="symbol"></param>
+			/// <param name="src"></param>
+			/// <param name="count"></param>
+			/// <param name="offset"></param>
+			/// <param name="kind"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMemcpyToSymbol(IntPtr symbol, IntPtr src, size_t count, size_t offset = 0, cudaMemcpyKind kind = cudaMemcpyKind.cudaMemcpyHostToDevice);
 
+			/// <summary>
+			/// Copies data to the given symbol on the device.
+			/// </summary>
+			/// <param name="symbol"></param>
+			/// <param name="src"></param>
+			/// <param name="count"></param>
+			/// <param name="offset"></param>
+			/// <param name="kind"></param>
+			/// <param name="stream"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMemcpyToSymbolAsync(IntPtr symbol, IntPtr src, size_t count, size_t offset, cudaMemcpyKind kind, cudaStream_t stream);
 
+			/// <summary>
+			/// Initializes or sets device memory to a value.
+			/// </summary>
+			/// <param name="devPtr"></param>
+			/// <param name="value"></param>
+			/// <param name="count"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMemset(IntPtr devPtr, int value, size_t count);
 
+			/// <summary>
+			/// Initializes or sets device memory to a value.
+			/// </summary>
+			/// <param name="devPtr"></param>
+			/// <param name="pitch"></param>
+			/// <param name="value"></param>
+			/// <param name="width"></param>
+			/// <param name="height"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMemset2D(IntPtr devPtr, size_t pitch, int value, size_t width, size_t height);
 
+			/// <summary>
+			/// Initializes or sets device memory to a value.
+			/// </summary>
+			/// <param name="devPtr"></param>
+			/// <param name="pitch"></param>
+			/// <param name="value"></param>
+			/// <param name="width"></param>
+			/// <param name="height"></param>
+			/// <param name="stream"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMemset2DAsync(IntPtr devPtr, size_t pitch, int value, size_t width, size_t height, cudaStream_t stream);
 
+			/// <summary>
+			/// Initializes or sets device memory to a value.
+			/// </summary>
+			/// <param name="pitchedDevPtr"></param>
+			/// <param name="value"></param>
+			/// <param name="extent"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMemset3D(cudaPitchedPtr pitchedDevPtr, int value, cudaExtent extent);
 
+			/// <summary>
+			/// Initializes or sets device memory to a value.
+			/// </summary>
+			/// <param name="pitchedDevPtr"></param>
+			/// <param name="value"></param>
+			/// <param name="extent"></param>
+			/// <param name="stream"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMemset3DAsync(cudaPitchedPtr pitchedDevPtr, int value, cudaExtent extent, cudaStream_t stream);
 
+			/// <summary>
+			/// Initializes or sets device memory to a value.
+			/// </summary>
+			/// <param name="devPtr"></param>
+			/// <param name="value"></param>
+			/// <param name="count"></param>
+			/// <param name="stream"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaMemsetAsync(IntPtr devPtr, int value, size_t count, cudaStream_t stream);
 
+			/// <summary>
+			/// Returns a cudaExtent based on input parameters.
+			/// </summary>
+			/// <param name="w"></param>
+			/// <param name="h"></param>
+			/// <param name="d"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaExtent make_cudaExtent(size_t w, size_t h, size_t d);
 
+			/// <summary>
+			/// Returns a cudaPitchedPtr based on input parameters.
+			/// </summary>
+			/// <param name="d"></param>
+			/// <param name="p"></param>
+			/// <param name="xsz"></param>
+			/// <param name="ysz"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaPitchedPtr make_cudaPitchedPtr(IntPtr d, size_t p, size_t xsz, size_t ysz);
 
+			/// <summary>
+			/// Returns a cudaPos based on input parameters.
+			/// </summary>
+			/// <param name="x"></param>
+			/// <param name="y"></param>
+			/// <param name="z"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaPos make_cudaPos(size_t x, size_t y, size_t z);
 
 			// ----- Unified Addressing
 
+			/// <summary>
+			/// Returns attributes about a specified pointer.
+			/// </summary>
+			/// <param name="attributes"></param>
+			/// <param name="ptr"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaPointerGetAttributes(ref cudaPointerAttributes attributes, IntPtr ptr);
 
 			// ----- Peer Device Memory Access
 
+			/// <summary>
+			/// Queries if a device may directly access a peer device's memory.
+			/// </summary>
+			/// <param name="canAccessPeer"></param>
+			/// <param name="device"></param>
+			/// <param name="peerDevice"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaDeviceCanAccessPeer(ref int canAccessPeer, int device, int peerDevice);
 
+			/// <summary>
+			/// Disables direct access to memory allocations on a peer device.
+			/// </summary>
+			/// <param name="peerDevice"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaDeviceDisablePeerAccess(int peerDevice);
 
+			/// <summary>
+			/// Enables direct access to memory allocations on a peer device.
+			/// </summary>
+			/// <param name="peerDevice"></param>
+			/// <param name="flags"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaDeviceEnablePeerAccess(int peerDevice, uint flags);
 
 			// ----- OpenGL Interoperability
 
-			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			//public static extern cudaError_t cudaGLGetDevices(ref uint pCudaDeviceCount, ref int pCudaDevices, uint cudaDeviceCount, cudaGLDeviceList deviceList);
+			/// <summary>
+			/// Gets the CUDA devices associated with the current OpenGL context.
+			/// </summary>
+			/// <param name="pCudaDeviceCount"></param>
+			/// <param name="pCudaDevices"></param>
+			/// <param name="cudaDeviceCount"></param>
+			/// <param name="deviceList"></param>
+			/// <returns></returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaGLGetDevices(
+				ref uint pCudaDeviceCount,
+				ref int pCudaDevices,
+				uint cudaDeviceCount,
+				cudaGLDeviceList deviceList);
 
 			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			//public static extern cudaError_t cudaGraphicsGLRegisterBuffer(ref cudaGraphicsResource[] resource, GLuint buffer, uint flags);
@@ -978,6 +1584,12 @@ namespace CUDAnshita {
 
 			// ----- Direct3D 9 Interoperability
 
+			/// <summary>
+			/// Gets the device number for an adapter.
+			/// </summary>
+			/// <param name="device"></param>
+			/// <param name="pszAdapterName"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaD3D9GetDevice(ref int device, string pszAdapterName);
 
@@ -1188,15 +1800,28 @@ namespace CUDAnshita {
 
 			// ----- Texture Reference Management
 
+			/// <summary>
+			/// Binds a memory area to a texture.
+			/// </summary>
+			/// <param name="offset"></param>
+			/// <param name="texref"></param>
+			/// <param name="devPtr"></param>
+			/// <param name="desc"></param>
+			/// <param name="size"></param>
+			/// <returns></returns>
+			[Obsolete]
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaBindTexture(ref size_t offset, ref textureReference texref, IntPtr devPtr, ref cudaChannelFormatDesc desc, size_t size);
 
+			[Obsolete]
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaBindTexture2D(ref size_t offset, ref textureReference texref, IntPtr devPtr, ref cudaChannelFormatDesc desc, size_t width, size_t height, size_t pitch);
 
+			[Obsolete]
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaBindTextureToArray(ref textureReference texref, cudaArray_const_t array, ref cudaChannelFormatDesc desc);
 
+			[Obsolete]
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaBindTextureToMipmappedArray(ref textureReference texref, cudaMipmappedArray_const_t mipmappedArray, ref cudaChannelFormatDesc desc);
 
@@ -1206,12 +1831,15 @@ namespace CUDAnshita {
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaGetChannelDesc(ref cudaChannelFormatDesc desc, cudaArray_const_t array);
 
+			[Obsolete]
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaGetTextureAlignmentOffset(ref size_t offset, ref textureReference texref);
 
+			[Obsolete]
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaGetTextureReference(ref textureReference texref, IntPtr symbol);
 
+			[Obsolete]
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaUnbindTexture(textureReference texref);
 
@@ -1677,120 +2305,244 @@ namespace CUDAnshita {
 			CheckStatus(API.cudaStreamAttachMemAsync(stream, devPtr, length, flags));
 		}
 
+		/// <summary>
+		/// Create an asynchronous stream.
+		/// </summary>
+		/// <returns></returns>
 		public static cudaStream_t StreamCreate() {
 			cudaStream_t pStream = IntPtr.Zero;
 			CheckStatus(API.cudaStreamCreate(ref pStream));
 			return pStream;
 		}
 
+		/// <summary>
+		/// Create an asynchronous stream.
+		/// </summary>
+		/// <param name="flags"></param>
+		/// <returns></returns>
 		public static cudaStream_t StreamCreateWithFlags(uint flags) {
 			cudaStream_t pStream = IntPtr.Zero;
 			CheckStatus(API.cudaStreamCreateWithFlags(ref pStream, flags));
 			return pStream;
 		}
 
+		/// <summary>
+		/// Create an asynchronous stream with the specified priority.
+		/// </summary>
+		/// <param name="flags"></param>
+		/// <param name="priority"></param>
+		/// <returns></returns>
 		public static cudaStream_t StreamCreateWithPriority(uint flags, int priority) {
 			cudaStream_t pStream = IntPtr.Zero;
 			CheckStatus(API.cudaStreamCreateWithPriority(ref pStream, flags, priority));
 			return pStream;
 		}
 
+		/// <summary>
+		/// Destroys and cleans up an asynchronous stream.
+		/// </summary>
+		/// <param name="stream"></param>
 		public static void StreamDestroy(cudaStream_t stream) {
 			CheckStatus(API.cudaStreamDestroy(stream));
 		}
 
+		/// <summary>
+		/// Query the flags of a stream.
+		/// </summary>
+		/// <param name="hStream"></param>
+		/// <returns></returns>
 		public static uint StreamGetFlags(cudaStream_t hStream) {
 			uint flags = 0;
 			CheckStatus(API.cudaStreamGetFlags(hStream, ref flags));
 			return flags;
 		}
 
+		/// <summary>
+		/// Query the priority of a stream.
+		/// </summary>
+		/// <param name="hStream"></param>
+		/// <returns></returns>
 		public static int StreamGetPriority(cudaStream_t hStream) {
 			int priority = 0;
 			CheckStatus(API.cudaStreamGetPriority(hStream, ref priority));
 			return priority;
 		}
 
+		/// <summary>
+		/// Queries an asynchronous stream for completion status.
+		/// </summary>
+		/// <param name="stream"></param>
+		/// <returns></returns>
 		public static cudaError StreamQuery(cudaStream_t stream) {
 			return API.cudaStreamQuery(stream);
 		}
 
+		/// <summary>
+		/// Waits for stream tasks to complete.
+		/// </summary>
+		/// <param name="stream"></param>
 		public static void StreamSynchronize(cudaStream_t stream) {
 			CheckStatus(API.cudaStreamSynchronize(stream));
 		}
 
+		/// <summary>
+		/// Make a compute stream wait on an event.
+		/// </summary>
+		/// <param name="stream"></param>
+		/// <param name="cudaEvent"></param>
+		/// <param name="flags"></param>
 		public static void StreamWaitEvent(cudaStream_t stream, cudaEvent_t cudaEvent, uint flags) {
 			CheckStatus(API.cudaStreamWaitEvent(stream, cudaEvent, flags));
 		}
 
+		/// <summary>
+		/// Creates an event object.
+		/// </summary>
+		/// <returns></returns>
 		public static cudaEvent_t EventCreate() {
 			cudaEvent_t cudaEvent = IntPtr.Zero;
 			CheckStatus(API.cudaEventCreate(ref cudaEvent));
 			return cudaEvent;
 		}
 
+		/// <summary>
+		/// Creates an event object with the specified flags.
+		/// </summary>
+		/// <param name="flags"></param>
+		/// <returns></returns>
 		public static cudaEvent_t EventCreateWithFlags(uint flags) {
 			cudaEvent_t cudaEvent = IntPtr.Zero;
 			CheckStatus(API.cudaEventCreateWithFlags(ref cudaEvent, flags));
 			return cudaEvent;
 		}
 
+		/// <summary>
+		/// Destroys an event object.
+		/// </summary>
+		/// <param name="cudaEvent"></param>
 		public static void EventDestroy(cudaEvent_t cudaEvent) {
 			CheckStatus(API.cudaEventDestroy(cudaEvent));
 		}
 
+		/// <summary>
+		/// Computes the elapsed time between events.
+		/// </summary>
+		/// <param name="start"></param>
+		/// <param name="end"></param>
+		/// <returns></returns>
 		public static float EventElapsedTime(cudaEvent_t start, cudaEvent_t end) {
 			float ms = 0;
 			CheckStatus(API.cudaEventElapsedTime(ref ms, start, end));
 			return ms;
 		}
 
+		/// <summary>
+		/// Queries an event's status.
+		/// </summary>
+		/// <param name="cudaEvent"></param>
+		/// <returns></returns>
 		public static cudaError EventQuery(cudaEvent_t cudaEvent) {
 			return API.cudaEventQuery(cudaEvent);
 		}
 
+		/// <summary>
+		/// Records an event.
+		/// </summary>
+		/// <param name="cudaEvent"></param>
+		/// <param name="stream"></param>
 		public static void EventRecord(cudaEvent_t cudaEvent, cudaStream_t stream) {
 			CheckStatus(API.cudaEventRecord(cudaEvent, stream));
 		}
 
+		/// <summary>
+		/// Waits for an event to complete.
+		/// </summary>
+		/// <param name="cudaEvent"></param>
 		public static void EventSynchronize(cudaEvent_t cudaEvent) {
 			CheckStatus(API.cudaEventSynchronize(cudaEvent));
 		}
 
+		/// <summary>
+		/// Find out attributes for a given function.
+		/// </summary>
+		/// <param name="func"></param>
+		/// <returns></returns>
 		public static cudaFuncAttributes FuncGetAttributes(IntPtr func) {
 			cudaFuncAttributes attr = new cudaFuncAttributes();
 			CheckStatus(API.cudaFuncGetAttributes(ref attr, func));
 			return attr;
 		}
 
+		/// <summary>
+		/// Sets the preferred cache configuration for a device function.
+		/// </summary>
+		/// <param name="func"></param>
+		/// <param name="cacheConfig"></param>
 		public static void FuncSetCacheConfig(IntPtr func, cudaFuncCache cacheConfig) {
 			CheckStatus(API.cudaFuncSetCacheConfig(func, cacheConfig));
 		}
 
+		/// <summary>
+		/// Sets the shared memory configuration for a device function.
+		/// </summary>
+		/// <param name="func"></param>
+		/// <param name="config"></param>
 		public static void FuncSetSharedMemConfig(IntPtr func, cudaSharedMemConfig config) {
 			CheckStatus(API.cudaFuncSetSharedMemConfig(func, config));
 		}
 
+		/// <summary>
+		/// Launches a device function.
+		/// </summary>
+		/// <param name="func"></param>
+		/// <param name="gridDim"></param>
+		/// <param name="blockDim"></param>
+		/// <param name="args"></param>
+		/// <param name="sharedMem"></param>
+		/// <param name="stream"></param>
 		public static void LaunchKernel(IntPtr func, dim3 gridDim, dim3 blockDim, IntPtr args, size_t sharedMem, cudaStream_t stream) {
 			CheckStatus(API.cudaLaunchKernel(func, gridDim, blockDim, ref args, sharedMem, stream));
 		}
 
+		/// <summary>
+		/// Converts a double argument to be executed on a device.
+		/// </summary>
+		/// <param name="d"></param>
 		[Obsolete("This function is deprecated as of CUDA 7.5")]
 		public static void SetDoubleForDevice(double d) {
 			CheckStatus(API.cudaSetDoubleForDevice(ref d));
 		}
 
+		/// <summary>
+		/// Converts a double argument after execution on a device.
+		/// </summary>
+		/// <param name="d"></param>
 		[Obsolete("This function is deprecated as of CUDA 7.5")]
 		public static void SetDoubleForHost(double d) {
 			CheckStatus(API.cudaSetDoubleForHost(ref d));
 		}
 
+		/// <summary>
+		/// Returns occupancy for a device function.
+		/// </summary>
+		/// <param name="func"></param>
+		/// <param name="blockSize"></param>
+		/// <param name="dynamicSMemSize"></param>
+		/// <returns></returns>
 		public static int OccupancyMaxActiveBlocksPerMultiprocessor(IntPtr func, int blockSize, size_t dynamicSMemSize) {
 			int numBlocks = 0;
 			CheckStatus(API.cudaOccupancyMaxActiveBlocksPerMultiprocessor(ref numBlocks, func, blockSize, dynamicSMemSize));
 			return numBlocks;
 		}
 
+		/// <summary>
+		/// Returns occupancy for a device function with the specified flags.
+		/// </summary>
+		/// <param name="func"></param>
+		/// <param name="blockSize"></param>
+		/// <param name="dynamicSMemSize"></param>
+		/// <param name="flags"></param>
+		/// <returns></returns>
 		public static int OccupancyMaxActiveBlocksPerMultiprocessorWithFlags(IntPtr func, int blockSize, size_t dynamicSMemSize, uint flags) {
 			int numBlocks = 0;
 			CheckStatus(API.cudaOccupancyMaxActiveBlocksPerMultiprocessorWithFlags(ref numBlocks, func, blockSize, dynamicSMemSize, flags));
@@ -1812,6 +2564,10 @@ namespace CUDAnshita {
 			CheckStatus(API.cudaSetupArgument(arg, size, offset));
 		}
 
+		/// <summary>
+		/// Gets info about the specified cudaArray.
+		/// </summary>
+		/// <param name="array"></param>
 		public static void ArrayGetInfo(cudaArray_t array) {
 			cudaChannelFormatDesc desc = new cudaChannelFormatDesc();
 			cudaExtent extent = new cudaExtent();
@@ -1819,78 +2575,153 @@ namespace CUDAnshita {
 			CheckStatus(API.cudaArrayGetInfo(ref desc, ref extent, ref flags, array));
 		}
 
+		/// <summary>
+		/// Frees memory on the device.
+		/// </summary>
+		/// <param name="devPtr"></param>
 		public static void Free(IntPtr devPtr) {
 			CheckStatus(API.cudaFree(devPtr));
 		}
 
+		/// <summary>
+		/// Frees an array on the device.
+		/// </summary>
+		/// <param name="array"></param>
 		public static void FreeArray(cudaArray_t array) {
 			CheckStatus(API.cudaFreeArray(array));
 		}
 
+		/// <summary>
+		/// Frees page-locked memory.
+		/// </summary>
+		/// <param name="ptr"></param>
 		public static void FreeHost(IntPtr ptr) {
 			CheckStatus(API.cudaFreeHost(ptr));
 		}
 
+		/// <summary>
+		/// Frees a mipmapped array on the device.
+		/// </summary>
+		/// <param name="mipmappedArray"></param>
 		public static void FreeMipmappedArray(cudaMipmappedArray_t mipmappedArray) {
 			CheckStatus(API.cudaFreeMipmappedArray(mipmappedArray));
 		}
 
+		/// <summary>
+		/// Gets a mipmap level of a CUDA mipmapped array.
+		/// </summary>
+		/// <param name="mipmappedArray"></param>
+		/// <param name="level"></param>
+		/// <returns></returns>
 		public static cudaArray_t GetMipmappedArrayLevel(cudaMipmappedArray_const_t mipmappedArray, uint level) {
 			cudaArray_t levelArray = IntPtr.Zero;
 			CheckStatus(API.cudaGetMipmappedArrayLevel(ref levelArray, mipmappedArray, level));
 			return levelArray;
 		}
 
+		/// <summary>
+		/// Finds the address associated with a CUDA symbol.
+		/// </summary>
+		/// <param name="symbol"></param>
+		/// <returns></returns>
 		public static IntPtr GetSymbolAddress(IntPtr symbol) {
 			IntPtr devPtr = IntPtr.Zero;
 			CheckStatus(API.cudaGetSymbolAddress(ref devPtr, symbol));
 			return devPtr;
 		}
 
+		/// <summary>
+		/// Finds the size of the object associated with a CUDA symbol.
+		/// </summary>
+		/// <param name="symbol"></param>
+		/// <returns></returns>
 		public static size_t GetSymbolSize(IntPtr symbol) {
 			size_t size = 0;
 			CheckStatus(API.cudaGetSymbolSize(ref size, symbol));
 			return size;
 		}
 
+		/// <summary>
+		/// Allocates page-locked memory on the host.
+		/// </summary>
+		/// <param name="size"></param>
+		/// <param name="flags"></param>
+		/// <returns></returns>
 		public static IntPtr HostAlloc(size_t size, uint flags) {
 			IntPtr pHost = IntPtr.Zero;
 			CheckStatus(API.cudaHostAlloc(ref pHost, size, flags));
 			return pHost;
 		}
 
+		/// <summary>
+		/// Passes back device pointer of mapped host memory allocated by cudaHostAlloc or registered by cudaHostRegister.
+		/// </summary>
+		/// <param name="pHost"></param>
+		/// <param name="flags"></param>
+		/// <returns></returns>
 		public static IntPtr HostGetDevicePointer(IntPtr pHost, uint flags) {
 			IntPtr pDevice = IntPtr.Zero;
 			CheckStatus(API.cudaHostGetDevicePointer(ref pDevice, pHost, flags));
 			return pHost;
 		}
 
+		/// <summary>
+		/// Passes back flags used to allocate pinned host memory allocated by cudaHostAlloc.
+		/// </summary>
+		/// <param name="pHost"></param>
+		/// <returns></returns>
 		public static uint HostGetFlags(IntPtr pHost) {
 			uint pFlags = 0;
 			CheckStatus(API.cudaHostGetFlags(ref pFlags, pHost));
 			return pFlags;
 		}
 
+		/// <summary>
+		/// Registers an existing host memory range for use by CUDA.
+		/// </summary>
+		/// <param name="ptr"></param>
+		/// <param name="size"></param>
+		/// <param name="flags"></param>
 		public static void HostRegister(IntPtr ptr, size_t size, uint flags) {
 			CheckStatus(API.cudaHostRegister(ptr, size, flags));
 		}
 
+		/// <summary>
+		/// Unregisters a memory range that was registered with cudaHostRegister.
+		/// </summary>
+		/// <param name="ptr"></param>
 		public static void HostUnregister(IntPtr ptr) {
 			CheckStatus(API.cudaHostUnregister(ptr));
 		}
 
+		/// <summary>
+		/// Allocate memory on the device.
+		/// </summary>
+		/// <param name="size"></param>
+		/// <returns></returns>
 		public static IntPtr Malloc(size_t size) {
 			IntPtr devPtr = IntPtr.Zero;
 			CheckStatus(API.cudaMalloc(ref devPtr, size));
 			return devPtr;
 		}
 
+		/// <summary>
+		/// Allocates logical 1D, 2D, or 3D memory objects on the device.
+		/// </summary>
+		/// <param name="extent"></param>
+		/// <returns></returns>
 		public static cudaPitchedPtr Malloc3D(cudaExtent extent) {
 			cudaPitchedPtr pitchedDevPtr = new cudaPitchedPtr();
 			CheckStatus(API.cudaMalloc3D(ref pitchedDevPtr, extent));
 			return pitchedDevPtr;
 		}
 
+		/// <summary>
+		/// Allocate an array on the device.
+		/// </summary>
+		/// <param name="extent"></param>
+		/// <param name="flags"></param>
+		/// <returns></returns>
 		public static cudaArray_t Malloc3DArray(cudaExtent extent, uint flags = 0) {
 			cudaArray_t array = IntPtr.Zero;
 			cudaChannelFormatDesc desc = new cudaChannelFormatDesc();
@@ -1898,6 +2729,13 @@ namespace CUDAnshita {
 			return array;
 		}
 
+		/// <summary>
+		/// Allocate an array on the device.
+		/// </summary>
+		/// <param name="width"></param>
+		/// <param name="height"></param>
+		/// <param name="flags"></param>
+		/// <returns></returns>
 		public static cudaArray_t MallocArray(size_t width, size_t height = 0, uint flags = 0) {
 			cudaArray_t array = IntPtr.Zero;
 			cudaChannelFormatDesc desc = new cudaChannelFormatDesc();
@@ -1905,18 +2743,36 @@ namespace CUDAnshita {
 			return array;
 		}
 
+		/// <summary>
+		/// Allocates page-locked memory on the host.
+		/// </summary>
+		/// <param name="size"></param>
+		/// <returns></returns>
 		public static IntPtr MallocHost(size_t size) {
 			IntPtr ptr = IntPtr.Zero;
 			CheckStatus(API.cudaMallocHost(ref ptr, size));
 			return ptr;
 		}
 
+		/// <summary>
+		/// Allocates memory that will be automatically managed by the Unified Memory system.
+		/// </summary>
+		/// <param name="size"></param>
+		/// <param name="flags"></param>
+		/// <returns></returns>
 		public static IntPtr MallocManaged(size_t size, uint flags = Defines.cudaMemAttachGlobal) {
 			IntPtr devPtr = IntPtr.Zero;
 			CheckStatus(API.cudaMallocManaged(ref devPtr, size, flags));
 			return devPtr;
 		}
 
+		/// <summary>
+		/// Allocate a mipmapped array on the device.
+		/// </summary>
+		/// <param name="extent"></param>
+		/// <param name="numLevels"></param>
+		/// <param name="flags"></param>
+		/// <returns></returns>
 		public static cudaMipmappedArray_t MallocMipmappedArray(cudaExtent extent, uint numLevels, uint flags = 0) {
 			cudaMipmappedArray_t mipmappedArray = new cudaMipmappedArray_t();
 			cudaChannelFormatDesc desc = new cudaChannelFormatDesc();
@@ -1924,6 +2780,12 @@ namespace CUDAnshita {
 			return mipmappedArray;
 		}
 
+		/// <summary>
+		/// Allocates pitched memory on the device.
+		/// </summary>
+		/// <param name="width"></param>
+		/// <param name="height"></param>
+		/// <returns></returns>
 		public static IntPtr MallocPitch(size_t width, size_t height) {
 			IntPtr devPtr = IntPtr.Zero;
 			size_t pitch = 0;
@@ -1931,10 +2793,21 @@ namespace CUDAnshita {
 			return devPtr;
 		}
 
+		/// <summary>
+		/// Advise about the usage of a given memory range.
+		/// </summary>
+		/// <param name="devPtr"></param>
+		/// <param name="count"></param>
+		/// <param name="advice"></param>
+		/// <param name="device"></param>
 		public static void MemAdvise(IntPtr devPtr, size_t count, cudaMemoryAdvise advice, int device) {
 			CheckStatus(API.cudaMemAdvise(devPtr, count, advice, device));
 		}
 
+		/// <summary>
+		/// Gets free and total device memory.
+		/// </summary>
+		/// <returns></returns>
 		public static size_t[] MemGetInfo() {
 			size_t free = 0;
 			size_t total = 0;
@@ -1942,10 +2815,25 @@ namespace CUDAnshita {
 			return new size_t[] { free, total };
 		}
 
+		/// <summary>
+		/// Prefetches memory to the specified destination device.
+		/// </summary>
+		/// <param name="devPtr"></param>
+		/// <param name="count"></param>
+		/// <param name="dstDevice"></param>
+		/// <param name="stream"></param>
 		public static void MemPrefetchAsync(IntPtr devPtr, size_t count, int dstDevice, cudaStream_t stream) {
 			CheckStatus(API.cudaMemPrefetchAsync(devPtr, count, dstDevice, stream));
 		}
 
+		/// <summary>
+		/// Query an attribute of a given memory range.
+		/// </summary>
+		/// <param name="data"></param>
+		/// <param name="dataSize"></param>
+		/// <param name="attribute"></param>
+		/// <param name="devPtr"></param>
+		/// <param name="count"></param>
 		public static void MemRangeGetAttribute(IntPtr data, size_t dataSize, cudaMemRangeAttribute attribute, IntPtr devPtr, size_t count) {
 			CheckStatus(API.cudaMemRangeGetAttribute(data, dataSize, attribute, devPtr, count));
 		}
@@ -1954,10 +2842,23 @@ namespace CUDAnshita {
 		//	CheckStatus(API.cudaMemRangeGetAttributes(data, dataSize, attribute, devPtr, count));
 		//}
 
+		/// <summary>
+		/// Copies data between host and device.
+		/// </summary>
+		/// <param name="dst"></param>
+		/// <param name="src"></param>
+		/// <param name="count"></param>
+		/// <param name="kind"></param>
 		public static void Memcpy(IntPtr dst, IntPtr src, size_t count, cudaMemcpyKind kind) {
 			CheckStatus(API.cudaMemcpy(dst, src, count, kind));
 		}
 
+		/// <summary>
+		/// Copies data between host and device.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="src"></param>
+		/// <returns></returns>
 		public static T MemcpyD2H<T>(IntPtr src) {
 			int byteSize = Marshal.SizeOf(typeof(T));
 			IntPtr dst = Marshal.AllocHGlobal(byteSize);
@@ -1970,6 +2871,13 @@ namespace CUDAnshita {
 			return result[0];
 		}
 
+		/// <summary>
+		/// Copies data between host and device.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="src"></param>
+		/// <param name="count"></param>
+		/// <returns></returns>
 		public static T[] MemcpyD2H<T>(IntPtr src, int count) {
 			int byteSize = Marshal.SizeOf(typeof(T)) * count;
 			IntPtr dst = Marshal.AllocHGlobal(byteSize);
@@ -1982,6 +2890,12 @@ namespace CUDAnshita {
 			return result;
 		}
 
+		/// <summary>
+		/// Copies data between host and device.
+		/// </summary>
+		/// <param name="src"></param>
+		/// <param name="count"></param>
+		/// <returns></returns>
 		unsafe public static float[] MemcpyD2H(IntPtr src, int count) {
 			float[] result = new float[count];
 			int byteSize = Marshal.SizeOf(typeof(float)) * count;
@@ -1991,6 +2905,12 @@ namespace CUDAnshita {
 			return result;
 		}
 
+		/// <summary>
+		/// Copies data between host and device.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="dst"></param>
+		/// <param name="src"></param>
 		public static void MemcpyH2D<T>(IntPtr dst, T src) {
 			int byteSize = Marshal.SizeOf(typeof(T));
 			IntPtr srcPointer = Marshal.AllocHGlobal(byteSize);
@@ -2000,6 +2920,13 @@ namespace CUDAnshita {
 			Marshal.FreeHGlobal(srcPointer);
 		}
 
+		/// <summary>
+		/// Copies data between host and device.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="dst"></param>
+		/// <param name="src"></param>
+		/// <param name="count"></param>
 		public static void MemcpyH2D<T>(IntPtr dst, T[] src, int count) {
 			int byteSize = Marshal.SizeOf(typeof(T)) * count;
 			IntPtr srcPointer = Marshal.AllocHGlobal(byteSize);
@@ -2009,6 +2936,11 @@ namespace CUDAnshita {
 			Marshal.FreeHGlobal(srcPointer);
 		}
 
+		/// <summary>
+		/// Copies data between host and device.
+		/// </summary>
+		/// <param name="dst"></param>
+		/// <param name="src"></param>
 		unsafe public static void MemcpyH2D(IntPtr dst, float[] src) {
 			int byteSize = Marshal.SizeOf(typeof(float)) * src.Length;
 			fixed (float* s = src) {
@@ -2016,166 +2948,473 @@ namespace CUDAnshita {
 			}
 		}
 
+		/// <summary>
+		/// Copies data between host and device.
+		/// </summary>
+		/// <param name="dst"></param>
+		/// <param name="dpitch"></param>
+		/// <param name="src"></param>
+		/// <param name="spitch"></param>
+		/// <param name="width"></param>
+		/// <param name="height"></param>
+		/// <param name="kind"></param>
 		public static void Memcpy2D(IntPtr dst, size_t dpitch, IntPtr src, size_t spitch, size_t width, size_t height, cudaMemcpyKind kind) {
 			CheckStatus(API.cudaMemcpy2D(dst, dpitch, src, spitch, width, height, kind));
 		}
 
+		/// <summary>
+		/// Copies data between host and device.
+		/// </summary>
+		/// <param name="dst"></param>
+		/// <param name="wOffsetDst"></param>
+		/// <param name="hOffsetDst"></param>
+		/// <param name="src"></param>
+		/// <param name="wOffsetSrc"></param>
+		/// <param name="hOffsetSrc"></param>
+		/// <param name="width"></param>
+		/// <param name="height"></param>
+		/// <param name="kind"></param>
 		public static void Memcpy2DArrayToArray(cudaArray_t dst, size_t wOffsetDst, size_t hOffsetDst, cudaArray_const_t src, size_t wOffsetSrc, size_t hOffsetSrc, size_t width, size_t height, cudaMemcpyKind kind = cudaMemcpyKind.cudaMemcpyDeviceToDevice) {
 			CheckStatus(API.cudaMemcpy2DArrayToArray(dst, wOffsetDst, hOffsetDst, src, wOffsetSrc, hOffsetSrc, width, height, kind));
 		}
 
+		/// <summary>
+		/// Copies data between host and device.
+		/// </summary>
+		/// <param name="dst"></param>
+		/// <param name="dpitch"></param>
+		/// <param name="src"></param>
+		/// <param name="spitch"></param>
+		/// <param name="width"></param>
+		/// <param name="height"></param>
+		/// <param name="kind"></param>
+		/// <param name="stream"></param>
 		public static void Memcpy2DAsync(IntPtr dst, size_t dpitch, IntPtr src, size_t spitch, size_t width, size_t height, cudaMemcpyKind kind, cudaStream_t stream) {
 			CheckStatus(API.cudaMemcpy2DAsync(dst, dpitch, src, spitch, width, height, kind, stream));
 		}
 
+		/// <summary>
+		/// Copies data between host and device.
+		/// </summary>
+		/// <param name="dst"></param>
+		/// <param name="dpitch"></param>
+		/// <param name="src"></param>
+		/// <param name="wOffset"></param>
+		/// <param name="hOffset"></param>
+		/// <param name="width"></param>
+		/// <param name="height"></param>
+		/// <param name="kind"></param>
 		public static void Memcpy2DFromArray(IntPtr dst, size_t dpitch, cudaArray_const_t src, size_t wOffset, size_t hOffset, size_t width, size_t height, cudaMemcpyKind kind) {
 			CheckStatus(API.cudaMemcpy2DFromArray(dst, dpitch, src, wOffset, hOffset, width, height, kind));
 		}
 
+		/// <summary>
+		/// Copies data between host and device.
+		/// </summary>
+		/// <param name="dst"></param>
+		/// <param name="dpitch"></param>
+		/// <param name="src"></param>
+		/// <param name="wOffset"></param>
+		/// <param name="hOffset"></param>
+		/// <param name="width"></param>
+		/// <param name="height"></param>
+		/// <param name="kind"></param>
+		/// <param name="stream"></param>
 		public static void Memcpy2DFromArrayAsync(IntPtr dst, size_t dpitch, cudaArray_const_t src, size_t wOffset, size_t hOffset, size_t width, size_t height, cudaMemcpyKind kind, cudaStream_t stream) {
 			CheckStatus(API.cudaMemcpy2DFromArrayAsync(dst, dpitch, src, wOffset, hOffset, width, height, kind, stream));
 		}
 
+		/// <summary>
+		/// Copies data between host and device.
+		/// </summary>
+		/// <param name="dst"></param>
+		/// <param name="wOffset"></param>
+		/// <param name="hOffset"></param>
+		/// <param name="src"></param>
+		/// <param name="spitch"></param>
+		/// <param name="width"></param>
+		/// <param name="height"></param>
+		/// <param name="kind"></param>
 		public static void Memcpy2DToArray(cudaArray_t dst, size_t wOffset, size_t hOffset, IntPtr src, size_t spitch, size_t width, size_t height, cudaMemcpyKind kind) {
 			CheckStatus(API.cudaMemcpy2DToArray(dst, wOffset, hOffset, src, spitch, width, height, kind));
 		}
 
+		/// <summary>
+		/// Copies data between host and device.
+		/// </summary>
+		/// <param name="dst"></param>
+		/// <param name="wOffset"></param>
+		/// <param name="hOffset"></param>
+		/// <param name="src"></param>
+		/// <param name="spitch"></param>
+		/// <param name="width"></param>
+		/// <param name="height"></param>
+		/// <param name="kind"></param>
+		/// <param name="stream"></param>
 		public static void Memcpy2DToArrayAsync(cudaArray_t dst, size_t wOffset, size_t hOffset, IntPtr src, size_t spitch, size_t width, size_t height, cudaMemcpyKind kind, cudaStream_t stream) {
 			CheckStatus(API.cudaMemcpy2DToArrayAsync(dst, wOffset, hOffset, src, spitch, width, height, kind, stream));
 		}
 
+		/// <summary>
+		/// Copies data between 3D objects.
+		/// </summary>
+		/// <param name="p"></param>
 		public static void Memcpy3D(cudaMemcpy3DParms p) {
 			CheckStatus(API.cudaMemcpy3D(ref p));
 		}
 
+		/// <summary>
+		/// Copies data between 3D objects.
+		/// </summary>
+		/// <param name="p"></param>
+		/// <param name="stream"></param>
 		public static void Memcpy3DAsync(cudaMemcpy3DParms p, cudaStream_t stream) {
 			CheckStatus(API.cudaMemcpy3DAsync(ref p, stream));
 		}
 
+		/// <summary>
+		/// Copies memory between devices.
+		/// </summary>
+		/// <param name="p"></param>
 		public static void Memcpy3DPeer(cudaMemcpy3DPeerParms p) {
 			CheckStatus(API.cudaMemcpy3DPeer(ref p));
 		}
 
+		/// <summary>
+		/// Copies memory between devices asynchronously.
+		/// </summary>
+		/// <param name="p"></param>
+		/// <param name="stream"></param>
 		public static void Memcpy3DPeerAsync(cudaMemcpy3DPeerParms p, cudaStream_t stream) {
 			CheckStatus(API.cudaMemcpy3DPeerAsync(ref p, stream));
 		}
 
+		/// <summary>
+		/// Copies data between host and device.
+		/// </summary>
+		/// <param name="dst"></param>
+		/// <param name="wOffsetDst"></param>
+		/// <param name="hOffsetDst"></param>
+		/// <param name="src"></param>
+		/// <param name="wOffsetSrc"></param>
+		/// <param name="hOffsetSrc"></param>
+		/// <param name="count"></param>
+		/// <param name="kind"></param>
+		[Obsolete]
 		public static void MemcpyArrayToArray(cudaArray_t dst, size_t wOffsetDst, size_t hOffsetDst, cudaArray_const_t src, size_t wOffsetSrc, size_t hOffsetSrc, size_t count, cudaMemcpyKind kind = cudaMemcpyKind.cudaMemcpyDeviceToDevice) {
 			CheckStatus(API.cudaMemcpyArrayToArray(dst, wOffsetDst, hOffsetDst, src, wOffsetSrc, hOffsetSrc, count, kind));
 		}
 
+		/// <summary>
+		/// Copies data between host and device.
+		/// </summary>
+		/// <param name="dst"></param>
+		/// <param name="src"></param>
+		/// <param name="count"></param>
+		/// <param name="kind"></param>
+		/// <param name="stream"></param>
 		public static void MemcpyAsync(IntPtr dst, IntPtr src, size_t count, cudaMemcpyKind kind, cudaStream_t stream) {
 			CheckStatus(API.cudaMemcpyAsync(dst, src, count, kind, stream));
 		}
 
+		/// <summary>
+		/// Copies data between host and device.
+		/// </summary>
+		/// <param name="dst"></param>
+		/// <param name="src"></param>
+		/// <param name="wOffset"></param>
+		/// <param name="hOffset"></param>
+		/// <param name="count"></param>
+		/// <param name="kind"></param>
+		[Obsolete]
 		public static void MemcpyFromArray(IntPtr dst, cudaArray_const_t src, size_t wOffset, size_t hOffset, size_t count, cudaMemcpyKind kind) {
 			CheckStatus(API.cudaMemcpyFromArray(dst, src, wOffset, hOffset, count, kind));
 		}
 
+		/// <summary>
+		/// Copies data between host and device.
+		/// </summary>
+		/// <param name="dst"></param>
+		/// <param name="src"></param>
+		/// <param name="wOffset"></param>
+		/// <param name="hOffset"></param>
+		/// <param name="count"></param>
+		/// <param name="kind"></param>
+		/// <param name="stream"></param>
+		[Obsolete]
 		public static void MemcpyFromArrayAsync(IntPtr dst, cudaArray_const_t src, size_t wOffset, size_t hOffset, size_t count, cudaMemcpyKind kind, cudaStream_t stream) {
 			CheckStatus(API.cudaMemcpyFromArrayAsync(dst, src, wOffset, hOffset, count, kind, stream));
 		}
 
+		/// <summary>
+		/// Copies data from the given symbol on the device.
+		/// </summary>
+		/// <param name="dst"></param>
+		/// <param name="symbol"></param>
+		/// <param name="count"></param>
+		/// <param name="offset"></param>
+		/// <param name="kind"></param>
 		public static void MemcpyFromSymbol(IntPtr dst, IntPtr symbol, size_t count, size_t offset = 0, cudaMemcpyKind kind = cudaMemcpyKind.cudaMemcpyDeviceToHost) {
 			CheckStatus(API.cudaMemcpyFromSymbol(dst, symbol, count, offset, kind));
 		}
 
+		/// <summary>
+		/// Copies data from the given symbol on the device.
+		/// </summary>
+		/// <param name="dst"></param>
+		/// <param name="symbol"></param>
+		/// <param name="count"></param>
+		/// <param name="offset"></param>
+		/// <param name="kind"></param>
+		/// <param name="stream"></param>
 		public static void MemcpyFromSymbolAsync(IntPtr dst, IntPtr symbol, size_t count, size_t offset, cudaMemcpyKind kind, cudaStream_t stream) {
 			CheckStatus(API.cudaMemcpyFromSymbolAsync(dst, symbol, count, offset, kind, stream));
 		}
 
+		/// <summary>
+		/// Copies memory between two devices.
+		/// </summary>
+		/// <param name="dst"></param>
+		/// <param name="dstDevice"></param>
+		/// <param name="src"></param>
+		/// <param name="srcDevice"></param>
+		/// <param name="count"></param>
 		public static void MemcpyPeer(IntPtr dst, int dstDevice, IntPtr src, int srcDevice, size_t count) {
 			CheckStatus(API.cudaMemcpyPeer(dst, dstDevice, src, srcDevice, count));
 		}
 
+		/// <summary>
+		/// Copies memory between two devices asynchronously.
+		/// </summary>
+		/// <param name="dst"></param>
+		/// <param name="dstDevice"></param>
+		/// <param name="src"></param>
+		/// <param name="srcDevice"></param>
+		/// <param name="count"></param>
+		/// <param name="stream"></param>
 		public static void MemcpyPeerAsync(IntPtr dst, int dstDevice, IntPtr src, int srcDevice, size_t count, cudaStream_t stream) {
 			CheckStatus(API.cudaMemcpyPeerAsync(dst, dstDevice, src, srcDevice, count, stream));
 		}
 
+		/// <summary>
+		/// Copies data between host and device.
+		/// </summary>
+		/// <param name="dst"></param>
+		/// <param name="wOffset"></param>
+		/// <param name="hOffset"></param>
+		/// <param name="src"></param>
+		/// <param name="count"></param>
+		/// <param name="kind"></param>
+		[Obsolete]
 		public static void MemcpyToArray(cudaArray_t dst, size_t wOffset, size_t hOffset, IntPtr src, size_t count, cudaMemcpyKind kind) {
 			CheckStatus(API.cudaMemcpyToArray(dst, wOffset, hOffset, src, count, kind));
 		}
 
+		/// <summary>
+		/// Copies data between host and device.
+		/// </summary>
+		/// <param name="dst"></param>
+		/// <param name="wOffset"></param>
+		/// <param name="hOffset"></param>
+		/// <param name="src"></param>
+		/// <param name="count"></param>
+		/// <param name="kind"></param>
+		/// <param name="stream"></param>
+		[Obsolete]
 		public static void MemcpyToArrayAsync(cudaArray_t dst, size_t wOffset, size_t hOffset, IntPtr src, size_t count, cudaMemcpyKind kind, cudaStream_t stream) {
 			CheckStatus(API.cudaMemcpyToArrayAsync(dst, wOffset, hOffset, src, count, kind, stream));
 		}
 
+		/// <summary>
+		/// Copies data to the given symbol on the device.
+		/// </summary>
+		/// <param name="symbol"></param>
+		/// <param name="src"></param>
+		/// <param name="count"></param>
+		/// <param name="offset"></param>
+		/// <param name="kind"></param>
 		public static void MemcpyToSymbol(IntPtr symbol, IntPtr src, size_t count, size_t offset = 0, cudaMemcpyKind kind = cudaMemcpyKind.cudaMemcpyHostToDevice) {
 			CheckStatus(API.cudaMemcpyToSymbol(symbol, src, count, offset, kind));
 		}
 
+		/// <summary>
+		/// Copies data to the given symbol on the device.
+		/// </summary>
+		/// <param name="symbol"></param>
+		/// <param name="src"></param>
+		/// <param name="count"></param>
+		/// <param name="offset"></param>
+		/// <param name="kind"></param>
+		/// <param name="stream"></param>
 		public static void MemcpyToSymbolAsync(IntPtr symbol, IntPtr src, size_t count, size_t offset, cudaMemcpyKind kind, cudaStream_t stream) {
 			CheckStatus(API.cudaMemcpyToSymbolAsync(symbol, src, count, offset, kind, stream));
 		}
 
+		/// <summary>
+		/// Initializes or sets device memory to a value.
+		/// </summary>
+		/// <param name="devPtr"></param>
+		/// <param name="value"></param>
+		/// <param name="count"></param>
 		public static void Memset(IntPtr devPtr, int value, size_t count) {
 			CheckStatus(API.cudaMemset(devPtr, value, count));
 		}
 
+		/// <summary>
+		/// Initializes or sets device memory to a value.
+		/// </summary>
+		/// <param name="devPtr"></param>
+		/// <param name="pitch"></param>
+		/// <param name="value"></param>
+		/// <param name="width"></param>
+		/// <param name="height"></param>
 		public static void Memset2D(IntPtr devPtr, size_t pitch, int value, size_t width, size_t height) {
 			CheckStatus(API.cudaMemset2D(devPtr, pitch, value, width, height));
 		}
 
+		/// <summary>
+		/// Initializes or sets device memory to a value.
+		/// </summary>
+		/// <param name="devPtr"></param>
+		/// <param name="pitch"></param>
+		/// <param name="value"></param>
+		/// <param name="width"></param>
+		/// <param name="height"></param>
+		/// <param name="stream"></param>
 		public static void Memset2DAsync(IntPtr devPtr, size_t pitch, int value, size_t width, size_t height, cudaStream_t stream) {
 			CheckStatus(API.cudaMemset2DAsync(devPtr, pitch, value, width, height, stream));
 		}
 
+		/// <summary>
+		/// Initializes or sets device memory to a value.
+		/// </summary>
+		/// <param name="pitchedDevPtr"></param>
+		/// <param name="value"></param>
+		/// <param name="extent"></param>
 		public static void Memset3D(cudaPitchedPtr pitchedDevPtr, int value, cudaExtent extent) {
 			CheckStatus(API.cudaMemset3D(pitchedDevPtr, value, extent));
 		}
 
+		/// <summary>
+		/// Initializes or sets device memory to a value.
+		/// </summary>
+		/// <param name="pitchedDevPtr"></param>
+		/// <param name="value"></param>
+		/// <param name="extent"></param>
+		/// <param name="stream"></param>
 		public static void Memset3DAsync(cudaPitchedPtr pitchedDevPtr, int value, cudaExtent extent, cudaStream_t stream) {
 			CheckStatus(API.cudaMemset3DAsync(pitchedDevPtr, value, extent, stream));
 		}
 
+		/// <summary>
+		/// Initializes or sets device memory to a value.
+		/// </summary>
+		/// <param name="devPtr"></param>
+		/// <param name="value"></param>
+		/// <param name="count"></param>
+		/// <param name="stream"></param>
 		public static void MemsetAsync(IntPtr devPtr, int value, size_t count, cudaStream_t stream) {
 			CheckStatus(API.cudaMemsetAsync(devPtr, value, count, stream));
 		}
 
+		/// <summary>
+		/// Returns a cudaExtent based on input parameters.
+		/// </summary>
+		/// <param name="w"></param>
+		/// <param name="h"></param>
+		/// <param name="d"></param>
+		/// <returns></returns>
 		public static cudaExtent make_cudaExtent(size_t w, size_t h, size_t d) {
 			return API.make_cudaExtent(w, h, d);
 		}
 
+		/// <summary>
+		/// Returns a cudaPitchedPtr based on input parameters.
+		/// </summary>
+		/// <param name="d"></param>
+		/// <param name="p"></param>
+		/// <param name="xsz"></param>
+		/// <param name="ysz"></param>
+		/// <returns></returns>
 		public static cudaPitchedPtr make_cudaPitchedPtr(IntPtr d, size_t p, size_t xsz, size_t ysz) {
 			return API.make_cudaPitchedPtr(d, p, xsz, ysz);
 		}
 
+		/// <summary>
+		/// Returns a cudaPos based on input parameters.
+		/// </summary>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <param name="z"></param>
+		/// <returns></returns>
 		public static cudaPos make_cudaPos(size_t x, size_t y, size_t z) {
 			return API.make_cudaPos(x, y, z);
 		}
 
+		/// <summary>
+		/// Returns attributes about a specified pointer.
+		/// </summary>
+		/// <param name="ptr"></param>
+		/// <returns></returns>
 		public static cudaPointerAttributes PointerGetAttributes(IntPtr ptr) {
 			cudaPointerAttributes attributes = new cudaPointerAttributes();
 			CheckStatus(API.cudaPointerGetAttributes(ref attributes, ptr));
 			return attributes;
 		}
 
+		/// <summary>
+		/// Queries if a device may directly access a peer device's memory.
+		/// </summary>
+		/// <param name="device"></param>
+		/// <param name="peerDevice"></param>
+		/// <returns></returns>
 		public static int DeviceCanAccessPeer(int device, int peerDevice) {
 			int canAccessPeer = 0;
 			CheckStatus(API.cudaDeviceCanAccessPeer(ref canAccessPeer, device, peerDevice));
 			return canAccessPeer;
 		}
 
+		/// <summary>
+		/// Disables direct access to memory allocations on a peer device.
+		/// </summary>
+		/// <param name="peerDevice"></param>
 		public static void DeviceDisablePeerAccess(int peerDevice) {
 			CheckStatus(API.cudaDeviceDisablePeerAccess(peerDevice));
 		}
 
+		/// <summary>
+		/// Enables direct access to memory allocations on a peer device.
+		/// </summary>
+		/// <param name="peerDevice"></param>
+		/// <param name="flags"></param>
 		public static void DeviceEnablePeerAccess(int peerDevice, uint flags) {
 			CheckStatus(API.cudaDeviceEnablePeerAccess(peerDevice, flags));
 		}
 
+		/// <summary>
+		/// Binds a memory area to a texture.
+		/// </summary>
+		/// <param name="offset"></param>
+		/// <param name="texref"></param>
+		/// <param name="devPtr"></param>
+		/// <param name="desc"></param>
+		/// <param name="size"></param>
+		[Obsolete]
 		public static void BindTexture(size_t offset, textureReference texref, IntPtr devPtr, cudaChannelFormatDesc desc, size_t size = uint.MaxValue) {
 			CheckStatus(API.cudaBindTexture(ref offset, ref texref, devPtr, ref desc, size));
 		}
 
+		[Obsolete]
 		public static void BindTexture2D(size_t offset, textureReference texref, IntPtr devPtr, cudaChannelFormatDesc desc, size_t width, size_t height, size_t pitch) {
 			CheckStatus(API.cudaBindTexture2D(ref offset, ref texref, devPtr, ref desc, width, height, pitch));
 		}
 
+		[Obsolete]
 		public static void BindTextureToArray(textureReference texref, cudaArray_const_t array, cudaChannelFormatDesc desc) {
 			CheckStatus(API.cudaBindTextureToArray(ref texref, array, ref desc));
 		}
 
+		[Obsolete]
 		public static void BindTextureToMipmappedArray(textureReference texref, cudaMipmappedArray_const_t mipmappedArray, cudaChannelFormatDesc desc) {
 			CheckStatus(API.cudaBindTextureToMipmappedArray(ref texref, mipmappedArray, ref desc));
 		}
@@ -2190,18 +3429,21 @@ namespace CUDAnshita {
 			return desc;
 		}
 
+		[Obsolete]
 		public static size_t GetTextureAlignmentOffset(textureReference texref) {
 			size_t offset = 0;
 			CheckStatus(API.cudaGetTextureAlignmentOffset(ref offset, ref texref));
 			return offset;
 		}
 
+		[Obsolete]
 		public static textureReference GetTextureReference(IntPtr symbol) {
 			textureReference texref = new textureReference();
 			CheckStatus(API.cudaGetTextureReference(ref texref, symbol));
 			return texref;
 		}
 
+		[Obsolete]
 		public static void UnbindTexture(textureReference texref) {
 			CheckStatus(API.cudaUnbindTexture(texref));
 		}
