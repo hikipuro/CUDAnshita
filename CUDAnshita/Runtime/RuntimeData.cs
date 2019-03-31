@@ -682,6 +682,14 @@ namespace CUDAnshita {
 	}
 
 	/// <summary>
+	/// (Runtime API) CUDA host node parameters.
+	/// </summary>
+	[StructLayout(LayoutKind.Sequential)]
+	public struct cudaHostNodeParams {
+
+	}
+
+	/// <summary>
 	/// (Runtime API) CUDA IPC event handle.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
@@ -697,6 +705,45 @@ namespace CUDAnshita {
 	public struct cudaIpcMemHandle {
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = Defines.CUDA_IPC_HANDLE_SIZE)]
 		public byte[] reserved;
+	}
+
+	/// <summary>
+	/// (Runtime API) CUDA GPU kernel node parameters.
+	/// </summary>
+	[StructLayout(LayoutKind.Sequential)]
+	public struct cudaKernelNodeParams {
+
+	}
+
+	/// <summary>
+	/// (Runtime API) CUDA launch parameters.
+	/// </summary>
+	[StructLayout(LayoutKind.Sequential)]
+	public struct cudaLaunchParams {
+		/// <summary>
+		/// Device function symbol.
+		/// </summary>
+		IntPtr func; // void*
+		/// <summary>
+		/// Grid dimentions.
+		/// </summary>
+		dim3 gridDim;
+		/// <summary>
+		/// Block dimentions.
+		/// </summary>
+		dim3 blockDim;
+		/// <summary>
+		/// Arguments.
+		/// </summary>
+		IntPtr args; // void**
+		/// <summary>
+		/// Shared memory.
+		/// </summary>
+		size_t sharedMem;
+		/// <summary>
+		/// Stream identifier.
+		/// </summary>
+		cudaStream_t stream;
 	}
 
 	/// <summary>
@@ -794,6 +841,14 @@ namespace CUDAnshita {
 		/// Requested memory copy size
 		/// </summary>
 		public cudaExtent extent;
+	}
+
+	/// <summary>
+	/// (Runtime API) CUDA Memset node parameters.
+	/// </summary>
+	[StructLayout(LayoutKind.Sequential)]
+	public struct cudaMemsetParams {
+
 	}
 
 	/// <summary>

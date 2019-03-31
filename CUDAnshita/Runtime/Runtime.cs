@@ -11,7 +11,10 @@ namespace CUDAnshita {
 	using cudaIpcMemHandle_t = cudaIpcMemHandle;
 	using cudaStream_t = IntPtr;
 	using cudaStreamCallback_t = IntPtr;
+	using cudaHostFn_t = IntPtr;
 	using cudaGraph_t = IntPtr;
+	using cudaGraphNode_t = IntPtr;
+	using cudaGraphExec_t = IntPtr;
 	using cudaArray_t = IntPtr;
 	using cudaArray_const_t = IntPtr;
 	using cudaMipmappedArray_t = IntPtr;
@@ -705,20 +708,64 @@ namespace CUDAnshita {
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaFuncSetSharedMemConfig(IntPtr func, cudaSharedMemConfig config);
 
+			/// <summary>
+			/// Obtains a parameter buffer.
+			/// </summary>
+			/// <param name="alignment"></param>
+			/// <param name="size"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern IntPtr cudaGetParameterBuffer(size_t alignment, size_t size);
 
+			/// <summary>
+			/// Launches a specified kernel.
+			/// </summary>
+			/// <param name="func"></param>
+			/// <param name="gridDimension"></param>
+			/// <param name="blockDimension"></param>
+			/// <param name="sharedMemSize"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern IntPtr cudaGetParameterBufferV2(IntPtr func, dim3 gridDimension, dim3 blockDimension, uint sharedMemSize);
 
+			/// <summary>
+			/// Launches a device function where thread blocks can cooperate and synchronize as they execute.
+			/// </summary>
+			/// <param name="func"></param>
+			/// <param name="gridDim"></param>
+			/// <param name="blockDim"></param>
+			/// <param name="args"></param>
+			/// <param name="sharedMem"></param>
+			/// <param name="stream"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaLaunchCooperativeKernel(IntPtr func, dim3 gridDim, dim3 blockDim, IntPtr args, size_t sharedMem, cudaStream_t stream);
 
-			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			//public static extern cudaError_t cudaLaunchCooperativeKernelMultiDevice(cudaLaunchParams* launchParamsList, uint numDevices, uint flags = 0);
+			/// <summary>
+			/// Launches device functions on multiple devices where thread blocks can cooperate and synchronize as they execute.
+			/// </summary>
+			/// <param name="launchParamsList">List of launch parameters, one per device.</param>
+			/// <param name="numDevices">Size of the launchParamsList array.</param>
+			/// <param name="flags">Flags to control launch behavior.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidDeviceFunction, cudaErrorInvalidConfiguration, cudaErrorLaunchFailure, cudaErrorLaunchTimeout, cudaErrorLaunchOutOfResources, cudaErrorCooperativeLaunchTooLarge, cudaErrorSharedObjectInitFailed</returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaLaunchCooperativeKernelMultiDevice(
+				ref cudaLaunchParams launchParamsList, // cudaLaunchParams*
+				uint numDevices,
+				uint flags = 0);
 
-			//[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			//public static extern cudaError_t cudaLaunchHostFunc(cudaStream_t stream, cudaHostFn_t fn, IntPtr userData);
+			/// <summary>
+			/// Enqueues a host function call in a stream.
+			/// </summary>
+			/// <param name="stream"></param>
+			/// <param name="fn">The function to call once preceding stream operations are complete.</param>
+			/// <param name="userData">User-specified data to be passed to the function.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidResourceHandle, cudaErrorInvalidValue, cudaErrorNotSupported</returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaLaunchHostFunc(
+				cudaStream_t stream,
+				cudaHostFn_t fn,
+				IntPtr userData); // void*
 
 			/// <summary>
 			/// Launches a device function.
@@ -1487,9 +1534,9 @@ namespace CUDAnshita {
 			/// <summary>
 			/// Returns attributes about a specified pointer.
 			/// </summary>
-			/// <param name="attributes"></param>
-			/// <param name="ptr"></param>
-			/// <returns></returns>
+			/// <param name="attributes">Attributes for the specified pointer.</param>
+			/// <param name="ptr">Pointer to get attributes for.</param>
+			/// <returns>cudaSuccess, cudaErrorInvalidDevice, cudaErrorInvalidValue</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaPointerGetAttributes(ref cudaPointerAttributes attributes, IntPtr ptr);
 
@@ -1813,69 +1860,189 @@ namespace CUDAnshita {
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaBindTexture(ref size_t offset, ref textureReference texref, IntPtr devPtr, ref cudaChannelFormatDesc desc, size_t size);
 
+			/// <summary>
+			/// Binds a 2D memory area to a texture.
+			/// </summary>
+			/// <param name="offset"></param>
+			/// <param name="texref"></param>
+			/// <param name="devPtr"></param>
+			/// <param name="desc"></param>
+			/// <param name="width"></param>
+			/// <param name="height"></param>
+			/// <param name="pitch"></param>
+			/// <returns></returns>
 			[Obsolete]
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaBindTexture2D(ref size_t offset, ref textureReference texref, IntPtr devPtr, ref cudaChannelFormatDesc desc, size_t width, size_t height, size_t pitch);
 
+			/// <summary>
+			/// Binds an array to a texture.
+			/// </summary>
+			/// <param name="texref"></param>
+			/// <param name="array"></param>
+			/// <param name="desc"></param>
+			/// <returns></returns>
 			[Obsolete]
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaBindTextureToArray(ref textureReference texref, cudaArray_const_t array, ref cudaChannelFormatDesc desc);
 
+			/// <summary>
+			/// Binds a mipmapped array to a texture.
+			/// </summary>
+			/// <param name="texref"></param>
+			/// <param name="mipmappedArray"></param>
+			/// <param name="desc"></param>
+			/// <returns></returns>
 			[Obsolete]
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaBindTextureToMipmappedArray(ref textureReference texref, cudaMipmappedArray_const_t mipmappedArray, ref cudaChannelFormatDesc desc);
 
-			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern cudaChannelFormatDesc cudaCreateChannelDesc(int x, int y, int z, int w, cudaChannelFormatKind f);
-
-			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
-			public static extern cudaError_t cudaGetChannelDesc(ref cudaChannelFormatDesc desc, cudaArray_const_t array);
-
+			/// <summary>
+			/// Get the alignment offset of a texture.
+			/// </summary>
+			/// <param name="offset"></param>
+			/// <param name="texref"></param>
+			/// <returns></returns>
 			[Obsolete]
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaGetTextureAlignmentOffset(ref size_t offset, ref textureReference texref);
 
+			/// <summary>
+			/// Get the texture reference associated with a symbol.
+			/// </summary>
+			/// <param name="texref"></param>
+			/// <param name="symbol"></param>
+			/// <returns></returns>
 			[Obsolete]
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaGetTextureReference(ref textureReference texref, IntPtr symbol);
 
+			/// <summary>
+			/// Unbinds a texture.
+			/// </summary>
+			/// <param name="texref"></param>
+			/// <returns></returns>
 			[Obsolete]
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaUnbindTexture(textureReference texref);
 
 			// ----- Surface Reference Management
 
+			/// <summary>
+			/// Binds an array to a surface.
+			/// </summary>
+			/// <param name="surfref"></param>
+			/// <param name="array"></param>
+			/// <param name="desc"></param>
+			/// <returns></returns>
+			[Obsolete]
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaBindSurfaceToArray(ref surfaceReference surfref, cudaArray_const_t array, ref cudaChannelFormatDesc desc);
 
+			/// <summary>
+			/// Get the surface reference associated with a symbol.
+			/// </summary>
+			/// <param name="surfref"></param>
+			/// <param name="symbol"></param>
+			/// <returns></returns>
+			[Obsolete]
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaGetSurfaceReference(ref surfaceReference surfref, IntPtr symbol);
 
 			// ----- Texture Object Management
 
+			/// <summary>
+			/// Returns a channel descriptor using the specified format.
+			/// </summary>
+			/// <param name="x"></param>
+			/// <param name="y"></param>
+			/// <param name="z"></param>
+			/// <param name="w"></param>
+			/// <param name="f"></param>
+			/// <returns></returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaChannelFormatDesc cudaCreateChannelDesc(int x, int y, int z, int w, cudaChannelFormatKind f);
+
+			/// <summary>
+			/// Creates a texture object.
+			/// </summary>
+			/// <param name="pTexObject"></param>
+			/// <param name="pResDesc"></param>
+			/// <param name="pTexDesc"></param>
+			/// <param name="pResViewDesc"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaCreateTextureObject(ref cudaTextureObject_t pTexObject, ref cudaResourceDesc pResDesc, ref cudaTextureDesc pTexDesc, ref cudaResourceViewDesc pResViewDesc);
 
+			/// <summary>
+			/// Destroys a texture object.
+			/// </summary>
+			/// <param name="texObject"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaDestroyTextureObject(cudaTextureObject_t texObject);
 
+			/// <summary>
+			/// Get the channel descriptor of an array.
+			/// </summary>
+			/// <param name="desc"></param>
+			/// <param name="array"></param>
+			/// <returns></returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaGetChannelDesc(ref cudaChannelFormatDesc desc, cudaArray_const_t array);
+
+			/// <summary>
+			/// Returns a texture object's resource descriptor.
+			/// </summary>
+			/// <param name="pResDesc"></param>
+			/// <param name="texObject"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaGetTextureObjectResourceDesc(ref cudaResourceDesc pResDesc, cudaTextureObject_t texObject);
 
+			/// <summary>
+			/// Returns a texture object's resource view descriptor.
+			/// </summary>
+			/// <param name="pResViewDesc"></param>
+			/// <param name="texObject"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaGetTextureObjectResourceViewDesc(ref cudaResourceViewDesc pResViewDesc, cudaTextureObject_t texObject);
 
+			/// <summary>
+			/// Returns a texture object's texture descriptor.
+			/// </summary>
+			/// <param name="pTexDesc"></param>
+			/// <param name="texObject"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaGetTextureObjectTextureDesc(ref cudaTextureDesc pTexDesc, cudaTextureObject_t texObject);
 
 			// ----- Surface Object Management
 
+			/// <summary>
+			/// Creates a surface object.
+			/// </summary>
+			/// <param name="pSurfObject"></param>
+			/// <param name="pResDesc"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaCreateSurfaceObject(ref cudaSurfaceObject_t pSurfObject, ref cudaResourceDesc pResDesc);
 
+			/// <summary>
+			/// Destroys a surface object.
+			/// </summary>
+			/// <param name="surfObject"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaDestroySurfaceObject(cudaSurfaceObject_t surfObject);
 
+			/// <summary>
+			/// Returns a surface object's resource descriptor Returns the resource descriptor for the surface object specified by surfObject.
+			/// </summary>
+			/// <param name="pResDesc"></param>
+			/// <param name="surfObject"></param>
+			/// <returns></returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaGetSurfaceObjectResourceDesc(ref cudaResourceDesc pResDesc, cudaSurfaceObject_t surfObject);
 
@@ -1896,6 +2063,380 @@ namespace CUDAnshita {
 			/// <returns>cudaSuccess, cudaErrorInvalidValue</returns>
 			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
 			public static extern cudaError_t cudaRuntimeGetVersion(ref int runtimeVersion);
+
+			// ----- Graph Management
+
+			/// <summary>
+			/// Creates a child graph node and adds it to a graph.
+			/// </summary>
+			/// <param name="pGraphNode"></param>
+			/// <param name="graph"></param>
+			/// <param name="pDependencies"></param>
+			/// <param name="numDependencies"></param>
+			/// <param name="childGraph"></param>
+			/// <returns></returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaGraphAddChildGraphNode(
+				ref cudaGraphNode_t pGraphNode, // cudaGraphNode_t*
+				cudaGraph_t graph,
+				[In] ref cudaGraphNode_t pDependencies, // const cudaGraphNode_t*
+				size_t numDependencies,
+				cudaGraph_t childGraph);
+
+			/// <summary>
+			/// Adds dependency edges to a graph.
+			/// </summary>
+			/// <param name="graph"></param>
+			/// <param name="from"></param>
+			/// <param name="to"></param>
+			/// <param name="numDependencies"></param>
+			/// <returns></returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaGraphAddDependencies(
+				cudaGraph_t graph,
+				[In] ref cudaGraphNode_t from, // const cudaGraphNode_t*
+				[In] ref cudaGraphNode_t to, // const cudaGraphNode_t*
+				size_t numDependencies);
+
+			/// <summary>
+			/// Creates an empty node and adds it to a graph.
+			/// </summary>
+			/// <param name="pGraphNode"></param>
+			/// <param name="graph"></param>
+			/// <param name="pDependencies"></param>
+			/// <param name="numDependencies"></param>
+			/// <returns></returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaGraphAddEmptyNode(
+				ref cudaGraphNode_t pGraphNode,
+				cudaGraph_t graph,
+				[In] ref cudaGraphNode_t pDependencies, // const cudaGraphNode_t*
+				size_t numDependencies);
+
+			/// <summary>
+			/// Creates a host execution node and adds it to a graph.
+			/// </summary>
+			/// <param name="pGraphNode"></param>
+			/// <param name="graph"></param>
+			/// <param name="pDependencies"></param>
+			/// <param name="numDependencies"></param>
+			/// <param name="pNodeParams"></param>
+			/// <returns></returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaGraphAddHostNode(
+				ref cudaGraphNode_t pGraphNode,
+				cudaGraph_t graph,
+				[In] ref cudaGraphNode_t pDependencies,
+				size_t numDependencies,
+				[In] ref cudaHostNodeParams pNodeParams);
+
+			/// <summary>
+			/// Creates a kernel execution node and adds it to a graph.
+			/// </summary>
+			/// <param name="pGraphNode"></param>
+			/// <param name="graph"></param>
+			/// <param name="pDependencies"></param>
+			/// <param name="numDependencies"></param>
+			/// <param name="pNodeParams"></param>
+			/// <returns></returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaGraphAddKernelNode(
+				ref cudaGraphNode_t pGraphNode,
+				cudaGraph_t graph,
+				[In] ref cudaGraphNode_t pDependencies,
+				size_t numDependencies,
+				[In] ref cudaKernelNodeParams pNodeParams);
+
+			/// <summary>
+			/// Creates a memcpy node and adds it to a graph.
+			/// </summary>
+			/// <param name="pGraphNode"></param>
+			/// <param name="graph"></param>
+			/// <param name="pDependencies"></param>
+			/// <param name="numDependencies"></param>
+			/// <param name="pCopyParams"></param>
+			/// <returns></returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaGraphAddMemcpyNode(
+				ref cudaGraphNode_t pGraphNode,
+				cudaGraph_t graph,
+				[In] ref cudaGraphNode_t pDependencies,
+				size_t numDependencies,
+				[In] ref cudaMemcpy3DParms pCopyParams);
+
+			/// <summary>
+			/// Creates a memset node and adds it to a graph.
+			/// </summary>
+			/// <param name="pGraphNode"></param>
+			/// <param name="graph"></param>
+			/// <param name="pDependencies"></param>
+			/// <param name="numDependencies"></param>
+			/// <param name="pMemsetParams"></param>
+			/// <returns></returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaGraphAddMemsetNode(
+				ref cudaGraphNode_t pGraphNode,
+				cudaGraph_t graph,
+				[In] ref cudaGraphNode_t pDependencies,
+				size_t numDependencies,
+				[In] ref cudaMemsetParams pMemsetParams);
+
+			/// <summary>
+			/// Gets a handle to the embedded graph of a child graph node.
+			/// </summary>
+			/// <param name="node"></param>
+			/// <param name="pGraph"></param>
+			/// <returns></returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaGraphChildGraphNodeGetGraph(
+				cudaGraphNode_t node,
+				ref cudaGraph_t pGraph);
+
+			/// <summary>
+			/// Clones a graph.
+			/// </summary>
+			/// <param name="pGraphClone"></param>
+			/// <param name="originalGraph"></param>
+			/// <returns></returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaGraphClone(
+				ref cudaGraph_t pGraphClone,
+				cudaGraph_t originalGraph);
+
+			/// <summary>
+			/// Creates a graph.
+			/// </summary>
+			/// <param name="pGraph"></param>
+			/// <param name="flags"></param>
+			/// <returns></returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaGraphCreate(ref cudaGraph_t pGraph, uint flags);
+
+			/// <summary>
+			/// Destroys a graph.
+			/// </summary>
+			/// <param name="graph"></param>
+			/// <returns></returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaGraphDestroy(cudaGraph_t graph);
+
+			/// <summary>
+			/// Remove a node from the graph.
+			/// </summary>
+			/// <param name="node"></param>
+			/// <returns></returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaGraphDestroyNode(cudaGraphNode_t node);
+
+			/// <summary>
+			/// Destroys an executable graph.
+			/// </summary>
+			/// <param name="graphExec"></param>
+			/// <returns></returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaGraphExecDestroy(cudaGraphExec_t graphExec);
+
+			/// <summary>
+			/// Sets the parameters for a kernel node in the given graphExec.
+			/// </summary>
+			/// <param name="hGraphExec"></param>
+			/// <param name="node"></param>
+			/// <param name="pNodeParams"></param>
+			/// <returns></returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaGraphExecKernelNodeSetParams(
+				cudaGraphExec_t hGraphExec,
+				cudaGraphNode_t node,
+				[In] ref cudaKernelNodeParams pNodeParams);
+
+			/// <summary>
+			/// Returns a graph's dependency edges.
+			/// </summary>
+			/// <param name="graph"></param>
+			/// <param name="from"></param>
+			/// <param name="to"></param>
+			/// <param name="numEdges"></param>
+			/// <returns></returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaGraphGetEdges(
+				cudaGraph_t graph,
+				ref cudaGraphNode_t from,
+				ref cudaGraphNode_t to,
+				ref size_t numEdges);
+
+			/// <summary>
+			/// Returns a graph's nodes.
+			/// </summary>
+			/// <param name="graph"></param>
+			/// <param name="nodes"></param>
+			/// <param name="numNodes"></param>
+			/// <returns></returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaGraphGetNodes(cudaGraph_t graph, ref cudaGraphNode_t nodes, ref size_t numNodes);
+
+			/// <summary>
+			/// Returns a graph's root nodes.
+			/// </summary>
+			/// <param name="graph"></param>
+			/// <param name="pRootNodes"></param>
+			/// <param name="pNumRootNodes"></param>
+			/// <returns></returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaGraphGetRootNodes(cudaGraph_t graph, ref cudaGraphNode_t pRootNodes, ref size_t pNumRootNodes);
+
+			/// <summary>
+			/// Returns a host node's parameters.
+			/// </summary>
+			/// <param name="node"></param>
+			/// <param name="pNodeParams"></param>
+			/// <returns></returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaGraphHostNodeGetParams(cudaGraphNode_t node, ref cudaHostNodeParams pNodeParams);
+
+			/// <summary>
+			/// Sets a host node's parameters.
+			/// </summary>
+			/// <param name="node"></param>
+			/// <param name="pNodeParams"></param>
+			/// <returns></returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaGraphHostNodeSetParams(cudaGraphNode_t node, ref cudaHostNodeParams pNodeParams);
+
+			/// <summary>
+			/// Creates an executable graph from a graph.
+			/// </summary>
+			/// <param name="pGraphExec"></param>
+			/// <param name="graph"></param>
+			/// <param name="pErrorNode"></param>
+			/// <param name="pLogBuffer"></param>
+			/// <param name="bufferSize"></param>
+			/// <returns></returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaGraphInstantiate(
+				ref cudaGraphExec_t pGraphExec,
+				cudaGraph_t graph,
+				ref cudaGraphNode_t pErrorNode,
+				string pLogBuffer, // char*
+				size_t bufferSize);
+
+			/// <summary>
+			/// Returns a kernel node's parameters.
+			/// </summary>
+			/// <param name="node"></param>
+			/// <param name="pNodeParams"></param>
+			/// <returns></returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaGraphKernelNodeGetParams(cudaGraphNode_t node, ref cudaKernelNodeParams pNodeParams);
+
+			/// <summary>
+			/// Sets a kernel node's parameters.
+			/// </summary>
+			/// <param name="node"></param>
+			/// <param name="pNodeParams"></param>
+			/// <returns></returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaGraphKernelNodeSetParams(cudaGraphNode_t node, [In] ref cudaKernelNodeParams pNodeParams);
+
+			/// <summary>
+			/// Launches an executable graph in a stream.
+			/// </summary>
+			/// <param name="graphExec"></param>
+			/// <param name="stream"></param>
+			/// <returns></returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaGraphLaunch(cudaGraphExec_t graphExec, cudaStream_t stream);
+
+			/// <summary>
+			/// Returns a memcpy node's parameters.
+			/// </summary>
+			/// <param name="node"></param>
+			/// <param name="pNodeParams"></param>
+			/// <returns></returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaGraphMemcpyNodeGetParams(cudaGraphNode_t node, ref cudaMemcpy3DParms pNodeParams);
+
+			/// <summary>
+			/// Sets a memcpy node's parameters.
+			/// </summary>
+			/// <param name="node"></param>
+			/// <param name="pNodeParams"></param>
+			/// <returns></returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaGraphMemcpyNodeSetParams(cudaGraphNode_t node, [In] ref cudaMemcpy3DParms pNodeParams);
+
+			/// <summary>
+			/// Returns a memset node's parameters.
+			/// </summary>
+			/// <param name="node"></param>
+			/// <param name="pNodeParams"></param>
+			/// <returns></returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaGraphMemsetNodeGetParams(cudaGraphNode_t node, ref cudaMemsetParams pNodeParams);
+
+			/// <summary>
+			/// Sets a memset node's parameters.
+			/// </summary>
+			/// <param name="node"></param>
+			/// <param name="pNodeParams"></param>
+			/// <returns></returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaGraphMemsetNodeSetParams(cudaGraphNode_t node, [In] ref cudaMemsetParams pNodeParams);
+
+			/// <summary>
+			/// Finds a cloned version of a node.
+			/// </summary>
+			/// <param name="pNode"></param>
+			/// <param name="originalNode"></param>
+			/// <param name="clonedGraph"></param>
+			/// <returns></returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaGraphNodeFindInClone(ref cudaGraphNode_t pNode, cudaGraphNode_t originalNode, cudaGraph_t clonedGraph);
+
+			/// <summary>
+			/// Returns a node's dependencies.
+			/// </summary>
+			/// <param name="node"></param>
+			/// <param name="pDependencies"></param>
+			/// <param name="pNumDependencies"></param>
+			/// <returns></returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaGraphNodeGetDependencies(cudaGraphNode_t node, ref cudaGraphNode_t pDependencies, ref size_t pNumDependencies);
+
+			/// <summary>
+			/// Returns a node's dependent nodes.
+			/// </summary>
+			/// <param name="node"></param>
+			/// <param name="pDependentNodes"></param>
+			/// <param name="pNumDependentNodes"></param>
+			/// <returns></returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaGraphNodeGetDependentNodes(cudaGraphNode_t node, ref cudaGraphNode_t pDependentNodes, ref size_t pNumDependentNodes);
+
+			/// <summary>
+			/// Returns a node's type.
+			/// </summary>
+			/// <param name="node"></param>
+			/// <param name="pType"></param>
+			/// <returns></returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaGraphNodeGetType(
+				cudaGraphNode_t node,
+				ref cudaGraphNodeType pType); // cudaGraphNodeType**
+
+			/// <summary>
+			/// Removes dependency edges from a graph.
+			/// </summary>
+			/// <param name="graph"></param>
+			/// <param name="from"></param>
+			/// <param name="to"></param>
+			/// <param name="numDependencies"></param>
+			/// <returns></returns>
+			[DllImport(DLL_PATH, CallingConvention = CALLING_CONVENTION)]
+			public static extern cudaError_t cudaGraphRemoveDependencies(
+				cudaGraph_t graph,
+				[In] ref cudaGraphNode_t from,
+				[In] ref cudaGraphNode_t to,
+				size_t numDependencies);
 
 			// ----- Profiler Control
 
@@ -3404,31 +3945,72 @@ namespace CUDAnshita {
 			CheckStatus(API.cudaBindTexture(ref offset, ref texref, devPtr, ref desc, size));
 		}
 
+		/// <summary>
+		/// Binds a 2D memory area to a texture.
+		/// </summary>
+		/// <param name="offset"></param>
+		/// <param name="texref"></param>
+		/// <param name="devPtr"></param>
+		/// <param name="desc"></param>
+		/// <param name="width"></param>
+		/// <param name="height"></param>
+		/// <param name="pitch"></param>
 		[Obsolete]
 		public static void BindTexture2D(size_t offset, textureReference texref, IntPtr devPtr, cudaChannelFormatDesc desc, size_t width, size_t height, size_t pitch) {
 			CheckStatus(API.cudaBindTexture2D(ref offset, ref texref, devPtr, ref desc, width, height, pitch));
 		}
 
+		/// <summary>
+		/// Binds an array to a texture.
+		/// </summary>
+		/// <param name="texref"></param>
+		/// <param name="array"></param>
+		/// <param name="desc"></param>
 		[Obsolete]
 		public static void BindTextureToArray(textureReference texref, cudaArray_const_t array, cudaChannelFormatDesc desc) {
 			CheckStatus(API.cudaBindTextureToArray(ref texref, array, ref desc));
 		}
 
+		/// <summary>
+		/// Binds a mipmapped array to a texture.
+		/// </summary>
+		/// <param name="texref"></param>
+		/// <param name="mipmappedArray"></param>
+		/// <param name="desc"></param>
 		[Obsolete]
 		public static void BindTextureToMipmappedArray(textureReference texref, cudaMipmappedArray_const_t mipmappedArray, cudaChannelFormatDesc desc) {
 			CheckStatus(API.cudaBindTextureToMipmappedArray(ref texref, mipmappedArray, ref desc));
 		}
 
+		/// <summary>
+		/// Returns a channel descriptor using the specified format.
+		/// </summary>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <param name="z"></param>
+		/// <param name="w"></param>
+		/// <param name="f"></param>
+		/// <returns></returns>
 		public static cudaChannelFormatDesc CreateChannelDesc(int x, int y, int z, int w, cudaChannelFormatKind f) {
 			return API.cudaCreateChannelDesc(x, y, z, w, f);
 		}
 
+		/// <summary>
+		/// Get the channel descriptor of an array.
+		/// </summary>
+		/// <param name="array"></param>
+		/// <returns></returns>
 		public static cudaChannelFormatDesc GetChannelDesc(cudaArray_const_t array) {
 			cudaChannelFormatDesc desc = new cudaChannelFormatDesc();
 			CheckStatus(API.cudaGetChannelDesc(ref desc, array));
 			return desc;
 		}
 
+		/// <summary>
+		/// Get the alignment offset of a texture.
+		/// </summary>
+		/// <param name="texref"></param>
+		/// <returns></returns>
 		[Obsolete]
 		public static size_t GetTextureAlignmentOffset(textureReference texref) {
 			size_t offset = 0;
@@ -3436,6 +4018,11 @@ namespace CUDAnshita {
 			return offset;
 		}
 
+		/// <summary>
+		/// Get the texture reference associated with a symbol.
+		/// </summary>
+		/// <param name="symbol"></param>
+		/// <returns></returns>
 		[Obsolete]
 		public static textureReference GetTextureReference(IntPtr symbol) {
 			textureReference texref = new textureReference();
@@ -3443,59 +4030,116 @@ namespace CUDAnshita {
 			return texref;
 		}
 
+		/// <summary>
+		/// Unbinds a texture.
+		/// </summary>
+		/// <param name="texref"></param>
 		[Obsolete]
 		public static void UnbindTexture(textureReference texref) {
 			CheckStatus(API.cudaUnbindTexture(texref));
 		}
 
+		/// <summary>
+		/// Binds an array to a surface.
+		/// </summary>
+		/// <param name="surfref"></param>
+		/// <param name="array"></param>
+		/// <param name="desc"></param>
+		[Obsolete]
 		public static void BindSurfaceToArray(surfaceReference surfref, cudaArray_const_t array, cudaChannelFormatDesc desc) {
 			CheckStatus(API.cudaBindSurfaceToArray(ref surfref, array, ref desc));
 		}
 
+		/// <summary>
+		/// Get the surface reference associated with a symbol.
+		/// </summary>
+		/// <param name="symbol"></param>
+		/// <returns></returns>
+		[Obsolete]
 		public static surfaceReference GetSurfaceReference(IntPtr symbol) {
 			surfaceReference surfref = new surfaceReference();
 			CheckStatus(API.cudaGetSurfaceReference(ref surfref, symbol));
 			return surfref;
 		}
 
+		/// <summary>
+		/// Creates a texture object.
+		/// </summary>
+		/// <param name="pResDesc"></param>
+		/// <param name="pTexDesc"></param>
+		/// <param name="pResViewDesc"></param>
+		/// <returns></returns>
 		public static cudaTextureObject_t CreateTextureObject(cudaResourceDesc pResDesc, cudaTextureDesc pTexDesc, cudaResourceViewDesc pResViewDesc) {
 			cudaTextureObject_t pTexObject = IntPtr.Zero;
 			CheckStatus(API.cudaCreateTextureObject(ref pTexObject, ref pResDesc, ref pTexDesc, ref pResViewDesc));
 			return pTexObject;
 		}
 
+		/// <summary>
+		/// Destroys a texture object.
+		/// </summary>
+		/// <param name="texObject"></param>
 		public static void DestroyTextureObject(cudaTextureObject_t texObject) {
 			CheckStatus(API.cudaDestroyTextureObject(texObject));
 		}
 
+		/// <summary>
+		/// Returns a texture object's resource descriptor.
+		/// </summary>
+		/// <param name="texObject"></param>
+		/// <returns></returns>
 		public static cudaResourceDesc GetTextureObjectResourceDesc(cudaTextureObject_t texObject) {
 			cudaResourceDesc pResDesc = new cudaResourceDesc();
 			CheckStatus(API.cudaGetTextureObjectResourceDesc(ref pResDesc, texObject));
 			return pResDesc;
 		}
 
+		/// <summary>
+		/// Returns a texture object's resource view descriptor.
+		/// </summary>
+		/// <param name="texObject"></param>
+		/// <returns></returns>
 		public static cudaResourceViewDesc GetTextureObjectResourceViewDesc(cudaTextureObject_t texObject) {
 			cudaResourceViewDesc pResViewDesc = new cudaResourceViewDesc();
 			CheckStatus(API.cudaGetTextureObjectResourceViewDesc(ref pResViewDesc, texObject));
 			return pResViewDesc;
 		}
 
+		/// <summary>
+		/// Returns a texture object's texture descriptor.
+		/// </summary>
+		/// <param name="texObject"></param>
+		/// <returns></returns>
 		public static cudaTextureDesc GetTextureObjectTextureDesc(cudaTextureObject_t texObject) {
 			cudaTextureDesc pTexDesc = new cudaTextureDesc();
 			CheckStatus(API.cudaGetTextureObjectTextureDesc(ref pTexDesc, texObject));
 			return pTexDesc;
 		}
 
+		/// <summary>
+		/// Creates a surface object.
+		/// </summary>
+		/// <param name="pResDesc"></param>
+		/// <returns></returns>
 		public static cudaSurfaceObject_t CreateSurfaceObject(cudaResourceDesc pResDesc) {
 			cudaSurfaceObject_t pSurfObject = IntPtr.Zero;
 			CheckStatus(API.cudaCreateSurfaceObject(ref pSurfObject, ref pResDesc));
 			return pSurfObject;
 		}
 
+		/// <summary>
+		/// Destroys a surface object.
+		/// </summary>
+		/// <param name="surfObject"></param>
 		public static void DestroySurfaceObject(cudaSurfaceObject_t surfObject) {
 			CheckStatus(API.cudaDestroySurfaceObject(surfObject));
 		}
 
+		/// <summary>
+		/// Returns a surface object's resource descriptor Returns the resource descriptor for the surface object specified by surfObject.
+		/// </summary>
+		/// <param name="surfObject"></param>
+		/// <returns></returns>
 		public static cudaResourceDesc GetSurfaceObjectResourceDesc(cudaSurfaceObject_t surfObject) {
 			cudaResourceDesc pResDesc = new cudaResourceDesc();
 			CheckStatus(API.cudaGetSurfaceObjectResourceDesc(ref pResDesc, surfObject));
