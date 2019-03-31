@@ -85,6 +85,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="cuBLAS\cuBLAS.cs" />
+    <Compile Include="cuBLAS\cuBLASCSI.cs" />
+    <Compile Include="cuBLAS\cuBLASData.cs" />
     <Compile Include="cuBLAS\CudaMatrixBase.cs" />
     <Compile Include="cuBLAS\CudaMatrixDouble.cs" />
     <Compile Include="cuBLAS\CudaMatrixFloat.cs" />
