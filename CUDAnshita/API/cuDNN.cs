@@ -47,7 +47,6 @@ namespace CUDAnshita {
 	using cudnnRNNMode_t = cudnnRNNMode;
 	using cudnnRNNAlgo_t = cudnnRNNAlgo;
 	using size_t = Int64;
-	using System.Text;
 
 	/// <summary>
 	/// Neural Networks Library.

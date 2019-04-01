@@ -5,6 +5,7 @@ namespace CUDAnshita {
 	using cudaArray_t = IntPtr;
 	using cudaStream_t = IntPtr;
 	using cudaMipmappedArray_t = IntPtr;
+	using cudaUUID_t = CUuuid_st;
 	using size_t = Int64;
 
 	public partial class Defines {
@@ -268,6 +269,24 @@ namespace CUDAnshita {
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
 		public string name;
+
+		/// <summary>
+		/// 16-byte unique identifier
+		/// </summary>
+		public cudaUUID_t uuid;
+
+		/// <summary>
+		/// 8-byte locally unique identifier.
+		/// Value is undefined on TCC and non-Windows platforms
+		/// </summary>
+		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
+		public byte[] luid;
+
+		/// <summary>
+		/// LUID device node mask.
+		/// Value is undefined on TCC and non-Windows platforms
+		/// </summary>
+		public uint luidDeviceNodeMask;
 
 		/// <summary>
 		/// Global memory available on device in bytes
@@ -609,6 +628,41 @@ namespace CUDAnshita {
 		/// Device can coherently access managed memory concurrently with the CPU
 		/// </summary>
 		public int concurrentManagedAccess;
+
+		/// <summary>
+		/// Device supports Compute Preemption
+		/// </summary>
+		public int computePreemptionSupported;
+
+		/// <summary>
+		/// Device can access host registered memory at the same virtual address as the CPU
+		/// </summary>
+		public int canUseHostPointerForRegisteredMem;
+
+		/// <summary>
+		/// Device supports launching cooperative kernels via ::cudaLaunchCooperativeKernel
+		/// </summary>
+		public int cooperativeLaunch;
+
+		/// <summary>
+		/// Device can participate in cooperative kernels launched via ::cudaLaunchCooperativeKernelMultiDevice
+		/// </summary>
+		public int cooperativeMultiDeviceLaunch;
+
+		/// <summary>
+		/// Per device maximum shared memory per block usable by special opt in
+		/// </summary>
+		public size_t sharedMemPerBlockOptin;
+
+		/// <summary>
+		/// Device accesses pageable memory via the host's page tables
+		/// </summary>
+		public int pageableMemoryAccessUsesHostPageTables;
+
+		/// <summary>
+		/// Host can directly access managed memory on the device without migration.
+		/// </summary>
+		public int directManagedMemAccessFromHost;
 	}
 
 	/// <summary>
@@ -1321,6 +1375,15 @@ namespace CUDAnshita {
 		/// Upper end of the mipmap level range to clamp access to
 		/// </summary>
 		float maxMipmapLevelClamp;
+	}
+
+	/// <summary>
+	/// (Runtime API) CUDA UUID types.
+	/// </summary>
+	[StructLayout(LayoutKind.Sequential)]
+	public struct CUuuid_st {
+		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
+		public byte[] bytes;
 	}
 
 	/// <summary>

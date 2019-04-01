@@ -91,8 +91,10 @@
   </Choose>
   <ItemGroup>
     <Compile Include="cuBLASTest.cs" />
+    <Compile Include="ObjectDumper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="cuRANDTest.cs" />
+    <Compile Include="RuntimeTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CUDAnshita\CUDAnshita.csproj">
