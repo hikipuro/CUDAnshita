@@ -99,6 +99,11 @@ namespace CUDAnshita {
 		public const int CUDA_ARRAY3D_2DARRAY = 0x01;
 
 		/// <summary>
+		/// (Driver API) This flag indicates that the CUDA array may be bound as a color target in an external graphics API
+		/// </summary>
+		public const int CUDA_ARRAY3D_COLOR_ATTACHMENT = 0x20;
+
+		/// <summary>
 		/// (Driver API) This flag must be set in order to bind a surface reference
 		/// to the CUDA array
 		/// </summary>

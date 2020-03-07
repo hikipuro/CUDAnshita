@@ -3,9 +3,9 @@ C# から簡単に CUDA を呼び出すためのライブラリ
 
 ## 実行に必要なもの
 * NVIDIA の GPU と新しめのドライバ
-* CUDA Toolkit 10.1
+* CUDA Toolkit 10.2
  * nvcuda.dll (ドライバに付属している？)
- * nvrtc64_101_0.dll (CUDA Toolkit に含まれている)
+ * nvrtc64_102_0.dll (CUDA Toolkit に含まれている)
  * cuDNN を使用する場合は、 CUDA Toolkit とは別にダウンロードする必要があります
 * .NET Framework 2.0 以降
 
@@ -111,7 +111,7 @@ context.Dispose();
 
 ### 注意事項
 * cuBLAS, cuFFT, cuFFTW, cuRAND, cuDNN の機能は全くテストできていませんので、CUDAnshita のコードを底の方から修正する気力のあるかたのみ、ご使用ください。
-* 旧バージョンの CUDA Toolkit を使用する場合、 CUDAnshita\NVRTC\NVRTC.cs 内の DLL_PATH 変数を書き換えてください。
+* 旧バージョンの CUDA Toolkit を使用する場合、 CUDAnshita\NVRTC\NVRTC.cs と CUDAnshita\Runtime\Runtime.cs 内の DLL_PATH 変数を書き換えてください。
 ```cs
 // 例: v8.0 を使用する場合
 const string DLL_PATH = "nvrtc64_80.dll";
@@ -168,8 +168,8 @@ C# 用に実装されたクラス経由で API を呼び出す形式です。
 * 煩雑な処理を書きたくない人向け
 
 ## 開発環境
-* Visual Studio 2015
-* CUDA Toolkit 10.1
+* Visual Studio 2017
+* CUDA Toolkit 10.2
 
 ## ライセンス
 * MIT License
