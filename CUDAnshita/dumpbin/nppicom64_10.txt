@@ -1,0 +1,81 @@
+Microsoft (R) COFF/PE Dumper Version 14.16.27031.1
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+
+Dump of file C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\bin\nppicom64_10.dll
+
+File Type: DLL
+
+  Section contains the following exports for nppicom64_10.dll
+
+    00000000 characteristics
+    5DB117D4 time date stamp Thu Oct 24 12:17:40 2019
+        0.00 version
+           1 ordinal base
+          50 number of functions
+          50 number of names
+
+    ordinal hint RVA      name
+
+          1    0 00052020 NvOptimusEnablementCuda
+          2    1 00009030 nppiDCTFree
+          3    2 00009080 nppiDCTInitAlloc
+          4    3 000092C0 nppiDCTInitAlloc_Ctx
+          5    4 00015D50 nppiDCTInv4x4_WebP_16s_C1R
+          6    5 00015ED0 nppiDCTInv4x4_WebP_16s_C1R_Ctx
+          7    6 000094F0 nppiDCTQuant16Fwd8x8LS_JPEG_8u16s_C1R_NEW
+          8    7 000095C0 nppiDCTQuant16Fwd8x8LS_JPEG_8u16s_C1R_NEW_Ctx
+          9    8 00009650 nppiDCTQuant16Inv8x8LS_JPEG_16s8u_C1R_NEW
+         10    9 00009720 nppiDCTQuant16Inv8x8LS_JPEG_16s8u_C1R_NEW_Ctx
+         11    A 000081E0 nppiDCTQuantFwd8x8LS_JPEG_8u16s_C1R
+         12    B 000083C0 nppiDCTQuantFwd8x8LS_JPEG_8u16s_C1R_Ctx
+         13    C 000097B0 nppiDCTQuantFwd8x8LS_JPEG_8u16s_C1R_NEW
+         14    D 00009880 nppiDCTQuantFwd8x8LS_JPEG_8u16s_C1R_NEW_Ctx
+         15    E 00008590 nppiDCTQuantInv8x8LS_JPEG_16s8u_C1R
+         16    F 00008750 nppiDCTQuantInv8x8LS_JPEG_16s8u_C1R_Ctx
+         17   10 00009910 nppiDCTQuantInv8x8LS_JPEG_16s8u_C1R_NEW
+         18   11 000099E0 nppiDCTQuantInv8x8LS_JPEG_16s8u_C1R_NEW_Ctx
+         19   12 00001D20 nppiDecodeHuffmanScanHost_JPEG_8u16s_P1R
+         20   13 000023E0 nppiDecodeHuffmanScanHost_JPEG_8u16s_P3R
+         21   14 000031E0 nppiDecodeHuffmanSpecFreeHost_JPEG
+         22   15 00003200 nppiDecodeHuffmanSpecGetBufSize_JPEG
+         23   16 00003220 nppiDecodeHuffmanSpecInitAllocHost_JPEG
+         24   17 000032C0 nppiDecodeHuffmanSpecInitHost_JPEG
+         25   18 0000F150 nppiEncodeHuffmanGetSize
+         26   19 0000F280 nppiEncodeHuffmanScan_JPEG_8u16s_P1R
+         27   1A 0000F830 nppiEncodeHuffmanScan_JPEG_8u16s_P1R_Ctx
+         28   1B 0000FDD0 nppiEncodeHuffmanScan_JPEG_8u16s_P3R
+         29   1C 00010900 nppiEncodeHuffmanScan_JPEG_8u16s_P3R_Ctx
+         30   1D 000114C0 nppiEncodeHuffmanSpecFree_JPEG
+         31   1E 000114E0 nppiEncodeHuffmanSpecGetBufSize_JPEG
+         32   1F 00011500 nppiEncodeHuffmanSpecInitAlloc_JPEG
+         33   20 00011620 nppiEncodeHuffmanSpecInitAlloc_JPEG_Ctx
+         34   21 00011730 nppiEncodeHuffmanSpecInit_JPEG
+         35   22 00011840 nppiEncodeHuffmanSpecInit_JPEG_Ctx
+         36   23 00011940 nppiEncodeOptimizeHuffmanGetSize
+         37   24 000119C0 nppiEncodeOptimizeHuffmanScan_JPEG_8u16s_P1R
+         38   25 000122F0 nppiEncodeOptimizeHuffmanScan_JPEG_8u16s_P1R_Ctx
+         39   26 00012C80 nppiEncodeOptimizeHuffmanScan_JPEG_8u16s_P3R
+         40   27 00013E90 nppiEncodeOptimizeHuffmanScan_JPEG_8u16s_P3R_Ctx
+         41   28 000189C0 nppiJpegDecodeGetDCTBufferSize
+         42   29 00007DA0 nppiJpegDecodeGetScanDeadzoneSize
+         43   2A 000189E0 nppiJpegDecodeJob
+         44   2B 00019340 nppiJpegDecodeJobCreateFinalize
+         45   2C 000193F0 nppiJpegDecodeJobCreateMemzero
+         46   2D 000194B0 nppiJpegDecodeJobMemorySize
+         47   2E 00019600 nppiJpegDecodeJob_Ctx
+         48   2F 00008910 nppiQuantFwdRawTableInit_JPEG_8u
+         49   30 000089B0 nppiQuantFwdTableInit_JPEG_8u16u
+         50   31 00008CD0 nppiQuantInvTableInit_JPEG_8u16u
+
+  Summary
+
+        6000 .data
+        1000 .nvFatBi
+       A3000 .nv_fatb
+        3000 .pdata
+       17000 .rdata
+        2000 .reloc
+        7000 .rsrc
+       3A000 .text
+        1000 .tls

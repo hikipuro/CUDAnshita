@@ -1,0 +1,72 @@
+Microsoft (R) COFF/PE Dumper Version 14.16.27031.1
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+
+Dump of file C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\bin\cublasLt64_10.dll
+
+File Type: DLL
+
+  Section contains the following exports for cublasLt64_10.dll
+
+    00000000 characteristics
+    5DB110FB time date stamp Thu Oct 24 11:48:27 2019
+        0.00 version
+           1 ordinal base
+          41 number of functions
+          41 number of names
+
+    ordinal hint RVA      name
+
+          1    0 00BE5300 NvOptimusEnablementCuda
+          2    1 00006B20 cublasLtAlgoCharacteristicGetAttribute
+          3    2 00001330 cublasLtCreate
+          4    3 000013B0 cublasLtCtxInit
+          5    4 00001440 cublasLtDestroy
+          6    5 00001480 cublasLtGetCudartVersion
+          7    6 00001490 cublasLtGetProperty
+          8    7 000014C0 cublasLtGetVersion
+          9    8 00006C80 cublasLtMatmul
+         10    9 00006FF0 cublasLtMatmulAlgoCapGetAttribute
+         11    A 000070A0 cublasLtMatmulAlgoCheck
+         12    B 00007300 cublasLtMatmulAlgoConfigGetAttribute
+         13    C 0002D240 cublasLtMatmulAlgoConfigGetAttributeRange
+         14    D 00007340 cublasLtMatmulAlgoConfigSetAttribute
+         15    E 00007370 cublasLtMatmulAlgoFind
+         16    F 00007570 cublasLtMatmulAlgoGetHeuristic
+         17   10 000076B0 cublasLtMatmulAlgoGetIds
+         18   11 000077A0 cublasLtMatmulAlgoInit
+         19   12 000078A0 cublasLtMatmulDescCreate
+         20   13 000079F0 cublasLtMatmulDescDestroy
+         21   14 00007910 cublasLtMatmulDescGetAttribute
+         22   15 00007930 cublasLtMatmulDescSetAttribute
+         23   16 00007950 cublasLtMatmulPreferenceCreate
+         24   17 000079F0 cublasLtMatmulPreferenceDestroy
+         25   18 00007A10 cublasLtMatmulPreferenceGetAttribute
+         26   19 00007A30 cublasLtMatmulPreferenceSetAttribute
+         27   1A 00007A50 cublasLtMatrixLayoutCreate
+         28   1B 000079F0 cublasLtMatrixLayoutDestroy
+         29   1C 00007AF0 cublasLtMatrixLayoutGetAttribute
+         30   1D 00007B10 cublasLtMatrixLayoutSetAttribute
+         31   1E 000533B0 cublasLtMatrixTransform
+         32   1F 00053B80 cublasLtMatrixTransformDescCreate
+         33   20 000079F0 cublasLtMatrixTransformDescDestroy
+         34   21 00053BE0 cublasLtMatrixTransformDescGetAttribute
+         35   22 00053C00 cublasLtMatrixTransformDescSetAttribute
+         36   23 000014D0 cublasLtShutdownCtx
+         37   24 00086790 free_gemm_select
+         38   25 000867C0 gemm_utilization
+         39   26 00086940 init_gemm_select
+         40   27 00086C50 runGemmApi
+         41   28 00086DC0 runGemmShortApi
+
+  Summary
+
+       12000 .data
+        1000 .nvFatBi
+     12A3000 .nv_fatb
+       13000 .pdata
+      A33000 .rdata
+       18000 .reloc
+        7000 .rsrc
+      1AD000 .text
+        1000 .tls

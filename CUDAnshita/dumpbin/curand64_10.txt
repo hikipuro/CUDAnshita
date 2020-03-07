@@ -1,0 +1,59 @@
+Microsoft (R) COFF/PE Dumper Version 14.16.27031.1
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+
+Dump of file C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\bin\curand64_10.dll
+
+File Type: DLL
+
+  Section contains the following exports for curand64_10.dll
+
+    00000000 characteristics
+    5DB115D2 time date stamp Thu Oct 24 12:09:06 2019
+        0.00 version
+           1 ordinal base
+          28 number of functions
+          28 number of names
+
+    ordinal hint RVA      name
+
+          1    0 02815008 NvOptimusEnablementCuda
+          2    1 0000F230 curandCreateGenerator
+          3    2 0000F5B0 curandCreateGeneratorHost
+          4    3 0000F810 curandCreatePoissonDistribution
+          5    4 0000F940 curandDestroyDistribution
+          6    5 0000F9F0 curandDestroyGenerator
+          7    6 00014460 curandGenerate
+          8    7 0002D1D0 curandGenerateLogNormal
+          9    8 0002D470 curandGenerateLogNormalDouble
+         10    9 00014700 curandGenerateLongLong
+         11    A 000243B0 curandGenerateNormal
+         12    B 00024650 curandGenerateNormalDouble
+         13    C 00036BB0 curandGeneratePoisson
+         14    D 0000FB80 curandGeneratePoissonMethod
+         15    E 0000FBC0 curandGenerateSeeds
+         16    F 0001B780 curandGenerateUniform
+         17   10 0001BA40 curandGenerateUniformDouble
+         18   11 00010410 curandGetDirectionVectors32
+         19   12 00010500 curandGetDirectionVectors64
+         20   13 00010530 curandGetProperty
+         21   14 00010560 curandGetScrambleConstants32
+         22   15 000105B0 curandGetScrambleConstants64
+         23   16 000105C0 curandGetVersion
+         24   17 000105D0 curandSetGeneratorOffset
+         25   18 00010620 curandSetGeneratorOrdering
+         26   19 00010690 curandSetPseudoRandomGeneratorSeed
+         27   1A 000106C0 curandSetQuasiRandomGeneratorDimensions
+         28   1B 00010700 curandSetStream
+
+  Summary
+
+     1975000 .data
+        1000 .nvFatBi
+      72F000 .nv_fatb
+        5000 .pdata
+     139D000 .rdata
+        4000 .reloc
+        7000 .rsrc
+       5E000 .text
+        1000 .tls

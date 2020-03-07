@@ -1,0 +1,29 @@
+Microsoft (R) COFF/PE Dumper Version 14.16.27031.1
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+
+Dump of file C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\bin\nvrtc-builtins64_102.dll
+
+File Type: DLL
+
+  Section contains the following exports for nvrtc-builtins.dll
+
+    00000000 characteristics
+    5DB10F22 time date stamp Thu Oct 24 11:40:34 2019
+        0.00 version
+           1 ordinal base
+           2 number of functions
+           2 number of names
+
+    ordinal hint RVA      name
+
+          1    0 00001140 getArchBuiltins
+          2    1 00001000 getBuiltinHeader
+
+  Summary
+
+        4000 .data
+        1000 .pdata
+      470000 .rdata
+        1000 .reloc
+        7000 .text

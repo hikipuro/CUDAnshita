@@ -116,8 +116,7 @@ context.Dispose();
 // 例: v8.0 を使用する場合
 const string DLL_PATH = "nvrtc64_80.dll";
 ```
-
-
+* CUDA Toolkit 10.2 以外を使用する場合は cudaError の値が違う場合があります。公式マニュアルを確認してください。
 
 ## CUDAnshita の使い方
 

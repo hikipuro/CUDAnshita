@@ -10,14 +10,20 @@ namespace CUDAnshita {
 
 	public partial class Defines {
 		/// <summary>
-		/// (Runtime API) 
+		/// (Runtime API) Maximum number of planes per frame
 		/// </summary>
 		public const int CUDA_EGL_MAX_PLANES = 3;
 
 		/// <summary>
-		/// (Runtime API) 
+		/// (Runtime API) CUDA IPC Handle Size
 		/// </summary>
 		public const int CUDA_IPC_HANDLE_SIZE = 64;
+
+		/// <summary>
+		/// (Runtime API) Must be set in cudaExternalMemoryGetMappedMipmappedArray
+		/// if the mipmapped array is used as a color target in a graphics API
+		/// </summary>
+		public const int cudaArrayColorAttachment = 0x20;
 
 		//public const int cudaDevicePropDontCare;
 
@@ -670,6 +676,14 @@ namespace CUDAnshita {
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct cudaEglFrame {
+		public uint width;
+		public uint height;
+		public uint depth;
+		public uint pitch;
+		public uint numChannels;
+		public cudaChannelFormatDesc channelDesc;
+		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+		public uint[] reserved;
 	}
 
 	/// <summary>
@@ -777,27 +791,27 @@ namespace CUDAnshita {
 		/// <summary>
 		/// Device function symbol.
 		/// </summary>
-		IntPtr func; // void*
+		public IntPtr func; // void*
 		/// <summary>
 		/// Grid dimentions.
 		/// </summary>
-		dim3 gridDim;
+		public dim3 gridDim;
 		/// <summary>
 		/// Block dimentions.
 		/// </summary>
-		dim3 blockDim;
+		public dim3 blockDim;
 		/// <summary>
 		/// Arguments.
 		/// </summary>
-		IntPtr args; // void**
+		public IntPtr args; // void**
 		/// <summary>
 		/// Shared memory.
 		/// </summary>
-		size_t sharedMem;
+		public size_t sharedMem;
 		/// <summary>
 		/// Stream identifier.
 		/// </summary>
-		cudaStream_t stream;
+		public cudaStream_t stream;
 	}
 
 	/// <summary>
@@ -2394,10 +2408,10 @@ namespace CUDAnshita {
 		cudaSuccess = 0,
 
 		/// <summary>
-		/// The device function being invoked (usually via cudaLaunchKernel())
-		/// was not previously configured via the cudaConfigureCall() function.
+		/// This indicates that one or more of the parameters passed to the API call
+		/// is not within an acceptable range of values.
 		/// </summary>
-		cudaErrorMissingConfiguration = 1,
+		cudaErrorInvalidValue = 1,
 
 		/// <summary>
 		/// The API call failed because it was unable to allocate enough memory to perform the requested operation.
@@ -2410,42 +2424,39 @@ namespace CUDAnshita {
 		cudaErrorInitializationError = 3,
 
 		/// <summary>
-		/// An exception occurred on the device while executing a kernel.
+		/// This indicates that a CUDA Runtime API call cannot be executed because
+		/// it is being called during process shut down,
+		/// at a point in time after CUDA driver has been unloaded.
 		/// </summary>
-		/// <remarks>
-		/// Common causes include dereferencing an invalid device pointer and accessing out of bounds shared memory.
-		/// The device cannot be used until cudaThreadExit() is called.
-		/// All existing device memory allocations are invalid and must be reconstructed if the program is to continue using CUDA.
-		/// </remarks>
-		cudaErrorLaunchFailure = 4,
-
-		[Obsolete("This error return is deprecated as of CUDA 3.1")]
-		cudaErrorPriorLaunchFailure = 5,
+		cudaErrorCudartUnloading = 4,
 
 		/// <summary>
-		/// This indicates that the device kernel took too long to execute.
+		/// This indicates profiler is not initialized for this run.
+		/// This can happen when the application is running with external
+		/// profiling tools like visual profiler.
 		/// </summary>
-		/// <remarks>
-		/// This can only occur if timeouts are enabled - see the device property kernelExecTimeoutEnabled for more information.
-		/// This leaves the process in an inconsistent state and any further CUDA work will return the same error.
-		/// To continue using CUDA, the process must be terminated and relaunched.
-		/// </remarks>
-		cudaErrorLaunchTimeout = 6,
+		cudaErrorProfilerDisabled = 5,
 
 		/// <summary>
-		/// This indicates that a launch did not occur because it did not have appropriate resources.
+		/// It is no longer an error to attempt to enable/disable the profiling
+		/// via cudaProfilerStart or cudaProfilerStop without initialization.
 		/// </summary>
-		/// <remarks>
-		/// Although this error is similar to cudaErrorInvalidConfiguration,
-		/// this error usually indicates that the user has attempted to pass too many arguments to the device kernel,
-		/// or the kernel launch specifies too many threads for the kernel's register count.
-		/// </remarks>
-		cudaErrorLaunchOutOfResources = 7,
+		[Obsolete("This error return is deprecated as of CUDA 5.0.")]
+		cudaErrorProfilerNotInitialized = 6,
 
 		/// <summary>
-		/// The requested device function does not exist or is not compiled for the proper device architecture.
+		/// It is no longer an error to call cudaProfilerStart()
+		/// when profiling is already enabled.
 		/// </summary>
-		cudaErrorInvalidDeviceFunction = 8,
+		[Obsolete("This error return is deprecated as of CUDA 5.0.")]
+		cudaErrorProfilerAlreadyStarted = 7,
+
+		/// <summary>
+		///  It is no longer an error to call cudaProfilerStop()
+		///  when profiling is already disabled.
+		/// </summary>
+		[Obsolete("This error return is deprecated as of CUDA 5.0.")]
+		cudaErrorProfilerAlreadyStopped = 8,
 
 		/// <summary>
 		/// This indicates that a kernel launch is requesting resources that can never be satisfied by the current device.
@@ -2457,16 +2468,6 @@ namespace CUDAnshita {
 		cudaErrorInvalidConfiguration = 9,
 
 		/// <summary>
-		/// This indicates that the device ordinal supplied by the user does not correspond to a valid CUDA device.
-		/// </summary>
-		cudaErrorInvalidDevice = 10,
-
-		/// <summary>
-		/// This indicates that one or more of the parameters passed to the API call is not within an acceptable range of values.
-		/// </summary>
-		cudaErrorInvalidValue = 11,
-
-		/// <summary>
 		/// This indicates that one or more of the pitch-related parameters passed to the API call is not within the acceptable range for pitch.
 		/// </summary>
 		cudaErrorInvalidPitchValue = 12,
@@ -2475,16 +2476,6 @@ namespace CUDAnshita {
 		/// This indicates that the symbol name/identifier passed to the API call is not a valid name or identifier.
 		/// </summary>
 		cudaErrorInvalidSymbol = 13,
-
-		/// <summary>
-		/// This indicates that the buffer object could not be mapped.
-		/// </summary>
-		cudaErrorMapBufferObjectFailed = 14,
-
-		/// <summary>
-		/// This indicates that the buffer object could not be unmapped.
-		/// </summary>
-		cudaErrorUnmapBufferObjectFailed = 15,
 
 		/// <summary>
 		/// This indicates that at least one host pointer passed to the API call is not a valid host pointer.
@@ -2545,37 +2536,11 @@ namespace CUDAnshita {
 		[Obsolete("This error return is deprecated as of CUDA 3.1")]
 		cudaErrorMixedDeviceExecution = 28,
 
-		/// <summary>
-		/// This indicates that a CUDA Runtime API call cannot be executed because it is being called during process shut down,
-		/// at a point in time after CUDA driver has been unloaded.
-		/// </summary>
-		cudaErrorCudartUnloading = 29,
-
-		/// <summary>
-		/// This indicates that an unknown internal error has occurred.
-		/// </summary>
-		cudaErrorUnknown = 30,
-
 		[Obsolete("This error return is deprecated as of CUDA 4.1")]
 		cudaErrorNotYetImplemented = 31,
 
 		[Obsolete("This error return is deprecated as of CUDA 3.1")]
 		cudaErrorMemoryValueTooLarge = 32,
-
-		/// <summary>
-		/// This indicates that a resource handle passed to the API call was not valid.
-		/// Resource handles are opaque types like cudaStream_t and cudaEvent_t.
-		/// </summary>
-		cudaErrorInvalidResourceHandle = 33,
-
-		/// <summary>
-		/// This indicates that asynchronous operations issued previously have not completed yet.
-		/// </summary>
-		/// <remarks>
-		/// This result is not actually an error, but must be indicated differently than cudaSuccess (which indicates completion).
-		/// Calls that may return this value include cudaEventQuery() and cudaStreamQuery().
-		/// </remarks>
-		cudaErrorNotReady = 34,
 
 		/// <summary>
 		/// This indicates that the installed NVIDIA CUDA driver is older than the CUDA runtime library.
@@ -2584,43 +2549,9 @@ namespace CUDAnshita {
 		cudaErrorInsufficientDriver = 35,
 
 		/// <summary>
-		/// This indicates that the user has called cudaSetValidDevices(), cudaSetDeviceFlags(),
-		/// cudaD3D9SetDirect3DDevice(), cudaD3D10SetDirect3DDevice, cudaD3D11SetDirect3DDevice(),
-		/// or cudaVDPAUSetVDPAUDevice() after initializing the CUDA runtime by calling non-device management operations
-		/// (allocating memory and launching kernels are examples of non-device management operations).
-		/// This error can also be returned if using runtime/driver interoperability and there is an existing CUcontext active on the host thread.
-		/// </summary>
-		cudaErrorSetOnActiveProcess = 36,
-
-		/// <summary>
 		/// This indicates that the surface passed to the API call is not a valid surface.
 		/// </summary>
 		cudaErrorInvalidSurface = 37,
-
-		/// <summary>
-		/// This indicates that no CUDA-capable devices were detected by the installed CUDA driver.
-		/// </summary>
-		cudaErrorNoDevice = 38,
-
-		/// <summary>
-		/// This indicates that an uncorrectable ECC error was detected during execution.
-		/// </summary>
-		cudaErrorECCUncorrectable = 39,
-
-		/// <summary>
-		/// This indicates that a link to a shared object failed to resolve.
-		/// </summary>
-		cudaErrorSharedObjectSymbolNotFound = 40,
-
-		/// <summary>
-		/// This indicates that initialization of a shared object failed.
-		/// </summary>
-		cudaErrorSharedObjectInitFailed = 41,
-
-		/// <summary>
-		/// This indicates that the cudaLimit passed to the API call is not supported by the active device.
-		/// </summary>
-		cudaErrorUnsupportedLimit = 42,
 
 		/// <summary>
 		/// This indicates that multiple global or constant variables 
@@ -2650,20 +2581,6 @@ namespace CUDAnshita {
 		cudaErrorDevicesUnavailable = 46,
 
 		/// <summary>
-		/// This indicates that the device kernel image is invalid.
-		/// </summary>
-		cudaErrorInvalidKernelImage = 47,
-
-		/// <summary>
-		/// This indicates that there is no kernel image available that is suitable for the device.
-		/// </summary>
-		/// <remarks>
-		/// This can occur when a user specifies code generation options for a particular CUDA source file
-		/// that do not include the corresponding device configuration.
-		/// </remarks>
-		cudaErrorNoKernelImageForDevice = 48,
-
-		/// <summary>
 		/// This indicates that the current context is not compatible with this the CUDA Runtime.
 		/// </summary>
 		/// <remarks>
@@ -2677,69 +2594,16 @@ namespace CUDAnshita {
 		cudaErrorIncompatibleDriverContext = 49,
 
 		/// <summary>
-		/// This error indicates that a call to cudaDeviceEnablePeerAccess() is trying to re-enable peer addressing
-		/// on from a context which has already had peer addressing enabled.
+		/// The device function being invoked (usually via cudaLaunchKernel())
+		/// was not previously configured via the cudaConfigureCall() function.
 		/// </summary>
-		cudaErrorPeerAccessAlreadyEnabled = 50,
+		cudaErrorMissingConfiguration = 52,
 
 		/// <summary>
-		/// This error indicates that cudaDeviceDisablePeerAccess() is trying to disable peer addressing
-		/// which has not been enabled yet via cudaDeviceEnablePeerAccess().
+		/// 
 		/// </summary>
-		cudaErrorPeerAccessNotEnabled = 51,
-
-		/// <summary>
-		/// This indicates that a call tried to access an exclusive-thread device that is already in use by a different thread.
-		/// </summary>
-		cudaErrorDeviceAlreadyInUse = 54,
-
-		/// <summary>
-		/// This indicates profiler is not initialized for this run.
-		/// This can happen when the application is running with external profiling tools like visual profiler.
-		/// </summary>
-		cudaErrorProfilerDisabled = 55,
-
-		[Obsolete("This error return is deprecated as of CUDA 5.0")]
-		cudaErrorProfilerNotInitialized = 56,
-
-		[Obsolete("This error return is deprecated as of CUDA 5.0")]
-		cudaErrorProfilerAlreadyStarted = 57,
-
-		[Obsolete("This error return is deprecated as of CUDA 5.0")]
-		cudaErrorProfilerAlreadyStopped = 58,
-
-		/// <summary>
-		/// An assert triggered in device code during kernel execution.
-		/// The device cannot be used again until cudaThreadExit() is called.
-		/// All existing allocations are invalid and must be reconstructed if the program is to continue using CUDA.
-		/// </summary>
-		cudaErrorAssert = 59,
-
-		/// <summary>
-		/// This error indicates that the hardware resources required to enable peer access
-		/// have been exhausted for one or more of the devices passed to cudaEnablePeerAccess().
-		/// </summary>
-		cudaErrorTooManyPeers = 60,
-
-		/// <summary>
-		/// This error indicates that the memory range passed to cudaHostRegister() has already been registered.
-		/// </summary>
-		cudaErrorHostMemoryAlreadyRegistered = 61,
-
-		/// <summary>
-		/// This error indicates that the pointer passed to cudaHostUnregister() does not correspond to any currently registered memory region.
-		/// </summary>
-		cudaErrorHostMemoryNotRegistered = 62,
-
-		/// <summary>
-		/// This error indicates that an OS call failed.
-		/// </summary>
-		cudaErrorOperatingSystem = 63,
-
-		/// <summary>
-		/// This error indicates that P2P access is not supported across the given devices.
-		/// </summary>
-		cudaErrorPeerAccessUnsupported = 64,
+		/// [Obsolete("This error return is deprecated as of CUDA 3.1")]
+		cudaErrorPriorLaunchFailure = 53,
 
 		/// <summary>
 		/// This error indicates that a device runtime grid launch did not occur because 
@@ -2789,93 +2653,344 @@ namespace CUDAnshita {
 		cudaErrorLaunchPendingCountExceeded = 69,
 
 		/// <summary>
-		/// This error indicates the attempted operation is not permitted.
+		/// The requested device function does not exist or is not compiled for the proper device architecture.
 		/// </summary>
-		cudaErrorNotPermitted = 70,
+		cudaErrorInvalidDeviceFunction = 98,
 
 		/// <summary>
-		/// This error indicates the attempted operation is not supported on the current system or device.
+		/// This indicates that no CUDA-capable devices were detected by the installed CUDA driver.
 		/// </summary>
-		cudaErrorNotSupported = 71,
+		cudaErrorNoDevice = 100,
 
 		/// <summary>
-		/// Device encountered an error in the call stack during kernel execution,
-		/// possibly due to stack corruption or exceeding the stack size limit.
+		/// This indicates that the device ordinal supplied by the user does not correspond to a valid CUDA device.
 		/// </summary>
-		/// <remarks>
-		/// This leaves the process in an inconsistent state and any further CUDA work
-		/// will return the same error.
-		/// To continue using CUDA, the process must be terminated and relaunched.
-		/// </remarks>
-		cudaErrorHardwareStackError = 72,
-
-		/// <summary>
-		/// The device encountered an illegal instruction during kernel execution
-		/// This leaves the process in an inconsistent state and any further CUDA work will return the same error.
-		/// </summary>
-		/// <remarks>
-		/// To continue using CUDA, the process must be terminated and relaunched.
-		/// </remarks>
-		cudaErrorIllegalInstruction = 73,
-
-		/// <summary>
-		/// The device encountered a load or store instruction on a memory address which is not aligned.
-		/// </summary>
-		/// <remarks>
-		/// This leaves the process in an inconsistent state and any further CUDA work will return the same error.
-		/// To continue using CUDA, the process must be terminated and relaunched.
-		/// </remarks>
-		cudaErrorMisalignedAddress = 74,
-
-		/// <summary>
-		/// While executing a kernel, the device encountered an instruction which can only operate on memory locations
-		/// in certain address spaces (global, shared, or local), but was supplied a memory address not belonging to
-		/// an allowed address space.
-		/// </summary>
-		/// <remarks>
-		/// This leaves the process in an inconsistent state and any further CUDA work will return the same error.
-		/// To continue using CUDA, the process must be terminated and relaunched.
-		/// </remarks>
-		cudaErrorInvalidAddressSpace = 75,
-
-		/// <summary>
-		/// The device encountered an invalid program counter.
-		/// </summary>
-		/// <remarks>
-		/// This leaves the process in an inconsistent state and any further CUDA work will return the same error.
-		/// To continue using CUDA, the process must be terminated and relaunched.
-		/// </remarks>
-		cudaErrorInvalidPc = 76,
-
-		/// <summary>
-		/// The device encountered a load or store instruction on an invalid memory address.
-		/// </summary>
-		/// <remarks>
-		/// This leaves the process in an inconsistent state and any further CUDA work will return 
-		/// the same error. To continue using CUDA, the process must be terminated and relaunched.
-		/// </remarks>
-		cudaErrorIllegalAddress = 77,
-
-		/// <summary>
-		/// A PTX compilation failed.
-		/// The runtime may fall back to compiling PTX if an application does not contain a suitable binary for the current device.
-		/// </summary>
-		cudaErrorInvalidPtx = 78,
-
-		/// <summary>
-		/// This indicates an error with the OpenGL or DirectX context.
-		/// </summary>
-		cudaErrorInvalidGraphicsContext = 79,
-
-		/// <summary>
-		/// This indicates that an uncorrectable NVLink error was detected during the execution.
-		/// </summary>
-		cudaErrorNvlinkUncorrectable = 80,
+		cudaErrorInvalidDevice = 101,
 
 		/// <summary>
 		/// This indicates an internal startup failure in the CUDA runtime.
 		/// </summary>
-		cudaErrorStartupFailure = 0x7f,
+		cudaErrorStartupFailure = 127,
+
+		/// <summary>
+		/// This indicates that the device kernel image is invalid.
+		/// </summary>
+		cudaErrorInvalidKernelImage = 200,
+
+		/// <summary>
+		/// This most frequently indicates that there is no context bound to the current thread. This can also be returned if the context passed to an API call is not a valid handle (such as a context that has had cuCtxDestroy() invoked on it). This can also be returned if a user mixes different API versions (i.e. 3010 context with 3020 API calls). See cuCtxGetApiVersion() for more details.
+		/// </summary>
+		cudaErrorDeviceUninitialized = 201,
+
+		/// <summary>
+		/// This indicates that the buffer object could not be mapped.
+		/// </summary>
+		cudaErrorMapBufferObjectFailed = 205,
+
+		/// <summary>
+		/// This indicates that the buffer object could not be unmapped.
+		/// </summary>
+		cudaErrorUnmapBufferObjectFailed = 206,
+
+		/// <summary>
+		/// This indicates that the specified array is currently mapped and thus cannot be destroyed.
+		/// </summary>
+		cudaErrorArrayIsMapped = 207,
+
+		/// <summary>
+		/// This indicates that the resource is already mapped.
+		/// </summary>
+		cudaErrorAlreadyMapped = 208,
+
+		/// <summary>
+		/// This indicates that there is no kernel image available that is suitable for the device. This can occur when a user specifies code generation options for a particular CUDA source file that do not include the corresponding device configuration.
+		/// </summary>
+		cudaErrorNoKernelImageForDevice = 209,
+
+		/// <summary>
+		/// This indicates that a resource has already been acquired.
+		/// </summary>
+		cudaErrorAlreadyAcquired = 210,
+
+		/// <summary>
+		/// This indicates that a resource is not mapped.
+		/// </summary>
+		cudaErrorNotMapped = 211,
+
+		/// <summary>
+		/// This indicates that a mapped resource is not available for access as an array.
+		/// </summary>
+		cudaErrorNotMappedAsArray = 212,
+
+		/// <summary>
+		/// This indicates that a mapped resource is not available for access as a pointer.
+		/// </summary>
+		cudaErrorNotMappedAsPointer = 213,
+
+		/// <summary>
+		/// This indicates that an uncorrectable ECC error was detected during execution.
+		/// </summary>
+		cudaErrorECCUncorrectable = 214,
+
+		/// <summary>
+		/// This indicates that the cudaLimit passed to the API call is not supported by the active device.
+		/// </summary>
+		cudaErrorUnsupportedLimit = 215,
+
+		/// <summary>
+		/// This indicates that a call tried to access an exclusive-thread device that is already in use by a different thread.
+		/// </summary>
+		cudaErrorDeviceAlreadyInUse = 216,
+
+		/// <summary>
+		/// This error indicates that P2P access is not supported across the given devices.
+		/// </summary>
+		cudaErrorPeerAccessUnsupported = 217,
+
+		/// <summary>
+		/// A PTX compilation failed. The runtime may fall back to compiling PTX if an application does not contain a suitable binary for the current device.
+		/// </summary>
+		cudaErrorInvalidPtx = 218,
+
+		/// <summary>
+		/// This indicates an error with the OpenGL or DirectX context.
+		/// </summary>
+		cudaErrorInvalidGraphicsContext = 219,
+
+		/// <summary>
+		/// This indicates that an uncorrectable NVLink error was detected during the execution.
+		/// </summary>
+		cudaErrorNvlinkUncorrectable = 220,
+
+		/// <summary>
+		/// This indicates that the PTX JIT compiler library was not found. The JIT Compiler library is used for PTX compilation. The runtime may fall back to compiling PTX if an application does not contain a suitable binary for the current device.
+		/// </summary>
+		cudaErrorJitCompilerNotFound = 221,
+
+		/// <summary>
+		/// This indicates that the device kernel source is invalid.
+		/// </summary>
+		cudaErrorInvalidSource = 300,
+
+		/// <summary>
+		/// This indicates that the file specified was not found.
+		/// </summary>
+		cudaErrorFileNotFound = 301,
+
+		/// <summary>
+		/// This indicates that a link to a shared object failed to resolve.
+		/// </summary>
+		cudaErrorSharedObjectSymbolNotFound = 302,
+
+		/// <summary>
+		/// This indicates that initialization of a shared object failed.
+		/// </summary>
+		cudaErrorSharedObjectInitFailed = 303,
+
+		/// <summary>
+		/// This error indicates that an OS call failed.
+		/// </summary>
+		cudaErrorOperatingSystem = 304,
+
+		/// <summary>
+		/// This indicates that a resource handle passed to the API call was not valid. Resource handles are opaque types like cudaStream_t and cudaEvent_t.
+		/// </summary>
+		cudaErrorInvalidResourceHandle = 400,
+
+		/// <summary>
+		/// This indicates that a resource required by the API call is not in a valid state to perform the requested operation.
+		/// </summary>
+		cudaErrorIllegalState = 401,
+
+		/// <summary>
+		/// This indicates that a named symbol was not found. Examples of symbols are global/constant variable names, texture names, and surface names.
+		/// </summary>
+		cudaErrorSymbolNotFound = 500,
+
+		/// <summary>
+		/// This indicates that asynchronous operations issued previously have not completed yet. This result is not actually an error, but must be indicated differently than cudaSuccess (which indicates completion). Calls that may return this value include cudaEventQuery() and cudaStreamQuery().
+		/// </summary>
+		cudaErrorNotReady = 600,
+
+		/// <summary>
+		/// The device encountered a load or store instruction on an invalid memory address. This leaves the process in an inconsistent state and any further CUDA work will return the same error. To continue using CUDA, the process must be terminated and relaunched.
+		/// </summary>
+		cudaErrorIllegalAddress = 700,
+
+		/// <summary>
+		/// This indicates that a launch did not occur because it did not have appropriate resources. Although this error is similar to cudaErrorInvalidConfiguration, this error usually indicates that the user has attempted to pass too many arguments to the device kernel, or the kernel launch specifies too many threads for the kernel's register count.
+		/// </summary>
+		cudaErrorLaunchOutOfResources = 701,
+
+		/// <summary>
+		/// This indicates that the device kernel took too long to execute. This can only occur if timeouts are enabled - see the device property kernelExecTimeoutEnabled for more information. This leaves the process in an inconsistent state and any further CUDA work will return the same error. To continue using CUDA, the process must be terminated and relaunched.
+		/// </summary>
+		cudaErrorLaunchTimeout = 702,
+
+		/// <summary>
+		/// This error indicates a kernel launch that uses an incompatible texturing mode.
+		/// </summary>
+		cudaErrorLaunchIncompatibleTexturing = 703,
+
+		/// <summary>
+		/// This error indicates that a call to cudaDeviceEnablePeerAccess() is trying to re-enable peer addressing on from a context which has already had peer addressing enabled.
+		/// </summary>
+		cudaErrorPeerAccessAlreadyEnabled = 704,
+
+		/// <summary>
+		/// This error indicates that cudaDeviceDisablePeerAccess() is trying to disable peer addressing which has not been enabled yet via cudaDeviceEnablePeerAccess().
+		/// </summary>
+		cudaErrorPeerAccessNotEnabled = 705,
+
+		/// <summary>
+		/// This indicates that the user has called cudaSetValidDevices(), cudaSetDeviceFlags(), cudaD3D9SetDirect3DDevice(), cudaD3D10SetDirect3DDevice, cudaD3D11SetDirect3DDevice(), or cudaVDPAUSetVDPAUDevice() after initializing the CUDA runtime by calling non-device management operations (allocating memory and launching kernels are examples of non-device management operations). This error can also be returned if using runtime/driver interoperability and there is an existing CUcontext active on the host thread.
+		/// </summary>
+		cudaErrorSetOnActiveProcess = 708,
+
+		/// <summary>
+		/// This error indicates that the context current to the calling thread has been destroyed using cuCtxDestroy, or is a primary context which has not yet been initialized.
+		/// </summary>
+		cudaErrorContextIsDestroyed = 709,
+
+		/// <summary>
+		/// An assert triggered in device code during kernel execution. The device cannot be used again. All existing allocations are invalid. To continue using CUDA, the process must be terminated and relaunched.
+		/// </summary>
+		cudaErrorAssert = 710,
+
+		/// <summary>
+		/// This error indicates that the hardware resources required to enable peer access have been exhausted for one or more of the devices passed to cudaEnablePeerAccess().
+		/// </summary>
+		cudaErrorTooManyPeers = 711,
+
+		/// <summary>
+		/// This error indicates that the memory range passed to cudaHostRegister() has already been registered.
+		/// </summary>
+		cudaErrorHostMemoryAlreadyRegistered = 712,
+
+		/// <summary>
+		/// This error indicates that the pointer passed to cudaHostUnregister() does not correspond to any currently registered memory region.
+		/// </summary>
+		cudaErrorHostMemoryNotRegistered = 713,
+
+		/// <summary>
+		/// Device encountered an error in the call stack during kernel execution, possibly due to stack corruption or exceeding the stack size limit. This leaves the process in an inconsistent state and any further CUDA work will return the same error. To continue using CUDA, the process must be terminated and relaunched.
+		/// </summary>
+		cudaErrorHardwareStackError = 714,
+
+		/// <summary>
+		/// The device encountered an illegal instruction during kernel execution This leaves the process in an inconsistent state and any further CUDA work will return the same error. To continue using CUDA, the process must be terminated and relaunched.
+		/// </summary>
+		cudaErrorIllegalInstruction = 715,
+
+		/// <summary>
+		/// The device encountered a load or store instruction on a memory address which is not aligned. This leaves the process in an inconsistent state and any further CUDA work will return the same error. To continue using CUDA, the process must be terminated and relaunched.
+		/// </summary>
+		cudaErrorMisalignedAddress = 716,
+
+		/// <summary>
+		/// While executing a kernel, the device encountered an instruction which can only operate on memory locations in certain address spaces (global, shared, or local), but was supplied a memory address not belonging to an allowed address space. This leaves the process in an inconsistent state and any further CUDA work will return the same error. To continue using CUDA, the process must be terminated and relaunched.
+		/// </summary>
+		cudaErrorInvalidAddressSpace = 717,
+
+		/// <summary>
+		/// The device encountered an invalid program counter. This leaves the process in an inconsistent state and any further CUDA work will return the same error. To continue using CUDA, the process must be terminated and relaunched.
+		/// </summary>
+		cudaErrorInvalidPc = 718,
+
+		/// <summary>
+		/// An exception occurred on the device while executing a kernel. Common causes include dereferencing an invalid device pointer and accessing out of bounds shared memory. Less common cases can be system specific - more information about these cases can be found in the system specific user guide. This leaves the process in an inconsistent state and any further CUDA work will return the same error. To continue using CUDA, the process must be terminated and relaunched.
+		/// </summary>
+		cudaErrorLaunchFailure = 719,
+
+		/// <summary>
+		/// This error indicates that the number of blocks launched per grid for a kernel that was launched via either cudaLaunchCooperativeKernel or cudaLaunchCooperativeKernelMultiDevice exceeds the maximum number of blocks as allowed by cudaOccupancyMaxActiveBlocksPerMultiprocessor or cudaOccupancyMaxActiveBlocksPerMultiprocessorWithFlags times the number of multiprocessors as specified by the device attribute cudaDevAttrMultiProcessorCount.
+		/// </summary>
+		cudaErrorCooperativeLaunchTooLarge = 720,
+
+		/// <summary>
+		/// This error indicates the attempted operation is not permitted.
+		/// </summary>
+		cudaErrorNotPermitted = 800,
+
+		/// <summary>
+		/// This error indicates the attempted operation is not supported on the current system or device.
+		/// </summary>
+		cudaErrorNotSupported = 801,
+
+		/// <summary>
+		/// This error indicates that the system is not yet ready to start any CUDA work. To continue using CUDA, verify the system configuration is in a valid state and all required driver daemons are actively running. More information about this error can be found in the system specific user guide.
+		/// </summary>
+		cudaErrorSystemNotReady = 802,
+
+		/// <summary>
+		/// This error indicates that there is a mismatch between the versions of the display driver and the CUDA driver. Refer to the compatibility documentation for supported versions.
+		/// </summary>
+		cudaErrorSystemDriverMismatch = 803,
+
+		/// <summary>
+		/// This error indicates that the system was upgraded to run with forward compatibility but the visible hardware detected by CUDA does not support this configuration. Refer to the compatibility documentation for the supported hardware matrix or ensure that only supported hardware is visible during initialization via the CUDA_VISIBLE_DEVICES environment variable.
+		/// </summary>
+		cudaErrorCompatNotSupportedOnDevice = 804,
+
+		/// <summary>
+		/// The operation is not permitted when the stream is capturing.
+		/// </summary>
+		cudaErrorStreamCaptureUnsupported = 900,
+
+		/// <summary>
+		/// The current capture sequence on the stream has been invalidated due to a previous error.
+		/// </summary>
+		cudaErrorStreamCaptureInvalidated = 901,
+
+		/// <summary>
+		/// The operation would have resulted in a merge of two independent capture sequences.
+		/// </summary>
+		cudaErrorStreamCaptureMerge = 902,
+
+		/// <summary>
+		/// The capture was not initiated in this stream.
+		/// </summary>
+		cudaErrorStreamCaptureUnmatched = 903,
+
+		/// <summary>
+		/// The capture sequence contains a fork that was not joined to the primary stream.
+		/// </summary>
+		cudaErrorStreamCaptureUnjoined = 904,
+
+		/// <summary>
+		/// A dependency would have been created which crosses the capture sequence boundary. Only implicit in-stream ordering dependencies are allowed to cross the boundary.
+		/// </summary>
+		cudaErrorStreamCaptureIsolation = 905,
+
+		/// <summary>
+		/// The operation would have resulted in a disallowed implicit dependency on a current capture sequence from cudaStreamLegacy.
+		/// </summary>
+		cudaErrorStreamCaptureImplicit = 906,
+
+		/// <summary>
+		/// The operation is not permitted on an event which was last recorded in a capturing stream.
+		/// </summary>
+		cudaErrorCapturedEvent = 907,
+
+		/// <summary>
+		/// A stream capture sequence not initiated with the cudaStreamCaptureModeRelaxed argument to cudaStreamBeginCapture was passed to cudaStreamEndCapture in a different thread.
+		/// </summary>
+		cudaErrorStreamCaptureWrongThread = 908,
+
+		/// <summary>
+		/// This indicates that the wait operation has timed out.
+		/// </summary>
+		cudaErrorTimeout = 909,
+
+		/// <summary>
+		/// This error indicates that the graph update was not performed because it included changes which violated constraints specific to instantiated graph update.
+		/// </summary>
+		cudaErrorGraphExecUpdateFailure = 910,
+
+		/// <summary>
+		/// This indicates that an unknown internal error has occurred.
+		/// </summary>
+		cudaErrorUnknown = 999,
 
 		/// <summary>
 		/// Any unhandled CUDA driver error is added to this value and returned via the runtime.
@@ -2908,7 +3023,19 @@ namespace CUDAnshita {
 		/// <summary>
 		/// Handle is a D3D12 committed resource.
 		/// </summary>
-		cudaExternalMemoryHandleTypeD3D12Resource = 5
+		cudaExternalMemoryHandleTypeD3D12Resource = 5,
+		/// <summary>
+		/// Handle is a shared NT handle to a D3D11 resource
+		/// </summary>
+		cudaExternalMemoryHandleTypeD3D11Resource = 6,
+		/// <summary>
+		/// Handle is a globally shared handle to a D3D11 resource
+		/// </summary>
+		cudaExternalMemoryHandleTypeD3D11ResourceKmt = 7,
+		/// <summary>
+		/// Handle is an NvSciBuf object
+		/// </summary>
+		cudaExternalMemoryHandleTypeNvSciBuf = 8
 	}
 
 	/// <summary>
@@ -2930,7 +3057,23 @@ namespace CUDAnshita {
 		/// <summary>
 		/// Handle is a shared NT handle referencing a D3D12 fence object.
 		/// </summary>
-		cudaExternalSemaphoreHandleTypeD3D12Fence = 4
+		cudaExternalSemaphoreHandleTypeD3D12Fence = 4,
+		/// <summary>
+		/// Handle is a shared NT handle referencing a D3D11 fence object
+		/// </summary>
+		cudaExternalSemaphoreHandleTypeD3D11Fence = 5,
+		/// <summary>
+		/// Opaque handle to NvSciSync Object
+		/// </summary>
+		cudaExternalSemaphoreHandleTypeNvSciSync = 6,
+		/// <summary>
+		/// Handle is a shared NT handle referencing a D3D11 keyed mutex object
+		/// </summary>
+		cudaExternalSemaphoreHandleTypeKeyedMutex = 7,
+		/// <summary>
+		/// Handle is a shared KMT handle referencing a D3D11 keyed mutex object
+		/// </summary>
+		cudaExternalSemaphoreHandleTypeKeyedMutexKmt = 8
 	}
 
 	/// <summary>
@@ -2971,6 +3114,46 @@ namespace CUDAnshita {
 		/// Prefer equal size L1 cache and shared memory
 		/// </summary>
 		cudaFuncCachePreferEqual = 3
+	}
+
+	/// <summary>
+	/// (Runtime API) CUDA Graph Update error types.
+	/// </summary>
+	public enum cudaGraphExecUpdateResult {
+		/// <summary>
+		/// The update succeeded
+		/// </summary>
+		cudaGraphExecUpdateSuccess = 0x0,
+
+		/// <summary>
+		/// The update failed for an unexpected reason which is described in the return value of the function
+		/// </summary>
+		cudaGraphExecUpdateError = 0x1,
+
+		/// <summary>
+		/// The update failed because the topology changed
+		/// </summary>
+		cudaGraphExecUpdateErrorTopologyChanged = 0x2,
+
+		/// <summary>
+		/// The update failed because a node type changed
+		/// </summary>
+		cudaGraphExecUpdateErrorNodeTypeChanged = 0x3,
+
+		/// <summary>
+		/// The update failed because the function of a kernel node changed
+		/// </summary>
+		cudaGraphExecUpdateErrorFunctionChanged = 0x4,
+
+		/// <summary>
+		/// The update failed because the parameters changed in a way that is not supported
+		/// </summary>
+		cudaGraphExecUpdateErrorParametersChanged = 0x5,
+
+		/// <summary>
+		/// The update failed because something about the node is not supported
+		/// </summary>
+		cudaGraphExecUpdateErrorNotSupported = 0x6
 	}
 
 	/// <summary>
@@ -3067,6 +3250,7 @@ namespace CUDAnshita {
 	/// <summary>
 	/// (Runtime API) CUDA graphics interop register flags.
 	/// </summary>
+	[Flags]
 	public enum cudaGraphicsRegisterFlags {
 		/// <summary>
 		/// Default

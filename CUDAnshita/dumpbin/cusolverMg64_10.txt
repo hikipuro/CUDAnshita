@@ -1,0 +1,240 @@
+Microsoft (R) COFF/PE Dumper Version 14.16.27031.1
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+
+Dump of file C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\bin\cusolverMg64_10.dll
+
+File Type: DLL
+
+  Section contains the following exports for cusolverMg64_10.dll
+
+    00000000 characteristics
+    5DB11961 time date stamp Thu Oct 24 12:24:17 2019
+        0.00 version
+           1 ordinal base
+         209 number of functions
+         209 number of names
+
+    ordinal hint RVA      name
+
+          1    0 00E2B050 NvOptimusEnablementCuda
+          2    1 00001530 cudlibMgDescr2cudsDescr
+          3    2 00005650 cusolverMgCMatDistribute
+          4    3 00005FD0 cusolverMgCSetDistMatToIdentity
+          5    4 0002C820 cusolverMgCaugment
+          6    5 0002C880 cusolverMgCaugment_bufferSize
+          7    6 000289E0 cusolverMgCdgmm
+          8    7 00028A60 cusolverMgCdgmm_bufferSize
+          9    8 0002A320 cusolverMgCdiam
+         10    9 0002A360 cusolverMgCdiam_bufferSize
+         11    A 0000EA00 cusolverMgCgemm
+         12    B 0000EA20 cusolverMgCgemm_bufferSize
+         13    C 00031190 cusolverMgCgeqrf
+         14    D 000311D0 cusolverMgCgeqrf_bufferSize
+         15    E 00033E90 cusolverMgCgetrf
+         16    F 00033F20 cusolverMgCgetrf_bufferSize
+         17   10 0005D3B0 cusolverMgCgetrs
+         18   11 0005D3D0 cusolverMgCgetrs_bufferSize
+         19   12 000154F0 cusolverMgChemv
+         20   13 00015600 cusolverMgChemv_bufferSize
+         21   14 00015200 cusolverMgCher2k
+         22   15 00015370 cusolverMgCher2k_bufferSize
+         23   16 00011690 cusolverMgChetrd
+         24   17 000116D0 cusolverMgChetrd_bufferSize
+         25   18 0001FB20 cusolverMgClacpy
+         26   19 000070D0 cusolverMgClange
+         27   1A 00007130 cusolverMgClange_bufferSize
+         28   1B 0004F7C0 cusolverMgClanhe
+         29   1C 0004F840 cusolverMgClanhe_bufferSize
+         30   1D 00050EF0 cusolverMgClascl
+         31   1E 00050F70 cusolverMgClascl_bufferSize
+         32   1F 00013770 cusolverMgCmemcpyD2H
+         33   20 000137D0 cusolverMgCmemcpyH2D
+         34   21 0002E490 cusolverMgCmemset
+         35   22 00001680 cusolverMgCreate
+         36   23 00001320 cusolverMgCreateDeviceGrid
+         37   24 000016E0 cusolverMgCreateGrid
+         38   25 00001730 cusolverMgCreateMatDescr
+         39   26 000013C0 cusolverMgCreateMatrixDesc
+         40   27 0003F400 cusolverMgCreduce_scatter_block
+         41   28 00052CD0 cusolverMgCshfl
+         42   29 00052CF0 cusolverMgCshfl_bufferSize
+         43   2A 00020A60 cusolverMgCstedc
+         44   2B 00021770 cusolverMgCstedc_bufferSize
+         45   2C 0002DF30 cusolverMgCtranspose
+         46   2D 0002DF90 cusolverMgCtranspose_bufferSize
+         47   2E 0003C120 cusolverMgCtrsm
+         48   2F 0003C1C0 cusolverMgCtrsm_bufferSize
+         49   30 00005670 cusolverMgCunmqr
+         50   31 00005770 cusolverMgCunmqr_bufferSize
+         51   32 00008750 cusolverMgCurmqrInput
+         52   33 00008770 cusolverMgCurmqrInput_bufferSize
+         53   34 00005650 cusolverMgDMatDistribute
+         54   35 00005FF0 cusolverMgDSetDistMatToIdentity
+         55   36 0002C840 cusolverMgDaugment
+         56   37 0002C880 cusolverMgDaugment_bufferSize
+         57   38 00028A00 cusolverMgDdgmm
+         58   39 00028A60 cusolverMgDdgmm_bufferSize
+         59   3A 0004D990 cusolverMgDdiag
+         60   3B 0002A340 cusolverMgDdiam
+         61   3C 0002A360 cusolverMgDdiam_bufferSize
+         62   3D 00001790 cusolverMgDestroy
+         63   3E 000014A0 cusolverMgDestroyGrid
+         64   3F 000014F0 cusolverMgDestroyMatrixDesc
+         65   40 000018F0 cusolverMgDeviceSelect
+         66   41 0000EAF0 cusolverMgDgemm
+         67   42 0000EA20 cusolverMgDgemm_bufferSize
+         68   43 000311B0 cusolverMgDgeqrf
+         69   44 000311D0 cusolverMgDgeqrf_bufferSize
+         70   45 00033F70 cusolverMgDgetrf
+         71   46 00034000 cusolverMgDgetrf_bufferSize
+         72   47 0005D3F0 cusolverMgDgetrs
+         73   48 0005D410 cusolverMgDgetrs_bufferSize
+         74   49 0001FBA0 cusolverMgDlacpy
+         75   4A 000070F0 cusolverMgDlange
+         76   4B 00007130 cusolverMgDlange_bufferSize
+         77   4C 0004F7E0 cusolverMgDlansy
+         78   4D 0004F840 cusolverMgDlansy_bufferSize
+         79   4E 00050F10 cusolverMgDlascl
+         80   4F 00050F70 cusolverMgDlascl_bufferSize
+         81   50 0004A690 cusolverMgDlaset
+         82   51 00013770 cusolverMgDmemcpyD2H
+         83   52 000137D0 cusolverMgDmemcpyH2D
+         84   53 0002E490 cusolverMgDmemset
+         85   54 000056A0 cusolverMgDormqr
+         86   55 000087A0 cusolverMgDormqrInput
+         87   56 00008770 cusolverMgDormqrInput_bufferSize
+         88   57 00005770 cusolverMgDormqr_bufferSize
+         89   58 0003F420 cusolverMgDreduce_scatter_block
+         90   59 00026900 cusolverMgDrot
+         91   5A 00051380 cusolverMgDscal
+         92   5B 000513C0 cusolverMgDscal_bufferSize
+         93   5C 00052CD0 cusolverMgDshfl
+         94   5D 00052CF0 cusolverMgDshfl_bufferSize
+         95   5E 00021840 cusolverMgDstedc
+         96   5F 00021860 cusolverMgDstedc_bufferSize
+         97   60 000155C0 cusolverMgDsymv
+         98   61 00015600 cusolverMgDsymv_bufferSize
+         99   62 00015330 cusolverMgDsyr2k
+        100   63 00015370 cusolverMgDsyr2k_bufferSize
+        101   64 000116B0 cusolverMgDsytrd
+        102   65 000116D0 cusolverMgDsytrd_bufferSize
+        103   66 0002DF50 cusolverMgDtranspose
+        104   67 0002DF90 cusolverMgDtranspose_bufferSize
+        105   68 0003C170 cusolverMgDtrsm
+        106   69 0003C1C0 cusolverMgDtrsm_bufferSize
+        107   6A 00034050 cusolverMgGetrf
+        108   6B 00034530 cusolverMgGetrf_bufferSize
+        109   6C 0005D430 cusolverMgGetrs
+        110   6D 0005DAC0 cusolverMgGetrs_bufferSize
+        111   6E 00013810 cusolverMgImemcpyD2H
+        112   6F 000056D0 cusolverMgSMatDistribute
+        113   70 00006010 cusolverMgSSetDistMatToIdentity
+        114   71 0002C860 cusolverMgSaugment
+        115   72 0002C880 cusolverMgSaugment_bufferSize
+        116   73 00028A20 cusolverMgSdgmm
+        117   74 00028A60 cusolverMgSdgmm_bufferSize
+        118   75 0004D9B0 cusolverMgSdiag
+        119   76 0002A380 cusolverMgSdiam
+        120   77 0002A360 cusolverMgSdiam_bufferSize
+        121   78 0000EB10 cusolverMgSgemm
+        122   79 0000EA20 cusolverMgSgemm_bufferSize
+        123   7A 000311F0 cusolverMgSgeqrf
+        124   7B 000311D0 cusolverMgSgeqrf_bufferSize
+        125   7C 000347D0 cusolverMgSgetrf
+        126   7D 00034860 cusolverMgSgetrf_bufferSize
+        127   7E 0005DE70 cusolverMgSgetrs
+        128   7F 0005DE90 cusolverMgSgetrs_bufferSize
+        129   80 0001FBC0 cusolverMgSlacpy
+        130   81 00007110 cusolverMgSlange
+        131   82 00007130 cusolverMgSlange_bufferSize
+        132   83 0004F800 cusolverMgSlansy
+        133   84 0004F840 cusolverMgSlansy_bufferSize
+        134   85 00050F30 cusolverMgSlascl
+        135   86 00050F70 cusolverMgSlascl_bufferSize
+        136   87 0004A6B0 cusolverMgSlaset
+        137   88 00013810 cusolverMgSmemcpyD2H
+        138   89 00013850 cusolverMgSmemcpyH2D
+        139   8A 0002E4B0 cusolverMgSmemset
+        140   8B 000056F0 cusolverMgSormqr
+        141   8C 000087C0 cusolverMgSormqrInput
+        142   8D 00008770 cusolverMgSormqrInput_bufferSize
+        143   8E 00005770 cusolverMgSormqr_bufferSize
+        144   8F 0003F440 cusolverMgSreduce_scatter_block
+        145   90 00026920 cusolverMgSrot
+        146   91 000513A0 cusolverMgSscal
+        147   92 000513C0 cusolverMgSscal_bufferSize
+        148   93 00052D40 cusolverMgSshfl
+        149   94 00052CF0 cusolverMgSshfl_bufferSize
+        150   95 00021990 cusolverMgSstedc
+        151   96 000226A0 cusolverMgSstedc_bufferSize
+        152   97 000155E0 cusolverMgSsymv
+        153   98 00015600 cusolverMgSsymv_bufferSize
+        154   99 00015350 cusolverMgSsyr2k
+        155   9A 00015370 cusolverMgSsyr2k_bufferSize
+        156   9B 000116F0 cusolverMgSsytrd
+        157   9C 000116D0 cusolverMgSsytrd_bufferSize
+        158   9D 0002DF70 cusolverMgStranspose
+        159   9E 0002DF90 cusolverMgStranspose_bufferSize
+        160   9F 0003C200 cusolverMgStrsm
+        161   A0 0003C1C0 cusolverMgStrsm_bufferSize
+        162   A1 0001CA00 cusolverMgSyevd
+        163   A2 0001CF50 cusolverMgSyevd_bufferSize
+        164   A3 00001C40 cusolverMgSyncAllStreams
+        165   A4 00005720 cusolverMgZMatDistribute
+        166   A5 00006030 cusolverMgZSetDistMatToIdentity
+        167   A6 0002C8C0 cusolverMgZaugment
+        168   A7 0002C880 cusolverMgZaugment_bufferSize
+        169   A8 00028A40 cusolverMgZdgmm
+        170   A9 00028A60 cusolverMgZdgmm_bufferSize
+        171   AA 0002A3A0 cusolverMgZdiam
+        172   AB 0002A360 cusolverMgZdiam_bufferSize
+        173   AC 0000EB30 cusolverMgZgemm
+        174   AD 0000EA20 cusolverMgZgemm_bufferSize
+        175   AE 00031210 cusolverMgZgeqrf
+        176   AF 000311D0 cusolverMgZgeqrf_bufferSize
+        177   B0 000348B0 cusolverMgZgetrf
+        178   B1 00034000 cusolverMgZgetrf_bufferSize
+        179   B2 0005DEB0 cusolverMgZgetrs
+        180   B3 0005DED0 cusolverMgZgetrs_bufferSize
+        181   B4 00015620 cusolverMgZhemv
+        182   B5 00015600 cusolverMgZhemv_bufferSize
+        183   B6 000153B0 cusolverMgZher2k
+        184   B7 00015370 cusolverMgZher2k_bufferSize
+        185   B8 00011710 cusolverMgZhetrd
+        186   B9 000116D0 cusolverMgZhetrd_bufferSize
+        187   BA 0001FBE0 cusolverMgZlacpy
+        188   BB 000071C0 cusolverMgZlange
+        189   BC 00007130 cusolverMgZlange_bufferSize
+        190   BD 0004F820 cusolverMgZlanhe
+        191   BE 0004F840 cusolverMgZlanhe_bufferSize
+        192   BF 00050F50 cusolverMgZlascl
+        193   C0 00050F70 cusolverMgZlascl_bufferSize
+        194   C1 00013870 cusolverMgZmemcpyD2H
+        195   C2 000138B0 cusolverMgZmemcpyH2D
+        196   C3 0002E4D0 cusolverMgZmemset
+        197   C4 0003F460 cusolverMgZreduce_scatter_block
+        198   C5 00052D60 cusolverMgZshfl
+        199   C6 00052CF0 cusolverMgZshfl_bufferSize
+        200   C7 00022780 cusolverMgZstedc
+        201   C8 00023320 cusolverMgZstedc_bufferSize
+        202   C9 0002DFC0 cusolverMgZtranspose
+        203   CA 0002DF90 cusolverMgZtranspose_bufferSize
+        204   CB 0003C250 cusolverMgZtrsm
+        205   CC 0003C1C0 cusolverMgZtrsm_bufferSize
+        206   CD 00005740 cusolverMgZunmqr
+        207   CE 00005770 cusolverMgZunmqr_bufferSize
+        208   CF 000087E0 cusolverMgZurmqrInput
+        209   D0 00008770 cusolverMgZurmqrInput_bufferSize
+
+  Summary
+
+       20000 .data
+        2000 .nvFatBi
+     6587000 .nv_fatb
+       30000 .pdata
+      A81000 .rdata
+       1F000 .reloc
+        7000 .rsrc
+      3A9000 .text
+        1000 .tls

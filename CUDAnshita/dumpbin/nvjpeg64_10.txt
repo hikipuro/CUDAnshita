@@ -1,0 +1,94 @@
+Microsoft (R) COFF/PE Dumper Version 14.16.27031.1
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+
+Dump of file C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\bin\nvjpeg64_10.dll
+
+File Type: DLL
+
+  Section contains the following exports for nvjpeg64_10.dll
+
+    00000000 characteristics
+    5DB118B8 time date stamp Thu Oct 24 12:21:28 2019
+        0.00 version
+           1 ordinal base
+          63 number of functions
+          63 number of names
+
+    ordinal hint RVA      name
+
+          1    0 00128BF0 NvOptimusEnablementCuda
+          2    1 00017F20 nvjpegBufferDeviceCreate
+          3    2 00018170 nvjpegBufferDeviceDestroy
+          4    3 00018390 nvjpegBufferPinnedCreate
+          5    4 000185E0 nvjpegBufferPinnedDestroy
+          6    5 00018800 nvjpegCreate
+          7    6 00018830 nvjpegCreateEx
+          8    7 000191C0 nvjpegCreateSimple
+          9    8 000191F0 nvjpegDecode
+         10    9 000198D0 nvjpegDecodeBatched
+         11    A 0001A080 nvjpegDecodeBatchedInitialize
+         12    B 0001A750 nvjpegDecodeBatchedPhaseOne
+         13    C 0001AD50 nvjpegDecodeBatchedPhaseThree
+         14    D 0001B330 nvjpegDecodeBatchedPhaseTwo
+         15    E 0001B730 nvjpegDecodeJpegDevice
+         16    F 0001BFC0 nvjpegDecodeJpegHost
+         17   10 0001C930 nvjpegDecodeJpegTransferToDevice
+         18   11 0001D1C0 nvjpegDecodeParamsCreate
+         19   12 0001D400 nvjpegDecodeParamsDestroy
+         20   13 0001D600 nvjpegDecodeParamsSetAllowCMYK
+         21   14 0001D810 nvjpegDecodeParamsSetOutputFormat
+         22   15 0001DC00 nvjpegDecodeParamsSetROI
+         23   16 0001DE10 nvjpegDecodePhaseOne
+         24   17 0001E410 nvjpegDecodePhaseThree
+         25   18 0001E9F0 nvjpegDecodePhaseTwo
+         26   19 0001EDF0 nvjpegDecoderCreate
+         27   1A 0001F570 nvjpegDecoderDestroy
+         28   1B 0001F7A0 nvjpegDecoderJpegSupported
+         29   1C 0001FE60 nvjpegDecoderStateCreate
+         30   1D 000204B0 nvjpegDestroy
+         31   1E 00020700 nvjpegEncodeGetBufferSize
+         32   1F 00020DD0 nvjpegEncodeImage
+         33   20 00021680 nvjpegEncodeRetrieveBitstream
+         34   21 00021D50 nvjpegEncodeYUV
+         35   22 00022600 nvjpegEncoderParamsCopyHuffmanTables
+         36   23 00022CC0 nvjpegEncoderParamsCopyMetadata
+         37   24 00023380 nvjpegEncoderParamsCopyQuantizationTables
+         38   25 00023960 nvjpegEncoderParamsCreate
+         39   26 00023FC0 nvjpegEncoderParamsDestroy
+         40   27 00024200 nvjpegEncoderParamsSetEncoding
+         41   28 000245F0 nvjpegEncoderParamsSetOptimizedHuffman
+         42   29 000249F0 nvjpegEncoderParamsSetQuality
+         43   2A 00024DE0 nvjpegEncoderParamsSetSamplingFactors
+         44   2B 000251D0 nvjpegEncoderStateCreate
+         45   2C 00025820 nvjpegEncoderStateDestroy
+         46   2D 00025A60 nvjpegGetDeviceMemoryPadding
+         47   2E 00025E50 nvjpegGetImageInfo
+         48   2F 00026090 nvjpegGetPinnedMemoryPadding
+         49   30 00026480 nvjpegGetProperty
+         50   31 000266B0 nvjpegJpegStateCreate
+         51   32 00026B20 nvjpegJpegStateDestroy
+         52   33 00026D70 nvjpegJpegStreamCreate
+         53   34 00026FB0 nvjpegJpegStreamDestroy
+         54   35 000271F0 nvjpegJpegStreamGetChromaSubsampling
+         55   36 00027600 nvjpegJpegStreamGetComponentDimensions
+         56   37 00027E10 nvjpegJpegStreamGetComponentsNum
+         57   38 00028220 nvjpegJpegStreamGetFrameDimensions
+         58   39 00028830 nvjpegJpegStreamGetJpegEncoding
+         59   3A 00028C40 nvjpegJpegStreamParse
+         60   3B 00029390 nvjpegSetDeviceMemoryPadding
+         61   3C 000295C0 nvjpegSetPinnedMemoryPadding
+         62   3D 000297F0 nvjpegStateAttachDeviceBuffer
+         63   3E 00029DD0 nvjpegStateAttachPinnedBuffer
+
+  Summary
+
+        8000 .data
+        1000 .nvFatBi
+      1B5000 .nv_fatb
+       11000 .pdata
+       44000 .rdata
+        3000 .reloc
+        7000 .rsrc
+       E3000 .text
+        1000 .tls

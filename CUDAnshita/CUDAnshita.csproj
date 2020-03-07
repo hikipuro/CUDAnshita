@@ -90,6 +90,8 @@
     <Compile Include="cuBLAS\CudaMatrixBase.cs" />
     <Compile Include="cuBLAS\CudaMatrixDouble.cs" />
     <Compile Include="cuBLAS\CudaMatrixFloat.cs" />
+    <Compile Include="CUPTI\CUPTI.cs" />
+    <Compile Include="CUPTI\CUPTIData.cs" />
     <Compile Include="cuRAND\CudaRandomDevice.cs" />
     <Compile Include="NVRTC\RuntimeCompiler.cs" />
     <Compile Include="Runtime\RuntimeDeviceMemory.cs" />

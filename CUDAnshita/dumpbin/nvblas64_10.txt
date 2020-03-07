@@ -1,0 +1,92 @@
+Microsoft (R) COFF/PE Dumper Version 14.16.27031.1
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+
+Dump of file C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\bin\nvblas64_10.dll
+
+File Type: DLL
+
+  Section contains the following exports for nvblas64_10.dll
+
+    00000000 characteristics
+    5DB112AC time date stamp Thu Oct 24 11:55:40 2019
+        0.00 version
+           1 ordinal base
+          61 number of functions
+          61 number of names
+
+    ordinal hint RVA      name
+
+          1    0 00033070 NvOptimusEnablementCuda
+          2    1 000012C0 cgemm
+          3    2 000012E0 cgemm_
+          4    3 000015C0 chemm
+          5    4 000015E0 chemm_
+          6    5 00001850 cher2k
+          7    6 00001870 cher2k_
+          8    7 00001B10 cherk
+          9    8 00001B30 cherk_
+         10    9 00001D80 csymm
+         11    A 00001DA0 csymm_
+         12    B 00002010 csyr2k
+         13    C 00002030 csyr2k_
+         14    D 000022D0 csyrk
+         15    E 000022F0 csyrk_
+         16    F 00002540 ctrmm
+         17   10 00002560 ctrmm_
+         18   11 00002810 ctrsm
+         19   12 00002830 ctrsm_
+         20   13 00002AD0 dgemm
+         21   14 00002AF0 dgemm_
+         22   15 00002DD0 dsymm
+         23   16 00002DF0 dsymm_
+         24   17 00003060 dsyr2k
+         25   18 00003080 dsyr2k_
+         26   19 00003320 dsyrk
+         27   1A 00003340 dsyrk_
+         28   1B 00003590 dtrmm
+         29   1C 000035B0 dtrmm_
+         30   1D 00003860 dtrsm
+         31   1E 00003880 dtrsm_
+         32   1F 00003B20 sgemm
+         33   20 00003B40 sgemm_
+         34   21 00003E20 ssymm
+         35   22 00003E40 ssymm_
+         36   23 000040B0 ssyr2k
+         37   24 000040D0 ssyr2k_
+         38   25 00004370 ssyrk
+         39   26 00004390 ssyrk_
+         40   27 000045E0 strmm
+         41   28 00004600 strmm_
+         42   29 000048B0 strsm
+         43   2A 000048D0 strsm_
+         44   2B 00004B70 zgemm
+         45   2C 00004B90 zgemm_
+         46   2D 00004E70 zhemm
+         47   2E 00004E90 zhemm_
+         48   2F 00005100 zher2k
+         49   30 00005120 zher2k_
+         50   31 000053C0 zherk
+         51   32 000053E0 zherk_
+         52   33 00005630 zsymm
+         53   34 00005650 zsymm_
+         54   35 000058C0 zsyr2k
+         55   36 000058E0 zsyr2k_
+         56   37 00005B80 zsyrk
+         57   38 00005BA0 zsyrk_
+         58   39 00005DF0 ztrmm
+         59   3A 00005E10 ztrmm_
+         60   3B 000060C0 ztrsm
+         61   3C 000060E0 ztrsm_
+
+  Summary
+
+        6000 .data
+        1000 .nvFatBi
+        1000 .nv_fatb
+        2000 .pdata
+       10000 .rdata
+        1000 .reloc
+        7000 .rsrc
+       22000 .text
+        1000 .tls

@@ -1,0 +1,63 @@
+Microsoft (R) COFF/PE Dumper Version 14.16.27031.1
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+
+Dump of file C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\bin\nppisu64_10.dll
+
+File Type: DLL
+
+  Section contains the following exports for nppisu64_10.dll
+
+    00000000 characteristics
+    5DB1177D time date stamp Thu Oct 24 12:16:13 2019
+        0.00 version
+           1 ordinal base
+          32 number of functions
+          32 number of names
+
+    ordinal hint RVA      name
+
+          1    0 00027020 NvOptimusEnablementCuda
+          2    1 00001500 nppiFree
+          3    2 00001620 nppiMalloc_16s_C1
+          4    3 00001520 nppiMalloc_16s_C2
+          5    4 00001540 nppiMalloc_16s_C4
+          6    5 00001520 nppiMalloc_16sc_C1
+          7    6 00001540 nppiMalloc_16sc_C2
+          8    7 00001560 nppiMalloc_16sc_C3
+          9    8 00001580 nppiMalloc_16sc_C4
+         10    9 00001620 nppiMalloc_16u_C1
+         11    A 00001520 nppiMalloc_16u_C2
+         12    B 000015A0 nppiMalloc_16u_C3
+         13    C 00001540 nppiMalloc_16u_C4
+         14    D 00001520 nppiMalloc_32f_C1
+         15    E 00001540 nppiMalloc_32f_C2
+         16    F 00001560 nppiMalloc_32f_C3
+         17   10 00001580 nppiMalloc_32f_C4
+         18   11 00001540 nppiMalloc_32fc_C1
+         19   12 00001580 nppiMalloc_32fc_C2
+         20   13 000015E0 nppiMalloc_32fc_C3
+         21   14 000015C0 nppiMalloc_32fc_C4
+         22   15 00001520 nppiMalloc_32s_C1
+         23   16 00001560 nppiMalloc_32s_C3
+         24   17 00001580 nppiMalloc_32s_C4
+         25   18 00001540 nppiMalloc_32sc_C1
+         26   19 00001580 nppiMalloc_32sc_C2
+         27   1A 000015E0 nppiMalloc_32sc_C3
+         28   1B 000015C0 nppiMalloc_32sc_C4
+         29   1C 00001600 nppiMalloc_8u_C1
+         30   1D 00001620 nppiMalloc_8u_C2
+         31   1E 00001640 nppiMalloc_8u_C3
+         32   1F 00001520 nppiMalloc_8u_C4
+
+  Summary
+
+        6000 .data
+        1000 .nvFatBi
+        1000 .nv_fatb
+        2000 .pdata
+        E000 .rdata
+        1000 .reloc
+        7000 .rsrc
+       18000 .text
+        1000 .tls

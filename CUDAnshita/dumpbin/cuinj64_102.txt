@@ -1,0 +1,30 @@
+Microsoft (R) COFF/PE Dumper Version 14.16.27031.1
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+
+Dump of file C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\bin\cuinj64_102.dll
+
+File Type: DLL
+
+  Section contains the following exports for cuinj64_102.dll
+
+    00000000 characteristics
+    5DB14BDA time date stamp Thu Oct 24 15:59:38 2019
+        0.00 version
+           1 ordinal base
+           3 number of functions
+           3 number of names
+
+    ordinal hint RVA      name
+
+          1    0 000049F0 InitializeInjection
+          2    1 00004A10 InitializeInjectionNvtx
+          3    2 00004A50 InitializeInjectionNvtx2
+
+  Summary
+
+        A000 .data
+        D000 .pdata
+       36000 .rdata
+        2000 .reloc
+       F7000 .text

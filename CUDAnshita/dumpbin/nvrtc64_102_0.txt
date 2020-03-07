@@ -1,0 +1,40 @@
+Microsoft (R) COFF/PE Dumper Version 14.16.27031.1
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+
+Dump of file C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\bin\nvrtc64_102_0.dll
+
+File Type: DLL
+
+  Section contains the following exports for nvrtc64_102_0.dll
+
+    00000000 characteristics
+    5DB10DDF time date stamp Thu Oct 24 11:35:11 2019
+        0.00 version
+           1 ordinal base
+          11 number of functions
+          11 number of names
+
+    ordinal hint RVA      name
+
+          1    0 0026F970 nvrtcAddNameExpression
+          2    1 0026FCC0 nvrtcCompileProgram
+          3    2 002706E0 nvrtcCreateProgram
+          4    3 00270DF0 nvrtcDestroyProgram
+          5    4 00270F30 nvrtcGetErrorString
+          6    5 00270FF0 nvrtcGetLoweredName
+          7    6 00271200 nvrtcGetPTX
+          8    7 002712C0 nvrtcGetPTXSize
+          9    8 00271360 nvrtcGetProgramLog
+         10    9 00271420 nvrtcGetProgramLogSize
+         11    A 002714C0 nvrtcVersion
+
+  Summary
+
+      13A000 .data
+       73000 .pdata
+      3E4000 .rdata
+       19000 .reloc
+        1000 .rsrc
+      A1D000 .text
+        1000 .tls

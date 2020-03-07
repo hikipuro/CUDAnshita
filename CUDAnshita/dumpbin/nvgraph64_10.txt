@@ -1,0 +1,88 @@
+Microsoft (R) COFF/PE Dumper Version 14.16.27031.1
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+
+Dump of file C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\bin\nvgraph64_10.dll
+
+File Type: DLL
+
+  Section contains the following exports for nvgraph64_10.dll
+
+    00000000 characteristics
+    5DB12007 time date stamp Thu Oct 24 12:52:39 2019
+        0.00 version
+           1 ordinal base
+          57 number of functions
+          57 number of names
+
+    ordinal hint RVA      name
+
+          1    0 01D12750 NvOptimusEnablementCuda
+          2    1 00002D80 cnmemFinalize
+          3    2 00002DB0 cnmemFree
+          4    3 00002E70 cnmemGetErrorString
+          5    4 00002EC0 cnmemInit
+          6    5 00003270 cnmemMalloc
+          7    6 00003500 cnmemMemGetInfo
+          8    7 00003660 cnmemPrintMemoryState
+          9    8 00003710 cnmemRegisterStream
+         10    9 00002D80 cnmemRelease
+         11    A 000037F0 cnmemRetain
+         12    B 0001F620 nvgraphAllocateEdgeData
+         13    C 0001F640 nvgraphAllocateVertexData
+         14    D 0001F660 nvgraphAnalyzeBalancedCut
+         15    E 0001F680 nvgraphAnalyzeClustering
+         16    F 0001F6A0 nvgraphAnalyzeModularityClustering
+         17   10 0001F6C0 nvgraphBalancedCutClustering
+         18   11 0001F6E0 nvgraphContractGraph
+         19   12 0001F700 nvgraphConvertGraph
+         20   13 0001F720 nvgraphConvertTopology
+         21   14 0001F740 nvgraphCreate
+         22   15 0001F760 nvgraphCreateGraphDescr
+         23   16 0001F780 nvgraphDestroy
+         24   17 0001F7A0 nvgraphDestroyGraphDescr
+         25   18 0001F7C0 nvgraphExtractSubgraphByEdge
+         26   19 0001F7E0 nvgraphExtractSubgraphByVertex
+         27   1A 0001F800 nvgraphGetEdgeData
+         28   1B 0001F820 nvgraphGetGraphStructure
+         29   1C 0001F840 nvgraphGetProperty
+         30   1D 0001F870 nvgraphGetVertexData
+         31   1E 0001F890 nvgraphHeavyEdgeMatching
+         32   1F 0001F8B0 nvgraphKrylovPagerank
+         33   20 0001F8D0 nvgraphPagerank
+         34   21 0001F8F0 nvgraphSetEdgeData
+         35   22 0001F910 nvgraphSetGraphStructure
+         36   23 0001F930 nvgraphSetVertexData
+         37   24 0001F950 nvgraphSpectralClustering
+         38   25 0001F970 nvgraphSpectralModularityMaximization
+         39   26 0001F990 nvgraphSrSpmv
+         40   27 0001F9B0 nvgraphSssp
+         41   28 0001F9D0 nvgraphStatusGetString
+         42   29 0001FA80 nvgraphTraversal
+         43   2A 0001FB70 nvgraphTraversalGetAlpha
+         44   2B 0001FB90 nvgraphTraversalGetBeta
+         45   2C 0001FBB0 nvgraphTraversalGetDistancesIndex
+         46   2D 0001FBD0 nvgraphTraversalGetEdgeMaskIndex
+         47   2E 0001FBF0 nvgraphTraversalGetPredecessorsIndex
+         48   2F 0001FC10 nvgraphTraversalGetUndirectedFlag
+         49   30 0001FC30 nvgraphTraversalParameterInit
+         50   31 0001FC70 nvgraphTraversalSetAlpha
+         51   32 0001FC90 nvgraphTraversalSetBeta
+         52   33 0001FCB0 nvgraphTraversalSetDistancesIndex
+         53   34 0001FCD0 nvgraphTraversalSetEdgeMaskIndex
+         54   35 0001FCF0 nvgraphTraversalSetPredecessorsIndex
+         55   36 0001FD10 nvgraphTraversalSetUndirectedFlag
+         56   37 0001FD30 nvgraphTriangleCount
+         57   38 0001FD50 nvgraphWidestPath
+
+  Summary
+
+       78000 .data
+        1000 .nvFatBi
+     7341000 .nv_fatb
+      13E000 .pdata
+      DA3000 .rdata
+       51000 .reloc
+        1000 .rsrc
+      F14000 .text
+        1000 .tls
